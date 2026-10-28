@@ -1,0 +1,8074 @@
+{
+ "arm": "evolve",
+ "cands": [
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {}
+   },
+   "lineage": {
+    "op": "seed (transcribed existing procedure)"
+   },
+   "id": 0,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.075,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.023,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.584,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.026,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.136,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.96,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "combine",
+      "P2",
+      "P5",
+      "P3",
+      "+"
+     ],
+     [
+      "repeat",
+      3,
+      [
+       [
+        "lits",
+        "P1",
+        [
+         2
+        ]
+       ],
+       [
+        "lits",
+        "P1",
+        [
+         1,
+         3,
+         10
+        ]
+       ],
+       [
+        "dconsts",
+        "P0",
+        "int_ratios"
+       ]
+      ]
+     ],
+     [
+      "lits",
+      "P3",
+      [
+       3,
+       8
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P2",
+      "P5"
+     ],
+     [
+      "filter",
+      "P0",
+      "P3",
+      "size_le_5"
+     ],
+     [
+      "dconsts",
+      "P0",
+      "int_ratios"
+     ],
+     [
+      "combine",
+      "P0",
+      "P2",
+      "P0",
+      "*"
+     ],
+     [
+      "terms",
+      "P0",
+      [
+       "acc"
+      ]
+     ],
+     [
+      "lits",
+      "P4",
+      [
+       3
+      ]
+     ],
+     [
+      "union",
+      "P4",
+      "P0",
+      "P5"
+     ],
+     [
+      "combine",
+      "P2",
+      "P4",
+      "P4",
+      "/"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "sort",
+       "P1",
+       "P1",
+       "acc_first"
+      ],
+      [
+       "terms",
+       "P3",
+       [
+        "x",
+        "acc"
+       ]
+      ],
+      [
+       "dconsts",
+       "P0",
+       "small_obs"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "random_program"
+   },
+   "id": 1,
+   "fitness": -0.0,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 89,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 160,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 136,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 130,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 113,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 159,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 109,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 83,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 0.04,
+   "space_size_empty_ctx": 1
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "dconsts",
+      "P2",
+      "int_diffs"
+     ],
+     [
+      "dconsts",
+      "P4",
+      "int_diffs"
+     ],
+     [
+      "dedupe",
+      "P5",
+      "P4"
+     ],
+     [
+      "dedupe",
+      "P5",
+      "P5"
+     ],
+     [
+      "ret",
+      "P1"
+     ]
+    ],
+    "helpers": {}
+   },
+   "lineage": {
+    "op": "random_program"
+   },
+   "id": 2,
+   "fitness": -0.0,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 89,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 160,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 136,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 130,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 113,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 159,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 109,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 83,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 0.04,
+   "space_size_empty_ctx": 1
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "combine",
+      "P2",
+      "P5",
+      "P3",
+      "+"
+     ],
+     [
+      "repeat",
+      3,
+      [
+       [
+        "lits",
+        "P1",
+        [
+         2
+        ]
+       ],
+       [
+        "lits",
+        "P1",
+        [
+         1,
+         3,
+         10
+        ]
+       ],
+       [
+        "dconsts",
+        "P0",
+        "int_ratios"
+       ]
+      ]
+     ],
+     [
+      "lits",
+      "P3",
+      [
+       3,
+       8
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P2",
+      "P5"
+     ],
+     [
+      "filter",
+      "P0",
+      "P3",
+      "size_le_5"
+     ],
+     [
+      "dconsts",
+      "P0",
+      "int_ratios"
+     ],
+     [
+      "combine",
+      "P0",
+      "P2",
+      "P0",
+      "*"
+     ],
+     [
+      "terms",
+      "P0",
+      [
+       "acc"
+      ]
+     ],
+     [
+      "lits",
+      "P4",
+      [
+       3
+      ]
+     ],
+     [
+      "union",
+      "P4",
+      "P0",
+      "P5"
+     ],
+     [
+      "combine",
+      "P2",
+      "P4",
+      "P4",
+      "/"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "terms",
+       "P2",
+       [
+        "acc"
+       ]
+      ],
+      [
+       "sort",
+       "P1",
+       "P1",
+       "acc_first"
+      ],
+      [
+       "terms",
+       "P3",
+       [
+        "x",
+        "acc"
+       ]
+      ],
+      [
+       "dconsts",
+       "P0",
+       "small_obs"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     1
+    ],
+    "edits": [
+     "insert@0"
+    ]
+   },
+   "id": 3,
+   "fitness": -0.0,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 89,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 160,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 136,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 130,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 113,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 159,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 109,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 83,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 0.04,
+   "space_size_empty_ctx": 1
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "combine",
+      "P2",
+      "P4",
+      "P4",
+      "/"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "terms",
+       "P2",
+       [
+        "acc"
+       ]
+      ],
+      [
+       "sort",
+       "P1",
+       "P1",
+       "acc_first"
+      ],
+      [
+       "terms",
+       "P3",
+       [
+        "x",
+        "acc"
+       ]
+      ],
+      [
+       "dconsts",
+       "P0",
+       "small_obs"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "crossover a[:17] + b[10:]",
+    "parents": [
+     0,
+     3
+    ]
+   },
+   "id": 4,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.084,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.033,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.039,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.02,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.03,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.593,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.033,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.143,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 25.04,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     0
+    ],
+    "edits": [
+     "extract_helper h0",
+     "delete@6"
+    ]
+   },
+   "id": 5,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.074,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.022,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.03,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.015,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.009,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.021,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.582,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.023,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.134,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.95,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     5
+    ],
+    "edits": [
+     "delete@13"
+    ]
+   },
+   "id": 6,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.074,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.022,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.029,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.015,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.009,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.021,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.588,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.135,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.95,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "crossover a[:16] + b[13:]",
+    "parents": [
+     5,
+     6
+    ]
+   },
+   "id": 7,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.074,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.023,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.03,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.016,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.009,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.021,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.583,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.136,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.95,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "combine",
+      "P2",
+      "P5",
+      "P3",
+      "+"
+     ],
+     [
+      "repeat",
+      3,
+      [
+       [
+        "lits",
+        "P1",
+        [
+         2
+        ]
+       ],
+       [
+        "lits",
+        "P1",
+        [
+         1,
+         3,
+         10
+        ]
+       ],
+       [
+        "dconsts",
+        "P0",
+        "int_ratios"
+       ],
+       [
+        "dconsts",
+        "P5",
+        "int_ratios"
+       ]
+      ]
+     ],
+     [
+      "lits",
+      "P3",
+      [
+       3,
+       8
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P2",
+      "P5"
+     ],
+     [
+      "filter",
+      "P0",
+      "P3",
+      "size_le_5"
+     ],
+     [
+      "dconsts",
+      "P0",
+      "int_ratios"
+     ],
+     [
+      "combine",
+      "P0",
+      "P2",
+      "P0",
+      "*"
+     ],
+     [
+      "terms",
+      "P0",
+      [
+       "acc"
+      ]
+     ],
+     [
+      "lits",
+      "P4",
+      [
+       3
+      ]
+     ],
+     [
+      "union",
+      "P4",
+      "P0",
+      "P5"
+     ],
+     [
+      "combine",
+      "P2",
+      "P4",
+      "P4",
+      "/"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "terms",
+       "P2",
+       [
+        "acc"
+       ]
+      ],
+      [
+       "sort",
+       "P1",
+       "P1",
+       "acc_first"
+      ],
+      [
+       "terms",
+       "P3",
+       [
+        "x",
+        "acc"
+       ]
+      ],
+      [
+       "dconsts",
+       "P0",
+       "small_obs"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     3
+    ],
+    "edits": [
+     "insert@3"
+    ]
+   },
+   "id": 8,
+   "fitness": -0.0,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 89,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 160,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 136,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 93,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 88,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 130,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 113,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 159,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 109,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.001,
+     "queries": 83,
+     "domain_sizes": [
+      1,
+      1
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 0.04,
+   "space_size_empty_ctx": 1
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "terms",
+       "P2",
+       [
+        "acc"
+       ]
+      ],
+      [
+       "sort",
+       "P1",
+       "P1",
+       "acc_first"
+      ],
+      [
+       "terms",
+       "P3",
+       [
+        "x",
+        "acc"
+       ]
+      ],
+      [
+       "dconsts",
+       "P0",
+       "small_obs"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "crossover a[:7] + b[6:]",
+    "parents": [
+     4,
+     0
+    ]
+   },
+   "id": 9,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.077,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.025,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.592,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.026,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.137,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.97,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "repeat",
+       3,
+       [
+        [
+         "combine",
+         "P3",
+         "P0",
+         "P0",
+         "-"
+        ],
+        [
+         "union",
+         "P1",
+         "P0",
+         "P3"
+        ],
+        [
+         "dedupe",
+         "P1",
+         "P5"
+        ]
+       ]
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     6
+    ],
+    "edits": [
+     "replace@1",
+     "wrap_repeat@0",
+     "insert@1"
+    ]
+   },
+   "id": 10,
+   "fitness": 0.0366,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.051,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.022,
+     "queries": 160,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.01,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.016,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.342,
+     "queries": 130,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      44,
+      44,
+      44,
+      44,
+      44
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 5.817,
+     "queries": 109,
+     "domain_sizes": [
+      44,
+      44,
+      44
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.118,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 22.46,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P3",
+         "P0",
+         "P0",
+         "-"
+        ]
+       ],
+       []
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     7
+    ],
+    "edits": [
+     "wrap_if@0"
+    ]
+   },
+   "id": 11,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.053,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.03,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.004,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.006,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.016,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.59,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.004,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      44,
+      44,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.119,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.91,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     11
+    ],
+    "edits": [
+     "insert@0",
+     "replace@0",
+     "perturb@1"
+    ]
+   },
+   "id": 12,
+   "fitness": 2.1206,
+   "exact": 2,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.055,
+     "queries": 828,
+     "domain_sizes": [
+      52
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.003,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.038,
+     "queries": 665,
+     "domain_sizes": [
+      58
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      52,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.129,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.119,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 16.49,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "repeat",
+      3,
+      [
+       [
+        "lits",
+        "P1",
+        [
+         0,
+         1
+        ]
+       ],
+       [
+        "union",
+        "P0",
+        "P0",
+        "P1"
+       ],
+       [
+        "combine",
+        "P2",
+        "P0",
+        "P0",
+        "+"
+       ]
+      ]
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P2"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     7
+    ],
+    "edits": [
+     "wrap_repeat@1",
+     "perturb@1"
+    ]
+   },
+   "id": 13,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.116,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.063,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.07,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.006,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.055,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.049,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.061,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.625,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.064,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.004,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.176,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 25.32,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "if_feat",
+       "n_obs_int_frac",
+       ">=",
+       0.5,
+       [
+        [
+         "union",
+         "P2",
+         "P2",
+         "P3"
+        ]
+       ],
+       []
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     12
+    ],
+    "edits": [
+     "wrap_if@1"
+    ]
+   },
+   "id": 14,
+   "fitness": 1.0789,
+   "exact": 1,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.051,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.038,
+     "queries": 665,
+     "domain_sizes": [
+      58
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.01,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      44,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.129,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.12,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 16.5,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "dconsts",
+      "P2",
+      "small_obs"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "/"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {}
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     0
+    ],
+    "edits": [
+     "insert@4",
+     "perturb@11"
+    ]
+   },
+   "id": 15,
+   "fitness": 2.1272,
+   "exact": 2,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.055,
+     "queries": 828,
+     "domain_sizes": [
+      89
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.059,
+     "queries": 89,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.167,
+     "queries": 160,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.009,
+     "queries": 93,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.055,
+     "queries": 136,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.039,
+     "queries": 665,
+     "domain_sizes": [
+      104
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.144,
+     "queries": 88,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 1.509,
+     "queries": 130,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.049,
+     "queries": 113,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.008,
+     "queries": 159,
+     "domain_sizes": [
+      73,
+      88,
+      88,
+      73,
+      73,
+      88
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.008,
+     "queries": 109,
+     "domain_sizes": [
+      73,
+      73,
+      73
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 1.611,
+     "queries": 83,
+     "domain_sizes": [
+      73,
+      73
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 19.74,
+   "space_size_empty_ctx": 73
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     12
+    ],
+    "edits": [
+     "perturb@0"
+    ]
+   },
+   "id": 16,
+   "fitness": 2.1206,
+   "exact": 2,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.057,
+     "queries": 828,
+     "domain_sizes": [
+      52
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.033,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.008,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.038,
+     "queries": 665,
+     "domain_sizes": [
+      58
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.004,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      52,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.129,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.12,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 16.5,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "/"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "crossover a[:13] + b[10:]",
+    "parents": [
+     12,
+     15
+    ]
+   },
+   "id": 17,
+   "fitness": 3.1508,
+   "exact": 3,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.092,
+     "queries": 828,
+     "domain_sizes": [
+      160
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.243,
+     "queries": 89,
+     "domain_sizes": [
+      102,
+      102
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.114,
+     "queries": 160,
+     "domain_sizes": [
+      72,
+      72
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.35,
+     "queries": 755,
+     "domain_sizes": [
+      102,
+      72,
+      80
+     ],
+     "explained": 0.667
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.102,
+     "queries": 136,
+     "domain_sizes": [
+      80,
+      80
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.071,
+     "queries": 665,
+     "domain_sizes": [
+      150
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.118,
+     "queries": 88,
+     "domain_sizes": [
+      80,
+      80
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 1.901,
+     "queries": 130,
+     "domain_sizes": [
+      72,
+      72
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.13,
+     "queries": 113,
+     "domain_sizes": [
+      80,
+      80
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.008,
+     "queries": 159,
+     "domain_sizes": [
+      102,
+      100,
+      94
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.004,
+     "queries": 109,
+     "domain_sizes": [
+      72,
+      72,
+      72
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.656,
+     "queries": 83,
+     "domain_sizes": [
+      80,
+      80
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 19.82,
+   "space_size_empty_ctx": 102
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "if_feat",
+         "n_occ",
+         ">=",
+         10,
+         [
+          [
+           "dconsts",
+           "P3",
+           "int_diffs"
+          ],
+          [
+           "lits",
+           "P2",
+           [
+            2,
+            3,
+            7
+           ]
+          ]
+         ],
+         []
+        ]
+       ]
+      ],
+      [
+       "combine",
+       "P1",
+       "P2",
+       "P2",
+       "+"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     16
+    ],
+    "edits": [
+     "wrap_if@0",
+     "insert@1",
+     "insert@1"
+    ]
+   },
+   "id": 18,
+   "fitness": 2.1214,
+   "exact": 2,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.053,
+     "queries": 828,
+     "domain_sizes": [
+      38
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 89,
+     "domain_sizes": [
+      26,
+      26
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.002,
+     "queries": 93,
+     "domain_sizes": [
+      26,
+      26
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.003,
+     "queries": 136,
+     "domain_sizes": [
+      26,
+      26
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.036,
+     "queries": 665,
+     "domain_sizes": [
+      42
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.003,
+     "queries": 88,
+     "domain_sizes": [
+      30,
+      30
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.003,
+     "queries": 113,
+     "domain_sizes": [
+      26,
+      26
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.002,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      32,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.129,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.003,
+     "queries": 83,
+     "domain_sizes": [
+      26,
+      26
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 8.3,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "crossover a[:4] + b[3:]",
+    "parents": [
+     16,
+     0
+    ]
+   },
+   "id": 19,
+   "fitness": 0.0433,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.077,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.025,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.023,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.591,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.026,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.137,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 24.97,
+   "space_size_empty_ctx": 53
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "if_feat",
+         "n_trans",
+         ">=",
+         10,
+         [
+          [
+           "dconsts",
+           "P3",
+           "int_diffs"
+          ]
+         ],
+         []
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     12
+    ],
+    "edits": [
+     "wrap_if@0"
+    ]
+   },
+   "id": 20,
+   "fitness": 0.0372,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.052,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.006,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.006,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.016,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      44,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.128,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.119,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 16.45,
+   "space_size_empty_ctx": 44
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "take",
+      "P0",
+      "P1",
+      1000
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "combine",
+       "P1",
+       "P2",
+       "P2",
+       "+"
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     18
+    ],
+    "edits": [
+     "delete@0",
+     "insert@2"
+    ]
+   },
+   "id": 21,
+   "fitness": -0.0,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.004,
+     "queries": 88,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 89,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 160,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 93,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 136,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.004,
+     "queries": 93,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 88,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 130,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 113,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 159,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.005,
+     "queries": 109,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.004,
+     "queries": 83,
+     "domain_sizes": [
+      7,
+      7
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 0.08,
+   "space_size_empty_ctx": 7
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "/"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "combine",
+         "P2",
+         "P0",
+         "P1",
+         "/"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P3",
+         "int_diffs"
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P2"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "repeat",
+       2,
+       [
+        [
+         "union",
+         "P1",
+         "P2",
+         "P3"
+        ]
+       ]
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     17
+    ],
+    "edits": [
+     "perturb@1",
+     "wrap_repeat@1"
+    ]
+   },
+   "id": 22,
+   "fitness": 1.0613,
+   "exact": 1,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.311,
+     "queries": 88,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.159,
+     "queries": 89,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.089,
+     "queries": 160,
+     "domain_sizes": [
+      33,
+      33
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.273,
+     "queries": 755,
+     "domain_sizes": [
+      79,
+      33,
+      79
+     ],
+     "explained": 0.667
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.096,
+     "queries": 136,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.075,
+     "queries": 93,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.114,
+     "queries": 88,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.267,
+     "queries": 130,
+     "domain_sizes": [
+      33,
+      33
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.122,
+     "queries": 113,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.001,
+     "queries": 159,
+     "domain_sizes": [
+      79,
+      79,
+      79
+     ],
+     "explained": 0.5
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 1.973,
+     "queries": 109,
+     "domain_sizes": [
+      33,
+      33,
+      33
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.64,
+     "queries": 83,
+     "domain_sizes": [
+      79,
+      79
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 12.15,
+   "space_size_empty_ctx": 79
+  },
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "call",
+      "h0"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {
+     "h0": [
+      [
+       "if_feat",
+       "n_trans",
+       ">=",
+       10,
+       [
+        [
+         "call",
+         "h2"
+        ]
+       ],
+       [
+        [
+         "dconsts",
+         "P5",
+         "small_obs"
+        ],
+        [
+         "repeat",
+         2,
+         [
+          [
+           "dconsts",
+           "P3",
+           "int_diffs"
+          ]
+         ]
+        ]
+       ]
+      ],
+      [
+       "union",
+       "P2",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h0b": [
+      [
+       "combine",
+       "P3",
+       "P0",
+       "P0",
+       "-"
+      ],
+      [
+       "union",
+       "P1",
+       "P2",
+       "P3"
+      ]
+     ],
+     "h2": [
+      [
+       "combine",
+       "P2",
+       "P0",
+       "P1",
+       "/"
+      ]
+     ]
+    }
+   },
+   "lineage": {
+    "op": "mutate",
+    "parents": [
+     12
+    ],
+    "edits": [
+     "extract_helper h2",
+     "wrap_repeat@0",
+     "insert@0"
+    ]
+   },
+   "id": 23,
+   "fitness": 2.1206,
+   "exact": 2,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.055,
+     "queries": 828,
+     "domain_sizes": [
+      52
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.032,
+     "queries": 89,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.007,
+     "queries": 160,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.006,
+     "queries": 93,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.011,
+     "queries": 136,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": true,
+     "silent": false,
+     "outcome": "accepted",
+     "cpu_s": 0.037,
+     "queries": 665,
+     "domain_sizes": [
+      58
+     ],
+     "explained": 1.0
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.017,
+     "queries": 88,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.031,
+     "queries": 130,
+     "domain_sizes": [
+      19,
+      19
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 113,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.006,
+     "queries": 159,
+     "domain_sizes": [
+      44,
+      52,
+      44,
+      19,
+      19,
+      19
+     ],
+     "explained": 0.6
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.129,
+     "queries": 109,
+     "domain_sizes": [
+      19,
+      19,
+      19
+     ],
+     "explained": 0.333
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.12,
+     "queries": 83,
+     "domain_sizes": [
+      44,
+      44
+     ],
+     "explained": 0.0
+    }
+   ],
+   "eval_cpu_s": 16.5,
+   "space_size_empty_ctx": 44
+  }
+ ]
+}
