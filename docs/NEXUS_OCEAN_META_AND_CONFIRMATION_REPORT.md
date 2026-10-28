@@ -144,6 +144,13 @@ This document has two parts:
 
 The cap is 20,000 s.
 
+### 0.7a Amendment (committed before any Part 1 / 2 outcome)
+
+* **Cost.** `H_FULL` costs about 5.2 s per episode, which would put Part 1 near 6,000 s.
+* **Change.** Part 1's four arms therefore run on the same learner using the **hand-ordered growth rule from H0**
+  (about 1.9 s per episode). Arm (i) is identical to Part 2's `Hand_Ordered_Rule` and is reused.
+* **Unchanged:** the Part 1 criterion and everything else.
+
 ## 0.8 Results
 
 (appended)
