@@ -1,0 +1,464 @@
+{
+ "split": "x7_val",
+ "ident": "1",
+ "seed": 13462,
+ "arm": "FieldOnly_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13462,
+  "domain": "iot",
+  "fault": "XD1",
+  "lifecycle": "I.session",
+  "arm": "FieldOnly_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": 9,
+   "shape_alarm_tick": 9,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": null,
+   "schema_fault_missed": false,
+   "escalation_ticks": [
+    9
+   ],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 2,
+   "relearns": [
+    "growth",
+    "growth"
+   ],
+   "mapping": [
+    "UNRESOLVED_NO_ACCEPTED_ADAPTER"
+   ],
+   "stages": [
+    "lifecycle relearning",
+    "human assistance"
+   ],
+   "human": 1
+  },
+  "adapters": [],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.151,
+    "queries": 389,
+    "growth_steps": 2
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 2,
+     "dead_regs": [],
+     "unbound_fields": [],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amt"
+     ],
+     "reads_after": [
+      "amt"
+     ],
+     "regs_after": 2,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "READ": {
+      "amt": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "82123d4e0eec1c3985e4c65f11b9fe80961ef026f2dff16657b783c7d569923f",
+    "emitted_reads": {
+     "CONNECT": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISCONNECT": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 360,
+    "filled_for_learning": [],
+    "cpu_s": 0.165,
+    "queries": 393,
+    "growth_steps": 2
+   },
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 360,
+    "filled_for_learning": [],
+    "cpu_s": 0.168,
+    "queries": 393,
+    "growth_steps": 2
+   },
+   {
+    "mode": "field",
+    "incidents": 9,
+    "notices": 31,
+    "expected": [
+     "amt"
+    ],
+    "shape": "missing",
+    "leaves": {
+     "numeric": [
+      "amt_est",
+      "amt_fee",
+      "amt_gross",
+      "offset",
+      "retry",
+      "src"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 6
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 6,
+      "consistent": [
+       "(if present(amt) then amt else amt_est)",
+       "(if present(amt) then amt else amt_fee)",
+       "(if present(amt) then amt else amt_gross)",
+       "(if present(amt) then amt else offset)",
+       "(if present(amt) then amt else retry)",
+       "(if present(amt) then amt else src)"
+      ],
+      "n_consistent": 6,
+      "probes": [
+       {
+        "queries": 1,
+        "attempts": 3,
+        "before": 6,
+        "after": 0
+       }
+      ]
+     },
+     {
+      "tier": "relearn",
+      "expr": "(if present(amt) then amt else amt_est)",
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "CONNECT",
+        "DISCONNECT",
+        "READ"
+       ],
+       "alphabet_size": 3,
+       "hyp_modes": 2,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amt_est"
+       ],
+       "exhaustive": {
+        "horizon": 5,
+        "words_per_shape": 243,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "runs": {
+        "exhaustive_new": 2,
+        "exhaustive_old": 0,
+        "depth0": 0,
+        "depth1": 0,
+        "boundary": 0,
+        "mixed": 0
+       },
+       "queries": 2,
+       "stopped": "counterexample"
+      }
+     },
+     {
+      "tier": "relearn",
+      "expr": "(if present(amt) then amt else amt_fee)",
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "CONNECT",
+        "DISCONNECT",
+        "READ"
+       ],
+       "alphabet_size": 3,
+       "hyp_modes": 2,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amt_fee"
+       ],
+       "exhaustive": {
+        "horizon": 5,
+        "words_per_shape": 243,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "runs": {
+        "exhaustive_new": 2,
+        "exhaustive_old": 0,
+        "depth0": 0,
+        "depth1": 0,
+        "boundary": 0,
+        "mixed": 0
+       },
+       "queries": 2,
+       "stopped": "counterexample"
+      }
+     }
+    ],
+    "outcome": "UNRESOLVED_NO_ACCEPTED_ADAPTER",
+    "consistency_checks": 8,
+    "cpu_s": 0.361,
+    "step": "mapping_repair",
+    "mq": 943,
+    "evidence_example": {
+     "raw": {
+      "device_id": "E46200083",
+      "event": "READ",
+      "offset": 9003,
+      "retry": 9,
+      "src": 7,
+      "amt_gross": 54.87,
+      "amt_fee": 22.57,
+      "amt_est": 32
+     },
+     "expected_fields": [
+      "amt"
+     ],
+     "observed_fields": [
+      "amt_est",
+      "amt_fee",
+      "amt_gross",
+      "device_id",
+      "event",
+      "offset",
+      "retry",
+      "src"
+     ],
+     "kind": "READ",
+     "mapping_version": 0,
+     "dependencies": {
+      "amt": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 2,
+    "cpu_s": 20.035
+   },
+   "value_stats": {
+    "cpu_s": 0.017,
+    "built": 1063,
+    "kept": 130,
+    "dup": 743,
+    "err": 190,
+    "scored": 0,
+    "solved": true,
+    "level": 8,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 20.098,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 389
+  },
+  "cost": {
+   "build_A_cpu_s": 20.098,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.151,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 466,
+    "mq_events": 2383
+   },
+   "ops_cpu_s": 0.369,
+   "operator_ops_cpu_s": 0.368,
+   "ops_wall_s": 0.37,
+   "queries": {
+    "build_labels": 560,
+    "spot": 64,
+    "incident": 360,
+    "mq": 1409,
+    "mq_events": 7209
+   },
+   "mapping_cpu_s": 0.361,
+   "mapping_mq": 943,
+   "relearn_cpu_s": 0.333
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('voltage') * r.get('i_rms'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('voltage'), (int, float)) and not isinstance(r.get('voltage'), bool)) and (isinstance(r.get('i_rms'), (int, float)) and not isinstance(r.get('i_rms'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return None\n\n\ndef status_fn(r, t):\n    return None\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

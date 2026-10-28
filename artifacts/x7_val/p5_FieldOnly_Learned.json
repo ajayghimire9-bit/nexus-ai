@@ -1,0 +1,364 @@
+{
+ "split": "x7_val",
+ "ident": "5",
+ "seed": 13466,
+ "arm": "FieldOnly_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13466,
+  "domain": "iot",
+  "fault": "XD2",
+  "lifecycle": "I.session",
+  "arm": "FieldOnly_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": 9,
+   "shape_alarm_tick": 9,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": null,
+   "schema_fault_missed": false,
+   "escalation_ticks": [
+    9
+   ],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 2,
+   "relearns": [],
+   "mapping": [
+    "UNRESOLVED_NO_ACCEPTED_ADAPTER"
+   ],
+   "stages": [
+    "human assistance"
+   ],
+   "human": 1
+  },
+  "adapters": [],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change"
+    ]
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.151,
+    "queries": 395,
+    "growth_steps": 2
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 2,
+     "dead_regs": [],
+     "unbound_fields": [],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "value"
+     ],
+     "reads_after": [
+      "value"
+     ],
+     "regs_after": 2,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "READ": {
+      "value": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "1246a8158915177ea52df6baf13d289acc5e31c4b7aa1c1b13153d34bae33243",
+    "emitted_reads": {
+     "CONNECT": {
+      "value": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISCONNECT": {
+      "value": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "value": [
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "step": "learn",
+    "learner": null,
+    "accepted": false,
+    "n_events": 360,
+    "filled_for_learning": [],
+    "cpu_s": 0.087,
+    "queries": null,
+    "growth_steps": null
+   },
+   {
+    "step": "learn",
+    "learner": null,
+    "accepted": false,
+    "n_events": 360,
+    "filled_for_learning": [],
+    "cpu_s": 0.087,
+    "queries": null,
+    "growth_steps": null
+   },
+   {
+    "mode": "field",
+    "incidents": 5,
+    "notices": 14,
+    "expected": [
+     "value"
+    ],
+    "shape": "missing",
+    "leaves": {
+     "numeric": [
+      "retry",
+      "seq",
+      "src",
+      "value_meta.milli"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 4
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 4,
+      "consistent": [],
+      "n_consistent": 0
+     }
+    ],
+    "outcome": "UNRESOLVED_NO_ACCEPTED_ADAPTER",
+    "consistency_checks": 4,
+    "cpu_s": 0.176,
+    "step": "mapping_repair",
+    "mq": 646,
+    "evidence_example": {
+     "raw": {
+      "entity": "E46600024",
+      "op": "READ",
+      "seq": 9013,
+      "retry": 8,
+      "src": 8,
+      "value_meta": {
+       "milli": 59000,
+       "src": "m2"
+      }
+     },
+     "expected_fields": [
+      "value"
+     ],
+     "observed_fields": [
+      "entity",
+      "op",
+      "retry",
+      "seq",
+      "src",
+      "value_meta"
+     ],
+     "kind": "READ",
+     "mapping_version": 0,
+     "dependencies": {
+      "value": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.77
+   },
+   "value_stats": {
+    "cpu_s": 0.907,
+    "built": 69699,
+    "kept": 8910,
+    "dup": 55792,
+    "err": 4997,
+    "scored": 0,
+    "solved": true,
+    "level": 14,
+    "size": 11,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 13.759,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 395
+  },
+  "cost": {
+   "build_A_cpu_s": 13.759,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.151,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 473,
+    "mq_events": 2418
+   },
+   "ops_cpu_s": 0.185,
+   "operator_ops_cpu_s": 0.183,
+   "ops_wall_s": 0.185,
+   "queries": {
+    "build_labels": 560,
+    "spot": 74,
+    "incident": 360,
+    "mq": 1119,
+    "mq_events": 6749
+   },
+   "mapping_cpu_s": 0.176,
+   "mapping_mq": 646,
+   "relearn_cpu_s": 0
+  },
+  "build_source": "def value_fn(r, t):\n    return (t.get('gain') * (r.get('counts') - t.get('offset')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('entity'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return None\n\n\ndef status_fn(r, t):\n    return None\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}
