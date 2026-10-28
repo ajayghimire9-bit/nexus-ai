@@ -271,3 +271,277 @@ are the two files the owner text names.
 * Gate: ≥ 5/6, 0 silent, 6/6, 6/6. PASSED, so no revision was used.
 * The 8021 escalation is recorded but not diagnosed on val data, and no code was changed after val.
 * Raw results: `artifacts/u5_val/part1of1.json`.
+
+## 2. Sealed confirmation (one-shot u5/test 8041–8052, frozen `0824185`, manifest `4d8286e`) — criterion NOT MET
+
+### 2.1 Final sealed 7-measure scorecard (12 projects: X3 on even seeds, X4 on odd; 4 per domain)
+
+| arm | indep correct | data correct | silent | completed | crash-identical | human repairs | build CPU s | ops CPU s | oracle labels+queries |
+| NEXUS_U5 | 9/12 | 9/12 | 3 | 12/12 | 12/12 | 0 | 213.3 | 157.4 | 37505 labels / 5433 MQ |
+| NEXUS_U5-P1 | 0/12 | 0/12 | 12 | 12/12 | 12/12 | 12 | 205.3 | 173.8 | 14569 labels / 77 MQ |
+| NEXUS_NoLearning | 8/12 | 8/12 | 4 | 12/12 | 12/12 | 0 | 254.8 | 174.8 | 35431 labels / 5092 MQ |
+| Fixed_Policy | 0/12 | 8/12 | 4 | 12/12 | 12/12 | 9 | 0.0 | 0.0 | 2306 labels / 0 MQ |
+| Conventional | 0/12 | 0/12 | 12 | 12/12 | 12/12 | 0 | 0.0 | 0.0 | 0 labels / 0 MQ |
+
+| measure | NEXUS_U5 | reading |
+|---|---|---|
+| Correctness / 0 silent | **9/12 independently correct, 3 silent errors** | criterion (≥ 10/12, 0 silent) **not met** |
+| Completion | 12/12 | |
+| Reliability | 12/12 crash-identical | |
+| Cost | build 213 s + ops 157 s CPU (12 projects); 37.5 k oracle labels, 5.4 k membership queries | Fixed_Policy: 0 s, 2.3 k labels, but 9 human repairs |
+| Human dependence | 0 human repairs | Fixed_Policy 9; NEXUS_U5-P1 12 |
+| Learning benefit (vs NEXUS_NoLearning) | +1 independently correct (9 vs 8), −16 % build CPU (213 vs 255 s), −10 % ops CPU | small; the only learned component is count-based operator costs |
+| Generalization | X3 4/6, X4 5/6; logistics 4/4, clearing 3/4, IoT 2/4 | IoT was unseen by every learned component; both IoT failures are mechanism failures, not search failures |
+
+* **Sealed criterion:** ≥ 10/12 (got 9), 0 silent (got 3), 12/12 completed and crash-identical (met), and more than
+  Fixed_Policy (9 > 0, met). **The criterion is NOT MET, so the u5 confirmation is NEGATIVE.**
+* **Root causes,** from committed outputs only (`artifacts/u5_test/part*.json`, `artifacts/u5_test/code/`); no vault
+  reads:
+  * **8044 (Clearing X3):** the class relearned at tick 9 emits `partial` correctly, but it has **no register update**
+    on (prepared, PARTIAL).
+    * The tick-9 archive had no COMMIT after a PARTIAL, so no example constrained the subtraction, and random value
+      probes did not reach that path.
+    * Later settled amounts are wrong (2 rows), and no monitor sees them.
+  * **8042 (IoT X3):** 1 lifecycle row is wrong after the tick-9 relearn, with the same signature: a rare path not covered
+    by the relearn evidence.
+  * **8051 (IoT X4):** the resynthesised status program checks membership before missingness, and the reference checks
+    missingness first. The incident sample never had both together, so 2 rows are wrong.
+  * In all three, the repair passed shadow verification on the evidence it had. The errors are generalisation gaps that
+    the spot checks (3 records and 2 keys per tick) did not sample.
+* Fixed_Policy produced correct data on 8/12, but only after 9 human repairs, and it had 4 silent errors (X3 events
+  treated as invalid until a spot check caught them).
+
+### 2.2 The five pillar ablation tables
+
+1. **Pillar 1:** continuation-split classes vs the flat dictionary template.
+   * Dev: 15/15 vs 0/15 exact, key accuracy 1.000 vs 0.445.
+   * Sealed: NEXUS_U5 9/12 vs NEXUS_U5-P1 0/12 independently correct; the flat template needed 12 human repairs and still
+     had 12 silent errors.
+   * **Strong, confirmed effect.**
+2. **Pillar 2:** execution-guided vs count-based vs baseline enumerator.
+   * Dev hybrid: 39/39/39 correct at 51.9 / 54.1 / 94.6 s.
+   * Dev construction only: 31/31/19.
+   * Count-based was promoted. Execution guidance gave no measurable gain over count costs.
+   * Sealed (count vs baseline = NEXUS_U5 vs NoLearning): 9 vs 8, −16 % build CPU.
+3. **Pillar 3:** downstream utility vs MDL compression vs no learned functions.
+   * DEV 39/35/39; HELD 38/34/38; charged CPU 433 / 201 / 51 s.
+   * MDL harmed search, and utility admission correctly admitted nothing.
+   * **No useful abstraction was found** on these families.
+4. **Pillar 4:** failure-boundary vs random vs fixed vs none.
+   * DEV 39/38/39/39; HELD 38/38/38/38.
+   * **Inconclusive by ceiling.**
+5. **Pillar 5:** M_evolved vs M0 vs Scalar_Tuning vs Random_Modification, same L0 and B.
+   * DEV means 21/21/20/21, with L0 already at 21/21.
+   * **Inconclusive by ceiling.** It neither shows nor refutes second-order improvement.
+
+### 2.3 Verbatim code NEXUS wrote: sealed project 8046 (Logistics X3), deployed after its tick-9 relearn
+
+* The class was invented from primitives by continuation splitting.
+* The RETURN event (X3) appeared at tick 9, and `?unknown` raised an alarm.
+* The relearn split the old merged "closed" mode into delivered vs cancelled (witness on `RETURN`), giving 7 modes.
+* It passed shadow verification and was correct for ticks 9–16.
+
+```python
+def value_fn(r, t):
+    return (r.get('height') * (r.get('len_cm') * (r.get('w') / t.get('cm3_per_l'))))
+
+
+def status_fn(r, t):
+    if (not (((isinstance(r.get('len_cm'), (int, float)) and not isinstance(r.get('len_cm'), bool)) and (isinstance(r.get('height'), (int, float)) and not isinstance(r.get('height'), bool))) and (isinstance(r.get('w'), (int, float)) and not isinstance(r.get('w'), bool)))):
+        return 'q:missing'
+    elif (not (r.get('venue') in t.get('allowed'))):
+        return 'q:unknown_member'
+    return 'ok'
+
+
+class StateMachine_e8d8e551:
+    """Invented by continuation splitting: 7 control modes (mode_0 = start), 1 data register(s).
+    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']
+    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']
+    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']
+    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']
+    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']
+    witness: histories ['CREATE', 'PACK', 'PAY', 'DELIVER'] vs ['CREATE', 'CANCEL'] differ after continuation ['RETURN']
+    witness reg_0: in mode_5 histories ['CREATE', 'PAY', 'DELIVER', 'PACK'] / ['CREATE', 'PACK', 'PAY'] emit 261.45 / 488.89 after ['DELIVER']
+    """
+
+    def __init__(self):
+        self.mode = {}
+        self.reg_0 = {}
+
+    def ingest(self, rec):
+        k, s = rec.get('order_id'), rec.get('op')
+        m = self.mode.get(k, 0)
+        r0 = self.reg_0.get(k, 0)
+        x0 = rec.get('qty_value')
+        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0
+        if m == 0:
+            if s == 'CANCEL':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'CREATE':
+                out = []
+                self.reg_0[k] = x0
+                self.mode[k] = 1
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PAY':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 1:
+            if s == 'CANCEL':
+                out = [('cancelled', r0, None)]
+                self.mode[k] = 2
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = []
+                self.mode[k] = 3
+                return out
+            elif s == 'PAY':
+                out = []
+                self.mode[k] = 4
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 2:
+            if s == 'CANCEL':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PAY':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 3:
+            if s == 'CANCEL':
+                out = [('cancelled', r0, None)]
+                self.mode[k] = 2
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PAY':
+                out = [('release', r0, None)]
+                self.mode[k] = 5
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 4:
+            if s == 'CANCEL':
+                out = [('cancelled', r0, None)]
+                self.mode[k] = 2
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = [('release', r0, None)]
+                self.mode[k] = 5
+                return out
+            elif s == 'PAY':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 5:
+            if s == 'CANCEL':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('delivered', r0, None)]
+                self.mode[k] = 6
+                return out
+            elif s == 'PACK':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PAY':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RETURN':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 6:
+            if s == 'CANCEL':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'CREATE':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'DELIVER':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PACK':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'PAY':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RETURN':
+                out = [('returned', rec.get('qty_value'), None)]
+                self.mode[k] = 2
+                return out
+        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm
+```
+
+### 2.4 Resources
+
+* u5 total: about 9,450 s wall (ledger `u5-*` rows): pillars 6,480 s, e2e dev and debugging 1,450 s, val 122 s, sealed test
+  1,180 s.
+* Carried balance now 18,584 s. This is within the 22,000 s u5 cap.
+* Protected files: 912/912 unchanged.
+
+### 2.5 What this establishes, and the next experiment
+
+* **Established on this synthetic testbed:**
+  * NEXUS can invent multi-mode, register-carrying Python classes from events and membership queries, and re-split them
+    when a new event kind appears. Exact on 15/15 dev tasks; it repaired X3 correctly in 4/6 sealed projects.
+  * The flat dictionary template cannot do this.
+  * Learned operator costs cut search CPU substantially.
+* **Not established:**
+  * a benefit from execution-guided construction, learned abstractions, curricula or meta-improvement (no effect, harm,
+    or ceiling);
+  * a zero-silent-error operator under withheld faults.
+* **One next experiment:** make relearn evidence complete before redeploy. After an X3/X4 repair, run active
+  value-coverage queries for every (mode, symbol) transition, so each transition is exercised with a following emit,
+  and add precedence probes that combine failure conditions. Then measure the silent-error rate on fresh dev seeds
+  under a new pre-registration. Separately, rebuild Pillars 4–5 on task families above the current ceiling (target
+  size ≥ 25) before drawing any curriculum or meta-learning conclusion.
