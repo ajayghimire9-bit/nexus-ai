@@ -259,3 +259,15 @@ are the two files the owner text names.
 * **Learning-benefit caveat:** with no library, curriculum or meta-improver promoted, NEXUS_U5 differs from
   NEXUS_NoLearning only in count-based operator costs.
 * **Frozen:** `artifacts/u5_freeze.json`.
+
+## 1. Validation (one-use u5/val 8021–8026, frozen `0824185`) — gate PASSED
+
+| arm | independently correct | silent errors | completed | crash-identical | human repairs |
+|---|---|---|---|---|---|
+| **NEXUS_U5** | **5/6** | **0** | 6/6 | 6/6 | 1 (8021, IoT delta, D2: a record-stream invariant alarm at tick 10 that resynthesis could not clear, so it was escalated; the data ended correct) |
+| Fixed_Policy | 6/6 | 0 | 6/6 | 6/6 | 0 |
+| Conventional | 3/6 | 3 | 6/6 | 6/6 | 0 |
+
+* Gate: ≥ 5/6, 0 silent, 6/6, 6/6. PASSED, so no revision was used.
+* The 8021 escalation is recorded but not diagnosed on val data, and no code was changed after val.
+* Raw results: `artifacts/u5_val/part1of1.json`.
