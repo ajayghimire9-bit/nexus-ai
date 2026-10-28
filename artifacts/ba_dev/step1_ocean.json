@@ -1,0 +1,3138 @@
+[
+ {
+  "seed": 20007,
+  "regime": "base",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.95,
+   "queries": 960,
+   "cpu_s": 0.196,
+   "steps": 3,
+   "actions": [
+    "add_control_mode",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "VOID",
+    "OPEN",
+    "HOLD",
+    "VOID",
+    "HOLD"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "flushed",
+     62.55,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     0,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    2
+   ],
+   "ref_modes": [
+    0,
+    1,
+    1,
+    2,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    2,
+    "VOID"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 2,
+   "before": {
+    "learned": [
+     62.55,
+     11.74
+    ],
+    "ref": [
+     62.55,
+     11.74
+    ]
+   },
+   "after": {
+    "learned": [
+     62.55,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": 1.59,
+   "modes_between": [
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "4 acceptance words corrupt the register at (2, 'VOID') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 484,
+    "reached": 86,
+    "reached_zero_regs": 29,
+    "corrupted": 4,
+    "agreed": 82
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 62.55
+  }
+ },
+ {
+  "seed": 20041,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.97,
+   "queries": 1799,
+   "cpu_s": 0.574,
+   "steps": 3,
+   "actions": [
+    "add_timer_or_window",
+    "add_timer_or_window",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "FLUSH",
+    "OPEN",
+    "FLUSH",
+    "AMEND",
+    "AMEND"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "settled",
+     87.30000000000001,
+     94.38
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     0,
+     94.38
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    3,
+    0,
+    0
+   ],
+   "ref_modes": [
+    0,
+    1,
+    2,
+    0,
+    0
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    0,
+    "AMEND"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     87.3,
+     87.3
+    ],
+    "ref": [
+     87.3
+    ]
+   },
+   "after": {
+    "learned": [
+     87.3,
+     87.3
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 107.92,
+   "modes_between": [
+    0
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "3 acceptance words corrupt the register at (0, 'AMEND') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 755,
+    "reached": 185,
+    "reached_zero_regs": 182,
+    "corrupted": 3,
+    "agreed": 182
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 87.3
+  }
+ },
+ {
+  "seed": 20044,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.88,
+   "queries": 1022,
+   "cpu_s": 20.534,
+   "steps": 2,
+   "actions": [
+    "add_register",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "VOID",
+    "AMEND",
+    "HOLD",
+    "TICK"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "voided",
+     -17.15,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "voided",
+     -16.15,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    3
+   ],
+   "ref_modes": [
+    0,
+    1,
+    1,
+    2,
+    3
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 3,
+   "fault_transition": [
+    1,
+    "VOID"
+   ],
+   "learned_update": "keep",
+   "ref_update": "inc",
+   "ref_mode": 1,
+   "before": {
+    "learned": [
+     -17.15
+    ],
+    "ref": [
+     -17.15,
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     -17.15
+    ],
+    "ref": [
+     -16.15,
+     110.46
+    ]
+   },
+   "x": 110.46,
+   "modes_between": [
+    1,
+    2,
+    3
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "136 acceptance words corrupt the register at (1, 'VOID') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 855,
+    "reached": 194,
+    "reached_zero_regs": 0,
+    "corrupted": 136,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1.0
+  }
+ },
+ {
+  "seed": 20055,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.99,
+   "queries": 315,
+   "cpu_s": 0.02,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "ADD",
+    "SETTLE",
+    "ADD",
+    "ADD"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "settled",
+     15.3,
+     30.02
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     0,
+     30.02
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "ref_modes": [
+    0,
+    0,
+    2,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 1,
+   "fault_transition": [
+    1,
+    "ADD"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 2,
+   "before": {
+    "learned": [
+     15.3
+    ],
+    "ref": [
+     15.3
+    ]
+   },
+   "after": {
+    "learned": [
+     15.3
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 44.37,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "2 acceptance words corrupt the register at (1, 'ADD') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 212,
+    "reached": 72,
+    "reached_zero_regs": 70,
+    "corrupted": 2,
+    "agreed": 70
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 15.3
+  }
+ },
+ {
+  "seed": 20070,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": false,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.99,
+   "queries": 4604,
+   "cpu_s": 0.346,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "RELEASE",
+    "RELEASE",
+    "OPEN",
+    "CLOSE",
+    "RELEASE"
+   ],
+   "len": 6,
+   "j": 5,
+   "got": [
+    [
+     "settled",
+     62.7,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     61.7,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    2,
+    2,
+    3,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    2,
+    2,
+    3,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 2,
+   "fault_transition": [
+    2,
+    "OPEN"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 2,
+   "before": {
+    "learned": [
+     1
+    ],
+    "ref": [
+     1
+    ]
+   },
+   "after": {
+    "learned": [
+     1
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 83.99,
+   "modes_between": [
+    1,
+    3
+   ],
+   "found": true,
+   "search": "ddmin_heldout",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "29 acceptance words corrupt the register at (2, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 388,
+    "reached": 107,
+    "reached_zero_regs": 78,
+    "corrupted": 29,
+    "agreed": 78
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1.0
+  }
+ },
+ {
+  "seed": 20111,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.94,
+   "queries": 848,
+   "cpu_s": 0.055,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "TICK",
+    "CLOSE",
+    "TICK",
+    "CLOSE"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "voided",
+     -130.22,
+     65.1
+    ]
+   ],
+   "want": [
+    [
+     "voided",
+     -74.96,
+     65.1
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "TICK"
+   ],
+   "learned_update": "(acc - x)",
+   "ref_update": "keep",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     -55.26
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 55.26,
+   "modes_between": [
+    0,
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "39 acceptance words corrupt the register at (0, 'TICK') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 372,
+    "reached": 70,
+    "reached_zero_regs": 70,
+    "corrupted": 39,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 55.26
+  }
+ },
+ {
+  "seed": 20120,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.99,
+   "queries": 1067,
+   "cpu_s": 5.378,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "OPEN",
+    "OPEN",
+    "HOLD"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "flushed",
+     -113.44999999999999,
+     231.03
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     -113.45,
+     194.35
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    2,
+    1
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "HOLD"
+   ],
+   "learned_update": "keep",
+   "ref_update": "set",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     36.68,
+     0
+    ],
+    "ref": [
+     36.68,
+     36.68
+    ]
+   },
+   "x": 36.68,
+   "modes_between": [
+    0,
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "119 acceptance words corrupt the register at (0, 'HOLD') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 905,
+    "reached": 175,
+    "reached_zero_regs": 81,
+    "corrupted": 119,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 36.68
+  }
+ },
+ {
+  "seed": 20126,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": false,
+   "modes": 2
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.96,
+   "queries": 1333,
+   "cpu_s": 0.114,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "ADD",
+    "ADD",
+    "RELEASE",
+    "ADD",
+    "AMEND"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "total",
+     53.72,
+     71.24
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     0,
+     71.24
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    1,
+    0,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    0,
+    "ADD"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     53.72
+    ],
+    "ref": [
+     53.72
+    ]
+   },
+   "after": {
+    "learned": [
+     53.72
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 26.71,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "12 acceptance words corrupt the register at (0, 'ADD') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 1200,
+    "reached": 1032,
+    "reached_zero_regs": 1020,
+    "corrupted": 12,
+    "agreed": 1020
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 53.72
+  }
+ },
+ {
+  "seed": 20136,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.92,
+   "queries": 1456,
+   "cpu_s": 0.109,
+   "steps": 1,
+   "actions": [
+    "expand_update_depth"
+   ],
+   "H": {
+    "max_regs": 1,
+    "depth": 5,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "OPEN",
+    "OPEN",
+    "RELEASE"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "settled",
+     -27.290000000000003,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     -88.61,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 2,
+   "fault_transition": [
+    0,
+    "OPEN"
+   ],
+   "learned_update": "x",
+   "ref_update": "rsub",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     61.32
+    ],
+    "ref": [
+     61.32
+    ]
+   },
+   "after": {
+    "learned": [
+     25.73
+    ],
+    "ref": [
+     -35.59
+    ]
+   },
+   "x": 25.73,
+   "modes_between": [
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "62 acceptance words corrupt the register at (0, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 618,
+    "reached": 323,
+    "reached_zero_regs": 261,
+    "corrupted": 62,
+    "agreed": 261
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 61.32
+  }
+ },
+ {
+  "seed": 20144,
+  "regime": "base",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.97,
+   "queries": 287,
+   "cpu_s": 0.014,
+   "steps": 2,
+   "actions": [
+    "add_timer_or_window",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "SETTLE",
+    "CLOSE",
+    "SETTLE",
+    "SETTLE",
+    "SETTLE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "total",
+     29.19,
+     27.19
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     29.19,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    2,
+    2,
+    0,
+    2
+   ],
+   "ref_modes": [
+    0,
+    2,
+    2,
+    0,
+    2
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 2,
+   "fault_transition": [
+    2,
+    "SETTLE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 2,
+   "before": {
+    "learned": [
+     28.19,
+     27.19
+    ],
+    "ref": [
+     28.19,
+     27.19
+    ]
+   },
+   "after": {
+    "learned": [
+     28.19,
+     27.19
+    ],
+    "ref": [
+     28.19,
+     0
+    ]
+   },
+   "x": 97.59,
+   "modes_between": [
+    0,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "11 acceptance words corrupt the register at (2, 'SETTLE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 120,
+    "reached": 18,
+    "reached_zero_regs": 0,
+    "corrupted": 11,
+    "agreed": 7
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 27.19
+  }
+ },
+ {
+  "seed": 20151,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": false,
+   "modes": 2
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.91,
+   "queries": 321,
+   "cpu_s": 0.021,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "SETTLE",
+    "RELEASE",
+    "SETTLE",
+    "OPEN"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "total",
+     0,
+     19.3
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     19.6,
+     19.3
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    0,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 2,
+   "fault_transition": [
+    1,
+    "RELEASE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "set",
+   "ref_mode": 1,
+   "before": {
+    "learned": [
+     0
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     0
+    ],
+    "ref": [
+     19.6
+    ]
+   },
+   "x": 19.6,
+   "modes_between": [
+    0,
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "56 acceptance words corrupt the register at (1, 'RELEASE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 228,
+    "reached": 56,
+    "reached_zero_regs": 8,
+    "corrupted": 56,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 19.6
+  }
+ },
+ {
+  "seed": 20161,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": false,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.73,
+   "queries": 2518,
+   "cpu_s": 0.204,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "VOID",
+    "AMEND",
+    "AMEND"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "settled",
+     127.85,
+     85.05
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     0,
+     85.05
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 2,
+   "fault_transition": [
+    0,
+    "VOID"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     -127.85
+    ],
+    "ref": [
+     -127.85
+    ]
+   },
+   "after": {
+    "learned": [
+     -127.85
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 32.26,
+   "modes_between": [
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "138 acceptance words corrupt the register at (0, 'VOID') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 1200,
+    "reached": 670,
+    "reached_zero_regs": 532,
+    "corrupted": 138,
+    "agreed": 532
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 127.85
+  }
+ },
+ {
+  "seed": 20165,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.98,
+   "queries": 1081,
+   "cpu_s": 0.114,
+   "steps": 3,
+   "actions": [
+    "merge_registers",
+    "expand_update_depth",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "CLOSE",
+    "FLUSH",
+    "SETTLE",
+    "FLUSH",
+    "FLUSH"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "flushed",
+     81.14,
+     0
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    0,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 2,
+   "fault_transition": [
+    1,
+    "SETTLE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 1,
+   "before": {
+    "learned": [
+     81.14,
+     0
+    ],
+    "ref": [
+     81.14,
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     81.14,
+     0
+    ],
+    "ref": [
+     0,
+     1
+    ]
+   },
+   "x": 87.85,
+   "modes_between": [
+    0,
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (1, 'SETTLE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 580,
+    "reached": 28,
+    "reached_zero_regs": 7,
+    "corrupted": 6,
+    "agreed": 22
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 81.14
+  }
+ },
+ {
+  "seed": 20169,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.95,
+   "queries": 929,
+   "cpu_s": 0.065,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "TICK",
+    "AMEND",
+    "CLOSE",
+    "AMEND"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "total",
+     -42.53,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     0,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    0,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 1,
+   "fault_transition": [
+    0,
+    "CLOSE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     -42.53
+    ],
+    "ref": [
+     -42.53
+    ]
+   },
+   "after": {
+    "learned": [
+     -42.53
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 90.32,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (0, 'CLOSE') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 530,
+    "reached": 414,
+    "reached_zero_regs": 408,
+    "corrupted": 6,
+    "agreed": 408
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 42.53
+  }
+ },
+ {
+  "seed": 20222,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.94,
+   "queries": 1060,
+   "cpu_s": 0.092,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "RELEASE",
+    "SETTLE",
+    "FLUSH",
+    "ADD",
+    "ADD"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "total",
+     67.24,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     68.24,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    2,
+    2,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    1,
+    0,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    0,
+    "ADD"
+   ],
+   "learned_update": "x",
+   "ref_update": "add",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     1
+    ],
+    "ref": [
+     1
+    ]
+   },
+   "after": {
+    "learned": [
+     67.24
+    ],
+    "ref": [
+     68.24
+    ]
+   },
+   "x": 67.24,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "2 acceptance words corrupt the register at (0, 'ADD') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 436,
+    "reached": 358,
+    "reached_zero_regs": 356,
+    "corrupted": 2,
+    "agreed": 356
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1.0
+  }
+ },
+ {
+  "seed": 20225,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.92,
+   "queries": 1487,
+   "cpu_s": 50.472,
+   "steps": 5,
+   "actions": [
+    "add_timer_or_window",
+    "merge_registers",
+    "add_timer_or_window",
+    "add_register",
+    "expand_update_depth"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "RELEASE",
+    "SETTLE",
+    "SETTLE",
+    "CLOSE"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "settled",
+     50.59,
+     19.84
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     50.59,
+     38.61
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    3
+   ],
+   "ref_modes": [
+    0,
+    0,
+    2,
+    3
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "RELEASE"
+   ],
+   "learned_update": "(acc - x)",
+   "ref_update": "rsub",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     37.54,
+     -18.77
+    ],
+    "ref": [
+     0,
+     18.77
+    ]
+   },
+   "x": 18.77,
+   "modes_between": [
+    0,
+    1,
+    3
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "83 acceptance words corrupt the register at (0, 'RELEASE') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 705,
+    "reached": 189,
+    "reached_zero_regs": 125,
+    "corrupted": 83,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 18.77
+  }
+ },
+ {
+  "seed": 20238,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.96,
+   "queries": 303,
+   "cpu_s": 8.304,
+   "steps": 5,
+   "actions": [
+    "merge_registers",
+    "add_timer_or_window",
+    "expand_update_depth",
+    "add_register",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "RELEASE",
+    "RELEASE",
+    "RELEASE",
+    "OPEN",
+    "VOID",
+    "VOID"
+   ],
+   "len": 7,
+   "j": 6,
+   "got": [
+    [
+     "flushed",
+     -185.51999999999998,
+     88.76
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     -11.14,
+     88.76
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2,
+    2,
+    3,
+    1
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2,
+    2,
+    3,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 3,
+   "fault_transition": [
+    2,
+    "RELEASE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 2,
+   "before": {
+    "learned": [
+     174.38
+    ],
+    "ref": [
+     174.38
+    ]
+   },
+   "after": {
+    "learned": [
+     174.38
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 36.03,
+   "modes_between": [
+    1,
+    2,
+    3
+   ],
+   "found": true,
+   "search": "ddmin_heldout",
+   "why_missed": {
+    "reason": "degenerate_zero_registers",
+    "detail": "every acceptance word reaches (2, 'RELEASE') with all registers 0, where the learned update (keep) and the reference (zero) coincide",
+    "acceptance_words": 164,
+    "reached": 68,
+    "reached_zero_regs": 68,
+    "corrupted": 0,
+    "agreed": 68
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 174.38
+  }
+ },
+ {
+  "seed": 20244,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.85,
+   "queries": 1000,
+   "cpu_s": 0.089,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "RELEASE",
+    "VOID",
+    "FLUSH",
+    "VOID"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "settled",
+     102.3,
+     3.97
+    ]
+   ],
+   "want": [
+    [
+     "settled",
+     128.4,
+     3.97
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "RELEASE"
+   ],
+   "learned_update": "(acc + x)",
+   "ref_update": "add2",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     13.05
+    ],
+    "ref": [
+     26.1
+    ]
+   },
+   "x": 13.05,
+   "modes_between": [
+    0,
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "71 acceptance words corrupt the register at (0, 'RELEASE') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 580,
+    "reached": 120,
+    "reached_zero_regs": 71,
+    "corrupted": 71,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 26.1
+  }
+ },
+ {
+  "seed": 20249,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 2,
+   "depth5": false,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.93,
+   "queries": 2038,
+   "cpu_s": 1.378,
+   "steps": 4,
+   "actions": [
+    "expand_update_depth",
+    "add_timer_or_window",
+    "add_control_mode",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "SETTLE",
+    "RELEASE",
+    "RELEASE",
+    "FLUSH",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "flushed",
+     3.53,
+     -10.66
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     3.53,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2,
+    3
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2,
+    3
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 4,
+   "fault_transition": [
+    0,
+    "SETTLE"
+   ],
+   "learned_update": "(acc - x)",
+   "ref_update": "keep",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     -10.66,
+     -10.66
+    ],
+    "ref": [
+     10.66,
+     0
+    ]
+   },
+   "x": 10.66,
+   "modes_between": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "83 acceptance words corrupt the register at (0, 'SETTLE') but no word emits it afterwards before a reset (delay in w_min = 4)",
+    "acceptance_words": 1200,
+    "reached": 142,
+    "reached_zero_regs": 83,
+    "corrupted": 83,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 10.66
+  }
+ },
+ {
+  "seed": 20253,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": false,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.95,
+   "queries": 2475,
+   "cpu_s": 8.84,
+   "steps": 2,
+   "actions": [
+    "expand_update_depth",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 1,
+    "depth": 5,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "HOLD",
+    "HOLD",
+    "TICK",
+    "VOID",
+    "VOID"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "flushed",
+     40.16,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     0,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    2,
+    3,
+    3
+   ],
+   "ref_modes": [
+    0,
+    1,
+    2,
+    3,
+    3
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    3,
+    "VOID"
+   ],
+   "learned_update": "keep",
+   "ref_update": "zero",
+   "ref_mode": 3,
+   "before": {
+    "learned": [
+     40.16
+    ],
+    "ref": [
+     40.16
+    ]
+   },
+   "after": {
+    "learned": [
+     40.16
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 15.97,
+   "modes_between": [
+    3
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "8 acceptance words corrupt the register at (3, 'VOID') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 1086,
+    "reached": 280,
+    "reached_zero_regs": 272,
+    "corrupted": 8,
+    "agreed": 272
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 40.16
+  }
+ },
+ {
+  "seed": 20258,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.97,
+   "queries": 604,
+   "cpu_s": 0.592,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "OPEN",
+    "HOLD",
+    "SETTLE",
+    "AMEND"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "total",
+     -79.33,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     -78.33,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "OPEN"
+   ],
+   "learned_update": "1",
+   "ref_update": "inc",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     1
+    ],
+    "ref": [
+     1
+    ]
+   },
+   "after": {
+    "learned": [
+     1
+    ],
+    "ref": [
+     2
+    ]
+   },
+   "x": 1.3,
+   "modes_between": [
+    0,
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "37 acceptance words corrupt the register at (0, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 500,
+    "reached": 130,
+    "reached_zero_regs": 83,
+    "corrupted": 37,
+    "agreed": 83
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1.0
+  }
+ },
+ {
+  "seed": 20262,
+  "regime": "new_kind",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 2
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.82,
+   "queries": 613,
+   "cpu_s": 0.049,
+   "steps": 0,
+   "actions": [],
+   "H": {
+    "max_regs": 1,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "ADD"
+   ],
+   "len": 1,
+   "j": 0,
+   "got": [
+    [
+     "?unknown",
+     null,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "q:invalid",
+     null,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0
+   ],
+   "ref_modes": [
+    0
+   ],
+   "kind": "out_of_alphabet",
+   "detail": "event kind 'ADD' never occurred in the build data (alphabet ['AMEND', 'OPEN', 'RELEASE', 'SETTLE', 'TICK'])",
+   "found": true,
+   "search": "ddmin_heldout",
+   "why_missed": {
+    "reason": "input_outside_declared_alphabet",
+    "detail": "event kind 'ADD' never occurred in the build data (alphabet ['AMEND', 'OPEN', 'RELEASE', 'SETTLE', 'TICK'])"
+   },
+   "origin": "scope_violation",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": null
+  }
+ },
+ {
+  "seed": 20266,
+  "regime": "base",
+  "needs": {
+   "regs": 1,
+   "depth5": true,
+   "modes": 3
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.94,
+   "queries": 434,
+   "cpu_s": 0.024,
+   "steps": 1,
+   "actions": [
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "AMEND",
+    "RELEASE",
+    "ADD",
+    "ADD"
+   ],
+   "len": 4,
+   "j": 3,
+   "got": [
+    [
+     "total",
+     121.85000000000001,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "total",
+     83.15,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "ref_modes": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 0,
+   "delay": 3,
+   "fault_transition": [
+    0,
+    "AMEND"
+   ],
+   "learned_update": "x",
+   "ref_update": "keep",
+   "ref_mode": 0,
+   "before": {
+    "learned": [
+     0,
+     0
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     38.7
+    ],
+    "ref": [
+     0
+    ]
+   },
+   "x": 38.7,
+   "modes_between": [
+    0,
+    1,
+    2
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "54 acceptance words corrupt the register at (0, 'AMEND') but no word emits it afterwards before a reset (delay in w_min = 3)",
+    "acceptance_words": 276,
+    "reached": 130,
+    "reached_zero_regs": 83,
+    "corrupted": 54,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 38.7
+  }
+ },
+ {
+  "seed": 20297,
+  "regime": "base",
+  "needs": {
+   "regs": 2,
+   "depth5": true,
+   "modes": 4
+  },
+  "reproduced_silent": true,
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.96,
+   "queries": 864,
+   "cpu_s": 50.174,
+   "steps": 5,
+   "actions": [
+    "add_register",
+    "expand_update_depth",
+    "merge_registers",
+    "add_register",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "FLUSH",
+    "SETTLE",
+    "SETTLE",
+    "VOID",
+    "FLUSH",
+    "FLUSH"
+   ],
+   "len": 6,
+   "j": 5,
+   "got": [
+    [
+     "flushed",
+     131.77,
+     null
+    ]
+   ],
+   "want": [
+    [
+     "flushed",
+     0,
+     null
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    2,
+    3,
+    0,
+    1
+   ],
+   "ref_modes": [
+    0,
+    1,
+    2,
+    3,
+    0,
+    1
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 1,
+   "delay": 4,
+   "fault_transition": [
+    1,
+    "SETTLE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "add",
+   "ref_mode": 1,
+   "before": {
+    "learned": [
+     0,
+     63.02
+    ],
+    "ref": [
+     0,
+     63.02
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     63.02
+    ],
+    "ref": [
+     79.39,
+     63.02
+    ]
+   },
+   "x": 79.39,
+   "modes_between": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "found": true,
+   "search": "ddmin_heldout",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "259 acceptance words corrupt the register at (1, 'SETTLE') but no word emits it afterwards before a reset (delay in w_min = 4)",
+    "acceptance_words": 455,
+    "reached": 259,
+    "reached_zero_regs": 50,
+    "corrupted": 259,
+    "agreed": 0
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 131.77
+  }
+ }
+]

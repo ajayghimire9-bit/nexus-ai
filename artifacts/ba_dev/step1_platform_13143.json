@@ -1,0 +1,203 @@
+{
+ "identity": {
+  "manifest_entry": "oc_test/2.json",
+  "regenerated_sha256": "e93d9f20722f411efd59966051ef2288cd531efbfa37f8678d69180a2587048a",
+  "matches_manifest": true
+ },
+ "result": {
+  "project": 13143,
+  "domain": "energy",
+  "fault": "X3",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "data_ok": false,
+  "bad_A": 0,
+  "bad_B": 1,
+  "silent": true,
+  "claims_healthy": true,
+  "human_repairs": 0,
+  "independently_correct": false,
+  "repairs": [
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   }
+  ],
+  "alarms": 2
+ },
+ "learners": [
+  {
+   "learner": 0,
+   "n_modes": 3,
+   "n_regs": 2,
+   "wrong_on_stream": true,
+   "alpha": [
+    "ADJUST",
+    "CLOSE",
+    "DISPUTE",
+    "OPEN",
+    "READ"
+   ],
+   "train_events": 320,
+   "diag": {
+    "w_min": [
+     "ESTIMATE"
+    ],
+    "len": 1,
+    "j": 0,
+    "got": [
+     [
+      "?unknown",
+      null,
+      null
+     ]
+    ],
+    "want": [
+     [
+      "q:invalid",
+      null,
+      null
+     ]
+    ],
+    "learned_modes": [
+     0
+    ],
+    "ref_modes": [
+     "idle"
+    ],
+    "kind": "out_of_alphabet",
+    "detail": "event kind 'ESTIMATE' never occurred in the build data (alphabet ['ADJUST', 'CLOSE', 'DISPUTE', 'OPEN', 'READ'])",
+    "found": true,
+    "search": "ddmin_heldout",
+    "why_missed": {
+     "reason": "input_outside_declared_alphabet",
+     "detail": "event kind 'ESTIMATE' never occurred in the build data (alphabet ['ADJUST', 'CLOSE', 'DISPUTE', 'OPEN', 'READ'])"
+    },
+    "origin": "scope_violation",
+    "emitted_class_matches_machine": true,
+    "oracle_deterministic": true,
+    "max_value_gap": null
+   }
+  },
+  {
+   "learner": 1,
+   "n_modes": 3,
+   "n_regs": 3,
+   "wrong_on_stream": true,
+   "alpha": [
+    "ADJUST",
+    "CLOSE",
+    "DISPUTE",
+    "ESTIMATE",
+    "OPEN",
+    "READ"
+   ],
+   "train_events": 360,
+   "diag": {
+    "w_min": [
+     "ESTIMATE",
+     "OPEN",
+     "DISPUTE",
+     "OPEN"
+    ],
+    "len": 4,
+    "j": 3,
+    "got": [
+     [
+      "disputed",
+      -2,
+      0
+     ]
+    ],
+    "want": [
+     [
+      "disputed",
+      0,
+      0
+     ]
+    ],
+    "learned_modes": [
+     0,
+     0,
+     1,
+     2
+    ],
+    "ref_modes": [
+     "idle",
+     "idle",
+     "open",
+     "disputed"
+    ],
+    "slot": [
+     0,
+     1
+    ],
+    "learned_source": [
+     "reg",
+     2
+    ],
+    "ref_source": [
+     "reg",
+     0
+    ],
+    "kind": "value",
+    "learned_reg": 2,
+    "ref_reg": 0,
+    "register_interaction": false,
+    "fault_pos": 0,
+    "delay": 3,
+    "fault_transition": [
+     0,
+     "ESTIMATE"
+    ],
+    "learned_update": "((acc - 1) - 1)",
+    "ref_update": "(0, 0)->(0, 0)",
+    "ref_mode": "idle",
+    "before": {
+     "learned": [
+      0,
+      0,
+      0
+     ],
+     "ref": [
+      0,
+      0
+     ]
+    },
+    "after": {
+     "learned": [
+      0,
+      0,
+      -2
+     ],
+     "ref": [
+      0,
+      0
+     ]
+    },
+    "x": null,
+    "modes_between": [
+     0,
+     1,
+     2
+    ],
+    "found": true,
+    "search": "iterative_deepening",
+    "why_missed": {
+     "reason": "delayed_effect_unemitted",
+     "detail": "18 acceptance words corrupt the register at (0, 'ESTIMATE') but no word emits it afterwards before a reset (delay in w_min = 3)",
+     "acceptance_words": 618,
+     "reached": 25,
+     "reached_zero_regs": 25,
+     "corrupted": 18,
+     "agreed": 0
+    },
+    "origin": "candidate_machine",
+    "emitted_class_matches_machine": true,
+    "oracle_deterministic": true,
+    "max_value_gap": 2
+   }
+  }
+ ]
+}

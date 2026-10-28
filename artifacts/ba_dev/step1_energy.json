@@ -1,0 +1,2201 @@
+[
+ {
+  "seed": 13003,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.975,
+   "queries": 607,
+   "cpu_s": 0.122,
+   "steps": 5,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "ADJUST",
+    "DISPUTE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     0,
+     292.86
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "disputed",
+    "open"
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    2,
+    "OPEN"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(0, 292.86)->(0, 0)",
+   "ref_mode": "disputed",
+   "before": {
+    "learned": [
+     0,
+     292.86
+    ],
+    "ref": [
+     0,
+     292.86
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     292.86
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": 732.09,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (2, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 280,
+    "reached": 34,
+    "reached_zero_regs": 28,
+    "corrupted": 6,
+    "agreed": 28
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 292.86
+  }
+ },
+ {
+  "seed": 13003,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.975,
+   "queries": 468,
+   "cpu_s": 0.11,
+   "steps": 1,
+   "actions": [
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "ADJUST",
+    "DISPUTE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     0,
+     334.44
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "disputed",
+    "open"
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    2,
+    "OPEN"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(0, 334.44)->(0, 0)",
+   "ref_mode": "disputed",
+   "before": {
+    "learned": [
+     0,
+     334.44
+    ],
+    "ref": [
+     0,
+     334.44
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     334.44
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": 278.49,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (2, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 280,
+    "reached": 34,
+    "reached_zero_regs": 28,
+    "corrupted": 6,
+    "agreed": 28
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 334.44
+  }
+ },
+ {
+  "seed": 13003,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.975,
+   "queries": 583,
+   "cpu_s": 0.132,
+   "steps": 4,
+   "actions": [
+    "expand_update_depth",
+    "add_control_mode",
+    "add_control_mode",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": false,
+    "max_states": 12
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "ADJUST",
+    "DISPUTE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     0,
+     292.86
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "disputed",
+    "open"
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    2,
+    "OPEN"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(0, 292.86)->(0, 0)",
+   "ref_mode": "disputed",
+   "before": {
+    "learned": [
+     0,
+     292.86
+    ],
+    "ref": [
+     0,
+     292.86
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     292.86
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": 732.09,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (2, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 280,
+    "reached": 34,
+    "reached_zero_regs": 28,
+    "corrupted": 6,
+    "agreed": 28
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 292.86
+  }
+ },
+ {
+  "seed": 13003,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.975,
+   "queries": 468,
+   "cpu_s": 0.111,
+   "steps": 1,
+   "actions": [
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "ADJUST",
+    "DISPUTE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     0,
+     334.44
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    2,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "disputed",
+    "open"
+   ],
+   "slot": [
+    0,
+    2
+   ],
+   "learned_source": [
+    "reg",
+    1
+   ],
+   "ref_source": [
+    "reg",
+    1
+   ],
+   "kind": "value",
+   "learned_reg": 1,
+   "ref_reg": 1,
+   "register_interaction": false,
+   "fault_pos": 3,
+   "delay": 1,
+   "fault_transition": [
+    2,
+    "OPEN"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(0, 334.44)->(0, 0)",
+   "ref_mode": "disputed",
+   "before": {
+    "learned": [
+     0,
+     334.44
+    ],
+    "ref": [
+     0,
+     334.44
+    ]
+   },
+   "after": {
+    "learned": [
+     0,
+     334.44
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": 278.49,
+   "modes_between": [
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "6 acceptance words corrupt the register at (2, 'OPEN') but no word emits it afterwards before a reset (delay in w_min = 1)",
+    "acceptance_words": 280,
+    "reached": 34,
+    "reached_zero_regs": 28,
+    "corrupted": 6,
+    "agreed": 28
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 334.44
+  }
+ },
+ {
+  "seed": 13007,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 334,
+   "cpu_s": 0.011,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13007,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 553,
+   "cpu_s": 0.119,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13007,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 553,
+   "cpu_s": 0.12,
+   "steps": 3,
+   "actions": [
+    "add_control_mode",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13007,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 334,
+   "cpu_s": 0.015,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13011,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 317,
+   "cpu_s": 0.021,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13011,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 539,
+   "cpu_s": 0.15,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13011,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 573,
+   "cpu_s": 0.154,
+   "steps": 4,
+   "actions": [
+    "add_register",
+    "add_control_mode",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13011,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 317,
+   "cpu_s": 0.046,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13015,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 300,
+   "cpu_s": 24.187,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13015,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 528,
+   "cpu_s": 4.582,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13015,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 300,
+   "cpu_s": 33.232,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_register",
+    "expand_update_depth",
+    "merge_registers",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13015,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 300,
+   "cpu_s": 33.259,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "merge_registers",
+    "add_control_mode",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": true,
+    "max_states": 12
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13019,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 325,
+   "cpu_s": 0.024,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13019,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 549,
+   "cpu_s": 2.094,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13019,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 605,
+   "cpu_s": 2.119,
+   "steps": 5,
+   "actions": [
+    "add_control_mode",
+    "merge_registers",
+    "add_timer_or_window",
+    "add_timer_or_window",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13019,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 325,
+   "cpu_s": 0.055,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13023,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 310,
+   "cpu_s": 10.012,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13023,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 310,
+   "cpu_s": 37.054,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": true,
+    "max_states": 12
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13023,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 310,
+   "cpu_s": 36.94,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13023,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 310,
+   "cpu_s": 36.853,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "merge_registers",
+    "add_control_mode",
+    "add_control_mode"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": true,
+    "max_states": 12
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13027,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 340,
+   "cpu_s": 0.105,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13027,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 762,
+   "cpu_s": 0.533,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13027,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 762,
+   "cpu_s": 0.784,
+   "steps": 3,
+   "actions": [
+    "expand_update_depth",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13027,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 340,
+   "cpu_s": 20.729,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13031,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 469,
+   "cpu_s": 0.052,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13031,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 949,
+   "cpu_s": 0.319,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13031,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 337,
+   "cpu_s": 0.468,
+   "steps": 6,
+   "actions": [
+    "merge_registers",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 12
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13031,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 997,
+   "cpu_s": 0.219,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13035,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 304,
+   "cpu_s": 0.016,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13035,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 744,
+   "cpu_s": 0.207,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13035,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 767,
+   "cpu_s": 0.31,
+   "steps": 4,
+   "actions": [
+    "expand_update_depth",
+    "add_register",
+    "add_control_mode",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 6
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13035,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 304,
+   "cpu_s": 0.035,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13039,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 321,
+   "cpu_s": 0.01,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13039,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 550,
+   "cpu_s": 0.119,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13039,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 550,
+   "cpu_s": 0.165,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "expand_update_depth",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 5,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13039,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 321,
+   "cpu_s": 0.012,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13043,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 318,
+   "cpu_s": 0.01,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13043,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 545,
+   "cpu_s": 0.122,
+   "steps": 3,
+   "actions": [
+    "add_register",
+    "add_register",
+    "merge_registers"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": true,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13043,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": true,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": false,
+   "key_acc": 1.0,
+   "queries": 598,
+   "cpu_s": 0.127,
+   "steps": 5,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "merge_registers",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 2,
+    "depth": 3,
+    "merge": true,
+    "max_states": 16
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13043,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 318,
+   "cpu_s": 0.017,
+   "steps": 6,
+   "actions": [
+    "add_register",
+    "add_register",
+    "expand_update_depth",
+    "add_control_mode",
+    "add_timer_or_window",
+    "add_timer_or_window"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 6
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13047,
+  "arm": "hand",
+  "fault": "D2",
+  "run": {
+   "accepted": false,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": false,
+   "abstain": true,
+   "key_acc": 0.0,
+   "queries": 337,
+   "cpu_s": 0.014,
+   "steps": 6,
+   "actions": [
+    "add_control_mode",
+    "add_control_mode",
+    "add_control_mode",
+    "expand_update_depth",
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 5,
+    "merge": false,
+    "max_states": 16
+   },
+   "label": "ABSTAIN",
+   "scope": null
+  }
+ },
+ {
+  "seed": 13047,
+  "arm": "meta",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.9875,
+   "queries": 518,
+   "cpu_s": 0.185,
+   "steps": 2,
+   "actions": [
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "READ",
+    "CLOSE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     1,
+     0
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "idle",
+    "open"
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 2,
+   "fault_transition": [
+    1,
+    "CLOSE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(1, 316.39)->(0, 0)",
+   "ref_mode": "open",
+   "before": {
+    "learned": [
+     1,
+     316.39,
+     316.39
+    ],
+    "ref": [
+     1,
+     316.39
+    ]
+   },
+   "after": {
+    "learned": [
+     1,
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": null,
+   "modes_between": [
+    0,
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "35 acceptance words corrupt the register at (1, 'CLOSE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 280,
+    "reached": 60,
+    "reached_zero_regs": 10,
+    "corrupted": 35,
+    "agreed": 25
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1
+  }
+ },
+ {
+  "seed": 13047,
+  "arm": "random",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.9875,
+   "queries": 518,
+   "cpu_s": 0.191,
+   "steps": 2,
+   "actions": [
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "READ",
+    "CLOSE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     1,
+     0
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "idle",
+    "open"
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 2,
+   "fault_transition": [
+    1,
+    "CLOSE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(1, 316.39)->(0, 0)",
+   "ref_mode": "open",
+   "before": {
+    "learned": [
+     1,
+     316.39,
+     316.39
+    ],
+    "ref": [
+     1,
+     316.39
+    ]
+   },
+   "after": {
+    "learned": [
+     1,
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": null,
+   "modes_between": [
+    0,
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "35 acceptance words corrupt the register at (1, 'CLOSE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 280,
+    "reached": 60,
+    "reached_zero_regs": 10,
+    "corrupted": 35,
+    "agreed": 25
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1
+  }
+ },
+ {
+  "seed": 13047,
+  "arm": "shuffled",
+  "fault": "D2",
+  "run": {
+   "accepted": true,
+   "exact": false,
+   "unaccepted_exact": false,
+   "silent": true,
+   "abstain": false,
+   "key_acc": 0.9875,
+   "queries": 518,
+   "cpu_s": 0.188,
+   "steps": 2,
+   "actions": [
+    "add_register",
+    "add_register"
+   ],
+   "H": {
+    "max_regs": 3,
+    "depth": 3,
+    "merge": false,
+    "max_states": 3
+   },
+   "label": "COVERAGE_AGREEMENT",
+   "scope": null
+  },
+  "diag": {
+   "w_min": [
+    "OPEN",
+    "READ",
+    "CLOSE",
+    "OPEN",
+    "CLOSE"
+   ],
+   "len": 5,
+   "j": 4,
+   "got": [
+    [
+     "bill",
+     1,
+     0
+    ]
+   ],
+   "want": [
+    [
+     "bill",
+     0,
+     0
+    ]
+   ],
+   "learned_modes": [
+    0,
+    1,
+    1,
+    0,
+    1
+   ],
+   "ref_modes": [
+    "idle",
+    "open",
+    "open",
+    "idle",
+    "open"
+   ],
+   "slot": [
+    0,
+    1
+   ],
+   "learned_source": [
+    "reg",
+    0
+   ],
+   "ref_source": [
+    "reg",
+    0
+   ],
+   "kind": "value",
+   "learned_reg": 0,
+   "ref_reg": 0,
+   "register_interaction": false,
+   "fault_pos": 2,
+   "delay": 2,
+   "fault_transition": [
+    1,
+    "CLOSE"
+   ],
+   "learned_update": "keep",
+   "ref_update": "(1, 316.39)->(0, 0)",
+   "ref_mode": "open",
+   "before": {
+    "learned": [
+     1,
+     316.39,
+     316.39
+    ],
+    "ref": [
+     1,
+     316.39
+    ]
+   },
+   "after": {
+    "learned": [
+     1,
+     0,
+     0
+    ],
+    "ref": [
+     0,
+     0
+    ]
+   },
+   "x": null,
+   "modes_between": [
+    0,
+    1
+   ],
+   "found": true,
+   "search": "iterative_deepening",
+   "why_missed": {
+    "reason": "delayed_effect_unemitted",
+    "detail": "35 acceptance words corrupt the register at (1, 'CLOSE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+    "acceptance_words": 280,
+    "reached": 60,
+    "reached_zero_regs": 10,
+    "corrupted": 35,
+    "agreed": 25
+   },
+   "origin": "candidate_machine",
+   "emitted_class_matches_machine": true,
+   "oracle_deterministic": true,
+   "max_value_gap": 1
+  }
+ }
+]

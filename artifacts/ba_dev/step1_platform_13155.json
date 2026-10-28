@@ -1,0 +1,100 @@
+{
+ "identity": {
+  "manifest_entry": "oc_test/14.json",
+  "regenerated_sha256": "ef9420b632a1672e1e3aab168d82cb560f751f0921c94fd286e3978ef837e9cd",
+  "matches_manifest": true
+ },
+ "result": {
+  "project": 13155,
+  "domain": "energy",
+  "fault": "X5",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "silent": false,
+  "claims_healthy": true,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "repairs": [
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   }
+  ],
+  "alarms": 1
+ },
+ "learners": [
+  {
+   "learner": 0,
+   "n_modes": 3,
+   "n_regs": 2,
+   "wrong_on_stream": true,
+   "alpha": [
+    "ADJUST",
+    "CLOSE",
+    "DISPUTE",
+    "OPEN",
+    "READ"
+   ],
+   "train_events": 320,
+   "diag": {
+    "w_min": [
+     "READ_V2"
+    ],
+    "len": 1,
+    "j": 0,
+    "got": [
+     [
+      "?unknown",
+      null,
+      null
+     ]
+    ],
+    "want": [
+     [
+      "q:invalid",
+      null,
+      null
+     ]
+    ],
+    "learned_modes": [
+     0
+    ],
+    "ref_modes": [
+     "idle"
+    ],
+    "kind": "out_of_alphabet",
+    "detail": "event kind 'READ_V2' never occurred in the build data (alphabet ['ADJUST', 'CLOSE', 'DISPUTE', 'OPEN', 'READ'])",
+    "found": true,
+    "search": "ddmin_heldout",
+    "why_missed": {
+     "reason": "input_outside_declared_alphabet",
+     "detail": "event kind 'READ_V2' never occurred in the build data (alphabet ['ADJUST', 'CLOSE', 'DISPUTE', 'OPEN', 'READ'])"
+    },
+    "origin": "scope_violation",
+    "emitted_class_matches_machine": true,
+    "oracle_deterministic": true,
+    "max_value_gap": null
+   }
+  },
+  {
+   "learner": 1,
+   "n_modes": 3,
+   "n_regs": 2,
+   "wrong_on_stream": false,
+   "alpha": [
+    "ADJUST",
+    "ADJUST_V2",
+    "CLOSE",
+    "DISPUTE",
+    "OPEN",
+    "READ",
+    "READ_V2"
+   ],
+   "train_events": 360
+  }
+ ]
+}

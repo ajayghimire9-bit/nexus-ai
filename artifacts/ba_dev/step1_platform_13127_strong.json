@@ -1,0 +1,161 @@
+{
+ "identity": {
+  "split": "oc/val (spent)"
+ },
+ "result": {
+  "project": 13127,
+  "domain": "energy",
+  "fault": "D2",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "silent": false,
+  "claims_healthy": true,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "repairs": [
+   {
+    "tick": 11,
+    "kind": "repair_B",
+    "version": 1
+   }
+  ],
+  "alarms": 1
+ },
+ "learners": [
+  {
+   "learner": 0,
+   "n_modes": 3,
+   "n_regs": 2,
+   "wrong_on_stream": true,
+   "alpha": [
+    "ADJUST",
+    "CLOSE",
+    "DISPUTE",
+    "OPEN",
+    "READ"
+   ],
+   "train_events": 320,
+   "diag": {
+    "w_min": [
+     "OPEN",
+     "READ",
+     "CLOSE",
+     "OPEN",
+     "CLOSE"
+    ],
+    "len": 5,
+    "j": 4,
+    "got": [
+     [
+      "bill",
+      1,
+      0
+     ]
+    ],
+    "want": [
+     [
+      "bill",
+      0,
+      0
+     ]
+    ],
+    "learned_modes": [
+     0,
+     1,
+     1,
+     0,
+     1
+    ],
+    "ref_modes": [
+     "idle",
+     "open",
+     "open",
+     "idle",
+     "open"
+    ],
+    "slot": [
+     0,
+     1
+    ],
+    "learned_source": [
+     "reg",
+     0
+    ],
+    "ref_source": [
+     "reg",
+     0
+    ],
+    "kind": "value",
+    "learned_reg": 0,
+    "ref_reg": 0,
+    "register_interaction": false,
+    "fault_pos": 2,
+    "delay": 2,
+    "fault_transition": [
+     1,
+     "CLOSE"
+    ],
+    "learned_update": "keep",
+    "ref_update": "(1, 399.56)->(0, 0)",
+    "ref_mode": "open",
+    "before": {
+     "learned": [
+      1,
+      399.56
+     ],
+     "ref": [
+      1,
+      399.56
+     ]
+    },
+    "after": {
+     "learned": [
+      1,
+      0
+     ],
+     "ref": [
+      0,
+      0
+     ]
+    },
+    "x": null,
+    "modes_between": [
+     0,
+     1
+    ],
+    "found": true,
+    "search": "iterative_deepening",
+    "why_missed": {
+     "reason": "delayed_effect_unemitted",
+     "detail": "35 acceptance words corrupt the register at (1, 'CLOSE') but no word emits it afterwards before a reset (delay in w_min = 2)",
+     "acceptance_words": 280,
+     "reached": 60,
+     "reached_zero_regs": 10,
+     "corrupted": 35,
+     "agreed": 25
+    },
+    "origin": "candidate_machine",
+    "emitted_class_matches_machine": true,
+    "oracle_deterministic": true,
+    "max_value_gap": 1
+   }
+  },
+  {
+   "learner": 1,
+   "n_modes": 3,
+   "n_regs": 2,
+   "wrong_on_stream": false,
+   "alpha": [
+    "ADJUST",
+    "CLOSE",
+    "DISPUTE",
+    "OPEN",
+    "READ"
+   ],
+   "train_events": 440
+  }
+ ]
+}
