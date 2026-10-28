@@ -151,3 +151,115 @@ lifecycle growth policy only; the adapter search is identical in A / C / D and i
 * Budget estimate (available 19,178 s; 18,308 s at this commit): dev ablation ≈ 2,400 s + debugging reserve 1,000 s; validation ≈
   450 s; confirmation ≈ 3,500 s; reporting ≈ 100 s; ≥ 8,000 s held in reserve. If the remaining budget at the freeze cannot cover
   validation + confirmation with a 30 % margin, the confirmation is declared a pilot before any evaluation data is opened.
+
+## 1. Results summary (written after the one-shot confirmation; nothing below changed any frozen code)
+
+| question | verdict (tested setting) |
+|---|---|
+| Full-system objective on the confirmation (A 16/16, 0 silent, 0 human, crash identical) | **REJECTED for this setting**: A 15/16, 1 silent (13495; A-stream row, see §5) |
+| Expression mapping adds capability beyond FieldOnly (rule 2) | **SUPPORTED**: X7 8/8 vs 0/8, regression 7/8 vs 7/8, discordant 8 : 0, one-sided sign p = 0.0039 |
+| Learned lifecycle growth vs hand / shuffled (rule 3) | **INCONCLUSIVE**: 15 / 15 / 15, no discordant project (predeclared as under-powered) |
+| 13327 diagnosis and general learner fix | **SUPPORTED on dev**: search exhaustion, fixed by sound reset-aware pruning; 13327 solved; identical solutions on all 13 previously solved sc dev builds |
+| Dependency pruning | **SUPPORTED as exact simplification; no outcome effect measured** (§3) |
+
+Budget: x7 ledger rows 4,203 s in total (diagnosis 707 s; the rest dev, validation and confirmation — per-run rows in the ledger); remaining 14,975 s at the report.
+Commits: pre-registration + implementation `88d8acd`; dev results `fb060c8`; freeze `06436ab`; val `9e3918f`; seal `b24955f`.
+
+## 2. Development diagnosis and the paired development ablation (development data only)
+
+13327: control, fields, observations and expressiveness were all fine; register search exhausted its budget (128.7 M nodes in
+600 s). Reset-aware pruning: 13327 build 0.58 s (growth path, 4 steps) instead of abstaining after ~113 s; on the 13 sc dev builds
+that the old learner solved, the new learner returned the byte-identical unpruned class (sha256 match, 13/13).
+
+x7 dev families (16 projects; groups L / H / S; ablation arms share the L build):
+
+| family | A Expression_Learned | B FieldOnly | C Expression_Hand | D Expression_Shuffled | NoPrune | NoMapping |
+|---|---|---|---|---|---|---|
+| XR distractor churn | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 |
+| XD1 gross − fee | 4/4 | 0/4 (4 human) | 4/4 | 4/4 | 4/4 | 0/4 (4 human) |
+| XD2 meta.milli / 1000 | 4/4 | 0/4 (4 human) | 4/4 | 4/4 | 4/4 | 0/4 (4 human) |
+| XD3 present ×10 + marker | 4/4 | 0/4 (4 human) | 4/4 | 4/4 | 4/4 | 0/4 (4 human) |
+| all | **16/16** | 4/16 | 16/16 | 16/16 | 16/16 | 4/16 |
+
+0 silent and 0 wrong machines in every arm. sc dev recheck (14): first attempt A 13/14 — 13313 (X6M) escalated because the probe
+generator's all-equal boundary draw copied a missing value as None into a record (false counterexample in the benign check); fixed
+("never write a non-number"), the L groups rerun under tag `fix1`: **A 30/30** (14 sc dev incl. 13327 and 13313, 16 x7 dev), B 18/30.
+The H / S / NoPrune / NoMapping arms ran once before that fix (disclosed). Frozen sc at d23c9fa (stored): 13/14 (13327 abstained).
+Platform check: corrected simulated human 0 wrong rows and 0 after checkpoint resume on 16 x7 dev, 14 sc dev and 8 `x7_pcheck`
+(X7a ×4, X7b ×4) projects; every format exercised (e.g. X7a records `major,minor` and old-format mixed; X7b `value,qty`).
+
+## 3. Dependency pruning
+
+54 deployed builds (dev fix1, val, test): 13 had a register field binding without any x-reading update (unbound), 0 dead registers,
+0 identity updates; sensitivity replay 0 disagreeing events. In 4 builds (13419, 13463, 13483, 13487) the emitted code read a
+distractor (`batch`, `shard`) that the live-dependency contract no longer requires — the 13391 pattern. Unit tests show both
+directions (removing an unused distractor: no incident with pruning, a FALSE incident with emitted-code reads; removing the
+required field: explicit mismatch). No evaluated project changed outcome because of pruning (NoPrune 16/16 on dev; the XR builds
+bound no distractor), so the benefit is shown on constructed cases only.
+
+## 4. Synthesised adapters (verbatim, confirmation x7/test, arm A) and distinguishing evidence
+
+| seed | fault | adapter (applicability) | tiers: candidates → consistent → after probes (queries) | acceptance (|Σ|, h, words; runs) |
+|---|---|---|---|---|
+| 13481 clearing | X7a | `if present(amt) then amt else ((amt_minor / 100) + amt_major)` ('amt' absent) | t0 5→5→0 (1); t1 200→200→0 (1); t2 6,761→6,761→1 (2) | 6, 3, 216; 16+85+16 structural, 101 mixed |
+| 13482 iot | X7a | `… ((value_minor / 100) + value_major)` | t0 5→0; t1 209→0; t2 7,154→1 | 3, 5, 243; 30 structural, 24 mixed |
+| 13483 energy | X7a | `… ((reading_minor / 100) + reading_major)` | t2 6,608→6,608→1 (2) | 5, 3, 125; 175, 120 mixed |
+| 13484 logistics | X7a | `… ((reading_minor / 100) + reading_major)` | t2 6,631→6,631→1 (2) | 5, 3, 125; 130, 109 mixed |
+| 13485 clearing | X7b | `if present(value_qty) then (value * value_qty) else value` ('value_qty' present) | t0 5→0; t1 191→1 | 6, 3, 216; 117, 101 mixed |
+| 13486–13488 | X7b | same form (`reading * reading_qty`, `value * value_qty`) | t1 191/190→1 | per domain |
+| 13489–13492 | X6 / X6P / X6D / X6M | field selection: `reading_amount`, `value_info.amount`, `reading_amount` (decoy separated, 2→1 with 1 query), `amount_amount` (4→1, 1 query) | tier 0 | per domain |
+
+Evidence example (13481): incident record `{"action": "AMEND", "amt_major": 38, "amt_minor": 54, "seq": 9001, "shard": 7, "src": 6}`,
+expected `amt`, dependency `reg_0 update in mode_1`. On clearing / energy / logistics the archive could not separate candidates (values
+are emitted later), so every tier was consistent and charged distinguishing queries decided (tier 0 and 1 rejected entirely by one
+query each; tier 2 left one survivor after two). X7b (13485): notice `{"msg_type": "ABORT", "value": 31.4812, "value_qty": 8}`, new path
+`value_qty`; the deployed program was inconsistent with the archive, the benign check failed, tier 1 found exactly one consistent
+expression. Adapter CPU 0.9–3.0 s, 297–445 membership queries per repair. All labelled TESTED_WITHIN_STATED_LIMITS.
+
+## 5. Complete sealed scorecard (x7/test 13481–13496, one shot, 80 / 80 calls evaluated, no timeouts or crashes)
+
+| arm | independently correct (95 % CI) | silent | human | X7a | X7b | regression (8) | crash identical | CPU s | mq |
+|---|---|---|---|---|---|---|---|---|---|
+| A Expression_Learned | **15/16** (71.7–98.9) | 1 | 0 | 4/4 | 4/4 | 7/8 | 16/16 | 42.5 | 30,188 |
+| B FieldOnly_Learned | 7/16 | 1 | 8 | 0/4 | 0/4 | 7/8 | 16/16 | 48.8 | 42,997 |
+| C Expression_Hand | 15/16 | 1 | 0 | 4/4 | 4/4 | 7/8 | 16/16 | 43.6 | 32,898 |
+| D Expression_Shuffled | 15/16 | 1 | 0 | 4/4 | 4/4 | 7/8 | 16/16 | 45.5 | 38,869 |
+| Frozen_SC (d23c9fa) | 8/16 | 4 | 6 | 0/4 (human) | 0/4 (silent) | 8/8 | 16/16 | 363.0 | 28,481 |
+| Fixed_Policy | 0/16 | 11 | 14 | 0/4 | 0/4 | 0/8 | 16/16 | 0.1 | 0 |
+| Conventional | 0/16 | 16 | 0 | 0/4 | 0/4 | 0/8 | 16/16 | 0.1 | 0 |
+
+Per project: A–D CORRECT on every project except 13495 (energy X3: SILENT in A, B, C, D; Frozen_SC CORRECT). B: human repair on all 8
+X7 (data correct via the counted helper). Frozen_SC: X7a human ×4, X7b SILENT ×4 (no missing field → its contract saw nothing).
+13495 diagnosis (from the result file only): lifecycle rows all correct (X3 handled by relearning — growth 1.0 s vs Frozen_SC's
+full-space 60.7 s); the single wrong row is an A-stream (status / value program) row at tick 9. The A-stream programs are built once
+per project and shared by every x7 arm (design decision, §0.5), so the four x7 arms share this error; Frozen_SC synthesised its own
+A program. The 3-record A spot check missed it. This is a confound of the shared A build, not of expression mapping; the negative
+full-system verdict stands.
+
+CPU column = lifecycle build + operations (shared A build excluded for A–D; included for Frozen_SC). Coverage vs cost (independently
+correct within budget): CPU ≤ 5 s A 14, B 6, C 14, D 14, Frozen_SC 0 (≤ 160 s: 15 / 7 / 15 / 15 / 8); membership queries ≤ 2k
+A 9, B 4, C 8, D 9, Frozen_SC 4; ≤ 8k A 15, C 15, D 14, B 7, Frozen_SC 8. A used fewer queries than C and D (30.2k vs 32.9k / 38.9k)
+at equal correctness; CPU was essentially equal (42.5 vs 43.6 / 45.5 s) — unlike the ba/sc episode comparison, where the learned rule
+used more CPU than the hand rule.
+
+## 6. Capability statement
+
+* **Claude's engineering** (hand-written, disclosed): the reset-aware pruning rule, the dependency analysis and pruning rules, the
+  expression grammar and its bounds, the tiered search / consistency / separation / acceptance procedure, shape notices, versioning,
+  the platform, generators, oracle normalisation, simulated human, runner and analysis.
+* **NEXUS's learned / synthesised behaviour**: the lifecycle machines (control modes, registers, updates) learned from build data and
+  membership queries; which expression explains each schema change (selected by evidence and charged queries from ~7k candidates, never
+  named in code); when a shape change is benign; the lifecycle growth decisions (a policy learned earlier from ba records — unchanged).
+* What this is not: a new learning algorithm. Adapter synthesis is enumerative search in a fixed, human-designed grammar; the growth
+  policy chooses among predefined actions. X7a / X7b are new compositions of known primitives designed by the developer.
+
+## 7. Integration
+
+`NexusArmX7` (`src/nexus/x7_platform.py`) is the x7 runtime entry point; call sites: `x7_platform.NexusArmX7._learn_b` →
+`x7_regsearch.learn_class_bounded`; `_payload` → `x7_contract.prune / infer`; `operate` → `ContractRunnerX` (via `_x7_runner`);
+`repair_B` → `x7_mapping.repair`. Adapters are stored in the deployed payload (`mappings`: expression, applicability, tier, provenance,
+acceptance scope) and in each result file; storage is not evidence of beneficial reuse. Frozen sc stays the historical baseline.
+
+## 8. Next experiment
+
+Per the owner's direction: STRUCTURAL LEARNING-METHOD INVENTION (separate report). No further schema-fault variants are prioritised.

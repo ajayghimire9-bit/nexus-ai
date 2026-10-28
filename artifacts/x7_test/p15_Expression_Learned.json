@@ -1,0 +1,372 @@
+{
+ "split": "x7_test",
+ "ident": "15",
+ "seed": 13496,
+ "arm": "Expression_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13496,
+  "domain": "logistics",
+  "fault": "X5",
+  "lifecycle": "L.barrier",
+  "arm": "Expression_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": false,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": null,
+   "shape_alarm_tick": null,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": 0,
+   "schema_fault_missed": false,
+   "escalation_ticks": [],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 2,
+   "relearns": [
+    "growth"
+   ],
+   "mapping": [
+    "NO_SHAPE_EVIDENCE"
+   ],
+   "stages": [
+    "lifecycle relearning"
+   ],
+   "human": 0
+  },
+  "adapters": [],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:unknown_symbol"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.361,
+    "queries": 479,
+    "growth_steps": 2
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 1,
+     "dead_regs": [],
+     "unbound_fields": [],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amt"
+     ],
+     "reads_after": [
+      "amt"
+     ],
+     "regs_after": 1,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "CREATE": {
+      "amt": [
+       "reg_0 update in mode_0"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "61aff8542ed8143f35327d85755d2cec62a8c9aa6fd32bee67d142e78eeda078",
+    "emitted_reads": {
+     "CANCEL": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "CREATE": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_0 update in mode_0"
+      ]
+     },
+     "DELIVER": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PACK": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PAY": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     }
+    }
+   },
+   {
+    "mode": "expression",
+    "incidents": 0,
+    "notices": 0,
+    "outcome": "NO_SHAPE_EVIDENCE",
+    "step": "mapping_repair",
+    "cpu_s": 0.0,
+    "mq": 0
+   },
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 360,
+    "filled_for_learning": [],
+    "cpu_s": 0.773,
+    "queries": 997,
+    "growth_steps": 2
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 1,
+     "dead_regs": [],
+     "unbound_fields": [],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amt"
+     ],
+     "reads_after": [
+      "amt"
+     ],
+     "regs_after": 1,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "CREATE": {
+      "amt": [
+       "reg_0 update in mode_0"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "eaa3b71fbc59ea2e7094ef42d4a8dc582872b29ed23cb5a1eefcf428ac7c6948",
+    "emitted_reads": {
+     "CANCEL": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "CREATE": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_0 update in mode_0"
+      ]
+     },
+     "DELIVER": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PACK": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PACK_V2": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PAY": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     },
+     "PAY_V2": {
+      "amt": [
+       "reg_0 binding (emitted code reads it)"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.875
+   },
+   "value_stats": {
+    "cpu_s": 0.016,
+    "built": 1090,
+    "kept": 143,
+    "dup": 757,
+    "err": 190,
+    "scored": 0,
+    "solved": true,
+    "level": 8,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 12.978,
+   "n_modes": 6,
+   "n_regs": 1,
+   "b_queries": 479
+  },
+  "cost": {
+   "build_A_cpu_s": 12.978,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.361,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 1834,
+    "mq_events": 7375
+   },
+   "ops_cpu_s": 0.79,
+   "operator_ops_cpu_s": 0.788,
+   "ops_wall_s": 0.79,
+   "queries": {
+    "build_labels": 560,
+    "spot": 124,
+    "incident": 360,
+    "mq": 4664,
+    "mq_events": 16904
+   },
+   "mapping_cpu_s": 0.0,
+   "mapping_mq": 0,
+   "relearn_cpu_s": 0.773
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('sent') / r.get('qty_ordered'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('qty_ordered'), (int, float)) and not isinstance(r.get('qty_ordered'), bool)) and (isinstance(r.get('sent'), (int, float)) and not isinstance(r.get('sent'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('sent') / r.get('qty_ordered'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('qty_ordered'), (int, float)) and not isinstance(r.get('qty_ordered'), bool)) and (isinstance(r.get('sent'), (int, float)) and not isinstance(r.get('sent'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_192aed2b:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE', 'CANCEL'] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK_V2':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY_V2':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PACK_V2':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n            elif s == 'PAY_V2':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK_V2':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY_V2':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK_V2':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY_V2':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PACK_V2':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY_V2':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK_V2':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY_V2':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

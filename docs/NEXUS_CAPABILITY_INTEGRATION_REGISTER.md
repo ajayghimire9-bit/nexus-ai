@@ -211,3 +211,15 @@ The c84fc76 Part 4 artifacts (weights such as `random_word = 0.25`, `occam` orde
 
 ### Known limitation
 * Some energy builds (dev 13327) abstain in every arm: the full-space learner fails register search.
+
+## x7 — expression adapters, dependency pruning, reset-aware register search (2026-10-28; report `docs/NEXUS_COMPOSITE_SCHEMA_AND_X7_REPORT.md`)
+
+| component | source | call site | activation | evidence (scope) | cost | limits |
+|---|---|---|---|---|---|---|
+| reset-aware register search | `src/nexus/x7_regsearch.py` (`Learner2X`, `Learner3X`, `learn_class_bounded`) | `NexusArmX7._learn` (build + relearn) | every lifecycle learn in x7 arms | 13327 solved (0.58 s vs abstain); identical class on 13/13 previously solved sc dev builds; unit test | faster or equal | sound only for the u5 register language (acc-free update = reset) |
+| dependency analysis + pruning | `src/nexus/x7_contract.py` (`reads`, `prune`, `sensitivity`, `infer`) | `NexusArmX7._payload` | every deployed build | exact rewrite; 13/54 builds unbound a field, 4 dropped a distractor read; no outcome effect measured | < 0.1 s | static analysis of this machine language only |
+| expression grammar | `src/nexus/x7_expr.py` | `x7_mapping.repair` | on incident / notice | X7a 4/4, X7b 4/4 (confirmation) | ~7k candidates, 1–3 s | size ≤ 5 bodies, constants {1, 2, 10, 100, 1000}, one target field |
+| adapter repair + composite acceptance | `src/nexus/x7_mapping.py` | `NexusArmX7.repair_B` | B:schema_mismatch, B:shape_change, other B alarms | A 15/16 vs FieldOnly 7/16 (8:0 on X7, p = 0.0039) | 297–445 mq per repair | TESTED_WITHIN_STATED_LIMITS; probes decide when the archive is uninformative |
+| runtime contract with notices | `src/nexus/x7_contract.py` (`ContractRunnerX`) | `_x7_runner` in the x7 platform | deployed payloads with `x7=True` | 0 silent lifecycle errors in A on val + test | per event | shape notices can cost a benign verification (~360 mq) |
+| x7 platform + corrected human | `src/nexus/x7_platform.py` | `scripts/x7_run.py` | x7 splits | helper 0 wrong rows (38 projects) | — | shared A-stream build across x7 arms (caused the shared 13495 failure) |
+Full-system confirmation objective NOT met (15/16); expression capability beyond FieldOnly supported; growth-policy comparison inconclusive.
