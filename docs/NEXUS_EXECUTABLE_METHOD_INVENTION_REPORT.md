@@ -81,3 +81,68 @@ and the CPU tie-break then favoured degenerate procedures (hypothesis spaces of 
 applied identically to all three search arms, which restart from zero as run 2): fitness = exact episodes + 0.5 × mean fraction of
 register searches explained by the procedure's space (learner-side evidence, no evaluator information) − 0.0001 × CPU s. Nothing
 else changed.
+
+## 1. Results (validation gate NOT passed; the confirmation on withheld families stays closed)
+
+| stage | outcome |
+|---|---|
+| Discovery run 1 | collapsed (fitness flaw; all candidates 0 / 12) — preserved, negative |
+| Discovery run 2 (24 evaluations per arm, 12-episode pool) | best: evolve 3 / 12, random_struct 2 / 12, params 1 / 12, seed 0 / 12; 0 silent everywhere |
+| Selection (12-episode pool) | evolve #17 2 / 12, random_struct #18 2 / 12, params (size ≤ 9, 4 s) 2 / 12 |
+| **Validation** (80 fresh dev episodes, one-use) | invented dev-unfamiliar **19 / 60** vs baseline **10 / 60** (9 : 0 discordant, p = 0.002; ADDC 12 vs 3, MUL 7 vs 7, SUBH 0 vs 0); K 19 / 20 both; 0 silent both — **gate (≥ baseline + 10) NOT passed by one episode** |
+| Confirmation (300 episodes incl. withheld SCL / AVG / MAX) | **not run** (pre-registered: no revision; the confirmation needs a passing gate) |
+
+Verdicts (tested setting): learning-method improvement on unfamiliar dev mechanisms — **inconclusive** (real paired gain on fresh
+dev episodes, below the pre-registered margin); generalisation to withheld mechanism families — **not tested**; superiority over
+parameter tuning and random structural search — **not established** (equal on the selection pool; those arms were not in the
+validation by design); learning-algorithm invention — **not shown**.
+
+## 2. The invented procedure (complete executable program, `artifacts/mi_dev/select_evolve.json` → `winner.prog`)
+
+Lineage: #17 = crossover(#12[:13], #15[10:]); #12 and #15 are mutation chains from the seed (#0) and the early random programs
+(#1, #2) under tournament selection; every edit is recorded in `artifacts/mi_dev/disc_evolve.json`. No human or Claude edit.
+
+```
+def h0:
+  if n_trans >= 10:
+    combine P2 P0 P1 /          # guarded division terms
+  else:
+    dconsts P3 int_diffs        # constants = near-integer differences between observed register values
+  union P2 P2 P3
+def h0b:                         # inherited from a parent, never called
+  combine P3 P0 P0 -
+  union P1 P2 P3
+main:
+  terms P0 [acc, x]; lits P1 [0, 1]; union P0 P0 P1
+  combine P2 P0 P0 +; call h0
+  combine P3 P2 P0 +; union P3 P3 P4; combine P4 P0 P2 +; combine P5 P0 P2 -; union P4 P4 P5; union P3 P3 P4
+  union P0 P0 P2; union P0 P0 P3
+  combine P4 P0 P2 +; combine P5 P0 P2 /; union P4 P4 P5; union P3 P3 P4; union P0 P0 P2; union P0 P0 P3
+  dedupe P0 P0; sort P0 P0 size; ret P0
+```
+
+Behavioural difference from the existing procedure: the hypothesis space is data-dependent (constants mined from the problem's
+own observations when the problem has < 10 transitions), drops the size-3 `−` layer of the seed, closes `+` a second round (sizes
+up to 9) and adds division terms; 102 expressions on an empty context vs 53. Component ablation (dev pools disc + sel, 24 episodes,
+after the freeze; `artifacts/mi_dev/ablation.json`): frozen 5 (all ADDC); seed 0; without `call h0` 3; h0 = evidence constants only
+6; h0 = division only 0; without main-level division 5 (−30 % CPU). The contributing generated components are the evidence-derived
+difference constants and the deeper `+` closure; the generated division terms contribute nothing.
+
+Attribution: supplied by Claude — LPL language, interpreter, primitives (incl. the `dconsts` evidence miners), generic operators,
+seed transcription, fitness and selection rule, the fast path and assignment engine (reused); synthesised by the discovery search —
+the program above (which primitives to compose, the feature-conditioned branch, the helper, the closure structure); no external
+model. Novelty level: a new procedure for NEXUS's own learner, i.e. "a reusable method new to NEXUS" at most — and only on
+unfamiliar dev mechanisms of one kind (additive constants); not shown materially different in effect from parameter tuning or random
+structural edits; not research-novel (mining constants from data is a known program-synthesis heuristic; no prior-art review done).
+
+## 3. Cost
+
+mi ledger rows 3,731 s (profile 603, discovery run 1 ≈ 86, run 2 1,271, selection 700, validation 546, ablation 307, other ≈ 220);
+remaining 29,244 s. Validation CPU: invented 434 s vs baseline 351 s (+24 %) for +9 exact episodes; queries 56,118 vs 50,561.
+
+## 4. Next experiment (recommendation)
+
+The bottleneck is the discovery signal, not the language: 12-episode pools give fitness differences of one or two episodes, so
+selection cannot separate evolve from random edits or parameter tuning. Next: a larger, cheaper discovery pool (≥ 60 episodes with a
+2 s cap), candidates that must generalise across all three dev families to score (per-family minimum), and the params and
+random_struct winners included in the one-use validation, with the same frozen withheld confirmation design.

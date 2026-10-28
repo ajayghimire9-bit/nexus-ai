@@ -223,3 +223,11 @@ The c84fc76 Part 4 artifacts (weights such as `random_word = 0.25`, `occam` orde
 | runtime contract with notices | `src/nexus/x7_contract.py` (`ContractRunnerX`) | `_x7_runner` in the x7 platform | deployed payloads with `x7=True` | 0 silent lifecycle errors in A on val + test | per event | shape notices can cost a benign verification (~360 mq) |
 | x7 platform + corrected human | `src/nexus/x7_platform.py` | `scripts/x7_run.py` | x7 splits | helper 0 wrong rows (38 projects) | — | shared A-stream build across x7 arms (caused the shared 13495 failure) |
 Full-system confirmation objective NOT met (15/16); expression capability beyond FieldOnly supported; growth-policy comparison inconclusive.
+
+## mi — learning-method invention for the register-hypothesis procedure (2026-10-28; report `docs/NEXUS_EXECUTABLE_METHOD_INVENTION_REPORT.md`)
+
+| component | source | call site | activation | evidence | limits |
+|---|---|---|---|---|---|
+| LPL procedure language + generic operators | `src/nexus/mi_lpl.py` | `mi_learner.lpl_domain` | mi experiments only | seed = existing procedure (identical) | human-written primitives |
+| procedure-driven full-space learner | `src/nexus/mi_learner.py` (`LearnerMI`) | `scripts/mi_eval.py`, `mi_discover.py` | after the shared fast path fails | invented procedure +9 dev-unfamiliar episodes on validation (19 vs 10 of 60) | gate not passed; **not integrated** into any NEXUS runtime arm |
+| invented procedure #17 | `artifacts/mi_dev/select_evolve.json` | — | inactive | gain from evidence-derived constants (ablation) | confirmation not run |
