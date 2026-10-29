@@ -1,0 +1,17 @@
+G1.L1.sqlite.51000 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'n_items')] runs 5 wall 0.001
+G1.L1.sqlite.51001 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'qty')] runs 5 wall 0.001
+G1.L2.sqlite.51002 legacy ['row_count', 'quarantine_ids'] None | solved False hidden False None runs 24 wall 0.003
+G1.L2.sqlite.51003 legacy ['row_count', 'quarantine_ids'] None | solved True hidden False [('quarantine_invalid', 'unit_cost')] runs 6 wall 0.001
+G2.L1.sqlite.51004 legacy ['example_rows'] None | solved True hidden True [('real_div', '')] runs 12 wall 0.001
+G2.L1.sqlite.51005 legacy ['example_rows'] None | solved True hidden True [('real_div', '')] runs 12 wall 0.001
+G2.L2.sqlite.51006 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'price'), ('real_div', '')] runs 41 wall 0.005
+G2.L2.sqlite.51007 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'list_price'), ('real_div', '')] runs 41 wall 0.005
+G3.L1.sqlite.51008 legacy ['row_count', 'unique'] None | solved True hidden True [('dedup_latest', 'order_id by seq')] runs 9 wall 0.001
+G3.L1.sqlite.51009 legacy ['row_count', 'unique'] None | solved True hidden True [('dedup_latest', 'sku by rev')] runs 9 wall 0.001
+G3.L2.sqlite.51010 legacy ['row_count', 'unique', 'quarantine_ids'] None | solved True hidden True [('dedup_latest', 'order_id by rev'), ('quarantine_invalid', 'list_price')] runs 22 wall 0.003
+G3.L2.sqlite.51011 legacy ['row_count', 'unique', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'price'), ('dedup_latest', 'sku by version')] runs 25 wall 0.003
+G4.L1.sqlite.51012 legacy ['example_rows'] None | solved False hidden False None runs 39 wall 0.004
+G4.L1.sqlite.51013 legacy ['example_rows'] None | solved False hidden False None runs 39 wall 0.004
+G4.L2.sqlite.51014 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved False hidden False None runs 5009 wall 0.557
+G4.L2.sqlite.51015 legacy ['example_rows', 'quarantine_ids'] None | solved False hidden False None runs 39 wall 0.004
+solved 10 / 16 silent 1

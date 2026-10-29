@@ -1,0 +1,171 @@
+[
+ {
+  "pid": "G1.L1.spark.51000",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "CAST_INVALID_INPUT",
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "default_fill",
+    "n_items=0"
+   ]
+  ],
+  "runs": 7,
+  "wall": 1.077,
+  "fails": []
+ },
+ {
+  "pid": "G1.L2.spark.51001",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "CAST_INVALID_INPUT",
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "try_parse",
+    "units"
+   ],
+   [
+    "quarantine_invalid",
+    "unit_cost"
+   ],
+   [
+    "quarantine_invalid",
+    "units"
+   ]
+  ],
+  "runs": 75,
+  "wall": 4.081,
+  "fails": []
+ },
+ {
+  "pid": "G2.L1.spark.51002",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "DIVIDE_BY_ZERO",
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "zero_guard",
+    ""
+   ]
+  ],
+  "runs": 13,
+  "wall": 0.545,
+  "fails": []
+ },
+ {
+  "pid": "G2.L2.spark.51003",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "CAST_INVALID_INPUT",
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "try_parse",
+    "unit_cost"
+   ],
+   [
+    "zero_guard",
+    ""
+   ],
+   [
+    "quarantine_invalid",
+    "unit_cost"
+   ]
+  ],
+  "runs": 91,
+  "wall": 3.82,
+  "fails": []
+ },
+ {
+  "pid": "G3.L1.spark.51004",
+  "legacy_failed": [
+   "row_count",
+   "unique"
+  ],
+  "legacy_error": null,
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "dedup_latest",
+    "account_id by rev"
+   ]
+  ],
+  "runs": 9,
+  "wall": 0.247,
+  "fails": []
+ },
+ {
+  "pid": "G3.L2.spark.51005",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "CAST_INVALID_INPUT",
+  "solved_visible": true,
+  "hidden_ok": false,
+  "edits": [
+   [
+    "quarantine_invalid",
+    "order_id"
+   ],
+   [
+    "dedup_latest",
+    "order_id by seq"
+   ]
+  ],
+  "runs": 25,
+  "wall": 0.864,
+  "fails": [
+   "hidden1.csv: output differs",
+   "hidden1.csv: quarantine differs",
+   "hidden2.csv: output differs",
+   "hidden2.csv: quarantine differs"
+  ]
+ },
+ {
+  "pid": "G4.L1.spark.51006",
+  "legacy_failed": [
+   "example_rows"
+  ],
+  "legacy_error": null,
+  "solved_visible": true,
+  "hidden_ok": true,
+  "edits": [
+   [
+    "filter_file",
+    "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+   ],
+   [
+    "dedup_latest",
+    "msg_id by log_pos"
+   ]
+  ],
+  "runs": 43,
+  "wall": 2.049,
+  "fails": []
+ },
+ {
+  "pid": "G4.L2.spark.51007",
+  "legacy_failed": [
+   "no_error"
+  ],
+  "legacy_error": "CAST_INVALID_INPUT",
+  "solved_visible": false,
+  "hidden_ok": false,
+  "edits": null,
+  "runs": 141,
+  "wall": 6.038,
+  "fails": null
+ }
+]

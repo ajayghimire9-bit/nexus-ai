@@ -1,0 +1,1 @@
+"""NEXUS Phase 3 (NOT LOCKED): real-pipeline data-engineering world (SQLite 3 + Spark 4 ANSI), its learner on the shared experience / admission / M interfaces, untouched C7, C8, E7, E8. See docs/NEXUS_PHASE3_REAL_PIPELINE_AND_SPARK_REPORT.md."""

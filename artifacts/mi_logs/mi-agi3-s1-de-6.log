@@ -1,0 +1,25 @@
+G1.L1.sqlite.51000 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'n_items')] runs 5 wall 0.001
+G1.L1.sqlite.51001 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'qty')] runs 5 wall 0.001
+G1.L1.sqlite.51002 legacy ['example_rows'] None | solved True hidden True [('default_fill', 'qty=0')] runs 7 wall 0.001
+G1.L2.sqlite.51003 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'quantity'), ('quarantine_invalid', 'list_price')] runs 29 wall 0.004
+G1.L2.sqlite.51004 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'list_price'), ('default_fill', 'n_items=0')] runs 30 wall 0.005
+G1.L2.sqlite.51005 legacy ['row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'qty'), ('quarantine_invalid', 'unit_cost')] runs 29 wall 0.004
+G2.L1.sqlite.51006 legacy ['example_rows'] None | solved True hidden True [('real_div', '')] runs 12 wall 0.002
+G2.L1.sqlite.51007 legacy ['example_rows'] None | solved True hidden True [('real_div', '')] runs 12 wall 0.002
+G2.L1.sqlite.51008 legacy ['example_rows'] None | solved True hidden True [('real_div', '')] runs 12 wall 0.002
+G2.L2.sqlite.51009 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'unit_cost'), ('real_div', '')] runs 41 wall 0.006
+G2.L2.sqlite.51010 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'unit_cost'), ('real_div', '')] runs 41 wall 0.006
+G2.L2.sqlite.51011 legacy ['example_rows', 'row_count', 'quarantine_ids'] None | solved True hidden True [('quarantine_invalid', 'list_price'), ('real_div', '')] runs 41 wall 0.006
+G3.L1.sqlite.51012 legacy ['row_count', 'unique'] None | solved True hidden True [('dedup_latest', 'account_id by version')] runs 9 wall 0.001
+G3.L1.sqlite.51013 legacy ['row_count', 'unique'] None | solved True hidden True [('dedup_latest', 'order_id by seq')] runs 9 wall 0.001
+G3.L1.sqlite.51014 legacy ['row_count', 'unique'] None | solved True hidden True [('dedup_latest', 'sku by version')] runs 9 wall 0.001
+G3.L2.sqlite.51015 legacy ['row_count', 'unique', 'quarantine_ids'] None | solved True hidden True [('dedup_latest', 'account_id by seq'), ('quarantine_invalid', 'unit_cost')] runs 22 wall 0.003
+G3.L2.sqlite.51016 legacy ['row_count', 'unique', 'quarantine_ids'] None | solved True hidden True [('dedup_latest', 'sku by version'), ('quarantine_invalid', 'price')] runs 22 wall 0.003
+G3.L2.sqlite.51017 legacy ['row_count', 'unique', 'quarantine_ids'] None | solved True hidden True [('dedup_latest', 'account_id by seq'), ('quarantine_invalid', 'price')] runs 22 wall 0.003
+G4.L1.sqlite.51018 legacy ['example_rows', 'row_count'] None | solved True hidden True [('filter_file', 'offset gt ["file", "checkpoint.json", "last_committed_offset"]'), ('dedup_latest', 'msg_id by offset')] runs 43 wall 0.005
+G4.L1.sqlite.51019 legacy ['example_rows'] None | solved True hidden True [('filter_file', 'offset gt ["file", "checkpoint.json", "last_committed_offset"]'), ('dedup_latest', 'event_id by offset')] runs 43 wall 0.005
+G4.L1.sqlite.51020 legacy ['example_rows'] None | solved True hidden True [('dedup_latest', 'event_id by offset'), ('filter_file', 'offset gt ["file", "checkpoint.json", "last_committed_offset"]')] runs 84 wall 0.01
+G4.L2.sqlite.51021 legacy ['example_rows', 'quarantine_ids'] None | solved True hidden True [('filter_file', 'log_pos gt ["file", "checkpoint.json", "last_committed_offset"]'), ('quarantine_invalid', 'delta'), ('dedup_latest', 'msg_id by log_pos')] runs 116 wall 0.016
+G4.L2.sqlite.51022 legacy ['example_rows', 'quarantine_ids'] None | solved True hidden False [('quarantine_invalid', 'reading'), ('dedup_latest', 'ts by offset'), ('filter_file', 'offset gt ["file", "checkpoint.json", "last_committed_offset"]')] runs 83 wall 0.011
+G4.L2.sqlite.51023 legacy ['example_rows', 'quarantine_ids'] None | solved True hidden True [('filter_file', 'offset gt ["file", "checkpoint.json", "last_committed_offset"]'), ('quarantine_invalid', 'delta'), ('dedup_latest', 'msg_id by offset')] runs 116 wall 0.015
+solved 23 / 24 silent 1

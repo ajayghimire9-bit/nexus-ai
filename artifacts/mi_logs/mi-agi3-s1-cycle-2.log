@@ -1,0 +1,25 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+B_same_family_spark {'Full': (True, 58, 4.256), 'Memory-Reset': (True, 75, 3.262), 'Solved-Only': (True, 74, 2.987), 'Full-minus-skill': (True, 58, 2.357)}
+C_other_family_sqlite {'Full': (True, 16, 0.003), 'Memory-Reset': (True, 41, 0.006), 'Solved-Only': (True, 16, 0.003), 'Full-minus-skill': (True, 41, 0.006)}
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/python/lib/pyspark.zip/pyspark/daemon.py", line 200, in manager
+    code = worker(sock, authenticated)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/python/lib/pyspark.zip/pyspark/daemon.py", line 69, in worker
+    client_secret = UTF8Deserializer().loads(infile)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py", line 558, in loads
+    length = read_int(stream)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py", line 595, in read_int
+    length = stream.read(4)
+ConnectionResetError: [Errno 54] Connection reset by peer
+D_other_family_spark {'Full': (True, 83, 3.46), 'Memory-Reset': (True, 102, 3.907), 'Solved-Only': (True, 83, 3.235), 'Full-minus-skill': (True, 83, 3.289)}
+G1.L1.sqlite.51400 {'Full': (True, 3), 'Memory-Reset': (True, 5), 'Solved-Only': (True, 3), 'Full-minus-skill': (True, 3)}
+G2.L2.sqlite.51401 {'Full': (True, 6), 'Memory-Reset': (True, 41), 'Solved-Only': (True, 6), 'Full-minus-skill': (True, 31)}
+G3.L1.sqlite.51402 {'Full': (True, 2), 'Memory-Reset': (True, 9), 'Solved-Only': (True, 2), 'Full-minus-skill': (True, 8)}
+G4.L2.sqlite.51403 {'Full': (True, 13), 'Memory-Reset': (True, 134), 'Solved-Only': (True, 13), 'Full-minus-skill': (True, 133)}
+G1.L1.spark.51404 {'Full': (True, 3), 'Memory-Reset': (True, 5), 'Solved-Only': (True, 3), 'Full-minus-skill': (True, 3)}
+G2.L2.spark.51405 {'Full': (False, 146), 'Memory-Reset': (False, 154), 'Solved-Only': (False, 151), 'Full-minus-skill': (False, 155)}
+G3.L1.spark.51406 {'Full': (True, 2), 'Memory-Reset': (True, 9), 'Solved-Only': (True, 2), 'Full-minus-skill': (True, 8)}
+G4.L2.spark.51407 {'Full': (False, 94), 'Memory-Reset': (False, 131), 'Solved-Only': (False, 94), 'Full-minus-skill': (False, 94)}
+aggregate {'Full': {'verified': 6, 'runs': 269, 'silent': 1}, 'Memory-Reset': {'verified': 6, 'runs': 488, 'silent': 0}, 'Solved-Only': {'verified': 6, 'runs': 274, 'silent': 1}, 'Full-minus-skill': {'verified': 6, 'runs': 435, 'silent': 1}}

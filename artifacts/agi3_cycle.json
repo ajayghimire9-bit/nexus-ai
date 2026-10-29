@@ -1,0 +1,1286 @@
+{
+ "spark_session_start_s": 32.3,
+ "A": {
+  "project": "G1.L2.sqlite.51200",
+  "contract": "units must be an integer; malformed rows are rejected to the quarantine table",
+  "legacy": {
+   "failed": [
+    "row_count",
+    "quarantine_ids"
+   ],
+   "error": null,
+   "features": [
+    "diff:extra_rows",
+    "fail:quarantine_ids",
+    "fail:row_count"
+   ]
+  },
+  "attempts": 28,
+  "first_failures": [
+   {
+    "step": "attempt",
+    "edits": [
+     "try_parse(units)"
+    ],
+    "op": "try_parse",
+    "error": null,
+    "passed": [
+     "no_error",
+     "example_rows"
+    ],
+    "failed": [
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   },
+   {
+    "step": "attempt",
+    "edits": [
+     "try_parse(list_price)"
+    ],
+    "op": "try_parse",
+    "error": null,
+    "passed": [
+     "no_error",
+     "example_rows"
+    ],
+    "failed": [
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   },
+   {
+    "step": "attempt",
+    "edits": [
+     "quarantine_invalid(id)"
+    ],
+    "op": "quarantine_invalid",
+    "error": null,
+    "passed": [
+     "no_error"
+    ],
+    "failed": [
+     "example_rows",
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:missing_rows",
+     "fail:example_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   },
+   {
+    "step": "attempt",
+    "edits": [
+     "quarantine_invalid(units)"
+    ],
+    "op": "quarantine_invalid",
+    "error": null,
+    "passed": [
+     "no_error",
+     "example_rows"
+    ],
+    "failed": [
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   },
+   {
+    "step": "attempt",
+    "edits": [
+     "quarantine_invalid(list_price)"
+    ],
+    "op": "quarantine_invalid",
+    "error": null,
+    "passed": [
+     "no_error",
+     "example_rows"
+    ],
+    "failed": [
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   },
+   {
+    "step": "attempt",
+    "edits": [
+     "default_fill(units=0)"
+    ],
+    "op": "default_fill",
+    "error": null,
+    "passed": [
+     "no_error",
+     "example_rows"
+    ],
+    "failed": [
+     "row_count",
+     "quarantine_ids"
+    ],
+    "features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "from_features": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ]
+   }
+  ],
+  "refutations": 15,
+  "partial_successes": [
+   {
+    "op": "quarantine_invalid",
+    "prm": "units",
+    "pre": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "gain": 0.05550000000000033
+   },
+   {
+    "op": "quarantine_invalid",
+    "prm": "list_price",
+    "pre": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "gain": 0.05550000000000033
+   }
+  ],
+  "result": {
+   "solved_visible": true,
+   "verified": true,
+   "runs": 29,
+   "wall": 0.005,
+   "edits": [
+    [
+     "quarantine_invalid",
+     "units"
+    ],
+    [
+     "quarantine_invalid",
+     "list_price"
+    ]
+   ],
+   "reused_skill": [],
+   "hidden": []
+  },
+  "P_de_after": 0,
+  "weights_after": {
+   "diff:extra_rows": {
+    "quarantine_invalid": 1.5,
+    "try_parse": -2.0,
+    "default_fill": -1.0,
+    "dedup_latest": -3.0,
+    "dedup_first": -1.0
+   },
+   "fail:quarantine_ids": {
+    "quarantine_invalid": 1.5,
+    "try_parse": -2.0,
+    "default_fill": -1.0,
+    "dedup_latest": -3.0,
+    "dedup_first": -1.0
+   },
+   "fail:row_count": {
+    "quarantine_invalid": 1.5,
+    "try_parse": -2.0,
+    "default_fill": -1.0,
+    "dedup_latest": -3.0,
+    "dedup_first": -1.0
+   }
+  },
+  "candidate_skill": {
+   "ops": [
+    "quarantine_invalid",
+    "quarantine_invalid"
+   ],
+   "pre": [
+    "diff:extra_rows",
+    "fail:quarantine_ids",
+    "fail:row_count"
+   ],
+   "params_example": [
+    "units",
+    "list_price"
+   ],
+   "contract": {
+    "public_checks_satisfied": 4,
+    "runtime": "sqlite"
+   },
+   "provenance": "G1.L2.sqlite.51200",
+   "origin": "pure_synthesis",
+   "match": 0.5,
+   "validated_on": []
+  },
+  "admission": {
+   "ok": true,
+   "runs_without": 54,
+   "runs_with": 14,
+   "solved_without": 2,
+   "solved_with": 2
+  },
+  "admitted_skills": {
+   "S0": {
+    "ops": [
+     "quarantine_invalid",
+     "quarantine_invalid"
+    ],
+    "pre": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "params_example": [
+     "units",
+     "list_price"
+    ],
+    "contract": {
+     "public_checks_satisfied": 4,
+     "runtime": "sqlite"
+    },
+    "provenance": "G1.L2.sqlite.51200",
+    "origin": "pure_synthesis",
+    "match": 0.5,
+    "validated_on": [
+     "G1.L2.sqlite.51210",
+     "G1.L2.sqlite.51211"
+    ],
+    "admission": {
+     "runs": [
+      54,
+      14
+     ],
+     "solved": [
+      2,
+      2
+     ]
+    }
+   }
+  }
+ },
+ "reuse": {
+  "B_same_family_spark": {
+   "Full": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 58,
+    "wall": 4.256,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "quantity"
+     ],
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Memory-Reset": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 75,
+    "wall": 3.262,
+    "edits": [
+     [
+      "try_parse",
+      "quantity"
+     ],
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "quarantine_invalid",
+      "quantity"
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Solved-Only": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 74,
+    "wall": 2.987,
+    "edits": [
+     [
+      "try_parse",
+      "quantity"
+     ],
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "quarantine_invalid",
+      "quantity"
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Full-minus-skill": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 58,
+    "wall": 2.357,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "quantity"
+     ],
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "project": "G1.L2.spark.51220"
+  },
+  "C_other_family_sqlite": {
+   "Full": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 16,
+    "wall": 0.003,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "real_div",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Memory-Reset": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 41,
+    "wall": 0.006,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "real_div",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Solved-Only": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 16,
+    "wall": 0.003,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "real_div",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Full-minus-skill": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 41,
+    "wall": 0.006,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "unit_cost"
+     ],
+     [
+      "real_div",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "project": "G2.L2.sqlite.51221"
+  },
+  "D_other_family_spark": {
+   "Full": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 83,
+    "wall": 3.46,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "list_price"
+     ],
+     [
+      "zero_guard",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Memory-Reset": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 102,
+    "wall": 3.907,
+    "edits": [
+     [
+      "try_parse",
+      "list_price"
+     ],
+     [
+      "zero_guard",
+      ""
+     ],
+     [
+      "quarantine_invalid",
+      "list_price"
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Solved-Only": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 83,
+    "wall": 3.235,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "list_price"
+     ],
+     [
+      "zero_guard",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "Full-minus-skill": {
+    "solved_visible": true,
+    "verified": true,
+    "runs": 83,
+    "wall": 3.289,
+    "edits": [
+     [
+      "quarantine_invalid",
+      "list_price"
+     ],
+     [
+      "zero_guard",
+      ""
+     ]
+    ],
+    "reused_skill": [],
+    "hidden": []
+   },
+   "project": "G2.L2.spark.51222"
+  }
+ },
+ "dev_batch": {
+  "learned_on": [
+   "G1.L1.sqlite.51300",
+   "G2.L2.sqlite.51301",
+   "G3.L1.sqlite.51302",
+   "G4.L2.sqlite.51303",
+   "G1.L1.sqlite.51304",
+   "G2.L2.sqlite.51305",
+   "G3.L1.sqlite.51306",
+   "G4.L2.sqlite.51307"
+  ],
+  "skills_full": [
+   {
+    "ops": [
+     "quarantine_invalid",
+     "quarantine_invalid"
+    ],
+    "pre": [
+     "diff:extra_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "params_example": [
+     "units",
+     "list_price"
+    ],
+    "contract": {
+     "public_checks_satisfied": 4,
+     "runtime": "sqlite"
+    },
+    "provenance": "G1.L2.sqlite.51200",
+    "origin": "pure_synthesis",
+    "match": 0.5,
+    "validated_on": [
+     "G1.L2.sqlite.51210",
+     "G1.L2.sqlite.51211"
+    ],
+    "admission": {
+     "runs": [
+      54,
+      14
+     ],
+     "solved": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "ops": [
+     "quarantine_invalid",
+     "real_div"
+    ],
+    "pre": [
+     "diff:extra_rows",
+     "diff:fraction_lost",
+     "fail:example_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "params_example": [
+     "unit_cost",
+     ""
+    ],
+    "contract": {
+     "public_checks_satisfied": 4,
+     "runtime": "sqlite"
+    },
+    "provenance": "G2.L2.sqlite.51301",
+    "origin": "pure_synthesis",
+    "match": 0.5,
+    "validated_on": [
+     "G2.L2.sqlite.51332",
+     "G2.L2.sqlite.51333"
+    ],
+    "admission": {
+     "runs": [
+      20,
+      12
+     ],
+     "solved": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "ops": [
+     "quarantine_invalid",
+     "filter_file",
+     "dedup_first"
+    ],
+    "pre": [
+     "diff:extra_rows",
+     "diff:value",
+     "fail:example_rows",
+     "fail:quarantine_ids",
+     "fail:row_count"
+    ],
+    "params_example": [
+     "value",
+     "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+     "event_id"
+    ],
+    "contract": {
+     "public_checks_satisfied": 4,
+     "runtime": "sqlite"
+    },
+    "provenance": "G4.L2.sqlite.51303",
+    "origin": "pure_synthesis",
+    "match": 0.5,
+    "validated_on": [
+     "G4.L2.sqlite.51336",
+     "G4.L2.sqlite.51337"
+    ],
+    "admission": {
+     "runs": [
+      186,
+      26
+     ],
+     "solved": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "ops": [
+     "dedup_latest"
+    ],
+    "pre": [
+     "diff:dup_keys",
+     "diff:value",
+     "fail:row_count",
+     "fail:unique"
+    ],
+    "params_example": [
+     "account_id by version"
+    ],
+    "contract": {
+     "public_checks_satisfied": 4,
+     "runtime": "sqlite"
+    },
+    "provenance": "G3.L1.sqlite.51306",
+    "origin": "pure_synthesis",
+    "match": 0.5,
+    "validated_on": [
+     "G3.L1.sqlite.51342",
+     "G3.L1.sqlite.51343"
+    ],
+    "admission": {
+     "runs": [
+      16,
+      4
+     ],
+     "solved": [
+      2,
+      2
+     ]
+    }
+   }
+  ],
+  "skills_solved_only": 4,
+  "test": {
+   "G1.L1.sqlite.51400": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.001,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "units"
+      ]
+     ],
+     "reused_skill": [
+      "S0"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 5,
+     "wall": 0.001,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "units"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.0,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "units"
+      ]
+     ],
+     "reused_skill": [
+      "S0"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.0,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "units"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G2.L2.sqlite.51401": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 6,
+     "wall": 0.001,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "price"
+      ],
+      [
+       "real_div",
+       ""
+      ]
+     ],
+     "reused_skill": [
+      "S1"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 41,
+     "wall": 0.006,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "price"
+      ],
+      [
+       "real_div",
+       ""
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 6,
+     "wall": 0.001,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "price"
+      ],
+      [
+       "real_div",
+       ""
+      ]
+     ],
+     "reused_skill": [
+      "S1"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 31,
+     "wall": 0.005,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "price"
+      ],
+      [
+       "real_div",
+       ""
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G3.L1.sqlite.51402": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 2,
+     "wall": 0.0,
+     "edits": [
+      [
+       "dedup_latest",
+       "order_id by version"
+      ]
+     ],
+     "reused_skill": [
+      "S3"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 9,
+     "wall": 0.001,
+     "edits": [
+      [
+       "dedup_latest",
+       "order_id by version"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 2,
+     "wall": 0.0,
+     "edits": [
+      [
+       "dedup_latest",
+       "order_id by version"
+      ]
+     ],
+     "reused_skill": [
+      "S2"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 8,
+     "wall": 0.001,
+     "edits": [
+      [
+       "dedup_latest",
+       "order_id by version"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G4.L2.sqlite.51403": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 13,
+     "wall": 0.002,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "reading"
+      ],
+      [
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      [
+       "dedup_first",
+       "msg_id"
+      ]
+     ],
+     "reused_skill": [
+      "S2"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 134,
+     "wall": 0.021,
+     "edits": [
+      [
+       "dedup_latest",
+       "msg_id by log_pos"
+      ],
+      [
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      [
+       "quarantine_invalid",
+       "reading"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 13,
+     "wall": 0.002,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "reading"
+      ],
+      [
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      [
+       "dedup_latest",
+       "msg_id by log_pos"
+      ]
+     ],
+     "reused_skill": [
+      "S3"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 133,
+     "wall": 0.02,
+     "edits": [
+      [
+       "dedup_first",
+       "msg_id"
+      ],
+      [
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      [
+       "quarantine_invalid",
+       "reading"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G1.L1.spark.51404": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.106,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "qty"
+      ]
+     ],
+     "reused_skill": [
+      "S0"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 5,
+     "wall": 0.164,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "qty"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.092,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "qty"
+      ]
+     ],
+     "reused_skill": [
+      "S0"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 3,
+     "wall": 0.095,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "qty"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G2.L2.spark.51405": {
+    "Full": {
+     "solved_visible": false,
+     "verified": false,
+     "runs": 146,
+     "wall": 6.014,
+     "edits": null,
+     "reused_skill": [],
+     "hidden": null
+    },
+    "Memory-Reset": {
+     "solved_visible": false,
+     "verified": false,
+     "runs": 154,
+     "wall": 6.015,
+     "edits": null,
+     "reused_skill": [],
+     "hidden": null
+    },
+    "Solved-Only": {
+     "solved_visible": false,
+     "verified": false,
+     "runs": 151,
+     "wall": 6.036,
+     "edits": null,
+     "reused_skill": [],
+     "hidden": null
+    },
+    "Full-minus-skill": {
+     "solved_visible": false,
+     "verified": false,
+     "runs": 155,
+     "wall": 6.007,
+     "edits": null,
+     "reused_skill": [],
+     "hidden": null
+    }
+   },
+   "G3.L1.spark.51406": {
+    "Full": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 2,
+     "wall": 0.055,
+     "edits": [
+      [
+       "dedup_latest",
+       "sku by rev"
+      ]
+     ],
+     "reused_skill": [
+      "S3"
+     ],
+     "hidden": []
+    },
+    "Memory-Reset": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 9,
+     "wall": 0.221,
+     "edits": [
+      [
+       "dedup_latest",
+       "sku by rev"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 2,
+     "wall": 0.042,
+     "edits": [
+      [
+       "dedup_latest",
+       "sku by rev"
+      ]
+     ],
+     "reused_skill": [
+      "S2"
+     ],
+     "hidden": []
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": true,
+     "runs": 8,
+     "wall": 0.201,
+     "edits": [
+      [
+       "dedup_latest",
+       "sku by rev"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": []
+    }
+   },
+   "G4.L2.spark.51407": {
+    "Full": {
+     "solved_visible": true,
+     "verified": false,
+     "runs": 94,
+     "wall": 5.048,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "reading"
+      ],
+      [
+       "dedup_latest",
+       "event_ts by offset"
+      ],
+      [
+       "filter_file",
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": [
+      "hidden1.csv: output differs",
+      "hidden1.csv: quarantine differs",
+      "hidden2.csv: quarantine differs"
+     ]
+    },
+    "Memory-Reset": {
+     "solved_visible": false,
+     "verified": false,
+     "runs": 131,
+     "wall": 6.016,
+     "edits": null,
+     "reused_skill": [],
+     "hidden": null
+    },
+    "Solved-Only": {
+     "solved_visible": true,
+     "verified": false,
+     "runs": 94,
+     "wall": 4.288,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "reading"
+      ],
+      [
+       "dedup_latest",
+       "event_ts by offset"
+      ],
+      [
+       "filter_file",
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": [
+      "hidden1.csv: output differs",
+      "hidden1.csv: quarantine differs",
+      "hidden2.csv: quarantine differs"
+     ]
+    },
+    "Full-minus-skill": {
+     "solved_visible": true,
+     "verified": false,
+     "runs": 94,
+     "wall": 4.18,
+     "edits": [
+      [
+       "quarantine_invalid",
+       "reading"
+      ],
+      [
+       "dedup_latest",
+       "event_ts by offset"
+      ],
+      [
+       "filter_file",
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "reused_skill": [],
+     "hidden": [
+      "hidden1.csv: output differs",
+      "hidden1.csv: quarantine differs",
+      "hidden2.csv: quarantine differs"
+     ]
+    }
+   }
+  },
+  "aggregate": {
+   "Full": {
+    "verified": 6,
+    "runs": 269,
+    "silent": 1
+   },
+   "Memory-Reset": {
+    "verified": 6,
+    "runs": 488,
+    "silent": 0
+   },
+   "Solved-Only": {
+    "verified": 6,
+    "runs": 274,
+    "silent": 1
+   },
+   "Full-minus-skill": {
+    "verified": 6,
+    "runs": 435,
+    "silent": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,14 @@
+id,order_id,seq,list_price
+r0,k0,9,n/a
+r1,k1,5,13
+r2,k0,6,30
+r3,k1,7,12x
+r4,k2,7,24
+r5,k2,5,n/a
+r6,k0,8,12x
+r7,k2,4,46
+r8,k2,9,-
+
+[{'kind': 'no_error'}, {'kind': 'example_rows', 'cols': ['order_id', 'seq', 'list_price'], 'rows': []}, {'kind': 'row_count', 'n': 0}, {'kind': 'unique', 'col': 'order_id'}, {'kind': 'quarantine_ids', 'id': 'id', 'ids': ['r0', 'r3', 'r8']}]
+{'output_sql': "SELECT `order_id` AS `order_id`, CAST(`seq` AS INT) AS `seq`, CAST(`list_price` AS INT) AS `list_price` FROM (SELECT * FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY `order_id` ORDER BY CAST(`seq` AS INT) DESC) AS __rn FROM raw) WHERE __rn = 1) AS t WHERE (NOT (NOT (TRIM(`order_id`) RLIKE '^[0-9]+$')))", 'quarantine_sql': "SELECT * FROM (SELECT * FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY `order_id` ORDER BY CAST(`seq` AS INT) DESC) AS __rn FROM raw) WHERE __rn = 1) AS t WHERE (NOT (TRIM(`order_id`) RLIKE '^[0-9]+$'))"}
+{'output': [], 'quarantine': [{'id': 'r0', 'order_id': 'k0', 'seq': '9', 'list_price': 'n/a', '__rowid': 0, '__rn': 1}, {'id': 'r3', 'order_id': 'k1', 'seq': '7', 'list_price': '12x', '__rowid': 3, '__rn': 1}, {'id': 'r8', 'order_id': 'k2', 'seq': '9', 'list_price': '-', '__rowid': 8, '__rn': 1}]}

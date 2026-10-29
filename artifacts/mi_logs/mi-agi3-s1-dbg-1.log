@@ -1,0 +1,34 @@
+default id,quantity,unit_cost,total_value,region
+r0,11,31,192,US
+r1,2,43,63,US
+r2,2,12,139,US
+r3,17,38,15,EU
+r4,4,1,128,US
+r5,3,22,165,EU
+r6,10,40,79,EU
+r7,12,"1,5",143,EU
+r8,5,5,45,US
+r9,18,8,31,EU
+r10,9,16,177,EU
+r11,"1,5",-,94,EU
+
+id,msg_id,offset,sku,value,ts
+r0,e0,1,a,8,101
+r1,e1,2,c,1,103
+r2,e2,3,b,5,99
+r3,e3,4,b,2,103
+r4,e4,5,b,3,109
+r5,e5,6,c,7,115
+r6,e6,7,b,2,118
+r7,e7,8,b,3,122
+r8,e8,9,b,7,119
+r9,e9,10,b,9,123
+r10,e10,11,c,5,128
+r11,e11,12,b,2,129
+r4,e4,5,b,3,109
+r5,e5,6,c,7,115
+r6,e6,7,b,2,118
+ {"last_committed_offset": 3}
+manual ['example_rows', 'row_count'] {'ok': False, 'fails': ['hidden1.csv: output differs', 'hidden2.csv: output differs'], 'kind': 'hidden_batches_on_runtime'}
+{'kind': 'example_rows', 'cols': ['sku', 'total'], 'rows': [['b', 28], ['c', 12]]}
+[]
