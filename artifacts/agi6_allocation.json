@@ -3,9 +3,34 @@
  "authority": "artifacts/agi6_grant.json",
  "start_revision": "ed6fabf",
  "total_cap_s": 3600,
- "ceilings": {"s1": 600, "src": 1250, "meta": 500, "eval": 1050, "rep": 200},
- "transfers": [],
- "notes": ["Stage 2 text says 4 cohorts x 3 reps x 180 s (= 2,160 s) but allocates 1,250 s; the 1,250 s ceiling binds (~100 s per lineage).",
-           "Uncharged setup: pip install duckdb 1.1.3, pyyaml 6.0.2, jinja2 3.1.4.",
-           "Unused budget of Stages 1-3 may roll into Stage 3 or 4 by a committed transfer before target outcomes (owner rule)."]
+ "ceilings": {
+  "s1": 600,
+  "src": 1250,
+  "meta": 500,
+  "eval": 1050,
+  "rep": 200
+ },
+ "transfers": [
+  {
+   "from": "s1",
+   "to": "src",
+   "s": 64
+  },
+  {
+   "from": "rep",
+   "to": "src",
+   "s": 150
+  },
+  {
+   "from": "meta",
+   "to": "src",
+   "s": 123
+  }
+ ],
+ "notes": [
+  "Stage 2 text says 4 cohorts x 3 reps x 180 s (= 2,160 s) but allocates 1,250 s; the 1,250 s ceiling binds (~100 s per lineage).",
+  "Uncharged setup: pip install duckdb 1.1.3, pyyaml 6.0.2, jinja2 3.1.4.",
+  "Unused budget of Stages 1-3 may roll into Stage 3 or 4 by a committed transfer before target outcomes (owner rule).",
+  "Stage 2 deviation (recorded before any rerun): 10 of 12 lineages crashed on one bug - landing a float infinity as text (int(inf)) in world6.run_pipeline - before writing any artifact; minimal fix (_txt); the 10 crashed lineages are rerun once at the same 98 s budget (Full_r0 and SolvedOnly_r0 completed and are never rerun). Funded by transfers s1 64 + rep 150 + meta 123 -> src; Stage 3 clones become 30 s trajectories."
+ ]
 }

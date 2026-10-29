@@ -1,0 +1,27 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 1:>                                                          (0 + 1) / 1]                                                                                [Stage 25:>                                                         (0 + 1) / 1]                                                                                Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi6_source.py", line 88, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi6_source.py", line 61, in main
+    caches[p["pid"]] = PR.build_entry(p, live, lin.mem)
+                       ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/procedure6.py", line 315, in build_entry
+    r = live.search(project, mem, mode, sk)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/procedure6.py", line 241, in search
+    r = P6.search(inv, mem.get("de", {}), budget, mode=mode, use_skills=skills == "on", skills_mod=self.proposer,
+                  stall_frac=mem.get("M", {}).get("stall_frac", 0.25))
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py", line 469, in search
+    ev_n = inv.run(n["specs"], prescreen=False)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py", line 165, in run
+    final, per = self.exec(specs, prescreen=prescreen, final_only=False)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py", line 118, in exec
+    final, per = W6.run_pipeline(self.stages, specs, self.rows if rows is None else rows, self.state, fast=prescreen)
+                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/world6.py", line 218, in run_pipeline
+    cur = [{c: ("" if v is None else (str(int(v)) if isinstance(v, float) and v == int(v) else str(v))) for c, v in r.items()}
+                                                                                   ~~~^^^
+OverflowError: cannot convert float infinity to integer

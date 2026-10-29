@@ -66,6 +66,15 @@ def dp_ref(dp, nm):
             "pit": (nm["fts"], ["cast_int", ["col", nm["lts"]]], "le", "lt")}[dp]
 
 
+def _txt(v):
+    """Land a typed value as text for the next stage (non-finite reals stay textual: 'inf' / 'nan')."""
+    if v is None:
+        return ""
+    if isinstance(v, float) and v == v and v not in (float("inf"), float("-inf")) and v == int(v):
+        return str(int(v))
+    return str(v)
+
+
 def _and_all(fs):
     out = None
     for f in fs:
@@ -215,7 +224,7 @@ def run_pipeline(stages, specs, rows, state, engines=None, fast=False):
         res_all.append(res)
         if res["rejects"] is not None:
             rejects += res["rejects"]
-        cur = [{c: ("" if v is None else (str(int(v)) if isinstance(v, float) and v == int(v) else str(v))) for c, v in r.items()}
+        cur = [{c: _txt(v) for c, v in r.items()}
                for r in res["clean"]]
         cur = [dict(r, id=r.get("id", f"g{i}")) for i, r in enumerate(cur)] if k < len(stages) - 1 else cur
     final = dict(clean=res_all[-1]["clean"], rejects=rejects if any(r["rejects"] is not None for r in res_all) else None)
@@ -571,7 +580,7 @@ def evaluate6(project, files):
                 if res["rejects"] is not None:
                     any_q = True
                     rej += res["rejects"]
-                cur = [{c: ("" if v is None else (str(int(v)) if isinstance(v, float) and v == int(v) else str(v))) for c, v in r.items()}
+                cur = [{c: _txt(v) for c, v in r.items()}
                        for r in res["clean"]]
         except W.RunError as e:
             fails.append(f"{b}: runtime {e.cls}")

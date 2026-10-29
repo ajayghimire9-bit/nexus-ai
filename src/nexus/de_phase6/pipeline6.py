@@ -125,7 +125,7 @@ class Inv6:
             if k:
                 try:
                     _, per = self.exec(list(specs[:k]) + list(specs[k:]), prescreen=True, final_only=False)
-                    rows = [{c: ("" if v is None else (str(int(v)) if isinstance(v, float) and v == int(v) else str(v))) for c, v in r.items()}
+                    rows = [{c: W6._txt(v) for c, v in r.items()}
                             for r in per[k - 1]["clean"]]
                 except W.RunError:
                     rows = []
