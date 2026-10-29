@@ -295,7 +295,7 @@ Attribution:
 * Humans (Claude) supplied the language, all primitives and the seed.
 * The search generated only the duplication: a helper extraction plus a crossover splice.
 * Novelty level: **none beyond "a new program for this task distribution"**. Not a new learning method; not materially
-  different from parameter tuning; not research-novel. The unused-helper-free structure does not change this assessment.
+  different from parameter tuning; not research-novel.
 
 ### 1.4 Why discovery does not yet improve the learner (diagnosis)
 
