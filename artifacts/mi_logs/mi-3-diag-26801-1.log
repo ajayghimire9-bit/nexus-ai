@@ -1,0 +1,21 @@
+REFERENCE modes 2 regs 1 base ['RELEASE', 'ADD', 'FLUSH', 'CLOSE', 'VOID']
+  (0,AMEND) -> 1  lam []  upd ['(acc + 3)']
+  (0,RELEASE) -> 0  lam [('voided', ('reg', 0), ('cur', None))]  upd ['(acc + 3)']
+  (1,ADD) -> 0  lam []  upd ['x']
+  (1,AMEND) -> 1  lam []  upd ['(acc + x)']
+  (1,VOID) -> 1  lam [('total', ('reg', 0), None)]  upd ['0']
+train events 120 keys 20 kinds {'RELEASE': 108, 'VOID': 6, 'FLUSH': 2, 'CLOSE': 4}
+FULL_SPACE {'queries': 492, 'outcome': 'accepted', 'cpu_s': 0.038, 'searches': ['solved'], 'explained': 1.0}
+ACCEPTED n 1 regs [{'field': None, 'init': 0, 'upd': {"(0, 'RELEASE')": '(acc + 3)'}}]
+scope {"label": "TESTED_WITHIN_STATED_LIMITS", "alphabet": ["CLOSE", "FLUSH", "RELEASE", "VOID"], "hyp_modes": 1, "hyp_regs": 1, "exhaustive": {"horizon": 4, "words": 256, "value_draws": "1 generic"}, "assumptions": ["per-key machines; behaviour depends on the kind sequence and register values", "register updates affine in (acc, x) (the learner's hypothesis class)", "only kinds observed at build time"], "structural": {"tests": 20, "depth0_tests": 4, "cap": 700, "loaded_states": 2, "flush_paths": 1, "cap_reached": false}, "queries": 280, "runs": {"exhaustive": 256, "depth0": 4, "depth1": 16, "boundar
+DIVERGE event 40 key k5003 history [('ADD', 32.38)]
+   want [('q:invalid', None, None)]
+   got  [('?unknown', None, None)]
+DIVERGE event 61 key k5057 history [('ADD', 97.71)]
+   want [('q:invalid', None, None)]
+   got  [('?unknown', None, None)]
+DIVERGE event 67 key k5070 history [('RELEASE', 71.94), ('ADD', 97.26)]
+   want [('q:invalid', None, None)]
+   got  [('?unknown', None, None)]
+diverging events 31 of 641
+train per-key kind sequences (top 12): [(('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE'), 3), (('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE'), 3), (('RELEASE', 'VOID', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'CLOSE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'CLOSE', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'CLOSE', 'VOID', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'FLUSH', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'RELEASE', 'VOID', 'RELEASE', 'RELEASE'), 1), (('RELEASE', 'RELEASE', 'RELEASE', 'CLOSE', 'RELEASE'), 1), (('RELEASE', 'VOID', 'RELEASE', 'RELEASE'), 1)]
