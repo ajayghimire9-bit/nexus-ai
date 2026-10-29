@@ -1,0 +1,5086 @@
+{
+"name": "Full_r1",
+"final": true,
+"stop_reason": "budget",
+"elapsed": 41.47,
+"state": {
+"DE": {
+"w": {
+"diff:dup_keys": {
+"try_parse": -7.5,
+"default_fill": -9.0,
+"filter_file": -2.0,
+"dedup_latest": 46.0,
+"real_div": -0.5,
+"round2": -1.5,
+"quarantine_invalid": -5.0,
+"dedup_first": -1.5,
+"zero_guard": -2.0,
+"normalize_text": -0.5
+},
+"diff:extra_rows": {
+"try_parse": -65.5,
+"default_fill": -77.0,
+"filter_file": -32.5,
+"dedup_latest": -2.5,
+"quarantine_invalid": -19.5,
+"real_div": 0.0,
+"round2": -10.0,
+"dedup_first": -1.5,
+"zero_guard": -15.5,
+"normalize_text": -17.5,
+"exclude_value": 2.5
+},
+"fail:row_count": {
+"try_parse": -71.0,
+"default_fill": -85.0,
+"filter_file": -57.5,
+"dedup_latest": -5.5,
+"quarantine_invalid": -23.5,
+"real_div": 0.0,
+"round2": -10.5,
+"dedup_first": -1.5,
+"zero_guard": -17.0,
+"normalize_text": -20.0,
+"exclude_value": 2.5
+},
+"fail:unique": {
+"try_parse": -7.5,
+"default_fill": -9.0,
+"filter_file": -2.0,
+"dedup_latest": 46.0,
+"real_div": -0.5,
+"round2": -1.5,
+"quarantine_invalid": -5.0,
+"dedup_first": -1.5,
+"zero_guard": -2.0,
+"normalize_text": -0.5
+},
+"diff:fraction_lost": {
+"real_div": 14.0,
+"round2": -2.0,
+"try_parse": -52.5,
+"default_fill": -60.5,
+"zero_guard": -25.0,
+"filter_file": -35.5,
+"dedup_latest": 3.0,
+"quarantine_invalid": -21.5,
+"dedup_first": -1.5,
+"normalize_text": -12.5,
+"exclude_value": -3.0
+},
+"fail:example_rows": {
+"real_div": 12.5,
+"round2": -8.0,
+"try_parse": -84.0,
+"default_fill": -93.5,
+"zero_guard": -32.0,
+"filter_file": -82.5,
+"normalize_text": -29.0,
+"dedup_latest": -22.0,
+"quarantine_invalid": -34.0,
+"dedup_first": -0.5,
+"exclude_value": -15.0
+},
+"diff:text_value": {
+"default_fill": -19.5,
+"normalize_text": -15.0,
+"try_parse": -24.0,
+"round2": -2.5,
+"zero_guard": -9.0,
+"filter_file": -10.0,
+"exclude_value": -1.0,
+"dedup_latest": 1.5,
+"real_div": 3.0,
+"quarantine_invalid": -9.5
+},
+"fail:quarantine_ids": {
+"dedup_latest": -8.5,
+"quarantine_invalid": -23.5,
+"real_div": -1.5,
+"round2": -7.0,
+"dedup_first": 0.5,
+"zero_guard": -9.0,
+"try_parse": -35.5,
+"default_fill": -48.5,
+"normalize_text": -18.0,
+"filter_file": -31.0,
+"exclude_value": -10.5
+},
+"diff:missing_rows": {
+"default_fill": -31.5,
+"exclude_value": -7.5,
+"dedup_latest": -1.0,
+"normalize_text": -12.0,
+"round2": -9.5,
+"zero_guard": -12.0,
+"filter_file": -39.5,
+"try_parse": -24.5,
+"real_div": -1.5,
+"quarantine_invalid": -10.0
+},
+"diff:value": {
+"default_fill": -13.0,
+"filter_file": -15.5,
+"dedup_latest": -11.5,
+"exclude_value": -11.0,
+"normalize_text": -4.5,
+"dedup_first": 0.0,
+"zero_guard": -2.0,
+"quarantine_invalid": -4.5,
+"try_parse": -10.5,
+"round2": 0.5,
+"real_div": 2.0
+},
+"diff:precision": {
+"zero_guard": -0.5,
+"round2": -0.5,
+"quarantine_invalid": -1.5,
+"try_parse": -1.5,
+"default_fill": -2.0
+},
+"diff:too_few_rows": {
+"filter_file": -21.0,
+"try_parse": -5.5,
+"default_fill": -8.0,
+"normalize_text": -2.5,
+"zero_guard": -1.5,
+"quarantine_invalid": -3.0,
+"round2": -0.5
+},
+"diff:expect_null": {
+"real_div": 1.0,
+"round2": 1.0,
+"default_fill": 1.0,
+"dedup_latest": 6.5
+},
+"diff:got_null": {
+"dedup_latest": 2.5
+},
+"err:DIVIDE_BY_ZERO": {
+"try_parse": -2.0,
+"quarantine_invalid": -2.0,
+"default_fill": -2.0
+},
+"fail:no_error": {
+"try_parse": -2.0,
+"quarantine_invalid": -2.0,
+"default_fill": -2.0
+}
+},
+"skills": {
+"S0": {
+"ops": [
+"dedup_latest",
+"quarantine_invalid",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"params_example": [
+"sku by rev",
+"price",
+"",
+"unit_price"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F3.k3.sqlite.54950",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F1.k2.sqlite.54852",
+"F2.k2.sqlite.54853"
+],
+"admission": {
+"runs": [
+1595,
+2001
+],
+"solved": [
+0,
+1
+]
+},
+"birth_round": 2,
+"uses": 5
+},
+"S1": {
+"ops": [
+"default_fill",
+"default_fill",
+"filter_file",
+"dedup_latest"
+],
+"pre": [
+"diff:missing_rows",
+"diff:value",
+"fail:example_rows"
+],
+"params_example": [
+"reading=0",
+"zone='UNKNOWN'",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+"event_id by reading"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F4.k3.sqlite.54951",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F1.k2.sqlite.54852",
+"F2.k2.sqlite.54853"
+],
+"admission": {
+"runs": [
+1595,
+2065
+],
+"solved": [
+0,
+1
+]
+},
+"birth_round": 2,
+"uses": 1
+},
+"S2": {
+"ops": [
+"real_div",
+"round2",
+"default_fill"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"params_example": [
+"",
+"unit_price",
+"region='UNKNOWN'"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F5.k2.sqlite.54606",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F1.k2.sqlite.54852",
+"F2.k2.sqlite.54853"
+],
+"admission": {
+"runs": [
+1595,
+2015
+],
+"solved": [
+0,
+1
+]
+},
+"birth_round": 2,
+"uses": 4
+}
+},
+"P": [
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:value",
+"fail:unique"
+],
+"gain": 1.1071,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "gross by n_items",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "gross by list_price",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "gross by log_pos",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "gross by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "list_price by gross",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "list_price by log_pos",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54981",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "list_price by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k1.sqlite.54618",
+"kind": "refuted_submission",
+"edits": [
+[
+"try_parse",
+"seq"
+]
+],
+"choices": [],
+"evidence": "independent hidden-batch evaluation (source feedback)"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "quantity by ts",
+"stage": 1,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.1384,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "filter_file",
+"prm": "ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0833,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "filter_file",
+"prm": "ts gt [\"file\", \"watermark.json\", \"watermark\"]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"diff:fraction_lost"
+],
+"gain": 0.0158,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "filter_file",
+"prm": "ts ge [\"file\", \"watermark.json\", \"watermark\"]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0857,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:fraction_lost",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.15,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "price by ts",
+"stage": 1,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.0551,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k4.spark.54626",
+"kind": "partial",
+"op": "filter_file",
+"prm": "quantity ge [\"file\", \"watermark.json\", \"allowed_lateness\"]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.7822,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "quarantine_invalid",
+"prm": "n_items",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:quarantine_ids"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:fraction_lost",
+"diff:too_few_rows",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"gain": 1.15,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"gain": 1.15,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "quarantine_invalid",
+"prm": "n_items",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:quarantine_ids"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:fraction_lost",
+"diff:missing_rows",
+"diff:too_few_rows",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.075,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54628",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.075,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by total_value",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.125,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by price",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"diff:text_value",
+"fail:unique"
+],
+"gain": 0.925,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.125,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.125,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by n_items",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by price",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0417,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0417,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "price by n_items",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "price by total_value",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "price by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0417,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F4.k4.sqlite.54630",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "price by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0417,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "quantity by unit_cost",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.98,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "quantity by log_pos",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.98,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "quantity by event_ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.98,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "amount by quantity",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.86,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "amount by unit_cost",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.86,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "amount by log_pos",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.86,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "amount by event_ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.86,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by quantity",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8957,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by amount",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.8957,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by log_pos",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0357,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F1.k4.spark.54632",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by event_ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0357,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54634",
+"kind": "partial",
+"op": "default_fill",
+"prm": "region='OTHER'",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:missing_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:text_value"
+],
+"gain": 0.0857,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54634",
+"kind": "partial",
+"op": "round2",
+"prm": "unit_price",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:missing_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:fraction_lost"
+],
+"gain": 0.0857,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54634",
+"kind": "partial",
+"op": "default_fill",
+"prm": "region='OTHER'",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:missing_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:text_value"
+],
+"gain": 0.0857,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54634",
+"kind": "partial",
+"op": "default_fill",
+"prm": "region='OTHER'",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:text_value"
+],
+"gain": 0.0857,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "refuted_submission",
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"filter_file",
+"total_value gt [\"file\", \"watermark.json\", \"allowed_lateness\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"choices": [],
+"evidence": "independent hidden-batch evaluation (source feedback)"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "account_id by version",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"diff:value",
+"fail:unique"
+],
+"gain": 1.1667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "account_id by unit_cost",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.9429,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "account_id by quantity",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.9353,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "account_id by total_value",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.9353,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "account_id by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"diff:value",
+"fail:unique"
+],
+"gain": 1.1667,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "quantity by version",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:value"
+],
+"gain": 0.1021,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "account_id<>'k0'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0833,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "account_id<>'k1'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.85,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "account_id<>'k2'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0501,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54635",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "account_id<>'k3'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0502,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "refuted_submission",
+"edits": [
+[
+"default_fill",
+"zone='OTHER'"
+],
+[
+"filter_file",
+"recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"choices": [],
+"evidence": "independent hidden-batch evaluation (source feedback)"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "zone<>' '",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.1,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "zone<>'US'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.775,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "units by total_value",
+"stage": 1,
+"pre": [
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.9375,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "units by price",
+"stage": 1,
+"pre": [
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.95,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k2.spark.54638",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "units by recorded_at",
+"stage": 1,
+"pre": [
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.95,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "quarantine_invalid",
+"prm": "delta",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"diff:value",
+"fail:row_count"
+],
+"gain": 1.0459,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "exclude_value",
+"prm": "account_id<>'c'",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.8292,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "normalize_text",
+"prm": "region",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0625,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "filter_file",
+"prm": "event_ts ge [\"file\", \"watermark.json\", \"watermark\"]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.8292,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "filter_file",
+"prm": "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.8292,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "filter_file",
+"prm": "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+"stage": 2,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 0.8292,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F5.k3.sqlite.54640",
+"kind": "partial",
+"op": "default_fill",
+"prm": "region='OTHER'",
+"stage": 3,
+"pre": [
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"fixes": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"gain": 1.0625,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.9542,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "n_items by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 0.9542,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by n_items",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "total_value by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by offset",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0312,
+"evidence": "synthesis checks + no loss on the held-back split"
+},
+{
+"project": "F6.k3.spark.54641",
+"kind": "partial",
+"op": "dedup_latest",
+"prm": "unit_cost by ts",
+"stage": 1,
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:text_value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"fixes": [
+"diff:dup_keys",
+"fail:unique"
+],
+"gain": 1.0312,
+"evidence": "synthesis checks + no loss on the held-back split"
+}
+],
+"prefs": {
+"filter_file:absent": 1.75,
+"filter_file:gt:sub": -0.75,
+"filter_file:ge:sub": 0.75
+},
+"next_id": 3
+},
+"M": [
+[
+"search",
+{
+"localize": "policy",
+"decompose": "whole",
+"max_depth": 6,
+"stall_frac": 0.2,
+"cross_engine": "sqlite_first"
+}
+],
+[
+"memory",
+{
+"p_priority": 0.5,
+"skill_match": 0.5,
+"max_skills": 12,
+"prune_unused": 0
+}
+],
+[
+"learn",
+{
+"lr": 1.0,
+"neg_lr": 0.5,
+"partial_lr": 0.5
+}
+],
+[
+"ambiguity",
+{
+"mode": "pref",
+"margin": 1.0
+}
+],
+[
+"admit",
+{
+"speedup": 0.2
+}
+],
+[
+"curriculum",
+{
+"rule": "frontier",
+"eps": 0.2
+}
+],
+[
+"schedule",
+{
+"period": 6
+}
+]
+]
+},
+"schedule": [
+[
+"F4",
+1,
+"sqlite",
+54600
+],
+[
+"F2",
+1,
+"sqlite",
+54601
+],
+[
+"F3",
+1,
+"spark",
+54602
+],
+[
+"F4",
+1,
+"sqlite",
+54603
+],
+[
+"F5",
+1,
+"sqlite",
+54604
+],
+[
+"F6",
+1,
+"spark",
+54605
+],
+[
+"F3",
+3,
+"sqlite",
+54950
+],
+[
+"F4",
+3,
+"sqlite",
+54951
+],
+[
+"F3",
+4,
+"sqlite",
+54956
+],
+[
+"F4",
+4,
+"sqlite",
+54957
+],
+[
+"F5",
+2,
+"sqlite",
+54606
+],
+[
+"F2",
+1,
+"sqlite",
+54607
+],
+[
+"F1",
+2,
+"spark",
+54608
+],
+[
+"F4",
+1,
+"sqlite",
+54609
+],
+[
+"F5",
+1,
+"sqlite",
+54610
+],
+[
+"F6",
+1,
+"spark",
+54611
+],
+[
+"F3",
+1,
+"sqlite",
+54962
+],
+[
+"F4",
+1,
+"sqlite",
+54963
+],
+[
+"F3",
+2,
+"sqlite",
+54968
+],
+[
+"F4",
+2,
+"sqlite",
+54969
+],
+[
+"F1",
+2,
+"sqlite",
+54612
+],
+[
+"F2",
+2,
+"sqlite",
+54613
+],
+[
+"F3",
+3,
+"spark",
+54614
+],
+[
+"F4",
+2,
+"sqlite",
+54615
+],
+[
+"F5",
+2,
+"sqlite",
+54616
+],
+[
+"F6",
+2,
+"spark",
+54617
+],
+[
+"F3",
+3,
+"sqlite",
+54974
+],
+[
+"F4",
+3,
+"sqlite",
+54975
+],
+[
+"F3",
+4,
+"sqlite",
+54980
+],
+[
+"F4",
+4,
+"sqlite",
+54981
+],
+[
+"F1",
+1,
+"sqlite",
+54618
+],
+[
+"F2",
+2,
+"sqlite",
+54619
+],
+[
+"F3",
+1,
+"spark",
+54620
+],
+[
+"F4",
+2,
+"sqlite",
+54621
+],
+[
+"F5",
+3,
+"sqlite",
+54622
+],
+[
+"F6",
+2,
+"spark",
+54623
+],
+[
+"F3",
+1,
+"sqlite",
+54986
+],
+[
+"F4",
+1,
+"sqlite",
+54987
+],
+[
+"F1",
+2,
+"sqlite",
+54990
+],
+[
+"F2",
+2,
+"sqlite",
+54991
+],
+[
+"F1",
+1,
+"sqlite",
+54624
+],
+[
+"F6",
+4,
+"sqlite",
+54625
+],
+[
+"F6",
+4,
+"spark",
+54626
+],
+[
+"F4",
+3,
+"sqlite",
+54627
+],
+[
+"F5",
+3,
+"sqlite",
+54628
+],
+[
+"F6",
+2,
+"spark",
+54629
+],
+[
+"F4",
+4,
+"sqlite",
+54630
+],
+[
+"F2",
+3,
+"sqlite",
+54631
+],
+[
+"F1",
+4,
+"spark",
+54632
+],
+[
+"F4",
+4,
+"sqlite",
+54633
+],
+[
+"F5",
+3,
+"sqlite",
+54634
+],
+[
+"F6",
+3,
+"spark",
+54635
+],
+[
+"F1",
+1,
+"sqlite",
+54636
+],
+[
+"F2",
+3,
+"sqlite",
+54637
+],
+[
+"F5",
+2,
+"spark",
+54638
+],
+[
+"F4",
+4,
+"sqlite",
+54639
+],
+[
+"F5",
+3,
+"sqlite",
+54640
+],
+[
+"F6",
+3,
+"spark",
+54641
+]
+],
+"all_projects": [
+[
+"F4",
+1,
+"sqlite",
+54600
+],
+[
+"F2",
+1,
+"sqlite",
+54601
+],
+[
+"F3",
+1,
+"spark",
+54602
+],
+[
+"F4",
+1,
+"sqlite",
+54603
+],
+[
+"F5",
+1,
+"sqlite",
+54604
+],
+[
+"F6",
+1,
+"spark",
+54605
+],
+[
+"rollout",
+"F3",
+3,
+"sqlite",
+54950
+],
+[
+"rollout",
+"F4",
+3,
+"sqlite",
+54951
+],
+[
+"rollout",
+"F3",
+4,
+"sqlite",
+54956
+],
+[
+"rollout",
+"F4",
+4,
+"sqlite",
+54957
+],
+[
+"F5",
+2,
+"sqlite",
+54606
+],
+[
+"F2",
+1,
+"sqlite",
+54607
+],
+[
+"F1",
+2,
+"spark",
+54608
+],
+[
+"F4",
+1,
+"sqlite",
+54609
+],
+[
+"F5",
+1,
+"sqlite",
+54610
+],
+[
+"F6",
+1,
+"spark",
+54611
+],
+[
+"rollout",
+"F3",
+1,
+"sqlite",
+54962
+],
+[
+"rollout",
+"F4",
+1,
+"sqlite",
+54963
+],
+[
+"rollout",
+"F3",
+2,
+"sqlite",
+54968
+],
+[
+"rollout",
+"F4",
+2,
+"sqlite",
+54969
+],
+[
+"F1",
+2,
+"sqlite",
+54612
+],
+[
+"F2",
+2,
+"sqlite",
+54613
+],
+[
+"F3",
+3,
+"spark",
+54614
+],
+[
+"F4",
+2,
+"sqlite",
+54615
+],
+[
+"F5",
+2,
+"sqlite",
+54616
+],
+[
+"F6",
+2,
+"spark",
+54617
+],
+[
+"rollout",
+"F3",
+3,
+"sqlite",
+54974
+],
+[
+"rollout",
+"F4",
+3,
+"sqlite",
+54975
+],
+[
+"rollout",
+"F3",
+4,
+"sqlite",
+54980
+],
+[
+"rollout",
+"F4",
+4,
+"sqlite",
+54981
+],
+[
+"F1",
+1,
+"sqlite",
+54618
+],
+[
+"F2",
+2,
+"sqlite",
+54619
+],
+[
+"F3",
+1,
+"spark",
+54620
+],
+[
+"F4",
+2,
+"sqlite",
+54621
+],
+[
+"F5",
+3,
+"sqlite",
+54622
+],
+[
+"F6",
+2,
+"spark",
+54623
+],
+[
+"rollout",
+"F3",
+1,
+"sqlite",
+54986
+],
+[
+"rollout",
+"F4",
+1,
+"sqlite",
+54987
+],
+[
+"rollout",
+"F1",
+2,
+"sqlite",
+54990
+],
+[
+"rollout",
+"F2",
+2,
+"sqlite",
+54991
+],
+[
+"F1",
+1,
+"sqlite",
+54624
+],
+[
+"F6",
+4,
+"sqlite",
+54625
+],
+[
+"F6",
+4,
+"spark",
+54626
+],
+[
+"F4",
+3,
+"sqlite",
+54627
+],
+[
+"F5",
+3,
+"sqlite",
+54628
+],
+[
+"F6",
+2,
+"spark",
+54629
+],
+[
+"F4",
+4,
+"sqlite",
+54630
+],
+[
+"F2",
+3,
+"sqlite",
+54631
+],
+[
+"F1",
+4,
+"spark",
+54632
+],
+[
+"F4",
+4,
+"sqlite",
+54633
+],
+[
+"F5",
+3,
+"sqlite",
+54634
+],
+[
+"F6",
+3,
+"spark",
+54635
+],
+[
+"F1",
+1,
+"sqlite",
+54636
+],
+[
+"F2",
+3,
+"sqlite",
+54637
+],
+[
+"F5",
+2,
+"spark",
+54638
+],
+[
+"F4",
+4,
+"sqlite",
+54639
+],
+[
+"F5",
+3,
+"sqlite",
+54640
+],
+[
+"F6",
+3,
+"spark",
+54641
+]
+],
+"rows": [
+{
+"tid": "F4.k1.sqlite.54600",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54600,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 796,
+"wall": 0.267,
+"edits": null,
+"t": 0.27,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k1.sqlite.54601",
+"family": "F2",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54601,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 145,
+"wall": 0.052,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.33,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k1.spark.54602",
+"family": "F3",
+"k": 1,
+"runtime": "spark",
+"seed": 54602,
+"outcome": "abstain_ambiguous",
+"status": "ambiguous",
+"solved": false,
+"silent": false,
+"runs": 9,
+"wall": 3.157,
+"edits": [
+[
+"dedup_latest",
+"sku by seq"
+]
+],
+"t": 3.49,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k1.sqlite.54603",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54603,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 265,
+"wall": 0.069,
+"edits": [
+[
+"dedup_latest",
+"msg_id by qty"
+],
+[
+"filter_file",
+"log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+]
+],
+"t": 3.56,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k1.sqlite.54604",
+"family": "F5",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54604,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 169,
+"wall": 0.072,
+"edits": [
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 3.64,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k1.spark.54605",
+"family": "F6",
+"k": 1,
+"runtime": "spark",
+"seed": 54605,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 120,
+"wall": 1.015,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 4.94,
+"phase": "source",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k3.sqlite.54950",
+"family": "F3",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54950,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 191,
+"wall": 0.049,
+"edits": [
+[
+"dedup_latest",
+"sku by rev"
+],
+[
+"quarantine_invalid",
+"price"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.05,
+"phase": "rollout:current",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k3.sqlite.54951",
+"family": "F4",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54951,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 214,
+"wall": 0.049,
+"edits": [
+[
+"default_fill",
+"reading=0"
+],
+[
+"default_fill",
+"zone='UNKNOWN'"
+],
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_latest",
+"event_id by reading"
+]
+],
+"t": 0.1,
+"phase": "rollout:current",
+"n_P": 12,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k4.sqlite.54956",
+"family": "F3",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54956,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 391,
+"wall": 0.106,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"dedup_latest",
+"account_id by rev"
+],
+[
+"filter_file",
+"recorded_at gt [\"file\", \"watermark.json\", \"watermark\"]"
+]
+],
+"t": 0.11,
+"phase": "rollout:current",
+"n_P": 23,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k4.sqlite.54957",
+"family": "F4",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54957,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 788,
+"wall": 0.345,
+"edits": null,
+"t": 0.47,
+"phase": "rollout:current",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k2.sqlite.54606",
+"family": "F5",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54606,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 167,
+"wall": 0.091,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 7.48,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k1.sqlite.54607",
+"family": "F2",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54607,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 74,
+"wall": 0.014,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 7.5,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k2.spark.54608",
+"family": "F1",
+"k": 2,
+"runtime": "spark",
+"seed": 54608,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 116,
+"wall": 1.136,
+"edits": [
+[
+"quarantine_invalid",
+"quantity"
+],
+[
+"default_fill",
+"zone='UNKNOWN'"
+]
+],
+"t": 8.88,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k1.sqlite.54609",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54609,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 95,
+"wall": 0.019,
+"edits": [
+[
+"filter_file",
+"log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_first",
+"event_id"
+]
+],
+"t": 8.91,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k1.sqlite.54610",
+"family": "F5",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54610,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 115,
+"wall": 0.027,
+"edits": [
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 8.94,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k1.spark.54611",
+"family": "F6",
+"k": 1,
+"runtime": "spark",
+"seed": 54611,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 156,
+"wall": 0.831,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 10.12,
+"phase": "source",
+"n_P": 35,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k1.sqlite.54962",
+"family": "F3",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54962,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 43,
+"wall": 0.023,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+]
+],
+"t": 0.04,
+"phase": "rollout:current",
+"n_P": 35,
+"n_skills": 3,
+"reused": [
+"S0"
+]
+},
+{
+"tid": "F4.k1.sqlite.54963",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54963,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 84,
+"wall": 0.067,
+"edits": [
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_first",
+"event_id"
+]
+],
+"t": 0.11,
+"phase": "rollout:current",
+"n_P": 35,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k2.sqlite.54968",
+"family": "F3",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54968,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 120,
+"wall": 0.031,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.03,
+"phase": "rollout:current",
+"n_P": 35,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k2.sqlite.54969",
+"family": "F4",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54969,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 379,
+"wall": 0.111,
+"edits": [
+[
+"dedup_latest",
+"event_id by n_items"
+],
+[
+"default_fill",
+"list_price=0"
+],
+[
+"filter_file",
+"log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+]
+],
+"t": 0.15,
+"phase": "rollout:current",
+"n_P": 35,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k2.sqlite.54612",
+"family": "F1",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54612,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 213,
+"wall": 0.055,
+"edits": [
+[
+"quarantine_invalid",
+"quantity"
+],
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 15.87,
+"phase": "source",
+"n_P": 35,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54613",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54613,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 73,
+"wall": 0.015,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"n_items=0"
+]
+],
+"t": 15.89,
+"phase": "source",
+"n_P": 35,
+"n_skills": 3,
+"reused": [
+"S2"
+]
+},
+{
+"tid": "F3.k3.spark.54614",
+"family": "F3",
+"k": 3,
+"runtime": "spark",
+"seed": 54614,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 266,
+"wall": 1.895,
+"edits": [
+[
+"dedup_latest",
+"sku by rev"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"zero_guard",
+""
+]
+],
+"t": 17.92,
+"phase": "source",
+"n_P": 48,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k2.sqlite.54615",
+"family": "F4",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54615,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 987,
+"wall": 0.304,
+"edits": null,
+"t": 18.23,
+"phase": "source",
+"n_P": 60,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F5.k2.sqlite.54616",
+"family": "F5",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54616,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 228,
+"wall": 0.068,
+"edits": [
+[
+"default_fill",
+"zone='UNKNOWN'"
+],
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 18.3,
+"phase": "source",
+"n_P": 60,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k2.spark.54617",
+"family": "F6",
+"k": 2,
+"runtime": "spark",
+"seed": 54617,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 230,
+"wall": 0.964,
+"edits": [
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"zero_guard",
+""
+]
+],
+"t": 19.58,
+"phase": "source",
+"n_P": 73,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k3.sqlite.54974",
+"family": "F3",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54974,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 237,
+"wall": 0.051,
+"edits": [
+[
+"dedup_latest",
+"sku by seq"
+],
+[
+"filter_file",
+"event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.06,
+"phase": "rollout:current",
+"n_P": 73,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k3.sqlite.54975",
+"family": "F4",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54975,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 840,
+"wall": 0.501,
+"edits": null,
+"t": 0.56,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k4.sqlite.54980",
+"family": "F3",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54980,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 264,
+"wall": 0.076,
+"edits": [
+[
+"dedup_latest",
+"sku by rev"
+],
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"default_fill",
+"list_price=0"
+],
+[
+"real_div",
+""
+]
+],
+"t": 0.09,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k4.sqlite.54981",
+"family": "F4",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54981,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 671,
+"wall": 0.287,
+"edits": null,
+"t": 0.38,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k1.sqlite.54618",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54618,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 58,
+"wall": 0.01,
+"edits": [
+[
+"try_parse",
+"seq"
+]
+],
+"t": 24.71,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54619",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54619,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 193,
+"wall": 0.111,
+"edits": [
+[
+"quarantine_invalid",
+"n_items"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 24.82,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k1.spark.54620",
+"family": "F3",
+"k": 1,
+"runtime": "spark",
+"seed": 54620,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 45,
+"wall": 0.445,
+"edits": [
+[
+"dedup_latest",
+"account_id by seq"
+]
+],
+"t": 25.4,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": [
+"S0"
+]
+},
+{
+"tid": "F4.k2.sqlite.54621",
+"family": "F4",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54621,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 118,
+"wall": 0.049,
+"edits": [
+[
+"default_fill",
+"delta=0"
+],
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_first",
+"msg_id"
+],
+[
+"quarantine_invalid",
+"delta"
+]
+],
+"t": 25.45,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F5.k3.sqlite.54622",
+"family": "F5",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54622,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 652,
+"wall": 0.404,
+"edits": [
+[
+"filter_file",
+"recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"zone='OTHER'"
+]
+],
+"t": 25.86,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k2.spark.54623",
+"family": "F6",
+"k": 2,
+"runtime": "spark",
+"seed": 54623,
+"outcome": "submitted",
+"status": "resolved",
+"solved": true,
+"silent": false,
+"runs": 194,
+"wall": 0.516,
+"edits": [
+[
+"default_fill",
+"region='OTHER'"
+],
+[
+"filter_file",
+"ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 26.51,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k1.sqlite.54986",
+"family": "F3",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54986,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 107,
+"wall": 0.044,
+"edits": [
+[
+"dedup_latest",
+"order_id by rev"
+]
+],
+"t": 0.05,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": [
+"S0"
+]
+},
+{
+"tid": "F4.k1.sqlite.54987",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54987,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 231,
+"wall": 0.152,
+"edits": [
+[
+"dedup_latest",
+"msg_id by n_items"
+],
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+]
+],
+"t": 0.21,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k2.sqlite.54990",
+"family": "F1",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54990,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 78,
+"wall": 0.037,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"unit_cost=0"
+]
+],
+"t": 0.05,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": [
+"S2"
+]
+},
+{
+"tid": "F2.k2.sqlite.54991",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54991,
+"outcome": "submitted",
+"status": "resolved",
+"solved": true,
+"silent": false,
+"runs": 182,
+"wall": 0.079,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"filter_file",
+"event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 0.13,
+"phase": "rollout:current",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k1.sqlite.54624",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54624,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 46,
+"wall": 0.029,
+"edits": [
+[
+"default_fill",
+"delta=0"
+],
+[
+"quarantine_invalid",
+"delta"
+]
+],
+"t": 34.35,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k4.sqlite.54625",
+"family": "F6",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54625,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 246,
+"wall": 0.194,
+"edits": [
+[
+"default_fill",
+"market='OTHER'"
+],
+[
+"filter_file",
+"ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"dedup_first",
+"msg_id"
+],
+[
+"quarantine_invalid",
+"delta"
+]
+],
+"t": 34.57,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k4.spark.54626",
+"family": "F6",
+"k": 4,
+"runtime": "spark",
+"seed": 54626,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 1189,
+"wall": 0.574,
+"edits": null,
+"t": 35.16,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k3.sqlite.54627",
+"family": "F4",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54627,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 838,
+"wall": 0.378,
+"edits": [
+[
+"dedup_latest",
+"event_id by qty"
+],
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 35.54,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F5.k3.sqlite.54628",
+"family": "F5",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54628,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 613,
+"wall": 0.345,
+"edits": null,
+"t": 35.89,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k2.spark.54629",
+"family": "F6",
+"k": 2,
+"runtime": "spark",
+"seed": 54629,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 103,
+"wall": 0.614,
+"edits": [
+[
+"filter_file",
+"event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"quarantine_invalid",
+"value"
+]
+],
+"t": 36.67,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k4.sqlite.54630",
+"family": "F4",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54630,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 609,
+"wall": 0.314,
+"edits": null,
+"t": 37.6,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F2.k3.sqlite.54631",
+"family": "F2",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54631,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 384,
+"wall": 0.11,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"filter_file",
+"ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 37.72,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k4.spark.54632",
+"family": "F1",
+"k": 4,
+"runtime": "spark",
+"seed": 54632,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 1169,
+"wall": 0.638,
+"edits": null,
+"t": 38.36,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k4.sqlite.54633",
+"family": "F4",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54633,
+"outcome": "submitted",
+"status": "resolved",
+"solved": true,
+"silent": false,
+"runs": 169,
+"wall": 0.077,
+"edits": [
+[
+"default_fill",
+"market='OTHER'"
+],
+[
+"default_fill",
+"value=0"
+],
+[
+"filter_file",
+"event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"dedup_latest",
+"msg_id by value"
+]
+],
+"t": 38.44,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": [
+"S1"
+]
+},
+{
+"tid": "F5.k3.sqlite.54634",
+"family": "F5",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54634,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 545,
+"wall": 0.277,
+"edits": null,
+"t": 38.72,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k3.spark.54635",
+"family": "F6",
+"k": 3,
+"runtime": "spark",
+"seed": 54635,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 391,
+"wall": 0.916,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"filter_file",
+"total_value gt [\"file\", \"watermark.json\", \"allowed_lateness\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 39.74,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F1.k1.sqlite.54636",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54636,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 42,
+"wall": 0.009,
+"edits": [
+[
+"default_fill",
+"list_price=0"
+]
+],
+"t": 39.76,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F2.k3.sqlite.54637",
+"family": "F2",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54637,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 141,
+"wall": 0.068,
+"edits": [
+[
+"dedup_latest",
+"order_id by version"
+],
+[
+"quarantine_invalid",
+"list_price"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 39.83,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": [
+"S0"
+]
+},
+{
+"tid": "F5.k2.spark.54638",
+"family": "F5",
+"k": 2,
+"runtime": "spark",
+"seed": 54638,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 215,
+"wall": 0.507,
+"edits": [
+[
+"default_fill",
+"zone='OTHER'"
+],
+[
+"filter_file",
+"recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 40.44,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F4.k4.sqlite.54639",
+"family": "F4",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54639,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 245,
+"wall": 0.106,
+"edits": [
+[
+"default_fill",
+"region='OTHER'"
+],
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"dedup_first",
+"event_id"
+],
+[
+"quarantine_invalid",
+"reading"
+]
+],
+"t": 40.58,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F5.k3.sqlite.54640",
+"family": "F5",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54640,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 808,
+"wall": 0.293,
+"edits": null,
+"t": 40.88,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F6.k3.spark.54641",
+"family": "F6",
+"k": 3,
+"runtime": "spark",
+"seed": 54641,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 1264,
+"wall": 0.591,
+"edits": null,
+"t": 41.47,
+"phase": "source",
+"n_P": 80,
+"n_skills": 3,
+"reused": []
+}
+],
+"rounds": [
+{
+"round": 1,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"real_div",
+"round2"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+146,
+146
+],
+"solved": [
+2,
+2
+],
+"provenance": "F2.k1.sqlite.54601"
+},
+{
+"ops": [
+"dedup_latest",
+"filter_file"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+146,
+146
+],
+"solved": [
+2,
+2
+],
+"provenance": "F4.k1.sqlite.54603"
+},
+{
+"ops": [
+"default_fill"
+],
+"pre": [
+"diff:text_value",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+146,
+146
+],
+"solved": [
+2,
+2
+],
+"provenance": "F5.k1.sqlite.54604"
+}
+],
+"n_skills": 0,
+"n_P": 12
+},
+{
+"round": 2,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"dedup_latest",
+"quarantine_invalid",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+1595,
+2001
+],
+"solved": [
+0,
+1
+],
+"provenance": "F3.k3.sqlite.54950"
+},
+{
+"ops": [
+"default_fill",
+"default_fill",
+"filter_file",
+"dedup_latest"
+],
+"pre": [
+"diff:missing_rows",
+"diff:value",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+1595,
+2065
+],
+"solved": [
+0,
+1
+],
+"provenance": "F4.k3.sqlite.54951"
+},
+{
+"ops": [
+"real_div",
+"round2",
+"default_fill"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+1595,
+2015
+],
+"solved": [
+0,
+1
+],
+"provenance": "F5.k2.sqlite.54606"
+}
+],
+"n_skills": 3,
+"n_P": 35
+},
+{
+"round": 3,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"dedup_latest",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+741,
+737
+],
+"solved": [
+1,
+1
+],
+"provenance": "F3.k2.sqlite.54968"
+},
+{
+"ops": [
+"dedup_latest",
+"default_fill",
+"filter_file"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+741,
+1105
+],
+"solved": [
+1,
+1
+],
+"provenance": "F4.k2.sqlite.54969"
+},
+{
+"ops": [
+"dedup_latest"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+741,
+1190
+],
+"solved": [
+1,
+1
+],
+"provenance": "F3.k1.sqlite.54962"
+}
+],
+"n_skills": 3,
+"n_P": 73
+},
+{
+"round": 4,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"dedup_latest",
+"filter_file",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:fraction_lost",
+"diff:got_null",
+"diff:value",
+"fail:example_rows",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+188,
+188
+],
+"solved": [
+2,
+2
+],
+"provenance": "F3.k3.sqlite.54974"
+},
+{
+"ops": [
+"quarantine_invalid",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+188,
+188
+],
+"solved": [
+2,
+2
+],
+"provenance": "F2.k2.sqlite.54619"
+},
+{
+"ops": [
+"dedup_latest"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+188,
+188
+],
+"solved": [
+2,
+2
+],
+"provenance": "F3.k1.spark.54620"
+}
+],
+"n_skills": 3,
+"n_P": 80
+},
+{
+"round": 5,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"real_div",
+"round2",
+"default_fill"
+],
+"pre": [
+"diff:fraction_lost",
+"diff:value",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+415,
+415
+],
+"solved": [
+1,
+1
+],
+"provenance": "F1.k2.sqlite.54990"
+},
+{
+"ops": [
+"real_div",
+"round2",
+"filter_file"
+],
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+415,
+445
+],
+"solved": [
+1,
+1
+],
+"provenance": "F2.k2.sqlite.54991"
+},
+{
+"ops": [
+"dedup_latest"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+415,
+415
+],
+"solved": [
+1,
+1
+],
+"provenance": "F3.k1.sqlite.54986"
+}
+],
+"n_skills": 3,
+"n_P": 80
+},
+{
+"round": 6,
+"kind": "admission",
+"proposals": [],
+"n_skills": 3,
+"n_P": 80
+},
+{
+"round": 7,
+"kind": "admission",
+"proposals": [],
+"n_skills": 3,
+"n_P": 80
+}
+],
+"meta_log": [
+{
+"round": 1,
+"edit": [
+"search",
+"localize",
+"stage_desc"
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 1422
+},
+"edited": {
+"solved": 1,
+"silent": 0,
+"runs": 1422
+},
+"adopted": false,
+"eval_projects": [
+"F5.k3.sqlite.54952",
+"F6.k3.sqlite.54953",
+"F1.k1.sqlite.54954",
+"F2.k1.sqlite.54955"
+],
+"spark_eval": false
+},
+{
+"round": 1,
+"edit": [
+"search",
+"localize",
+"stage_asc"
+],
+"current": {
+"solved": 2,
+"silent": 0,
+"runs": 565
+},
+"edited": {
+"solved": 2,
+"silent": 0,
+"runs": 565
+},
+"adopted": false,
+"eval_projects": [
+"F5.k1.sqlite.54958",
+"F6.k1.sqlite.54959",
+"F1.k2.sqlite.54960",
+"F2.k2.sqlite.54961"
+],
+"spark_eval": false
+},
+{
+"round": 2,
+"edit": [
+"search",
+"decompose",
+"stagewise"
+],
+"current": {
+"solved": 0,
+"silent": 0,
+"runs": 3177
+},
+"edited": {
+"solved": 0,
+"silent": 0,
+"runs": 3491
+},
+"adopted": false,
+"eval_projects": [
+"F5.k2.sqlite.54964",
+"F6.k2.sqlite.54965",
+"F1.k3.sqlite.54966",
+"F2.k3.sqlite.54967"
+],
+"spark_eval": false
+},
+{
+"round": 2,
+"edit": [
+"memory",
+"p_priority",
+2.0
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 682
+},
+"edited": {
+"solved": 1,
+"silent": 0,
+"runs": 682
+},
+"adopted": false,
+"eval_projects": [
+"F5.k3.sqlite.54970",
+"F6.k3.sqlite.54971",
+"F1.k1.sqlite.54972",
+"F2.k1.sqlite.54973"
+],
+"spark_eval": false
+},
+{
+"round": 3,
+"edit": [
+"memory",
+"p_priority",
+0.0
+],
+"current": {
+"solved": 2,
+"silent": 0,
+"runs": 455
+},
+"edited": {
+"solved": 2,
+"silent": 0,
+"runs": 455
+},
+"adopted": false,
+"eval_projects": [
+"F5.k1.sqlite.54976",
+"F6.k1.sqlite.54977",
+"F1.k2.sqlite.54978",
+"F2.k2.sqlite.54979"
+],
+"spark_eval": false
+},
+{
+"round": 3,
+"edit": [
+"memory",
+"p_priority",
+1.0
+],
+"current": {
+"solved": 3,
+"silent": 0,
+"runs": 810
+},
+"edited": {
+"solved": 3,
+"silent": 0,
+"runs": 945
+},
+"adopted": false,
+"eval_projects": [
+"F5.k2.sqlite.54982",
+"F6.k2.sqlite.54983",
+"F1.k3.sqlite.54984",
+"F2.k3.sqlite.54985"
+],
+"spark_eval": false
+},
+{
+"round": 4,
+"edit": [
+"search",
+"cross_engine",
+"off"
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 421
+},
+"edited": {
+"solved": 0,
+"silent": 0,
+"runs": 76
+},
+"adopted": false,
+"eval_projects": [
+"F5.k3.spark.54988",
+"F6.k3.spark.54989"
+],
+"spark_eval": true
+},
+{
+"round": 4,
+"edit": [
+"curriculum",
+"rule",
+"hard_first"
+],
+"current": {
+"solved": 4,
+"silent": 0,
+"runs": 376
+},
+"edited": {
+"solved": 4,
+"silent": 0,
+"runs": 376
+},
+"adopted": false,
+"eval_projects": [
+"F3.k1.sqlite.54992",
+"F4.k1.sqlite.54993",
+"F5.k1.sqlite.54994",
+"F6.k1.sqlite.54995"
+],
+"spark_eval": false
+}
+],
+"use_P": true,
+"M_final": [
+[
+"search",
+{
+"localize": "policy",
+"decompose": "whole",
+"max_depth": 6,
+"stall_frac": 0.2,
+"cross_engine": "sqlite_first"
+}
+],
+[
+"memory",
+{
+"p_priority": 0.5,
+"skill_match": 0.5,
+"max_skills": 12,
+"prune_unused": 0
+}
+],
+[
+"learn",
+{
+"lr": 1.0,
+"neg_lr": 0.5,
+"partial_lr": 0.5
+}
+],
+[
+"ambiguity",
+{
+"mode": "pref",
+"margin": 1.0
+}
+],
+[
+"admit",
+{
+"speedup": 0.2
+}
+],
+[
+"curriculum",
+{
+"rule": "frontier",
+"eps": 0.2
+}
+],
+[
+"schedule",
+{
+"period": 6
+}
+]
+]
+}

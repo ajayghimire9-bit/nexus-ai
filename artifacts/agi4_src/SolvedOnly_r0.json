@@ -1,0 +1,2881 @@
+{
+"name": "SolvedOnly_r0",
+"final": true,
+"stop_reason": "budget",
+"elapsed": 41.88,
+"state": {
+"DE": {
+"w": {
+"diff:extra_rows": {
+"quarantine_invalid": 5.0,
+"dedup_latest": 7.0,
+"filter_file": 7.0,
+"default_fill": 5.0
+},
+"fail:quarantine_ids": {
+"quarantine_invalid": 8.0,
+"dedup_latest": 5.0,
+"filter_file": 3.0,
+"default_fill": 1.0
+},
+"fail:row_count": {
+"quarantine_invalid": 5.0,
+"dedup_latest": 7.0,
+"filter_file": 7.0,
+"default_fill": 5.0
+},
+"diff:fraction_lost": {
+"real_div": 8.0,
+"round2": 8.0,
+"quarantine_invalid": 1.0,
+"filter_file": 4.0
+},
+"fail:example_rows": {
+"real_div": 8.0,
+"round2": 8.0,
+"filter_file": 11.0,
+"dedup_latest": 5.0,
+"default_fill": 10.0,
+"quarantine_invalid": 2.0
+},
+"diff:value": {
+"filter_file": 7.0,
+"dedup_latest": 9.0,
+"quarantine_invalid": 1.0,
+"default_fill": 5.0
+},
+"diff:text_value": {
+"default_fill": 3.0,
+"filter_file": 1.0,
+"real_div": 2.0,
+"round2": 2.0
+},
+"diff:dup_keys": {
+"dedup_latest": 7.0
+},
+"diff:got_null": {
+"dedup_latest": 1.0
+},
+"fail:unique": {
+"dedup_latest": 7.0
+},
+"diff:missing_rows": {
+"default_fill": 5.0
+},
+"diff:expect_null": {
+"dedup_latest": 1.0
+},
+"diff:precision": {
+"dedup_latest": 1.0
+}
+},
+"skills": {
+"S0": {
+"ops": [
+"default_fill",
+"quarantine_invalid"
+],
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"params_example": [
+"zone='UNKNOWN'",
+"reading"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F5.k2.sqlite.54490",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F5.k3.sqlite.54358",
+"F6.k3.sqlite.54359"
+],
+"admission": {
+"runs": [
+901,
+613
+],
+"solved": [
+0,
+0
+]
+},
+"birth_round": 5,
+"uses": 0
+},
+"S1": {
+"ops": [
+"filter_file",
+"default_fill"
+],
+"pre": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"params_example": [
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+"n_items=0"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F6.k2.sqlite.54491",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F5.k3.sqlite.54358",
+"F6.k3.sqlite.54359"
+],
+"admission": {
+"runs": [
+901,
+613
+],
+"solved": [
+0,
+0
+]
+},
+"birth_round": 5,
+"uses": 1
+},
+"S2": {
+"ops": [
+"dedup_latest",
+"quarantine_invalid"
+],
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:precision",
+"diff:value",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"params_example": [
+"sku by version",
+"list_price"
+],
+"contract": {
+"runtime": "sqlite",
+"lang": "sql"
+},
+"provenance": "F1.k2.sqlite.54486",
+"kind": "full",
+"origin": "pure_synthesis",
+"validated_on": [
+"F5.k3.sqlite.54358",
+"F6.k3.sqlite.54359"
+],
+"admission": {
+"runs": [
+901,
+645
+],
+"solved": [
+0,
+0
+]
+},
+"birth_round": 5,
+"uses": 0
+}
+},
+"P": [],
+"prefs": {
+"filter_file:gt:sub": 1.25,
+"filter_file:absent": 0.25
+},
+"next_id": 3
+},
+"M": [
+[
+"search",
+{
+"localize": "policy",
+"decompose": "whole",
+"max_depth": 6,
+"stall_frac": 0.2,
+"cross_engine": "off"
+}
+],
+[
+"memory",
+{
+"p_priority": 0.5,
+"skill_match": 0.5,
+"max_skills": 12,
+"prune_unused": 0
+}
+],
+[
+"learn",
+{
+"lr": 1.0,
+"neg_lr": 0.5,
+"partial_lr": 0.5
+}
+],
+[
+"ambiguity",
+{
+"mode": "pref",
+"margin": 1.0
+}
+],
+[
+"admit",
+{
+"speedup": 0.2
+}
+],
+[
+"curriculum",
+{
+"rule": "frontier",
+"eps": 0.2
+}
+],
+[
+"schedule",
+{
+"period": 6
+}
+]
+]
+},
+"schedule": [
+[
+"F1",
+1,
+"sqlite",
+54100
+],
+[
+"F2",
+1,
+"sqlite",
+54101
+],
+[
+"F3",
+1,
+"spark",
+54102
+],
+[
+"F4",
+1,
+"sqlite",
+54103
+],
+[
+"F5",
+1,
+"sqlite",
+54104
+],
+[
+"F6",
+1,
+"spark",
+54105
+],
+[
+"F1",
+4,
+"sqlite",
+54450
+],
+[
+"F2",
+4,
+"sqlite",
+54451
+],
+[
+"F1",
+1,
+"sqlite",
+54456
+],
+[
+"F2",
+1,
+"sqlite",
+54457
+],
+[
+"F1",
+2,
+"sqlite",
+54106
+],
+[
+"F2",
+2,
+"sqlite",
+54107
+],
+[
+"F3",
+1,
+"spark",
+54108
+],
+[
+"F4",
+1,
+"sqlite",
+54109
+],
+[
+"F5",
+1,
+"sqlite",
+54110
+],
+[
+"F6",
+1,
+"spark",
+54111
+],
+[
+"F1",
+2,
+"sqlite",
+54462
+],
+[
+"F2",
+2,
+"sqlite",
+54463
+],
+[
+"F1",
+3,
+"sqlite",
+54468
+],
+[
+"F2",
+3,
+"sqlite",
+54469
+],
+[
+"F1",
+3,
+"sqlite",
+54112
+],
+[
+"F2",
+2,
+"sqlite",
+54113
+],
+[
+"F3",
+1,
+"spark",
+54114
+],
+[
+"F4",
+2,
+"sqlite",
+54115
+],
+[
+"F5",
+2,
+"sqlite",
+54116
+],
+[
+"F6",
+1,
+"spark",
+54117
+],
+[
+"F1",
+4,
+"sqlite",
+54474
+],
+[
+"F2",
+4,
+"sqlite",
+54475
+],
+[
+"F1",
+1,
+"sqlite",
+54480
+],
+[
+"F2",
+1,
+"sqlite",
+54481
+],
+[
+"F1",
+3,
+"sqlite",
+54118
+],
+[
+"F2",
+2,
+"sqlite",
+54119
+],
+[
+"F3",
+2,
+"spark",
+54120
+],
+[
+"F4",
+2,
+"sqlite",
+54121
+],
+[
+"F5",
+2,
+"sqlite",
+54122
+],
+[
+"F6",
+2,
+"spark",
+54123
+],
+[
+"F1",
+2,
+"sqlite",
+54486
+],
+[
+"F2",
+2,
+"sqlite",
+54487
+],
+[
+"F5",
+2,
+"sqlite",
+54490
+],
+[
+"F6",
+2,
+"sqlite",
+54491
+],
+[
+"F1",
+3,
+"sqlite",
+54124
+],
+[
+"F2",
+3,
+"sqlite",
+54125
+],
+[
+"F3",
+2,
+"spark",
+54126
+],
+[
+"F4",
+3,
+"sqlite",
+54127
+],
+[
+"F5",
+3,
+"sqlite",
+54128
+],
+[
+"F6",
+2,
+"spark",
+54129
+],
+[
+"F1",
+3,
+"sqlite",
+54130
+],
+[
+"F3",
+4,
+"sqlite",
+54131
+],
+[
+"F3",
+2,
+"spark",
+54132
+]
+],
+"all_projects": [
+[
+"F1",
+1,
+"sqlite",
+54100
+],
+[
+"F2",
+1,
+"sqlite",
+54101
+],
+[
+"F3",
+1,
+"spark",
+54102
+],
+[
+"F4",
+1,
+"sqlite",
+54103
+],
+[
+"F5",
+1,
+"sqlite",
+54104
+],
+[
+"F6",
+1,
+"spark",
+54105
+],
+[
+"rollout",
+"F1",
+4,
+"sqlite",
+54450
+],
+[
+"rollout",
+"F2",
+4,
+"sqlite",
+54451
+],
+[
+"rollout",
+"F1",
+1,
+"sqlite",
+54456
+],
+[
+"rollout",
+"F2",
+1,
+"sqlite",
+54457
+],
+[
+"F1",
+2,
+"sqlite",
+54106
+],
+[
+"F2",
+2,
+"sqlite",
+54107
+],
+[
+"F3",
+1,
+"spark",
+54108
+],
+[
+"F4",
+1,
+"sqlite",
+54109
+],
+[
+"F5",
+1,
+"sqlite",
+54110
+],
+[
+"F6",
+1,
+"spark",
+54111
+],
+[
+"rollout",
+"F1",
+2,
+"sqlite",
+54462
+],
+[
+"rollout",
+"F2",
+2,
+"sqlite",
+54463
+],
+[
+"rollout",
+"F1",
+3,
+"sqlite",
+54468
+],
+[
+"rollout",
+"F2",
+3,
+"sqlite",
+54469
+],
+[
+"F1",
+3,
+"sqlite",
+54112
+],
+[
+"F2",
+2,
+"sqlite",
+54113
+],
+[
+"F3",
+1,
+"spark",
+54114
+],
+[
+"F4",
+2,
+"sqlite",
+54115
+],
+[
+"F5",
+2,
+"sqlite",
+54116
+],
+[
+"F6",
+1,
+"spark",
+54117
+],
+[
+"rollout",
+"F1",
+4,
+"sqlite",
+54474
+],
+[
+"rollout",
+"F2",
+4,
+"sqlite",
+54475
+],
+[
+"rollout",
+"F1",
+1,
+"sqlite",
+54480
+],
+[
+"rollout",
+"F2",
+1,
+"sqlite",
+54481
+],
+[
+"F1",
+3,
+"sqlite",
+54118
+],
+[
+"F2",
+2,
+"sqlite",
+54119
+],
+[
+"F3",
+2,
+"spark",
+54120
+],
+[
+"F4",
+2,
+"sqlite",
+54121
+],
+[
+"F5",
+2,
+"sqlite",
+54122
+],
+[
+"F6",
+2,
+"spark",
+54123
+],
+[
+"rollout",
+"F1",
+2,
+"sqlite",
+54486
+],
+[
+"rollout",
+"F2",
+2,
+"sqlite",
+54487
+],
+[
+"rollout",
+"F5",
+2,
+"sqlite",
+54490
+],
+[
+"rollout",
+"F6",
+2,
+"sqlite",
+54491
+],
+[
+"F1",
+3,
+"sqlite",
+54124
+],
+[
+"F2",
+3,
+"sqlite",
+54125
+],
+[
+"F3",
+2,
+"spark",
+54126
+],
+[
+"F4",
+3,
+"sqlite",
+54127
+],
+[
+"F5",
+3,
+"sqlite",
+54128
+],
+[
+"F6",
+2,
+"spark",
+54129
+],
+[
+"F1",
+3,
+"sqlite",
+54130
+],
+[
+"F3",
+4,
+"sqlite",
+54131
+],
+[
+"F3",
+2,
+"spark",
+54132
+]
+],
+"rows": [
+{
+"tid": "F1.k1.sqlite.54100",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54100,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 64,
+"wall": 0.017,
+"edits": [
+[
+"quarantine_invalid",
+"price"
+]
+],
+"t": 0.02,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k1.sqlite.54101",
+"family": "F2",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54101,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 129,
+"wall": 0.045,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.07,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k1.spark.54102",
+"family": "F3",
+"k": 1,
+"runtime": "spark",
+"seed": 54102,
+"outcome": "abstain_ambiguous",
+"status": "ambiguous",
+"solved": false,
+"silent": false,
+"runs": 15,
+"wall": 2.732,
+"edits": [
+[
+"dedup_latest",
+"order_id by seq"
+]
+],
+"t": 2.8,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k1.sqlite.54103",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54103,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 97,
+"wall": 0.02,
+"edits": [
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_latest",
+"msg_id by reading"
+]
+],
+"t": 2.83,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k1.sqlite.54104",
+"family": "F5",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54104,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 83,
+"wall": 0.015,
+"edits": [
+[
+"default_fill",
+"zone='OTHER'"
+]
+],
+"t": 2.85,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k1.spark.54105",
+"family": "F6",
+"k": 1,
+"runtime": "spark",
+"seed": 54105,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 67,
+"wall": 1.225,
+"edits": [
+[
+"filter_file",
+"ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 4.4,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k4.sqlite.54450",
+"family": "F1",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54450,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 373,
+"wall": 0.129,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"quarantine_invalid",
+"qty"
+],
+[
+"default_fill",
+"region='UNKNOWN'"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.13,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k4.sqlite.54451",
+"family": "F2",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54451,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 680,
+"wall": 0.197,
+"edits": [
+[
+"dedup_latest",
+"account_id by seq"
+],
+[
+"quarantine_invalid",
+"unit_cost"
+],
+[
+"filter_file",
+"recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.33,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k1.sqlite.54456",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54456,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 60,
+"wall": 0.02,
+"edits": [
+[
+"quarantine_invalid",
+"value"
+]
+],
+"t": 0.03,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k1.sqlite.54457",
+"family": "F2",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54457,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 102,
+"wall": 0.025,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.05,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k2.sqlite.54106",
+"family": "F1",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54106,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 80,
+"wall": 0.014,
+"edits": [
+[
+"dedup_latest",
+"order_id by version"
+],
+[
+"quarantine_invalid",
+"price"
+]
+],
+"t": 6.13,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54107",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54107,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 272,
+"wall": 0.066,
+"edits": [
+[
+"filter_file",
+"total_value gt [\"file\", \"watermark.json\", \"watermark\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 6.19,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k1.spark.54108",
+"family": "F3",
+"k": 1,
+"runtime": "spark",
+"seed": 54108,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 49,
+"wall": 0.902,
+"edits": [
+[
+"dedup_latest",
+"order_id by seq"
+]
+],
+"t": 7.33,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k1.sqlite.54109",
+"family": "F4",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54109,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 507,
+"wall": 0.124,
+"edits": [
+[
+"dedup_latest",
+"event_id by quantity"
+],
+[
+"filter_file",
+"log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+]
+],
+"t": 7.47,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k1.sqlite.54110",
+"family": "F5",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54110,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 71,
+"wall": 0.028,
+"edits": [
+[
+"default_fill",
+"zone='OTHER'"
+]
+],
+"t": 7.5,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k1.spark.54111",
+"family": "F6",
+"k": 1,
+"runtime": "spark",
+"seed": 54111,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 120,
+"wall": 0.969,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 8.76,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k2.sqlite.54462",
+"family": "F1",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54462,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 76,
+"wall": 0.015,
+"edits": [
+[
+"default_fill",
+"market='UNKNOWN'"
+],
+[
+"default_fill",
+"value=0"
+]
+],
+"t": 0.02,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54463",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54463,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 231,
+"wall": 0.052,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"filter_file",
+"recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 0.07,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k3.sqlite.54468",
+"family": "F1",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54468,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 1128,
+"wall": 0.278,
+"edits": null,
+"t": 0.28,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k3.sqlite.54469",
+"family": "F2",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54469,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 456,
+"wall": 0.149,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"zone='OTHER'"
+]
+],
+"t": 0.44,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k3.sqlite.54112",
+"family": "F1",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54112,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 171,
+"wall": 0.049,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"quarantine_invalid",
+"price"
+],
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 12.22,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54113",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54113,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 945,
+"wall": 0.322,
+"edits": null,
+"t": 12.55,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k1.spark.54114",
+"family": "F3",
+"k": 1,
+"runtime": "spark",
+"seed": 54114,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 91,
+"wall": 0.635,
+"edits": [
+[
+"dedup_latest",
+"account_id by seq"
+]
+],
+"t": 13.42,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k2.sqlite.54115",
+"family": "F4",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54115,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 145,
+"wall": 0.041,
+"edits": [
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_latest",
+"event_id by delta"
+],
+[
+"quarantine_invalid",
+"delta"
+]
+],
+"t": 13.47,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k2.sqlite.54116",
+"family": "F5",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54116,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 137,
+"wall": 0.075,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+],
+[
+"default_fill",
+"zone='UNKNOWN'"
+]
+],
+"t": 13.55,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k1.spark.54117",
+"family": "F6",
+"k": 1,
+"runtime": "spark",
+"seed": 54117,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 78,
+"wall": 0.516,
+"edits": [
+[
+"filter_file",
+"ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 14.23,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k4.sqlite.54474",
+"family": "F1",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54474,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 1286,
+"wall": 0.336,
+"edits": null,
+"t": 0.34,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k4.sqlite.54475",
+"family": "F2",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54475,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 355,
+"wall": 0.092,
+"edits": [
+[
+"dedup_latest",
+"order_id by version"
+],
+[
+"filter_file",
+"ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.44,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k1.sqlite.54480",
+"family": "F1",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54480,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 118,
+"wall": 0.021,
+"edits": [
+[
+"try_parse",
+"rev"
+]
+],
+"t": 0.02,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k1.sqlite.54481",
+"family": "F2",
+"k": 1,
+"runtime": "sqlite",
+"seed": 54481,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 171,
+"wall": 0.035,
+"edits": [
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.06,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k3.sqlite.54118",
+"family": "F1",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54118,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 683,
+"wall": 0.31,
+"edits": null,
+"t": 18.44,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54119",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54119,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 202,
+"wall": 0.062,
+"edits": [
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 18.51,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k2.spark.54120",
+"family": "F3",
+"k": 2,
+"runtime": "spark",
+"seed": 54120,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 202,
+"wall": 0.505,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"filter_file",
+"ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+]
+],
+"t": 19.15,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k2.sqlite.54121",
+"family": "F4",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54121,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 148,
+"wall": 0.051,
+"edits": [
+[
+"default_fill",
+"market='UNKNOWN'"
+],
+[
+"filter_file",
+"offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+],
+[
+"dedup_latest",
+"msg_id by delta"
+]
+],
+"t": 19.2,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k2.sqlite.54122",
+"family": "F5",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54122,
+"outcome": "submitted",
+"status": "resolved",
+"solved": false,
+"silent": true,
+"runs": 194,
+"wall": 0.078,
+"edits": [
+[
+"default_fill",
+"market='OTHER'"
+],
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+]
+],
+"t": 19.28,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k2.spark.54123",
+"family": "F6",
+"k": 2,
+"runtime": "spark",
+"seed": 54123,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 209,
+"wall": 0.953,
+"edits": null,
+"t": 20.24,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k2.sqlite.54486",
+"family": "F1",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54486,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 148,
+"wall": 0.048,
+"edits": [
+[
+"dedup_latest",
+"sku by version"
+],
+[
+"quarantine_invalid",
+"list_price"
+]
+],
+"t": 0.05,
+"phase": "rollout:edited",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k2.sqlite.54487",
+"family": "F2",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54487,
+"outcome": "submitted",
+"status": "explore",
+"solved": true,
+"silent": false,
+"runs": 219,
+"wall": 0.071,
+"edits": [
+[
+"filter_file",
+"recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 0.13,
+"phase": "rollout:edited",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k2.sqlite.54490",
+"family": "F5",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54490,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 67,
+"wall": 0.026,
+"edits": [
+[
+"default_fill",
+"zone='UNKNOWN'"
+],
+[
+"quarantine_invalid",
+"reading"
+]
+],
+"t": 0.04,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k2.sqlite.54491",
+"family": "F6",
+"k": 2,
+"runtime": "sqlite",
+"seed": 54491,
+"outcome": "submitted",
+"status": "resolved",
+"solved": true,
+"silent": false,
+"runs": 191,
+"wall": 0.083,
+"edits": [
+[
+"filter_file",
+"ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"default_fill",
+"n_items=0"
+]
+],
+"t": 0.13,
+"phase": "rollout:current",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k3.sqlite.54124",
+"family": "F1",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54124,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 164,
+"wall": 0.069,
+"edits": [
+[
+"dedup_latest",
+"account_id by version"
+],
+[
+"filter_file",
+"ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+]
+],
+"t": 32.63,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F2.k3.sqlite.54125",
+"family": "F2",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54125,
+"outcome": "submitted",
+"status": "resolved",
+"solved": false,
+"silent": true,
+"runs": 355,
+"wall": 0.328,
+"edits": [
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"default_fill",
+"region='UNKNOWN'"
+]
+],
+"t": 32.96,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F3.k2.spark.54126",
+"family": "F3",
+"k": 2,
+"runtime": "spark",
+"seed": 54126,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 52,
+"wall": 2.52,
+"edits": null,
+"t": 35.49,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F4.k3.sqlite.54127",
+"family": "F4",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54127,
+"outcome": "submitted",
+"status": "unique",
+"solved": true,
+"silent": false,
+"runs": 397,
+"wall": 0.126,
+"edits": [
+[
+"default_fill",
+"market='UNKNOWN'"
+],
+[
+"filter_file",
+"recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"dedup_latest",
+"msg_id by delta"
+]
+],
+"t": 35.62,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F5.k3.sqlite.54128",
+"family": "F5",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54128,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 596,
+"wall": 0.279,
+"edits": null,
+"t": 35.9,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F6.k2.spark.54129",
+"family": "F6",
+"k": 2,
+"runtime": "spark",
+"seed": 54129,
+"outcome": "submitted",
+"status": "resolved",
+"solved": false,
+"silent": true,
+"runs": 226,
+"wall": 2.043,
+"edits": [
+[
+"filter_file",
+"recorded_at gt [\"file\", \"watermark.json\", \"watermark\"]"
+],
+[
+"default_fill",
+"region='OTHER'"
+]
+],
+"t": 38.07,
+"phase": "source",
+"n_P": 0,
+"n_skills": 0,
+"reused": []
+},
+{
+"tid": "F1.k3.sqlite.54130",
+"family": "F1",
+"k": 3,
+"runtime": "sqlite",
+"seed": 54130,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 255,
+"wall": 0.084,
+"edits": [
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"default_fill",
+"market='UNKNOWN'"
+]
+],
+"t": 39.35,
+"phase": "source",
+"n_P": 0,
+"n_skills": 3,
+"reused": [
+"S1"
+]
+},
+{
+"tid": "F3.k4.sqlite.54131",
+"family": "F3",
+"k": 4,
+"runtime": "sqlite",
+"seed": 54131,
+"outcome": "submitted",
+"status": "explore",
+"solved": false,
+"silent": true,
+"runs": 259,
+"wall": 0.192,
+"edits": [
+[
+"dedup_latest",
+"sku by version"
+],
+[
+"filter_file",
+"event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+],
+[
+"real_div",
+""
+],
+[
+"round2",
+"unit_price"
+]
+],
+"t": 39.56,
+"phase": "source",
+"n_P": 0,
+"n_skills": 3,
+"reused": []
+},
+{
+"tid": "F3.k2.spark.54132",
+"family": "F3",
+"k": 2,
+"runtime": "spark",
+"seed": 54132,
+"outcome": "abstain_none",
+"status": null,
+"solved": false,
+"silent": false,
+"runs": 54,
+"wall": 2.315,
+"edits": null,
+"t": 41.88,
+"phase": "source",
+"n_P": 0,
+"n_skills": 3,
+"reused": []
+}
+],
+"rounds": [
+{
+"round": 1,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"quarantine_invalid"
+],
+"pre": [
+"diff:extra_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+253,
+253
+],
+"solved": [
+2,
+2
+],
+"provenance": "F1.k1.sqlite.54100"
+},
+{
+"ops": [
+"real_div",
+"round2"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+253,
+253
+],
+"solved": [
+2,
+2
+],
+"provenance": "F2.k1.sqlite.54101"
+},
+{
+"ops": [
+"filter_file",
+"dedup_latest"
+],
+"pre": [
+"diff:value",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+253,
+244
+],
+"solved": [
+2,
+2
+],
+"provenance": "F4.k1.sqlite.54103"
+}
+],
+"n_skills": 0,
+"n_P": 0
+},
+{
+"round": 2,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"quarantine_invalid"
+],
+"pre": [
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+756,
+756
+],
+"solved": [
+1,
+1
+],
+"provenance": "F1.k1.sqlite.54456"
+},
+{
+"ops": [
+"real_div",
+"round2"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+756,
+756
+],
+"solved": [
+1,
+1
+],
+"provenance": "F2.k1.sqlite.54457"
+},
+{
+"ops": [
+"dedup_latest",
+"quarantine_invalid",
+"filter_file",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:got_null",
+"diff:value",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+756,
+630
+],
+"solved": [
+1,
+1
+],
+"provenance": "F2.k4.sqlite.54451"
+}
+],
+"n_skills": 0,
+"n_P": 0
+},
+{
+"round": 3,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"filter_file",
+"real_div",
+"round2",
+"default_fill"
+],
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+820,
+982
+],
+"solved": [
+0,
+0
+],
+"provenance": "F2.k3.sqlite.54469"
+},
+{
+"ops": [
+"default_fill",
+"default_fill"
+],
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+820,
+1090
+],
+"solved": [
+0,
+0
+],
+"provenance": "F1.k2.sqlite.54462"
+},
+{
+"ops": [
+"dedup_latest",
+"quarantine_invalid",
+"filter_file"
+],
+"pre": [
+"diff:dup_keys",
+"diff:extra_rows",
+"diff:value",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+820,
+936
+],
+"solved": [
+0,
+0
+],
+"provenance": "F1.k3.sqlite.54112"
+}
+],
+"n_skills": 0,
+"n_P": 0
+},
+{
+"round": 4,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"real_div",
+"round2"
+],
+"pre": [
+"diff:fraction_lost",
+"fail:example_rows"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+679,
+984
+],
+"solved": [
+0,
+0
+],
+"provenance": "F2.k1.sqlite.54481"
+},
+{
+"ops": [
+"filter_file",
+"real_div",
+"round2"
+],
+"pre": [
+"diff:extra_rows",
+"diff:fraction_lost",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+679,
+1015
+],
+"solved": [
+0,
+0
+],
+"provenance": "F2.k2.sqlite.54119"
+},
+{
+"ops": [
+"default_fill",
+"filter_file",
+"dedup_latest"
+],
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"diff:value",
+"fail:example_rows",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": false,
+"runs": [
+679,
+1077
+],
+"solved": [
+0,
+0
+],
+"provenance": "F4.k2.sqlite.54121"
+}
+],
+"n_skills": 0,
+"n_P": 0
+},
+{
+"round": 5,
+"kind": "admission",
+"proposals": [
+{
+"ops": [
+"default_fill",
+"quarantine_invalid"
+],
+"pre": [
+"diff:extra_rows",
+"diff:missing_rows",
+"fail:example_rows",
+"fail:quarantine_ids",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+901,
+613
+],
+"solved": [
+0,
+0
+],
+"provenance": "F5.k2.sqlite.54490"
+},
+{
+"ops": [
+"filter_file",
+"default_fill"
+],
+"pre": [
+"diff:extra_rows",
+"fail:row_count"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+901,
+613
+],
+"solved": [
+0,
+0
+],
+"provenance": "F6.k2.sqlite.54491"
+},
+{
+"ops": [
+"dedup_latest",
+"quarantine_invalid"
+],
+"pre": [
+"diff:dup_keys",
+"diff:expect_null",
+"diff:extra_rows",
+"diff:precision",
+"diff:value",
+"fail:quarantine_ids",
+"fail:row_count",
+"fail:unique"
+],
+"kind": "full",
+"tier": "validated",
+"ok": true,
+"runs": [
+901,
+645
+],
+"solved": [
+0,
+0
+],
+"provenance": "F1.k2.sqlite.54486"
+}
+],
+"n_skills": 3,
+"n_P": 0
+}
+],
+"meta_log": [
+{
+"round": 1,
+"edit": [
+"search",
+"localize",
+"stage_asc"
+],
+"current": {
+"solved": 4,
+"silent": 0,
+"runs": 316
+},
+"edited": {
+"solved": 4,
+"silent": 0,
+"runs": 323
+},
+"adopted": false,
+"eval_projects": [
+"F3.k1.sqlite.54452",
+"F4.k1.sqlite.54453",
+"F5.k1.sqlite.54454",
+"F6.k1.sqlite.54455"
+],
+"spark_eval": false
+},
+{
+"round": 1,
+"edit": [
+"search",
+"localize",
+"stage_desc"
+],
+"current": {
+"solved": 2,
+"silent": 0,
+"runs": 539
+},
+"edited": {
+"solved": 2,
+"silent": 0,
+"runs": 539
+},
+"adopted": false,
+"eval_projects": [
+"F3.k2.sqlite.54458",
+"F4.k2.sqlite.54459",
+"F5.k2.sqlite.54460",
+"F6.k2.sqlite.54461"
+],
+"spark_eval": false
+},
+{
+"round": 2,
+"edit": [
+"search",
+"decompose",
+"stagewise"
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 788
+},
+"edited": {
+"solved": 0,
+"silent": 0,
+"runs": 2689
+},
+"adopted": false,
+"eval_projects": [
+"F3.k3.sqlite.54464",
+"F4.k3.sqlite.54465",
+"F5.k3.sqlite.54466",
+"F6.k3.sqlite.54467"
+],
+"spark_eval": false
+},
+{
+"round": 2,
+"edit": [
+"memory",
+"p_priority",
+0.0
+],
+"current": {
+"solved": 2,
+"silent": 0,
+"runs": 500
+},
+"edited": {
+"solved": 2,
+"silent": 0,
+"runs": 500
+},
+"adopted": false,
+"eval_projects": [
+"F3.k1.sqlite.54470",
+"F4.k1.sqlite.54471",
+"F5.k1.sqlite.54472",
+"F6.k1.sqlite.54473"
+],
+"spark_eval": false
+},
+{
+"round": 3,
+"edit": [
+"memory",
+"p_priority",
+2.0
+],
+"current": {
+"solved": 2,
+"silent": 0,
+"runs": 610
+},
+"edited": {
+"solved": 2,
+"silent": 0,
+"runs": 610
+},
+"adopted": false,
+"eval_projects": [
+"F3.k2.sqlite.54476",
+"F4.k2.sqlite.54477",
+"F5.k2.sqlite.54478",
+"F6.k2.sqlite.54479"
+],
+"spark_eval": false
+},
+{
+"round": 3,
+"edit": [
+"memory",
+"p_priority",
+1.0
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 1528
+},
+"edited": {
+"solved": 1,
+"silent": 0,
+"runs": 1528
+},
+"adopted": false,
+"eval_projects": [
+"F3.k3.sqlite.54482",
+"F4.k3.sqlite.54483",
+"F5.k3.sqlite.54484",
+"F6.k3.sqlite.54485"
+],
+"spark_eval": false
+},
+{
+"round": 4,
+"edit": [
+"search",
+"cross_engine",
+"off"
+],
+"current": {
+"solved": 1,
+"silent": 0,
+"runs": 197
+},
+"edited": {
+"solved": 1,
+"silent": 0,
+"runs": 154
+},
+"adopted": true,
+"eval_projects": [
+"F3.k1.spark.54488",
+"F4.k1.spark.54489"
+],
+"spark_eval": true
+},
+{
+"round": 4,
+"edit": [
+"search",
+"cross_engine",
+"sqlite_first"
+],
+"current": {
+"solved": 0,
+"silent": 0,
+"runs": 62
+},
+"edited": {
+"solved": 0,
+"silent": 0,
+"runs": 676
+},
+"adopted": false,
+"eval_projects": [
+"F1.k2.spark.54492",
+"F2.k2.spark.54493"
+],
+"spark_eval": true
+}
+],
+"use_P": false,
+"M_final": [
+[
+"search",
+{
+"localize": "policy",
+"decompose": "whole",
+"max_depth": 6,
+"stall_frac": 0.2,
+"cross_engine": "off"
+}
+],
+[
+"memory",
+{
+"p_priority": 0.5,
+"skill_match": 0.5,
+"max_skills": 12,
+"prune_unused": 0
+}
+],
+[
+"learn",
+{
+"lr": 1.0,
+"neg_lr": 0.5,
+"partial_lr": 0.5
+}
+],
+[
+"ambiguity",
+{
+"mode": "pref",
+"margin": 1.0
+}
+],
+[
+"admit",
+{
+"speedup": 0.2
+}
+],
+[
+"curriculum",
+{
+"rule": "frontier",
+"eps": 0.2
+}
+],
+[
+"schedule",
+{
+"period": 6
+}
+]
+]
+}

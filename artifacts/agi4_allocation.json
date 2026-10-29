@@ -4,8 +4,17 @@
  "start_revision": "7521bf5",
  "carried_balance_at_start_s": 2113,
  "total_cap_s": 1800,
- "ceilings": {"s1": 350, "src": 600, "meta": 350, "eval": 380, "rep": 120},
+ "ceilings": {
+  "s1": 350,
+  "src": 600,
+  "meta": 350,
+  "eval": 380,
+  "rep": 120
+ },
  "transfers": [],
- "notes": ["Stage 2 text says 4 cohorts x 3 reps x 150 s (= 1,800 s) but allocates 600 s; the 600 s stage ceiling binds: 12 lineages share 600 s (about 48 s each).",
-           "Package downloads / installs (sqlglot 26.16.4, pure Python) are not charged, as for JDK 17 / PySpark in Phase 3."]
+ "notes": [
+  "Stage 2 text says 4 cohorts x 3 reps x 150 s (= 1,800 s) but allocates 600 s; the 600 s stage ceiling binds: 12 lineages share 600 s (about 48 s each).",
+  "Package downloads / installs (sqlglot 26.16.4, pure Python) are not charged, as for JDK 17 / PySpark in Phase 3.",
+  "Stage 3 (recorded before any clone ran): 9 clones x 31 s trajectories (not 33.5 s), mi_exec cap 38.5 s, 3 in parallel - concurrent JVM starts took ~6.5 s in Stage 2 wave 1 and Full_r2 was killed by its cap; 9 x 38.5 = 346.5 <= 350 s"
+ ]
 }
