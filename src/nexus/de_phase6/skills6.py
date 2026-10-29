@@ -97,7 +97,7 @@ def invent(lib_src, min_support=2, max_len=2):
     """Anti-unify recurring stage-local edit sub-sequences across >= min_support DIFFERENT projects into candidate skills."""
     groups = {}
     for rec in lib_src:
-        seq = rec["edits"]
+        seq = [_tup(e) for e in rec["edits"]]             # memory re-loaded from JSON stores tuples as lists
         for L in range(1, min(max_len, len(seq)) + 1):
             for i in range(len(seq) - L + 1):
                 sub = tuple(seq[i:i + L])

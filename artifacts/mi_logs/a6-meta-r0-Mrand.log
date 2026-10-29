@@ -1,0 +1,16 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi6_meta.py", line 71, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi6_meta.py", line 48, in main
+    lin.invent_and_admit()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/lineage6.py", line 172, in invent_and_admit
+    cands = SK.invent(self.mem["skill_src"], self.mem["M"]["skill_min_support"], self.mem["M"]["skill_max_len"])
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/skills6.py", line 124, in invent
+    common = {v[1] for v in vals}
+              ~^^^
+TypeError: unhashable type: 'list'

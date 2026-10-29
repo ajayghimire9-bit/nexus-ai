@@ -30,6 +30,11 @@
    "from": "src",
    "to": "eval",
    "s": 170
+  },
+  {
+   "from": "eval",
+   "to": "meta",
+   "s": 60
   }
  ],
  "notes": [
@@ -37,6 +42,7 @@
   "Uncharged setup: pip install duckdb 1.1.3, pyyaml 6.0.2, jinja2 3.1.4.",
   "Unused budget of Stages 1-3 may roll into Stage 3 or 4 by a committed transfer before target outcomes (owner rule).",
   "Stage 2 deviation (recorded before any rerun): 10 of 12 lineages crashed on one bug - landing a float infinity as text (int(inf)) in world6.run_pipeline - before writing any artifact; minimal fix (_txt); the 10 crashed lineages are rerun once at the same 98 s budget (Full_r0 and SolvedOnly_r0 completed and are never rerun). Funded by transfers s1 64 + rep 150 + meta 123 -> src; Stage 3 clones become 30 s trajectories.",
-  "Recorded before Stage 3 / Stage 4 outcomes: unused src 170 s -> eval. Stage 3: 9 clones x 30 s (caps 32 s); the improver panel is reduced to 6 of the 18 panel projects (every 3rd) for all 9 clones to fit the 377 s meta ceiling after the Stage 2 rerun transfer (disclosed deviation from 0.5). Stage 4: primary arms on all 72 targets, attribution arms on r0 (0.6 rule)."
+  "Recorded before Stage 3 / Stage 4 outcomes: unused src 170 s -> eval. Stage 3: 9 clones x 30 s (caps 32 s); the improver panel is reduced to 6 of the 18 panel projects (every 3rd) for all 9 clones to fit the 377 s meta ceiling after the Stage 2 rerun transfer (disclosed deviation from 0.5). Stage 4: primary arms on all 72 targets, attribution arms on r0 (0.6 rule).",
+  "Stage 3 deviation (recorded before the rerun): all 9 clones crashed in their first skills6.invent call (memory re-loaded from JSON holds lists where tuples are expected) before writing any artifact; fix: invent() normalises with _tup; the clones are rerun once; 60 s eval -> meta covers the crashed attempts; the source freeze is re-taken (skills6.py changed; evaluation-time bind already normalised)."
  ]
 }
