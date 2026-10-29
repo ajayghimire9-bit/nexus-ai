@@ -1,0 +1,24 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+P6.P1.P1_sqlite.61700 whole none 0 [] {'sqlite': 1886} 0.507 hidden None | dps {'window_end': 'undecided'}
+P6.P1.P1_sqlite.61700 decompose none 0 [] {'sqlite': 1886} 0.506 hidden None | dps {'window_end': 'undecided'}
+P6.P2.P2_duckdb.61700 whole ambiguous 1 [(0, 'col_compare', [None, 'rev le offset'])] {'duckdb': 2309} 2.268 hidden None | dps {}
+P6.P2.P2_duckdb.61700 decompose ambiguous 1 [(0, 'col_compare', [None, 'rev le offset'])] {'duckdb': 2309} 2.273 hidden None | dps {}
+P6.P3.P3_sqlite.61700 whole submitted 1 [] {'sqlite': 255} 0.066 hidden True | dps {}
+P6.P3.P3_sqlite.61700 decompose submitted 1 [] {'sqlite': 255} 0.065 hidden True | dps {}
+P6.P4.P4_duckdb.61700 whole none 0 [] {'duckdb': 428} 3.705 hidden None | dps {}
+P6.P4.P4_duckdb.61700 decompose none 0 [] {'duckdb': 428} 3.819 hidden None | dps {}
+P6.P5.P5_sqlite.61700 whole none 0 [] {'sqlite': 3591} 1.098 hidden None | dps {'checkpoint': 'explicit', 'watermark': 'visible'}
+P6.P5.P5_sqlite.61700 decompose none 0 [] {'sqlite': 3448} 1.063 hidden None | dps {'checkpoint': 'explicit', 'watermark': 'visible'}
+P6.P6.P6_duckdb.61700 whole submitted 2 [] {'duckdb': 448} 0.34 hidden True | dps {}
+P6.P6.P6_duckdb.61700 decompose submitted 2 [] {'duckdb': 448} 0.363 hidden True | dps {}
+P6.P7.P7_sqlite.61700 whole ambiguous 3 [(0, 'col_compare', ['feature_ts le label_ts', 'feature_ts lt label_ts'])] {'sqlite': 1049} 0.223 hidden None | dps {'pit': 'undecided'}
+P6.P7.P7_sqlite.61700 decompose ambiguous 3 [(0, 'col_compare', ['feature_ts le label_ts', 'feature_ts lt label_ts'])] {'sqlite': 1049} 0.223 hidden None | dps {'pit': 'undecided'}
+P6.P8.scala.P2_duckdb.61700 whole ambiguous 2 [(0, 'col_compare', [None, 'rev le offset'])] {'duckdb': 2618} 2.261 hidden None | dps {}
+P6.P8.scala.P2_duckdb.61700 decompose ambiguous 2 [(0, 'col_compare', [None, 'rev le offset'])] {'duckdb': 2618} 2.237 hidden None | dps {}
+P6.P9.A.P5_spark-P1_duckdb.61700 whole none 0 [] {'sqlite': 1943, 'duckdb': 1943} 1.012 hidden None | dps {'checkpoint': 'explicit', 'watermark': 'visible', 'window_end': 'missing'}
+P6.P9.A.P5_spark-P1_duckdb.61700 decompose none 0 [] {'sqlite': 1347, 'duckdb': 1347} 0.677 hidden None | dps {'checkpoint': 'explicit', 'watermark': 'visible', 'window_end': 'missing'}
+P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.61700 whole none 0 [] {'sqlite': 3130, 'duckdb': 1565} 0.885 hidden None | dps {}
+P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.61700 decompose none 0 [] {'sqlite': 2106, 'duckdb': 1056, 'spark': 6} 1.62 hidden None | dps {}
+{('whole', 'none', None): 5, ('decompose', 'none', None): 5, ('whole', 'ambiguous', None): 3, ('decompose', 'ambiguous', None): 3, ('whole', 'submitted', True): 2, ('decompose', 'submitted', True): 2}

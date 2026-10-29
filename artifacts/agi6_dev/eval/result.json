@@ -1,0 +1,154 @@
+{
+ "n_rows": 24,
+ "build_failures": [],
+ "arms": {
+  "A1_fresh_F0": {
+   "n": 8,
+   "verified": 4,
+   "wrong": 0,
+   "justified_abstentions": 0,
+   "undecided": 0,
+   "questions": 0,
+   "by_tier": {
+    "1": "2/3",
+    "2": "2/4",
+    "3": "0/1"
+   },
+   "cost": {
+    "sqlite_runs": 6812,
+    "duckdb_runs": 102,
+    "spark_runs": 23,
+    "wall_s": 8.02
+   },
+   "search_modes": {
+    "whole|on": 8
+   }
+  },
+  "A3_full_r0": {
+   "n": 8,
+   "verified": 4,
+   "wrong": 0,
+   "justified_abstentions": 0,
+   "undecided": 0,
+   "questions": 0,
+   "by_tier": {
+    "1": "2/3",
+    "2": "2/4",
+    "3": "0/1"
+   },
+   "cost": {
+    "sqlite_runs": 10817,
+    "duckdb_runs": 192,
+    "spark_runs": 191,
+    "wall_s": 20.27
+   },
+   "search_modes": {
+    "decompose|on": 8
+   }
+  },
+  "A5_procedure_only_r0": {
+   "n": 8,
+   "verified": 4,
+   "wrong": 0,
+   "justified_abstentions": 0,
+   "undecided": 0,
+   "questions": 0,
+   "by_tier": {
+    "1": "2/3",
+    "2": "2/4",
+    "3": "0/1"
+   },
+   "cost": {
+    "sqlite_runs": 11106,
+    "duckdb_runs": 192,
+    "spark_runs": 353,
+    "wall_s": 26.88
+   },
+   "search_modes": {
+    "decompose|on": 8
+   }
+  }
+ },
+ "contrasts": {
+  "Full - Fresh F0 (all)": {
+   "n": 8,
+   "mean_pp": 0.0,
+   "p_signflip": 1.0,
+   "p_holm": 1.0
+  },
+  "Full - Fresh F0 (Tier 3)": {
+   "n": 1,
+   "mean_pp": 0.0,
+   "p_signflip": 1.0,
+   "p_holm": 1.0
+  },
+  "Learned procedure - fixed F0 (Tier 2+3)": {
+   "n": 0,
+   "mean_pp": null,
+   "p_signflip": 1.0,
+   "p_holm": 1.0
+  },
+  "Full - Solved-Only (failure memory)": {
+   "n": 0,
+   "mean_pp": null,
+   "p_signflip": 1.0
+  },
+  "Full - procedure only (skill library)": {
+   "n": 8,
+   "mean_pp": 0.0,
+   "p_signflip": 1.0
+  },
+  "Full - Scrambled (placebo)": {
+   "n": 0,
+   "mean_pp": null,
+   "p_signflip": 1.0
+  },
+  "Learned memory F0 - Fresh F0 (experience)": {
+   "n": 0,
+   "mean_pp": null,
+   "p_signflip": 1.0
+  }
+ },
+ "cost_full_vs_fresh_on_shared_solves": {
+  "r0": {
+   "shared_solves": 4,
+   "cost_s": [
+    1.36,
+    2.41
+   ],
+   "saving_cost_s": 0.438,
+   "runs_plus_questions": [
+    1690,
+    1981
+   ],
+   "saving_runs": 0.147
+  },
+  "r1": {
+   "shared_solves": 0,
+   "cost_s": [
+    0,
+    0
+   ],
+   "saving_cost_s": null,
+   "runs_plus_questions": [
+    0,
+    0
+   ],
+   "saving_runs": null
+  },
+  "r2": {
+   "shared_solves": 0,
+   "cost_s": [
+    0,
+    0
+   ],
+   "saving_cost_s": null,
+   "runs_plus_questions": [
+    0,
+    0
+   ],
+   "saving_runs": null
+  }
+ },
+ "wrong_total_all_arms": 0
+}

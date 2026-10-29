@@ -1,0 +1,99 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Full_r0 projects 19 verified 12 skills 2 trust records 6 M {} meta [] | procedure [["call", "proc2"], ["search", "whole", "off"], ["read", "contract.json"], ["resolve", "none"], ["submit_or_abstain"]] | abl {'F0': (6, 0, 1, 4.83), 'learned': (6, 0, 0, 7.45), 'SEED': (5, 0, 0, 7.35)} | wall {'train': 32.9, 'total': 49.6}
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+targets P6.P1.P1_sqlite.61500 3 arms
+targets P6.P2.P2_duckdb.61501 3 arms
+targets P6.P3.P3_spark.61502 3 arms
+targets P6.P4.P4_duckdb.61503 3 arms
+targets P6.P5.P5_sqlite.61504 3 arms
+targets P6.P6.P6_duckdb.61505 3 arms
+targets P6.P7.P7_spark.61506 3 arms
+targets P6.P8.scala.P1_spark.61507 3 arms
+{
+"contrasts": {
+"Full - Fresh F0 (all)": {
+"n": 8,
+"mean_pp": 0.0,
+"p_signflip": 1.0,
+"p_holm": 1.0
+},
+"Full - Fresh F0 (Tier 3)": {
+"n": 1,
+"mean_pp": 0.0,
+"p_signflip": 1.0,
+"p_holm": 1.0
+},
+"Learned procedure - fixed F0 (Tier 2+3)": {
+"n": 0,
+"mean_pp": null,
+"p_signflip": 1.0,
+"p_holm": 1.0
+},
+"Full - Solved-Only (failure memory)": {
+"n": 0,
+"mean_pp": null,
+"p_signflip": 1.0
+},
+"Full - procedure only (skill library)": {
+"n": 8,
+"mean_pp": 0.0,
+"p_signflip": 1.0
+},
+"Full - Scrambled (placebo)": {
+"n": 0,
+"mean_pp": null,
+"p_signflip": 1.0
+},
+"Learned memory F0 - Fresh F0 (experience)": {
+"n": 0,
+"mean_pp": null,
+"p_signflip": 1.0
+}
+},
+"cost_full_vs_fresh_on_shared_solves": {
+"r0": {
+"shared_solves": 4,
+"cost_s": [
+1.36,
+2.41
+],
+"saving_cost_s": 0.438,
+"runs_plus_questions": [
+1690,
+1981
+],
+"saving_runs": 0.147
+},
+"r1": {
+"shared_solves": 0,
+"cost_s": [
+0,
+0
+],
+"saving_cost_s": null,
+"runs_plus_questions": [
+0,
+0
+],
+"saving_runs": null
+},
+"r2": {
+"shared_solves": 0,
+"cost_s": [
+0,
+0
+],
+"saving_cost_s": null,
+"runs_plus_questions": [
+0,
+0
+],
+"saving_runs": null
+}
+},
+"wrong_total_all_arms": 0
+}
