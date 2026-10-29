@@ -158,8 +158,8 @@ opened; results follow in a separate commit.
 
 ## 1. Results
 
-This section was added after the run (NOT LOCKED). Source endpoints `324010a`-style freeze at the Stage 2 commit, meta
-clones at the Stage 3 commit; the one-use evaluation ran on the frozen `9209c0c` code.
+This section was added after the run (NOT LOCKED). The source endpoints are `5bdb15b`, the meta clones `10ad20e`, and the
+one-use evaluation ran on the frozen `9209c0c` code.
 
 ### 1.1 Real-pipeline cycle trace (Stage 1, development projects; §0.4 has the full trace)
 
