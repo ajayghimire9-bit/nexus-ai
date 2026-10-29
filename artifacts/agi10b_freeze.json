@@ -1,0 +1,751 @@
+{
+ "files": {
+  "artifacts/agi10b_train/rep0.final.json": "46f9bc68f17ded7b96d3dda570f64396e8fcafa40a52f6a3a99c32c43c5b8e56",
+  "artifacts/agi10b_train/rep1.final.json": "9c4a6eea7e7cb2e44b3a851b86197a1faf0d915ecc901c13ed0e27657c023d72"
+ },
+ "code": {
+  "src/nexus/de_phase10b/search10b.py": "759abac61705781cce504402d23741f6a51dad36757abf1cbb5616c0eafd9e63",
+  "src/nexus/de_phase10b/lineage10b.py": "ef9b988b461a6fd1cf9efe9b499fb1918d3bacca9d02fc882e8f91199d388f21",
+  "src/nexus/de_phase10b/fixes10b.py": "afd044009d22b08b507a5ba2b76ac8ba7f1c3a94fc41cb155cbf1bfe2927da72",
+  "src/nexus/de_phase10/guide10.py": "0e7498a1b9350b77b9f60d1624fa2c63c6d804f82cd7380f07a809dc6033a3b9",
+  "src/nexus/de_phase10/procedure10.py": "8e938fcfbb2fd3db6983f69cc6a914f32e4fc59cd59a0f1089304a22f938ee54",
+  "scripts/agi10b_eval.py": "46e8378e62059a3fa19231f5356ecc16e9d318e7fbc96696a62bb03be9d710b3"
+ },
+ "manifest": [
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85000,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85001,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "modes": {
+    "watermark": "missing",
+    "checkpoint": "conflict_approved"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85002,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85003,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85004,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "modes": {
+    "watermark": "missing",
+    "checkpoint": "conflict_approved"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85005,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85006,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85007,
+   "tier": 2
+  },
+  {
+   "paradigm": "P1",
+   "engine": "sqlite",
+   "dp_mode": "conflict_approved",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85008,
+   "tier": 1
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "dp_mode": "explicit",
+   "legacy_flip": true,
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85009,
+   "tier": 1
+  },
+  {
+   "paradigm": "P2",
+   "engine": "duckdb",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85010,
+   "tier": 1
+  },
+  {
+   "paradigm": "P2",
+   "engine": "sqlite",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85011,
+   "tier": 1
+  },
+  {
+   "paradigm": "P3",
+   "engine": "duckdb",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85012,
+   "tier": 1
+  },
+  {
+   "paradigm": "P3",
+   "engine": "sqlite",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85013,
+   "tier": 1
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85014,
+   "tier": 2
+  },
+  {
+   "paradigm": "P4",
+   "engine": "sqlite",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85015,
+   "tier": 2
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "dp_mode": "explicit",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85016,
+   "tier": 2
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85017,
+   "tier": 2
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "dp_mode": "conflict_approved",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85018,
+   "tier": 2
+  },
+  {
+   "paradigm": "P7",
+   "engine": "sqlite",
+   "dp_mode": "explicit",
+   "legacy_flip": true,
+   "fault_p": 0.4,
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85019,
+   "tier": 2
+  },
+  {
+   "paradigm": "X1",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85020,
+   "tier": 2
+  },
+  {
+   "paradigm": "X2",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85021,
+   "tier": 2
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "dp_mode": "undecided",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85022,
+   "tier": 1
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "dp_mode": "missing",
+   "group": "seen",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85023,
+   "tier": 2
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "explicit",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85024,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "missing",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85025,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "conflict_approved",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85026,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "undecided",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85027,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "explicit",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85028,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "missing",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85029,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "conflict_approved",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85030,
+   "tier": 3
+  },
+  {
+   "paradigm": "P8",
+   "dp_mode": "explicit",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85031,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved",
+    "window_end": "conflict_approved"
+   },
+   "group": "heldout",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85032,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved",
+    "window_end": "conflict_approved"
+   },
+   "group": "heldout",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85033,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved",
+    "window_end": "conflict_approved"
+   },
+   "group": "heldout",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85034,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "modes": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved",
+    "window_end": "conflict_approved"
+   },
+   "group": "heldout",
+   "mc": true,
+   "names": "heldout",
+   "seed": 85035,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85036,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85037,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85038,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85039,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "dp_mode": "explicit",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85040,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "dp_mode": "missing",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85041,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "dp_mode": "explicit",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85042,
+   "tier": 3
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "dp_mode": "missing",
+   "group": "heldout",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85043,
+   "tier": 3
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "fault_p": 1.0,
+   "require_fault": true,
+   "group": "heldout_mutation",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85044,
+   "tier": 2
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "fault_p": 1.0,
+   "require_fault": true,
+   "group": "heldout_mutation",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85045,
+   "tier": 2
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "fault_p": 1.0,
+   "require_fault": true,
+   "group": "heldout_mutation",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85046,
+   "tier": 2
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "fault_p": 1.0,
+   "require_fault": true,
+   "group": "heldout_mutation",
+   "mc": false,
+   "names": "heldout",
+   "seed": 85047,
+   "tier": 2
+  }
+ ],
+ "confirm_manifest": [
+  {
+   "stratum": "conflict",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "sqlite",
+    "dp_mode": "conflict_approved",
+    "names": "base"
+   },
+   "seed": 80000,
+   "family": "P5",
+   "answerable": true
+  },
+  {
+   "stratum": "conflict",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "duckdb",
+    "dp_mode": "conflict_approved",
+    "names": "heldout"
+   },
+   "seed": 80001,
+   "family": "P7",
+   "answerable": true
+  },
+  {
+   "stratum": "conflict",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "duckdb",
+    "dp_mode": "conflict_approved",
+    "names": "base"
+   },
+   "seed": 80002,
+   "family": "P1",
+   "answerable": true
+  },
+  {
+   "stratum": "missing",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "sqlite",
+    "dp_mode": "missing",
+    "names": "heldout"
+   },
+   "seed": 80003,
+   "family": "P1",
+   "answerable": true
+  },
+  {
+   "stratum": "missing",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "duckdb",
+    "dp_mode": "missing",
+    "names": "base"
+   },
+   "seed": 80004,
+   "family": "P5",
+   "answerable": true
+  },
+  {
+   "stratum": "missing",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "sqlite",
+    "dp_mode": "missing",
+    "names": "heldout"
+   },
+   "seed": 80005,
+   "family": "P7",
+   "answerable": true
+  },
+  {
+   "stratum": "legacy_disagreement",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "duckdb",
+    "dp_mode": "explicit",
+    "legacy_flip": true,
+    "fault_p": 0.4,
+    "names": "base"
+   },
+   "seed": 80006,
+   "family": "P7",
+   "answerable": true
+  },
+  {
+   "stratum": "legacy_disagreement",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "sqlite",
+    "dp_mode": "explicit",
+    "legacy_flip": true,
+    "fault_p": 0.4,
+    "names": "heldout"
+   },
+   "seed": 80007,
+   "family": "P1",
+   "answerable": true
+  },
+  {
+   "stratum": "legacy_disagreement",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "sqlite",
+    "dp_mode": "explicit",
+    "legacy_flip": true,
+    "fault_p": 0.4,
+    "names": "base"
+   },
+   "seed": 80008,
+   "family": "P5",
+   "answerable": true
+  },
+  {
+   "stratum": "undecided",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "duckdb",
+    "dp_mode": "undecided",
+    "names": "heldout"
+   },
+   "seed": 80009,
+   "family": "P1",
+   "answerable": false
+  },
+  {
+   "stratum": "undecided",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "sqlite",
+    "dp_mode": "undecided",
+    "names": "base"
+   },
+   "seed": 80010,
+   "family": "P5",
+   "answerable": false
+  },
+  {
+   "stratum": "undecided",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "duckdb",
+    "dp_mode": "undecided",
+    "names": "heldout"
+   },
+   "seed": 80011,
+   "family": "P7",
+   "answerable": false
+  },
+  {
+   "stratum": "benign",
+   "spec": {
+    "paradigm": "P2",
+    "engine": "duckdb",
+    "names": "base"
+   },
+   "seed": 80012,
+   "family": "P2",
+   "answerable": true
+  },
+  {
+   "stratum": "benign",
+   "spec": {
+    "paradigm": "P3",
+    "engine": "sqlite",
+    "names": "heldout"
+   },
+   "seed": 80013,
+   "family": "P3",
+   "answerable": true
+  },
+  {
+   "stratum": "benign",
+   "spec": {
+    "paradigm": "P6",
+    "engine": "duckdb",
+    "names": "base"
+   },
+   "seed": 80014,
+   "family": "P6",
+   "answerable": true
+  },
+  {
+   "stratum": "multi",
+   "spec": {
+    "paradigm": "X1",
+    "names": "heldout"
+   },
+   "seed": 80015,
+   "family": "X1",
+   "answerable": true
+  },
+  {
+   "stratum": "multi",
+   "spec": {
+    "paradigm": "X2",
+    "names": "base"
+   },
+   "seed": 80016,
+   "family": "X2",
+   "answerable": true
+  },
+  {
+   "stratum": "multi",
+   "spec": {
+    "paradigm": "P4",
+    "engine": "duckdb",
+    "fault_p": 1.0,
+    "names": "heldout"
+   },
+   "seed": 80017,
+   "family": "P4",
+   "answerable": true
+  }
+ ],
+ "gate6_passed": true,
+ "N3": {
+  "rep0": 78,
+  "rep1": 40
+ }
+}
