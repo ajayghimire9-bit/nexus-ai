@@ -17,7 +17,16 @@
    "s": 247,
    "when": "Stage 2 closed at 202.9/450 s, before any Stage 3 outcome and before any target opens",
    "why": "unused Stage 2 funds roll forward (pre-registered)"
+  },
+  {
+   "from": "s1",
+   "to": "s4",
+   "s": 300,
+   "when": "after the gate-6 retest failed (Phase 9 confirmation not opened), before agi10de/eval opens",
+   "why": "unused Stage 1 funds roll forward (pre-registered)"
   }
  ],
- "notes": []
+ "notes": [
+  "M* round: M_edit 9 vs M0 8 vs M_rand 7 validation solves, but the implemented completeness check (tasks == stream length) failed because one stream task could not be generated in ALL three clones (19/20 each); M* was therefore not adopted and the main lineage continued under M0, so C3 == C1 by construction. Disclosed as a rule-implementation discrepancy; not retro-adopted."
+ ]
 }
