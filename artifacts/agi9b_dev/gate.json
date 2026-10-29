@@ -1,0 +1,394 @@
+{
+ "gate": {
+  "1_reordered_renamed": {
+   "passed": true,
+   "U": [
+    78000,
+    78003,
+    78005,
+    78006,
+    78009,
+    78010,
+    78013,
+    78014,
+    78015
+   ],
+   "C": [
+    78000,
+    78003,
+    78005,
+    78006,
+    78009,
+    78010,
+    78013,
+    78014,
+    78015
+   ],
+   "wrong": 0
+  },
+  "2_extra_irrelevant": {
+   "passed": true,
+   "gain": [],
+   "wrong": 0
+  },
+  "3_trust_removed": {
+   "passed": true,
+   "U_mc": 4,
+   "A_mc": 0,
+   "n_mc": 6,
+   "questions": {
+    "U": 4,
+    "A": 8
+   }
+  },
+  "4_trust_corrupted": {
+   "passed": true,
+   "U_mc": 4,
+   "B_mc": 0,
+   "B_wrong": 0
+  },
+  "5_redundant_computation": {
+   "passed": true,
+   "same_memory": true,
+   "acquire": {
+    "normal": 36.764,
+    "redundant": 76.488
+   },
+   "prefer_normal": [
+    true,
+    "same verified set, acquisition+future cost 88.50 vs 128.23 (>= 10 % lower)"
+   ],
+   "prefer_redundant": [
+    false,
+    "tie: no quality or >= 10 % cost advantage"
+   ],
+   "verified": [
+    9,
+    9
+   ]
+  },
+  "6_skill_removal": {
+   "passed": false,
+   "screen": [
+    [
+     "P2",
+     true,
+     true,
+     false
+    ],
+    [
+     "P2",
+     true,
+     true,
+     false
+    ],
+    [
+     "P6",
+     true,
+     true,
+     true
+    ],
+    [
+     "P6",
+     true,
+     true,
+     true
+    ],
+    [
+     "P4",
+     true,
+     true,
+     false
+    ],
+    [
+     "X1",
+     true,
+     true,
+     false
+    ],
+    [
+     "P2",
+     true,
+     true,
+     false
+    ],
+    [
+     "P2",
+     true,
+     true,
+     false
+    ],
+    [
+     "P6",
+     true,
+     true,
+     true
+    ],
+    [
+     "P6",
+     true,
+     true,
+     true
+    ],
+    [
+     "P4",
+     true,
+     true,
+     false
+    ],
+    [
+     "X1",
+     false,
+     false,
+     false
+    ],
+    [
+     "X1",
+     true,
+     true,
+     false
+    ],
+    [
+     "X1",
+     false,
+     false,
+     false
+    ],
+    [
+     "X1",
+     true,
+     true,
+     false
+    ],
+    [
+     "X1",
+     false,
+     false,
+     false
+    ],
+    [
+     "X1",
+     false,
+     false,
+     false
+    ],
+    [
+     "X1",
+     true,
+     true,
+     false
+    ]
+   ],
+   "replicate": [],
+   "note": "no screen spec where L* verified and the base did not: no separating case to replicate"
+  }
+ },
+ "passed": false,
+ "gate_set": [
+  {
+   "seed": 78000,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 2,
+    "conflicts": 2,
+    "unclaimed": 0,
+    "fresh_decision": "abstain",
+    "fresh_reason": "1 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_sqlite.78000"
+  },
+  {
+   "seed": 78001,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 2,
+    "conflicts": 1,
+    "unclaimed": 1,
+    "fresh_decision": "abstain",
+    "fresh_reason": "1 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_sqlite.78001"
+  },
+  {
+   "seed": 78003,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 2,
+    "conflicts": 2,
+    "unclaimed": 0,
+    "fresh_decision": "abstain",
+    "fresh_reason": "1 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_duckdb.78003"
+  },
+  {
+   "seed": 78005,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 2,
+    "conflicts": 1,
+    "unclaimed": 1,
+    "fresh_decision": "abstain",
+    "fresh_reason": "1 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_duckdb.78005"
+  },
+  {
+   "seed": 78006,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 2,
+    "conflicts": 2,
+    "unclaimed": 0,
+    "fresh_decision": "abstain",
+    "fresh_reason": "1 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_sqlite.78006"
+  },
+  {
+   "seed": 78008,
+   "group": "MC",
+   "stratum": "multi_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 3,
+    "conflicts": 1,
+    "unclaimed": 2,
+    "fresh_decision": "abstain",
+    "fresh_reason": "2 unresolved decision point(s)"
+   },
+   "pid": "P6.P5.P5_sqlite.78008"
+  },
+  {
+   "seed": 78009,
+   "group": "other",
+   "stratum": "legacy_disagreement",
+   "structure": {
+    "reachable": true,
+    "K": 0,
+    "conflicts": 0,
+    "unclaimed": 0,
+    "fresh_decision": "submit",
+    "fresh_reason": null
+   },
+   "pid": "P6.P7.P7_duckdb.78009"
+  },
+  {
+   "seed": 78010,
+   "group": "other",
+   "stratum": "legacy_disagreement",
+   "structure": {
+    "reachable": true,
+    "K": 0,
+    "conflicts": 0,
+    "unclaimed": 0,
+    "fresh_decision": "submit",
+    "fresh_reason": null
+   },
+   "pid": "P6.P1.P1_sqlite.78010"
+  },
+  {
+   "seed": 78012,
+   "group": "other",
+   "stratum": "undecided",
+   "structure": {
+    "reachable": true,
+    "K": 1,
+    "conflicts": 1,
+    "unclaimed": 0,
+    "fresh_decision": "abstain",
+    "fresh_reason": "requirement undetermined by the stakeholder"
+   },
+   "pid": "P6.P1.P1_duckdb.78012"
+  },
+  {
+   "seed": 78013,
+   "group": "other",
+   "stratum": "benign",
+   "structure": {
+    "reachable": true,
+    "K": 0,
+    "conflicts": 0,
+    "unclaimed": 0,
+    "fresh_decision": "submit",
+    "fresh_reason": null
+   },
+   "pid": "P6.P2.P2_duckdb.78013"
+  },
+  {
+   "seed": 78014,
+   "group": "other",
+   "stratum": "multi",
+   "structure": {
+    "reachable": true,
+    "K": 0,
+    "conflicts": 0,
+    "unclaimed": 0,
+    "fresh_decision": "submit",
+    "fresh_reason": null
+   },
+   "pid": "P6.X1.P3_sqlite-P2_duckdb.78014"
+  },
+  {
+   "seed": 78015,
+   "group": "other",
+   "stratum": "single_conflict",
+   "structure": {
+    "reachable": true,
+    "K": 1,
+    "conflicts": 1,
+    "unclaimed": 0,
+    "fresh_decision": "submit",
+    "fresh_reason": null
+   },
+   "pid": "P6.P7.P7_duckdb.78015"
+  }
+ ],
+ "per_memory": {
+  "U": {
+   "verified": 9,
+   "mc_verified": 4,
+   "wrong": 0,
+   "questions": 4,
+   "trust_used": 7
+  },
+  "A": {
+   "verified": 5,
+   "mc_verified": 0,
+   "wrong": 0,
+   "questions": 8,
+   "trust_used": 0
+  },
+  "B": {
+   "verified": 5,
+   "mc_verified": 0,
+   "wrong": 0,
+   "questions": 8,
+   "trust_used": 0
+  },
+  "C": {
+   "verified": 9,
+   "mc_verified": 4,
+   "wrong": 0,
+   "questions": 4,
+   "trust_used": 7
+  },
+  "E": {
+   "verified": 9,
+   "mc_verified": 4,
+   "wrong": 0,
+   "questions": 4,
+   "trust_used": 7
+  }
+ }
+}
