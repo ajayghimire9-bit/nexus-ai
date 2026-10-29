@@ -198,3 +198,79 @@ No local model was inventoried or run in Phase 9, and no API spending occurred. 
   with a **multi-conflict** stratum, rerun controls A–F with incremental saving, and only then run the paired parent
   comparison. If repair search keeps blocking exposure, run the §8 ranking comparison first: evidence cannot show value on
   tasks the search never reaches.
+
+---
+
+## Phase 9B: rebuilt sensitivity gate (NOT LOCKED; owner Phase 9B instruction)
+
+**Commits.** Starting revision `7f67a83`. The gate evidence is in `2587e22`; this report section is a separate commit.
+
+**Budget** (`artifacts/agi9b_grant.json`, registered once):
+
+| Item | Seconds |
+|---|---|
+| Owner buffer | +350 |
+| Unused inside the Phase 9 allocation (exact; the instruction said 732.0) | 732.401 |
+| Outside carry | 130.185 |
+| **Pool** | **1,212.586** |
+| Phase 9B cap | 950 |
+| Carried reserve | ≥ 262.586 |
+| **Used** | **~149** (S1 148.2, plus protection) |
+| Unused | ~801 of the cap; S2 / S3 not run |
+
+### Gate set (structure only, judged with a FRESH memory and F0; never by which memory wins)
+
+The screen took 16 trials and 27.7 s (`artifacts/agi9b_dev/screen.jsonl`). It selected 12 development projects, all
+with a reachable repair candidate:
+- **6 multi-conflict** (P5, all reachable), with K = 2–3 simultaneously open conflicting or unclaimed points and ≥ 1
+  documented conflict. The fresh memory abstains on all 6.
+- **6 other:** legacy disagreement × 2, single conflict, undecided, benign, multi-fault composite.
+
+The set is disjoint from the unopened `agi9de/confirm`. Every step appended and flushed one JSON line per project.
+
+### The six controls (rules predeclared in `scripts/agi9b_gate.py`; `artifacts/agi9b_dev/gate.json`)
+
+| # | Control | Result | Pass? |
+|---|---|---|---|
+| 1 | Reordered / renamed memory | identical verified set (9 / 12), 0 wrong | **pass** |
+| 2 | Extra irrelevant memory | no gain, 0 wrong | **pass** |
+| 3 | Trust removed | multi-conflict **4 / 6 → 0 / 6**; questions 4 → 8; overall 9 → 5 | **pass** |
+| 4 | Trust corrupted | multi-conflict **4 / 6 → 0 / 6**, **0 wrong** (fails safe by abstaining) | **pass** |
+| 5 | Redundant computation | identical memories and gate-set results (9 = 9). Acquisition cost 76.5 vs 36.8; the rule selects the normal learner (88.5 vs 128.2 total) and never the redundant one | **pass** |
+| 6 | Skill / utility removal | **no separating case** (below) | **FAIL** |
+
+**Control 6 in detail.** L\* is the union of every admitted method of the Phase 7 and 8 checkpoints: 6 canonical methods.
+It was compared with plain base search at the same total budget (W = 3,000).
+- **First screen** (12 projects: P2, P6, P4, X1, all faults): identical completions on 12 / 12.
+- **Disclosed extension** (all-fault composites, the only regime where base search exhausts its budget): 6 X1 projects,
+  identical completions (3 solved by both, 3 failed by both). The X2 all-fault specs could not be generated.
+- **What the library does change:** on **4 / 4 P6 projects** (two engines, two seeds), the method queue accepted a
+  learned method and work fell from ~193 to 85 runs (**−56 %**), but base search solved them too. On P2 / P4 / X1 the
+  library cost about +5 runs (the slice spent before base search).
+- **Conclusion:** the method channel is **sensitive to cost** and **insensitive to completion**. No admitted method
+  enables a completion the base search misses at this budget, so there was nothing to replicate.
+- **Rule 6 was predeclared as completion-based and was not changed after seeing the data.**
+
+**Gate: 5 / 6, NOT passed.** As instructed, the **18-project one-use confirmation set stays unopened**, and the
+two-parent paired comparison was not run.
+
+### What 9B establishes
+
+- **The comparator now measures the future value of acquired evidence.** On reachable projects with more open conflicts
+  than questions, the trained memory's calibrated trust is necessary for every multi-conflict completion it makes: 4 / 6
+  with trust, 0 / 6 without or with corrupted trust. Corruption never produced a wrong submission.
+- It does not reward equivalent or irrelevant memory, and it recognises equal knowledge acquired at higher cost.
+- **Learned methods are cost devices, not capability devices,** in every library NEXUS has built (Phases 7–9). This is
+  a substantive finding about NEXUS, not only about the gate.
+
+### Owner decision needed (not taken autonomously)
+
+The gate cannot pass as written until NEXUS has a method that enables a completion. Two honest options:
+1. **Accept a cost-based skill control** for the next run: "removing L\* raises total work by ≥ 10 % on comparable correct
+   completions, with 0 wrong". The P6 evidence (−56 %, 4 / 4, replicated across engines and seeds) would satisfy it. It
+   must be predeclared and approved **before** the confirmation set is opened, not substituted now.
+2. **Keep the completion rule**, and first make method invention target budget-binding failures: mine methods from the
+   partial programs of composites where base search exhausts its budget.
+
+With either decision, the paired two-parent comparison and the one-use confirmation set remain available. The
+**~801 s** left under the 950 s cap covers the costed Stage 2 (~420 s) plus Stage 3 (~150–300 s).

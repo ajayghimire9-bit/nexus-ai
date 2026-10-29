@@ -486,3 +486,21 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * external SQL repair (BIRD-Critic not yet checked);
   * local-model assistance.
 * **Budget:** ~168 of the 900 s authorised (no new grant); the one-use `agi9de/confirm` is unopened.
+
+## Phase 9B: rebuilt sensitivity gate (2026-10-29; report section in `docs/NEXUS_PHASE9_LEARNING_VALUE_AND_CAPABILITY_ROADMAP.md`)
+
+* **Human infrastructure** (evaluation):
+  * structure-only gate-set screen with a fresh memory (reachable, multi-conflict K ≥ 2);
+  * stepwise-saved controls;
+  * disclosed composite extension of the skill screen.
+* **Autonomous changes:** none (paired comparison not run).
+* **Measured** (development):
+  * calibrated trust from experience is necessary for every multi-conflict completion of the trained memory: 4 / 6 vs
+    0 / 6 with trust removed or corrupted (0 wrong);
+  * the comparator ignores equivalent and irrelevant memory and detects redundant acquisition cost;
+  * the learned method library (6 canonical methods) cuts work 56 % on P6 (4 / 4) but changes **no** completion in
+    24 screen projects.
+* **Gate:** 5 / 6, not passed. The one-use confirmation set is unopened; an owner decision on the skill control is needed.
+* **Untested:** autonomous procedure improvement and its repeatability across parents; completion-enabling methods; the
+  improver M; cross-domain transfer.
+* **Budget:** ~149 of 950 s; the pool keeps ≥ 262.586 s reserve plus ~801 s unspent under the cap.
