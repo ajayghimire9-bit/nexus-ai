@@ -504,3 +504,29 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Untested:** autonomous procedure improvement and its repeatability across parents; completion-enabling methods; the
   improver M; cross-domain transfer.
 * **Budget:** ~149 of 950 s; the pool keeps ≥ 262.586 s reserve plus ~801 s unspent under the cap.
+
+## Phase 10: unified Phase 9B completion + wake–sleep self-evolution (2026-10-29; report `docs/NEXUS_PHASE10_UNIFIED_WAKE_SLEEP_SELF_EVOLUTION_REPORT.md`)
+
+* **Human infrastructure:**
+  * coverage v10 legacy-baseline conflict rule;
+  * wake–sleep machinery (P\* store, MDL + LOPO promotion, contract-guarded dreams, pairwise ranker with 70 / 30
+    guided / fallback children, π\* replay rounds, M\* round);
+  * a roles memo (output-identical);
+  * the 48-target manifest with repository / family splits;
+  * the substrate check (23 / 23 decided truths execute; multi-table / Polars / CDC envelopes / MERGE / QUALIFY /
+    external repositories not implemented).
+* **Autonomous changes:**
+  * 16 promoted methods (9 with partial-program support);
+  * a learned ranker (held-out pair accuracy 0.83–0.97);
+  * calibrated trust.
+  * **No adopted π\* or M\*** (the M\* rejection traced to a completeness-check discrepancy, disclosed).
+* **Verified benefits** (48 unseen targets, 576 rows):
+  * trust from experience: C1 − B3 **+12.5 pp (p = 0.032)**, multi-conflict 0 / 7 → 6 / 7;
+  * learned ranker: +2.1 pp (n.s.), 2–3 of 15 candidate-starved searches rescued;
+  * invented library: 0; count prior: 0; P\*: 0; Tier 3: no gain; curve flat after N25.
+* **Accepted wrong repairs:** 1 / 576, from a coverage-application defect in shared infrastructure (diagnosed; fix
+  proposed).
+* **Gate 1:** 5 / 6 (control 6 fails twice); `agi9de/confirm` unopened.
+* **Untested:** an improved procedure or improver; completion-enabling methods; cross-domain transfer; multi-table
+  repositories.
+* **Budget:** ~1,773 of 3,500 s; ~2,291 s remain, including the reserve.

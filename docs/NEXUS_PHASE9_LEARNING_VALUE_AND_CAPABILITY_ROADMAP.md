@@ -274,3 +274,13 @@ The gate cannot pass as written until NEXUS has a method that enables a completi
 
 With either decision, the paired two-parent comparison and the one-use confirmation set remain available. The
 **~801 s** left under the 950 s cap covers the costed Stage 2 (~420 s) plus Stage 3 (~150–300 s).
+
+---
+
+## Phase 9B completion inside Phase 10 (2026-10-29; see `docs/NEXUS_PHASE10_UNIFIED_WAKE_SLEEP_SELF_EVOLUTION_REPORT.md`)
+
+Control 6 was retested with the Phase 10 wake–sleep library (16 MDL- and LOPO-promoted methods, plus every earlier
+method), on 16 new development screen projects including the budget-binding P1 / P5 regime.
+- **Result:** no completion-enabling case; the library again only cut P6 work (~197 → 85).
+- **Gate:** still 5 / 6.
+- **The 18-project one-use confirmation set remains unopened,** and the two-parent comparison was not run.
