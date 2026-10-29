@@ -1,0 +1,3201 @@
+{
+ "r0": {
+  "policy": [
+   [
+    "search"
+   ],
+   [
+    "call",
+    "proc2"
+   ],
+   [
+    "ask",
+    "first"
+   ],
+   [
+    "search"
+   ],
+   [
+    "submit_or_abstain"
+   ]
+  ],
+  "library": {
+   "proc1": {
+    "body": [
+     [
+      "search"
+     ],
+     [
+      "ask",
+      "first"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": false,
+     "unresolved": false,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.57500",
+     "P5.watermark_missing.F6.sqlite.57501",
+     "P5.watermark_conflict_approved.F6.sqlite.57502",
+     "P5.checkpoint_explicit.F4.sqlite.57505",
+     "P5.checkpoint_missing.F4.sqlite.57506",
+     "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+     "P5.watermark_explicit.F6-F2.sqlite.57510",
+     "P5.watermark_missing.F6-F1.sqlite.57511",
+     "P5.checkpoint_explicit.F4-F2.sqlite.57515"
+    ],
+    "provenance": {
+     "cycle": 0,
+     "edit": "insert ['search'] + ['ask', 'first'] at 0",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57515",
+      "P5.checkpoint_explicit.F4.sqlite.57505",
+      "P5.checkpoint_missing.F4.sqlite.57506",
+      "P5.checkpoint_undecided.F4.sqlite.57508",
+      "P5.checkpoint_visible.F4.sqlite.57509",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57512",
+      "P5.watermark_conflict_approved.F6.sqlite.57502",
+      "P5.watermark_explicit.F6-F2.sqlite.57510",
+      "P5.watermark_explicit.F6.sqlite.57500",
+      "P5.watermark_missing.F6-F1.sqlite.57511",
+      "P5.watermark_missing.F6.sqlite.57501",
+      "P5.watermark_undecided.F6-F5.sqlite.57513",
+      "P5.watermark_undecided.F6.sqlite.57503",
+      "P5.watermark_visible.F6-F4.sqlite.57514",
+      "P5.watermark_visible.F6.sqlite.57504"
+     ],
+     "source_history": [
+      "P5.checkpoint_missing.F4.sqlite.57400",
+      "P5.checkpoint_explicit.F4.sqlite.57401",
+      "P5.watermark_explicit.F6-F5.sqlite.57402",
+      "P5.watermark_conflict_approved.F6.sqlite.57403",
+      "P5.checkpoint_visible.F4-F5.sqlite.57404",
+      "P5.checkpoint_missing.F4-F5.sqlite.57405",
+      "P5.watermark_missing.F6-F5.sqlite.57406",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57407",
+      "P5.watermark_missing.F6.sqlite.57408",
+      "P5.watermark_undecided.F6.sqlite.57409",
+      "P5.checkpoint_conflict_approved.F4-F1.sqlite.57410",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57411",
+      "P5.watermark_visible.F6.sqlite.57412",
+      "P5.watermark_visible.F6-F1.sqlite.57413",
+      "P5.watermark_missing.F6.sqlite.57414",
+      "P5.watermark_undecided.F6-F5.sqlite.57415",
+      "P5.checkpoint_undecided.F4-F2.sqlite.57416",
+      "P5.watermark_missing.F6-F1.sqlite.57417",
+      "P5.watermark_undecided.F6.sqlite.57418",
+      "P5.watermark_explicit.F6-F1.sqlite.57419",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57420",
+      "P5.watermark_conflict_approved.F6-F3.sqlite.57421",
+      "P5.watermark_explicit.F6.sqlite.57422",
+      "P5.checkpoint_visible.F4-F1.sqlite.57423",
+      "P5.checkpoint_missing.F4-F5.sqlite.57424",
+      "P5.watermark_undecided.F6-F4.sqlite.57425",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57426",
+      "P5.watermark_visible.F6-F4.sqlite.57427",
+      "P5.checkpoint_missing.F4.sqlite.57428",
+      "P5.watermark_explicit.F6.sqlite.57429",
+      "P5.watermark_conflict_approved.F6-F5.sqlite.57430",
+      "P5.watermark_visible.F6.sqlite.57431",
+      "P5.checkpoint_visible.F4.sqlite.57432",
+      "P5.checkpoint_explicit.F4.sqlite.57433",
+      "P5.checkpoint_conflict_approved.F4-F5.sqlite.57434",
+      "P5.checkpoint_undecided.F4.sqlite.57435",
+      "P5.checkpoint_undecided.F4-F5.sqlite.57436",
+      "P5.watermark_conflict_approved.F6.sqlite.57437",
+      "P5.checkpoint_undecided.F4.sqlite.57438",
+      "P5.checkpoint_visible.F4.sqlite.57439"
+     ]
+    },
+    "utility": {
+     "correct": [
+      6,
+      15
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      2,
+      11
+     ],
+     "lost": [],
+     "gained": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57515",
+      "P5.checkpoint_explicit.F4.sqlite.57505",
+      "P5.checkpoint_missing.F4.sqlite.57506",
+      "P5.watermark_conflict_approved.F6.sqlite.57502",
+      "P5.watermark_explicit.F6-F2.sqlite.57510",
+      "P5.watermark_explicit.F6.sqlite.57500",
+      "P5.watermark_missing.F6-F1.sqlite.57511",
+      "P5.watermark_missing.F6.sqlite.57501"
+     ],
+     "reason": "more correct outcomes"
+    }
+   },
+   "proc2": {
+    "body": [
+     [
+      "read_all"
+     ],
+     [
+      "resolve",
+      "none"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": true,
+     "unresolved": true,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.57500",
+     "P5.checkpoint_explicit.F4.sqlite.57505",
+     "P5.watermark_explicit.F6-F2.sqlite.57510",
+     "P5.checkpoint_explicit.F4-F2.sqlite.57515"
+    ],
+    "provenance": {
+     "cycle": 1,
+     "edit": "insert ['read_all'] + ['resolve', 'none'] at 1",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57515",
+      "P5.checkpoint_explicit.F4.sqlite.57505",
+      "P5.checkpoint_missing.F4.sqlite.57506",
+      "P5.checkpoint_undecided.F4.sqlite.57508",
+      "P5.checkpoint_visible.F4.sqlite.57509",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57512",
+      "P5.watermark_conflict_approved.F6.sqlite.57502",
+      "P5.watermark_explicit.F6-F2.sqlite.57510",
+      "P5.watermark_explicit.F6.sqlite.57500",
+      "P5.watermark_missing.F6-F1.sqlite.57511",
+      "P5.watermark_missing.F6.sqlite.57501",
+      "P5.watermark_undecided.F6-F5.sqlite.57513",
+      "P5.watermark_undecided.F6.sqlite.57503",
+      "P5.watermark_visible.F6-F4.sqlite.57514",
+      "P5.watermark_visible.F6.sqlite.57504"
+     ],
+     "source_history": [
+      "P5.checkpoint_missing.F4.sqlite.57400",
+      "P5.checkpoint_explicit.F4.sqlite.57401",
+      "P5.watermark_explicit.F6-F5.sqlite.57402",
+      "P5.watermark_conflict_approved.F6.sqlite.57403",
+      "P5.checkpoint_visible.F4-F5.sqlite.57404",
+      "P5.checkpoint_missing.F4-F5.sqlite.57405",
+      "P5.watermark_missing.F6-F5.sqlite.57406",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57407",
+      "P5.watermark_missing.F6.sqlite.57408",
+      "P5.watermark_undecided.F6.sqlite.57409",
+      "P5.checkpoint_conflict_approved.F4-F1.sqlite.57410",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57411",
+      "P5.watermark_visible.F6.sqlite.57412",
+      "P5.watermark_visible.F6-F1.sqlite.57413",
+      "P5.watermark_missing.F6.sqlite.57414",
+      "P5.watermark_undecided.F6-F5.sqlite.57415",
+      "P5.checkpoint_undecided.F4-F2.sqlite.57416",
+      "P5.watermark_missing.F6-F1.sqlite.57417",
+      "P5.watermark_undecided.F6.sqlite.57418",
+      "P5.watermark_explicit.F6-F1.sqlite.57419",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57420",
+      "P5.watermark_conflict_approved.F6-F3.sqlite.57421",
+      "P5.watermark_explicit.F6.sqlite.57422",
+      "P5.checkpoint_visible.F4-F1.sqlite.57423",
+      "P5.checkpoint_missing.F4-F5.sqlite.57424",
+      "P5.watermark_undecided.F6-F4.sqlite.57425",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57426",
+      "P5.watermark_visible.F6-F4.sqlite.57427",
+      "P5.checkpoint_missing.F4.sqlite.57428",
+      "P5.watermark_explicit.F6.sqlite.57429",
+      "P5.watermark_conflict_approved.F6-F5.sqlite.57430",
+      "P5.watermark_visible.F6.sqlite.57431",
+      "P5.checkpoint_visible.F4.sqlite.57432",
+      "P5.checkpoint_explicit.F4.sqlite.57433",
+      "P5.checkpoint_conflict_approved.F4-F5.sqlite.57434",
+      "P5.checkpoint_undecided.F4.sqlite.57435",
+      "P5.checkpoint_undecided.F4-F5.sqlite.57436",
+      "P5.watermark_conflict_approved.F6.sqlite.57437",
+      "P5.checkpoint_undecided.F4.sqlite.57438",
+      "P5.checkpoint_visible.F4.sqlite.57439"
+     ]
+    },
+    "utility": {
+     "correct": [
+      15,
+      15
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      11,
+      11
+     ],
+     "lost": [],
+     "gained": [],
+     "common": 11,
+     "cost_common": [
+      18.936,
+      10.936
+     ],
+     "reason": "cheaper by >= 10% on the same correctly completed projects"
+    }
+   }
+  },
+  "cycle": [
+   {
+    "project": "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "dedup_first",
+         "msg_id"
+        ],
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 1,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "resolve",
+      "obs": {
+       "pos": 1,
+       "conflict": true,
+       "trust": "none"
+      },
+      "decision": "unresolved: conflicting claims"
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 1,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "quantity": "12",
+        "amount": "164",
+        "price": "21",
+        "msg_id": "PQ0",
+        "offset": "10"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "revise",
+      "obs": {
+       "pos": 1,
+       "refuted": [
+        "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       ]
+      },
+      "decision": "option offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ]
+   },
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.57506",
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "dedup_first",
+         "msg_id"
+        ],
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 1,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 1,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "units": "1",
+        "amount": "140",
+        "price": "19",
+        "msg_id": "PQ0",
+        "offset": "20"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "revise",
+      "obs": {
+       "pos": 1,
+       "refuted": [
+        "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       ]
+      },
+      "decision": "option offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ]
+   },
+   {
+    "project": "P5.checkpoint_undecided.F4.sqlite.57508",
+    "decision": {
+     "kind": "abstain",
+     "reason": "requirement undetermined by the stakeholder"
+    },
+    "verified": false,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "dedup_first",
+         "msg_id"
+        ],
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 1,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "resolve",
+      "obs": {
+       "pos": 1,
+       "conflict": true,
+       "trust": "none"
+      },
+      "decision": "unresolved: conflicting claims"
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 1,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "reading": "4",
+        "sku": "PQ0",
+        "msg_id": "PQ0",
+        "offset": "6"
+       },
+       "answer": "undetermined"
+      },
+      "decision": null
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "abstain",
+       "reason": "requirement undetermined by the stakeholder"
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": null
+     }
+    ]
+   }
+  ],
+  "failure_memory": {
+   "n_refuted_records": 6,
+   "source_records": [
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.57411",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_date",
+      "newer_version",
+      "source:docs/runbook.json",
+      "status:draft"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.57411",
+     "claim": {
+      "file": "docs/ticket.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "older_date",
+      "older_version",
+      "source:docs/ticket.json",
+      "status:approved"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.watermark_conflict_approved.F6-F3.sqlite.57421",
+     "claim": {
+      "file": "contract.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_version",
+      "older_date",
+      "source:contract.json",
+      "status:draft"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.watermark_conflict_approved.F6-F3.sqlite.57421",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "newer_date",
+      "older_version",
+      "source:docs/runbook.json",
+      "status:approved"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.watermark_conflict_approved.F6.sqlite.57437",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "older_date",
+      "older_version",
+      "source:docs/runbook.json",
+      "status:approved"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.watermark_conflict_approved.F6.sqlite.57437",
+     "claim": {
+      "file": "docs/ticket.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_date",
+      "newer_version",
+      "source:docs/ticket.json",
+      "status:draft"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    }
+   ],
+   "trust_with": {
+    "source:contract.json": 0.0,
+    "status:draft": -0.5,
+    "source:docs/runbook.json": 0.3636,
+    "status:approved": 0.8,
+    "newer_version": 0.1818,
+    "older_date": 0.3636,
+    "newer_date": -0.3636,
+    "older_version": -0.1818,
+    "source:docs/ticket.json": 0.0833
+   },
+   "trust_without": {
+    "source:contract.json": 0.125,
+    "status:draft": -0.3636,
+    "source:docs/runbook.json": 0.375,
+    "status:approved": 0.75,
+    "newer_version": 0.625,
+    "older_date": 0.375,
+    "newer_date": -0.375,
+    "older_version": -0.625,
+    "source:docs/ticket.json": 0.1
+   },
+   "changed_decisions": [
+    {
+     "project": "P5.watermark_conflict_approved.F6.sqlite.57502",
+     "with_failure_records": {
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "0": "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      },
+      "correct": true,
+      "bindings": [
+       {
+        "pos": 0,
+        "column": "event_ts",
+        "state_ref": [
+         "sub",
+         [
+          "file",
+          "watermark.json",
+          "watermark"
+         ],
+         [
+          "file",
+          "watermark.json",
+          "allowed_lateness"
+         ]
+        ],
+        "options": [
+         "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+         "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+        ],
+        "via": "clarification"
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 0,
+         "conflict": true,
+         "trust": "learned",
+         "margin": 0.071
+        },
+        "decision": "unresolved: learned trust margin < 1.0"
+       }
+      ]
+     },
+     "without": {
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "0": "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      },
+      "correct": false,
+      "bindings": [
+       {
+        "pos": 0,
+        "column": "event_ts",
+        "state_ref": [
+         "sub",
+         [
+          "file",
+          "watermark.json",
+          "watermark"
+         ],
+         [
+          "file",
+          "watermark.json",
+          "allowed_lateness"
+         ]
+        ],
+        "options": [
+         "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+         "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+        ],
+        "via": "trust:learned"
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 0,
+         "claims": [
+          {
+           "file": "docs/runbook.json",
+           "claim_id": "R2"
+          },
+          {
+           "file": "docs/ticket.json",
+           "claim_id": "R1"
+          }
+         ],
+         "via": "trust:learned",
+         "trust_weights_used": true
+        },
+        "decision": "option event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      ]
+     }
+    },
+    {
+     "project": "P5.watermark_undecided.F6.sqlite.57503",
+     "with_failure_records": {
+      "decision": {
+       "kind": "abstain",
+       "reason": "requirement undetermined by the stakeholder"
+      },
+      "correct": true,
+      "bindings": [
+       {
+        "pos": 0,
+        "column": "recorded_at",
+        "state_ref": [
+         "sub",
+         [
+          "file",
+          "watermark.json",
+          "watermark"
+         ],
+         [
+          "file",
+          "watermark.json",
+          "allowed_lateness"
+         ]
+        ],
+        "options": [
+         "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+         "recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+        ],
+        "via": null
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 0,
+         "conflict": true,
+         "trust": "learned",
+         "margin": 0.81
+        },
+        "decision": "unresolved: learned trust margin < 1.0"
+       }
+      ]
+     },
+     "without": {
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "0": "recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      },
+      "correct": false,
+      "bindings": [
+       {
+        "pos": 0,
+        "column": "recorded_at",
+        "state_ref": [
+         "sub",
+         [
+          "file",
+          "watermark.json",
+          "watermark"
+         ],
+         [
+          "file",
+          "watermark.json",
+          "allowed_lateness"
+         ]
+        ],
+        "options": [
+         "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+         "recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+        ],
+        "via": "trust:learned"
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 0,
+         "claims": [
+          {
+           "file": "docs/runbook.json",
+           "claim_id": "R2"
+          },
+          {
+           "file": "docs/ticket.json",
+           "claim_id": "R1"
+          }
+         ],
+         "via": "trust:learned",
+         "trust_weights_used": true
+        },
+        "decision": "option recorded_at ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "rebinding": [
+   {
+    "project": "P5.checkpoint_conflict_approved.F4.sqlite.57507",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4-F2.sqlite.57515",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4.sqlite.57505",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.57506",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   }
+  ]
+ },
+ "r1": {
+  "policy": [
+   [
+    "search"
+   ],
+   [
+    "call",
+    "proc2"
+   ],
+   [
+    "ask",
+    "first"
+   ],
+   [
+    "search"
+   ],
+   [
+    "submit_or_abstain"
+   ]
+  ],
+  "library": {
+   "proc1": {
+    "body": [
+     [
+      "search"
+     ],
+     [
+      "ask",
+      "first"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": false,
+     "unresolved": false,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.57800",
+     "P5.watermark_missing.F6.sqlite.57801",
+     "P5.watermark_conflict_approved.F6.sqlite.57802",
+     "P5.checkpoint_explicit.F4.sqlite.57805",
+     "P5.checkpoint_missing.F4.sqlite.57806",
+     "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+     "P5.watermark_explicit.F6-F1.sqlite.57810",
+     "P5.checkpoint_explicit.F4-F2.sqlite.57815"
+    ],
+    "provenance": {
+     "cycle": 0,
+     "edit": "insert ['search'] + ['ask', 'first'] at 0",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57815",
+      "P5.checkpoint_explicit.F4.sqlite.57805",
+      "P5.checkpoint_missing.F4.sqlite.57806",
+      "P5.checkpoint_undecided.F4.sqlite.57808",
+      "P5.checkpoint_visible.F4.sqlite.57809",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57812",
+      "P5.watermark_conflict_approved.F6.sqlite.57802",
+      "P5.watermark_explicit.F6-F1.sqlite.57810",
+      "P5.watermark_explicit.F6.sqlite.57800",
+      "P5.watermark_missing.F6-F4.sqlite.57811",
+      "P5.watermark_missing.F6.sqlite.57801",
+      "P5.watermark_undecided.F6-F4.sqlite.57813",
+      "P5.watermark_undecided.F6.sqlite.57803",
+      "P5.watermark_visible.F6-F3.sqlite.57814",
+      "P5.watermark_visible.F6.sqlite.57804"
+     ],
+     "source_history": [
+      "P5.watermark_explicit.F6.sqlite.57700",
+      "P5.watermark_missing.F6-F4.sqlite.57701",
+      "P5.watermark_conflict_approved.F6.sqlite.57702",
+      "P5.watermark_visible.F6.sqlite.57703",
+      "P5.checkpoint_undecided.F4.sqlite.57704",
+      "P5.watermark_visible.F6-F1.sqlite.57705",
+      "P5.watermark_conflict_approved.F6.sqlite.57706",
+      "P5.watermark_visible.F6.sqlite.57707",
+      "P5.watermark_missing.F6-F5.sqlite.57708",
+      "P5.watermark_conflict_approved.F6-F3.sqlite.57709",
+      "P5.checkpoint_visible.F4.sqlite.57710",
+      "P5.checkpoint_explicit.F4.sqlite.57711",
+      "P5.watermark_explicit.F6-F5.sqlite.57712",
+      "P5.watermark_undecided.F6-F5.sqlite.57713",
+      "P5.checkpoint_undecided.F4.sqlite.57714",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57715",
+      "P5.watermark_undecided.F6-F5.sqlite.57716",
+      "P5.checkpoint_missing.F4-F1.sqlite.57717",
+      "P5.checkpoint_visible.F4-F5.sqlite.57718",
+      "P5.checkpoint_missing.F4-F1.sqlite.57719",
+      "P5.checkpoint_missing.F4.sqlite.57720",
+      "P5.checkpoint_conflict_approved.F4-F1.sqlite.57721",
+      "P5.watermark_undecided.F6.sqlite.57722",
+      "P5.watermark_undecided.F6.sqlite.57723",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57724",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57725",
+      "P5.watermark_explicit.F6.sqlite.57726",
+      "P5.watermark_missing.F6.sqlite.57727",
+      "P5.checkpoint_visible.F4.sqlite.57728",
+      "P5.watermark_visible.F6-F5.sqlite.57729",
+      "P5.watermark_explicit.F6-F4.sqlite.57730",
+      "P5.checkpoint_undecided.F4-F1.sqlite.57731",
+      "P5.checkpoint_explicit.F4.sqlite.57732",
+      "P5.checkpoint_visible.F4-F6.sqlite.57733",
+      "P5.checkpoint_missing.F4.sqlite.57734",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57735",
+      "P5.checkpoint_explicit.F4-F1.sqlite.57736",
+      "P5.watermark_missing.F6.sqlite.57737",
+      "P5.checkpoint_undecided.F4-F5.sqlite.57738",
+      "P5.checkpoint_conflict_approved.F4-F5.sqlite.57739"
+     ]
+    },
+    "utility": {
+     "correct": [
+      8,
+      16
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      3,
+      11
+     ],
+     "lost": [],
+     "gained": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57815",
+      "P5.checkpoint_explicit.F4.sqlite.57805",
+      "P5.checkpoint_missing.F4.sqlite.57806",
+      "P5.watermark_conflict_approved.F6.sqlite.57802",
+      "P5.watermark_explicit.F6-F1.sqlite.57810",
+      "P5.watermark_explicit.F6.sqlite.57800",
+      "P5.watermark_missing.F6.sqlite.57801"
+     ],
+     "reason": "more correct outcomes"
+    }
+   },
+   "proc2": {
+    "body": [
+     [
+      "read_all"
+     ],
+     [
+      "resolve",
+      "learned"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": true,
+     "unresolved": true,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.57800",
+     "P5.checkpoint_explicit.F4.sqlite.57805",
+     "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+     "P5.watermark_explicit.F6-F1.sqlite.57810",
+     "P5.checkpoint_explicit.F4-F2.sqlite.57815"
+    ],
+    "provenance": {
+     "cycle": 1,
+     "edit": "insert ['read_all'] + ['resolve', 'learned'] at 1",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+      "P5.checkpoint_explicit.F4-F2.sqlite.57815",
+      "P5.checkpoint_explicit.F4.sqlite.57805",
+      "P5.checkpoint_missing.F4.sqlite.57806",
+      "P5.checkpoint_undecided.F4.sqlite.57808",
+      "P5.checkpoint_visible.F4.sqlite.57809",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57812",
+      "P5.watermark_conflict_approved.F6.sqlite.57802",
+      "P5.watermark_explicit.F6-F1.sqlite.57810",
+      "P5.watermark_explicit.F6.sqlite.57800",
+      "P5.watermark_missing.F6-F4.sqlite.57811",
+      "P5.watermark_missing.F6.sqlite.57801",
+      "P5.watermark_undecided.F6-F4.sqlite.57813",
+      "P5.watermark_undecided.F6.sqlite.57803",
+      "P5.watermark_visible.F6-F3.sqlite.57814",
+      "P5.watermark_visible.F6.sqlite.57804"
+     ],
+     "source_history": [
+      "P5.watermark_explicit.F6.sqlite.57700",
+      "P5.watermark_missing.F6-F4.sqlite.57701",
+      "P5.watermark_conflict_approved.F6.sqlite.57702",
+      "P5.watermark_visible.F6.sqlite.57703",
+      "P5.checkpoint_undecided.F4.sqlite.57704",
+      "P5.watermark_visible.F6-F1.sqlite.57705",
+      "P5.watermark_conflict_approved.F6.sqlite.57706",
+      "P5.watermark_visible.F6.sqlite.57707",
+      "P5.watermark_missing.F6-F5.sqlite.57708",
+      "P5.watermark_conflict_approved.F6-F3.sqlite.57709",
+      "P5.checkpoint_visible.F4.sqlite.57710",
+      "P5.checkpoint_explicit.F4.sqlite.57711",
+      "P5.watermark_explicit.F6-F5.sqlite.57712",
+      "P5.watermark_undecided.F6-F5.sqlite.57713",
+      "P5.checkpoint_undecided.F4.sqlite.57714",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57715",
+      "P5.watermark_undecided.F6-F5.sqlite.57716",
+      "P5.checkpoint_missing.F4-F1.sqlite.57717",
+      "P5.checkpoint_visible.F4-F5.sqlite.57718",
+      "P5.checkpoint_missing.F4-F1.sqlite.57719",
+      "P5.checkpoint_missing.F4.sqlite.57720",
+      "P5.checkpoint_conflict_approved.F4-F1.sqlite.57721",
+      "P5.watermark_undecided.F6.sqlite.57722",
+      "P5.watermark_undecided.F6.sqlite.57723",
+      "P5.checkpoint_explicit.F4-F6.sqlite.57724",
+      "P5.checkpoint_conflict_approved.F4.sqlite.57725",
+      "P5.watermark_explicit.F6.sqlite.57726",
+      "P5.watermark_missing.F6.sqlite.57727",
+      "P5.checkpoint_visible.F4.sqlite.57728",
+      "P5.watermark_visible.F6-F5.sqlite.57729",
+      "P5.watermark_explicit.F6-F4.sqlite.57730",
+      "P5.checkpoint_undecided.F4-F1.sqlite.57731",
+      "P5.checkpoint_explicit.F4.sqlite.57732",
+      "P5.checkpoint_visible.F4-F6.sqlite.57733",
+      "P5.checkpoint_missing.F4.sqlite.57734",
+      "P5.watermark_conflict_approved.F6-F4.sqlite.57735",
+      "P5.checkpoint_explicit.F4-F1.sqlite.57736",
+      "P5.watermark_missing.F6.sqlite.57737",
+      "P5.checkpoint_undecided.F4-F5.sqlite.57738",
+      "P5.checkpoint_conflict_approved.F4-F5.sqlite.57739"
+     ]
+    },
+    "utility": {
+     "correct": [
+      16,
+      16
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      11,
+      11
+     ],
+     "lost": [],
+     "gained": [],
+     "common": 11,
+     "cost_common": [
+      16.8,
+      6.8
+     ],
+     "reason": "cheaper by >= 10% on the same correctly completed projects"
+    }
+   }
+  },
+  "cycle": [
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.57806",
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "dedup_latest",
+         "event_id by qty"
+        ],
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 1,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 1,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "qty": "13",
+        "amount": "55",
+        "unit_cost": "38",
+        "event_id": "PQ0",
+        "offset": "17"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "revise",
+      "obs": {
+       "pos": 1,
+       "refuted": [
+        "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       ]
+      },
+      "decision": "option offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ]
+   },
+   {
+    "project": "P5.checkpoint_undecided.F4.sqlite.57808",
+    "decision": {
+     "kind": "abstain",
+     "reason": "requirement undetermined by the stakeholder"
+    },
+    "verified": false,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ],
+        [
+         "dedup_first",
+         "msg_id"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 0,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "resolve",
+      "obs": {
+       "pos": 0,
+       "conflict": true,
+       "trust": "learned",
+       "margin": 0.256
+      },
+      "decision": "unresolved: learned trust margin < 1.0"
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 0,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "value": "4",
+        "sku": "PQ0",
+        "msg_id": "PQ0",
+        "offset": "18"
+       },
+       "answer": "undetermined"
+      },
+      "decision": null
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "abstain",
+       "reason": "requirement undetermined by the stakeholder"
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": null
+     }
+    ]
+   },
+   {
+    "project": "P5.watermark_conflict_approved.F6.sqlite.57802",
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "0": "ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+     }
+    },
+    "verified": true,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "filter_file",
+         "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 0,
+         "op": "filter_file",
+         "options": [
+          "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+          "ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+         ],
+         "ref": [
+          "sub",
+          [
+           "file",
+           "watermark.json",
+           "watermark"
+          ],
+          [
+           "file",
+           "watermark.json",
+           "allowed_lateness"
+          ]
+         ],
+         "column": "ts"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "resolve",
+      "obs": {
+       "pos": 0,
+       "conflict": true,
+       "trust": "learned",
+       "margin": 0.596
+      },
+      "decision": "unresolved: learned trust margin < 1.0"
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 0,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "delta": "2",
+        "account_id": "PQ0",
+        "ts": "159"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "revise",
+      "obs": {
+       "pos": 0,
+       "refuted": [
+        "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       ]
+      },
+      "decision": "option ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "0": "ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+       }
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": "ts",
+      "state_ref": [
+       "sub",
+       [
+        "file",
+        "watermark.json",
+        "watermark"
+       ],
+       [
+        "file",
+        "watermark.json",
+        "allowed_lateness"
+       ]
+      ],
+      "options": [
+       "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+       "ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+      ],
+      "via": "clarification"
+     }
+    ]
+   }
+  ],
+  "failure_memory": {
+   "n_refuted_records": 2,
+   "source_records": [
+    {
+     "project": "P5.watermark_conflict_approved.F6.sqlite.57706",
+     "claim": {
+      "file": "contract.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "newer_date",
+      "older_version",
+      "source:contract.json",
+      "status:approved"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.watermark_conflict_approved.F6.sqlite.57706",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_version",
+      "older_date",
+      "source:docs/runbook.json",
+      "status:draft"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    }
+   ],
+   "trust_with": {
+    "source:docs/runbook.json": -0.1,
+    "status:approved": 0.7692,
+    "older_date": -0.3,
+    "older_version": -0.3636,
+    "status:draft": -0.3571,
+    "newer_date": 0.3,
+    "newer_version": 0.4444,
+    "source:docs/ticket.json": 0.3636,
+    "source:contract.json": 0.2222
+   },
+   "trust_without": {
+    "source:docs/runbook.json": 0.0,
+    "status:approved": 0.75,
+    "older_date": -0.2222,
+    "older_version": -0.5,
+    "status:draft": -0.3077,
+    "newer_date": 0.2222,
+    "newer_version": 0.625,
+    "source:docs/ticket.json": 0.3636,
+    "source:contract.json": 0.125
+   },
+   "changed_decisions": []
+  },
+  "rebinding": [
+   {
+    "project": "P5.checkpoint_conflict_approved.F4.sqlite.57807",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "trust:learned"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4-F2.sqlite.57815",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4.sqlite.57805",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "0": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.57806",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   }
+  ]
+ },
+ "r2": {
+  "policy": [
+   [
+    "search"
+   ],
+   [
+    "call",
+    "proc2"
+   ],
+   [
+    "ask",
+    "first"
+   ],
+   [
+    "search"
+   ],
+   [
+    "submit_or_abstain"
+   ]
+  ],
+  "library": {
+   "proc1": {
+    "body": [
+     [
+      "search"
+     ],
+     [
+      "ask",
+      "first"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": false,
+     "unresolved": false,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.58100",
+     "P5.watermark_missing.F6.sqlite.58101",
+     "P5.watermark_conflict_approved.F6.sqlite.58102",
+     "P5.checkpoint_explicit.F4.sqlite.58105",
+     "P5.checkpoint_missing.F4.sqlite.58106",
+     "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+     "P5.watermark_explicit.F6-F5.sqlite.58110",
+     "P5.watermark_missing.F6-F2.sqlite.58111",
+     "P5.checkpoint_explicit.F4-F2.sqlite.58115"
+    ],
+    "provenance": {
+     "cycle": 0,
+     "edit": "insert ['search'] + ['ask', 'first'] at 0",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+      "P5.checkpoint_explicit.F4-F2.sqlite.58115",
+      "P5.checkpoint_explicit.F4.sqlite.58105",
+      "P5.checkpoint_missing.F4.sqlite.58106",
+      "P5.checkpoint_undecided.F4.sqlite.58108",
+      "P5.checkpoint_visible.F4.sqlite.58109",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58112",
+      "P5.watermark_conflict_approved.F6.sqlite.58102",
+      "P5.watermark_explicit.F6-F5.sqlite.58110",
+      "P5.watermark_explicit.F6.sqlite.58100",
+      "P5.watermark_missing.F6-F2.sqlite.58111",
+      "P5.watermark_missing.F6.sqlite.58101",
+      "P5.watermark_undecided.F6-F1.sqlite.58113",
+      "P5.watermark_undecided.F6.sqlite.58103",
+      "P5.watermark_visible.F6-F3.sqlite.58114",
+      "P5.watermark_visible.F6.sqlite.58104"
+     ],
+     "source_history": [
+      "P5.checkpoint_explicit.F4-F1.sqlite.58000",
+      "P5.checkpoint_visible.F4.sqlite.58001",
+      "P5.watermark_undecided.F6.sqlite.58002",
+      "P5.watermark_explicit.F6.sqlite.58003",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58004",
+      "P5.checkpoint_visible.F4.sqlite.58005",
+      "P5.checkpoint_undecided.F4.sqlite.58006",
+      "P5.checkpoint_conflict_approved.F4-F2.sqlite.58007",
+      "P5.checkpoint_undecided.F4.sqlite.58008",
+      "P5.checkpoint_visible.F4-F5.sqlite.58009",
+      "P5.checkpoint_explicit.F4-F5.sqlite.58010",
+      "P5.watermark_explicit.F6-F4.sqlite.58011",
+      "P5.checkpoint_undecided.F4-F2.sqlite.58012",
+      "P5.checkpoint_conflict_approved.F4.sqlite.58013",
+      "P5.checkpoint_conflict_approved.F4.sqlite.58014",
+      "P5.checkpoint_undecided.F4-F1.sqlite.58015",
+      "P5.checkpoint_missing.F4.sqlite.58016",
+      "P5.watermark_explicit.F6.sqlite.58017",
+      "P5.watermark_missing.F6.sqlite.58018",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58019",
+      "P5.watermark_missing.F6-F1.sqlite.58020",
+      "P5.watermark_undecided.F6.sqlite.58021",
+      "P5.watermark_visible.F6-F4.sqlite.58022",
+      "P5.watermark_undecided.F6-F4.sqlite.58023",
+      "P5.watermark_visible.F6-F3.sqlite.58024",
+      "P5.checkpoint_conflict_approved.F4-F2.sqlite.58025",
+      "P5.watermark_missing.F6-F5.sqlite.58026",
+      "P5.checkpoint_missing.F4.sqlite.58027",
+      "P5.checkpoint_missing.F4-F6.sqlite.58028",
+      "P5.watermark_conflict_approved.F6.sqlite.58029",
+      "P5.watermark_conflict_approved.F6.sqlite.58030",
+      "P5.checkpoint_explicit.F4.sqlite.58031",
+      "P5.watermark_visible.F6.sqlite.58032",
+      "P5.watermark_explicit.F6-F1.sqlite.58033",
+      "P5.checkpoint_visible.F4-F1.sqlite.58034",
+      "P5.watermark_undecided.F6-F1.sqlite.58035",
+      "P5.checkpoint_missing.F4-F6.sqlite.58036",
+      "P5.watermark_visible.F6.sqlite.58037",
+      "P5.checkpoint_explicit.F4.sqlite.58038",
+      "P5.watermark_missing.F6.sqlite.58039"
+     ]
+    },
+    "utility": {
+     "correct": [
+      6,
+      15
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      3,
+      12
+     ],
+     "lost": [],
+     "gained": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+      "P5.checkpoint_explicit.F4-F2.sqlite.58115",
+      "P5.checkpoint_explicit.F4.sqlite.58105",
+      "P5.checkpoint_missing.F4.sqlite.58106",
+      "P5.watermark_conflict_approved.F6.sqlite.58102",
+      "P5.watermark_explicit.F6-F5.sqlite.58110",
+      "P5.watermark_explicit.F6.sqlite.58100",
+      "P5.watermark_missing.F6-F2.sqlite.58111",
+      "P5.watermark_missing.F6.sqlite.58101"
+     ],
+     "reason": "more correct outcomes"
+    }
+   },
+   "proc2": {
+    "body": [
+     [
+      "read_all"
+     ],
+     [
+      "resolve",
+      "learned"
+     ]
+    ],
+    "interface": "InvestigationState -> InvestigationState",
+    "applicability": {
+     "has_candidate": true,
+     "unresolved": true,
+     "multi_unresolved": false,
+     "conflict": false,
+     "undecided": false,
+     "asked": false,
+     "claims_seen": false,
+     "trust_memory": true
+    },
+    "helped": [
+     "P5.watermark_explicit.F6.sqlite.58100",
+     "P5.checkpoint_explicit.F4.sqlite.58105",
+     "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+     "P5.watermark_explicit.F6-F5.sqlite.58110",
+     "P5.checkpoint_explicit.F4-F2.sqlite.58115"
+    ],
+    "provenance": {
+     "cycle": 1,
+     "edit": "insert ['read_all'] + ['resolve', 'learned'] at 1",
+     "validation": [
+      "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+      "P5.checkpoint_explicit.F4-F2.sqlite.58115",
+      "P5.checkpoint_explicit.F4.sqlite.58105",
+      "P5.checkpoint_missing.F4.sqlite.58106",
+      "P5.checkpoint_undecided.F4.sqlite.58108",
+      "P5.checkpoint_visible.F4.sqlite.58109",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58112",
+      "P5.watermark_conflict_approved.F6.sqlite.58102",
+      "P5.watermark_explicit.F6-F5.sqlite.58110",
+      "P5.watermark_explicit.F6.sqlite.58100",
+      "P5.watermark_missing.F6-F2.sqlite.58111",
+      "P5.watermark_missing.F6.sqlite.58101",
+      "P5.watermark_undecided.F6-F1.sqlite.58113",
+      "P5.watermark_undecided.F6.sqlite.58103",
+      "P5.watermark_visible.F6-F3.sqlite.58114",
+      "P5.watermark_visible.F6.sqlite.58104"
+     ],
+     "source_history": [
+      "P5.checkpoint_explicit.F4-F1.sqlite.58000",
+      "P5.checkpoint_visible.F4.sqlite.58001",
+      "P5.watermark_undecided.F6.sqlite.58002",
+      "P5.watermark_explicit.F6.sqlite.58003",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58004",
+      "P5.checkpoint_visible.F4.sqlite.58005",
+      "P5.checkpoint_undecided.F4.sqlite.58006",
+      "P5.checkpoint_conflict_approved.F4-F2.sqlite.58007",
+      "P5.checkpoint_undecided.F4.sqlite.58008",
+      "P5.checkpoint_visible.F4-F5.sqlite.58009",
+      "P5.checkpoint_explicit.F4-F5.sqlite.58010",
+      "P5.watermark_explicit.F6-F4.sqlite.58011",
+      "P5.checkpoint_undecided.F4-F2.sqlite.58012",
+      "P5.checkpoint_conflict_approved.F4.sqlite.58013",
+      "P5.checkpoint_conflict_approved.F4.sqlite.58014",
+      "P5.checkpoint_undecided.F4-F1.sqlite.58015",
+      "P5.checkpoint_missing.F4.sqlite.58016",
+      "P5.watermark_explicit.F6.sqlite.58017",
+      "P5.watermark_missing.F6.sqlite.58018",
+      "P5.watermark_conflict_approved.F6-F1.sqlite.58019",
+      "P5.watermark_missing.F6-F1.sqlite.58020",
+      "P5.watermark_undecided.F6.sqlite.58021",
+      "P5.watermark_visible.F6-F4.sqlite.58022",
+      "P5.watermark_undecided.F6-F4.sqlite.58023",
+      "P5.watermark_visible.F6-F3.sqlite.58024",
+      "P5.checkpoint_conflict_approved.F4-F2.sqlite.58025",
+      "P5.watermark_missing.F6-F5.sqlite.58026",
+      "P5.checkpoint_missing.F4.sqlite.58027",
+      "P5.checkpoint_missing.F4-F6.sqlite.58028",
+      "P5.watermark_conflict_approved.F6.sqlite.58029",
+      "P5.watermark_conflict_approved.F6.sqlite.58030",
+      "P5.checkpoint_explicit.F4.sqlite.58031",
+      "P5.watermark_visible.F6.sqlite.58032",
+      "P5.watermark_explicit.F6-F1.sqlite.58033",
+      "P5.checkpoint_visible.F4-F1.sqlite.58034",
+      "P5.watermark_undecided.F6-F1.sqlite.58035",
+      "P5.checkpoint_missing.F4-F6.sqlite.58036",
+      "P5.watermark_visible.F6.sqlite.58037",
+      "P5.checkpoint_explicit.F4.sqlite.58038",
+      "P5.watermark_missing.F6.sqlite.58039"
+     ]
+    },
+    "utility": {
+     "correct": [
+      15,
+      15
+     ],
+     "wrong": [
+      0,
+      0
+     ],
+     "completed": [
+      12,
+      12
+     ],
+     "lost": [],
+     "gained": [],
+     "common": 12,
+     "cost_common": [
+      19.452,
+      9.452
+     ],
+     "reason": "cheaper by >= 10% on the same correctly completed projects"
+    }
+   }
+  },
+  "cycle": [
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.58106",
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "0": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "filter_file",
+         "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ],
+        [
+         "dedup_first",
+         "msg_id"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 0,
+         "op": "filter_file",
+         "options": [
+          "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "log_pos"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 0,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "value": "5",
+        "order_id": "PQ0",
+        "msg_id": "PQ0",
+        "log_pos": "9"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "revise",
+      "obs": {
+       "pos": 0,
+       "refuted": [
+        "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       ]
+      },
+      "decision": "option log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "0": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ]
+   },
+   {
+    "project": "P5.checkpoint_undecided.F4.sqlite.58108",
+    "decision": {
+     "kind": "abstain",
+     "reason": "requirement undetermined by the stakeholder"
+    },
+    "verified": false,
+    "correct": true,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "dedup_first",
+         "event_id"
+        ],
+        [
+         "filter_file",
+         "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 1,
+         "op": "filter_file",
+         "options": [
+          "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+          "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+         ],
+         "ref": [
+          "file",
+          "checkpoint.json",
+          "last_committed_offset"
+         ],
+         "column": "offset"
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "resolve",
+      "obs": {
+       "pos": 1,
+       "conflict": true,
+       "trust": "learned",
+       "margin": 0.082
+      },
+      "decision": "unresolved: learned trust margin < 1.0"
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 1,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "delta": "4",
+        "order_id": "PQ0",
+        "event_id": "PQ0",
+        "offset": "4"
+       },
+       "answer": "undetermined"
+      },
+      "decision": null
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "abstain",
+       "reason": "requirement undetermined by the stakeholder"
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": null
+     }
+    ]
+   },
+   {
+    "project": "P5.watermark_conflict_approved.F6-F1.sqlite.58112",
+    "decision": {
+     "kind": "abstain",
+     "reason": "1 unresolved decision point(s)"
+    },
+    "verified": false,
+    "correct": false,
+    "trace": [
+     {
+      "action": "search",
+      "obs": {
+       "outcome": "abstain_ambiguous",
+       "edits": [
+        [
+         "filter_file",
+         "event_ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+        ],
+        [
+         "quarantine_invalid",
+         "unit_cost"
+        ]
+       ],
+       "shared": false,
+       "decision_points": [
+        {
+         "pos": 0,
+         "op": "filter_file",
+         "options": [
+          "event_ts gt [\"file\", \"watermark.json\", \"watermark\"]",
+          "event_ts ge [\"file\", \"watermark.json\", \"watermark\"]",
+          "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+          "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+         ],
+         "ref": null,
+         "column": null
+        }
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "call",
+      "obs": {
+       "procedure": "proc2",
+       "conditions_at_entry": {
+        "has_candidate": true,
+        "unresolved": true,
+        "multi_unresolved": false,
+        "conflict": false,
+        "undecided": false,
+        "asked": false,
+        "claims_seen": false,
+        "trust_memory": true
+       }
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "contract.json",
+       "claims": [
+        "R1"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/runbook.json",
+       "claims": []
+      },
+      "decision": null
+     },
+     {
+      "action": "read",
+      "obs": {
+       "source": "docs/ticket.json",
+       "claims": [
+        "R2"
+       ]
+      },
+      "decision": null
+     },
+     {
+      "action": "ask",
+      "obs": {
+       "pos": 0,
+       "target": "first",
+       "probe": {
+        "id": "PQ0",
+        "account_id": "PQ0",
+        "rev": "6",
+        "unit_cost": "24",
+        "event_ts": "164"
+       },
+       "answer": "output"
+      },
+      "decision": null
+     },
+     {
+      "action": "decide",
+      "obs": null,
+      "decision": {
+       "kind": "abstain",
+       "reason": "1 unresolved decision point(s)"
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": null,
+      "state_ref": null,
+      "options": [
+       "event_ts gt [\"file\", \"watermark.json\", \"watermark\"]",
+       "event_ts ge [\"file\", \"watermark.json\", \"watermark\"]",
+       "event_ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]",
+       "event_ts ge [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+      ],
+      "via": null
+     }
+    ]
+   }
+  ],
+  "failure_memory": {
+   "n_refuted_records": 8,
+   "source_records": [
+    {
+     "project": "P5.checkpoint_conflict_approved.F4-F2.sqlite.58007",
+     "claim": {
+      "file": "contract.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "older_date",
+      "older_version",
+      "source:contract.json",
+      "status:approved"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4-F2.sqlite.58007",
+     "claim": {
+      "file": "docs/ticket.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_date",
+      "newer_version",
+      "source:docs/ticket.json",
+      "status:draft"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.58013",
+     "claim": {
+      "file": "contract.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_version",
+      "older_date",
+      "source:contract.json",
+      "status:draft"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.58013",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "newer_date",
+      "older_version",
+      "source:docs/runbook.json",
+      "status:approved"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.58014",
+     "claim": {
+      "file": "contract.json",
+      "claim_id": "R1"
+     },
+     "features": [
+      "older_date",
+      "older_version",
+      "source:contract.json",
+      "status:approved"
+     ],
+     "effect": "excluded",
+     "conflict": true,
+     "agreed": true,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    },
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.58014",
+     "claim": {
+      "file": "docs/runbook.json",
+      "claim_id": "R2"
+     },
+     "features": [
+      "newer_date",
+      "newer_version",
+      "source:docs/runbook.json",
+      "status:draft"
+     ],
+     "effect": "kept",
+     "conflict": true,
+     "agreed": false,
+     "how": "refuted then verified submission",
+     "scope": "claims about the boundary of a state reference, in this project only"
+    }
+   ],
+   "trust_with": {
+    "source:docs/ticket.json": 0.4444,
+    "status:approved": 0.8125,
+    "source:docs/runbook.json": -0.1538,
+    "status:draft": -0.3571,
+    "newer_date": 0.0,
+    "newer_version": -0.1,
+    "source:contract.json": 0.5455,
+    "older_date": 0.0,
+    "older_version": 0.0833
+   },
+   "trust_without": {
+    "source:docs/ticket.json": 0.625,
+    "status:approved": 0.75,
+    "source:docs/runbook.json": -0.1,
+    "status:draft": -0.1,
+    "newer_date": 0.0,
+    "newer_version": 0.5,
+    "source:contract.json": 0.5714,
+    "older_date": 0.0,
+    "older_version": -0.375
+   },
+   "changed_decisions": [
+    {
+     "project": "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+     "with_failure_records": {
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "1": "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      },
+      "correct": true,
+      "bindings": [
+       {
+        "pos": 1,
+        "column": "log_pos",
+        "state_ref": [
+         "file",
+         "checkpoint.json",
+         "last_committed_offset"
+        ],
+        "options": [
+         "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+         "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ],
+        "via": "trust:learned"
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 1,
+         "claims": [
+          {
+           "file": "contract.json",
+           "claim_id": "R1"
+          },
+          {
+           "file": "docs/ticket.json",
+           "claim_id": "R2"
+          }
+         ],
+         "via": "trust:learned",
+         "trust_weights_used": true
+        },
+        "decision": "option log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      ]
+     },
+     "without": {
+      "decision": {
+       "kind": "submit",
+       "choices": {
+        "1": "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+       }
+      },
+      "correct": true,
+      "bindings": [
+       {
+        "pos": 1,
+        "column": "log_pos",
+        "state_ref": [
+         "file",
+         "checkpoint.json",
+         "last_committed_offset"
+        ],
+        "options": [
+         "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+         "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+        ],
+        "via": "clarification"
+       }
+      ],
+      "resolve": [
+       {
+        "action": "resolve",
+        "obs": {
+         "pos": 1,
+         "conflict": true,
+         "trust": "learned",
+         "margin": 0.796
+        },
+        "decision": "unresolved: learned trust margin < 1.0"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "rebinding": [
+   {
+    "project": "P5.checkpoint_conflict_approved.F4.sqlite.58107",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "trust:learned"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4-F2.sqlite.58115",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_explicit.F4.sqlite.58105",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 1,
+      "column": "offset",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "claim"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "1": "offset ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   },
+   {
+    "project": "P5.checkpoint_missing.F4.sqlite.58106",
+    "call": [
+     {
+      "procedure": "proc2",
+      "conditions_at_entry": {
+       "has_candidate": true,
+       "unresolved": true,
+       "multi_unresolved": false,
+       "conflict": false,
+       "undecided": false,
+       "asked": false,
+       "claims_seen": false,
+       "trust_memory": true
+      }
+     }
+    ],
+    "bindings": [
+     {
+      "pos": 0,
+      "column": "log_pos",
+      "state_ref": [
+       "file",
+       "checkpoint.json",
+       "last_committed_offset"
+      ],
+      "options": [
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]",
+       "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ],
+      "via": "clarification"
+     }
+    ],
+    "decision": {
+     "kind": "submit",
+     "choices": {
+      "0": "log_pos ge [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+     }
+    },
+    "verified": true
+   }
+  ]
+ }
+}

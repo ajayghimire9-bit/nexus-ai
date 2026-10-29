@@ -229,3 +229,148 @@ python scripts/agi5_eval.py score ; python scripts/agi5_protect.py artifacts/agi
 
 **Not attempted:** curriculum editing (the source order is fixed and exogenous), and improving the improver. No claim is
 made about the algorithm that proposes policy changes.
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:** protocol `bdf4570`, r1 rerun deviation `1073d0f`, pre-evaluation freeze `684cc19`, results: this commit.
+**Raw data:** `artifacts/agi5_src/r*.json`, `artifacts/agi5_eval/rows_*.jsonl` (936 rows = 72 targets × 13 arms),
+`artifacts/agi5_eval/result.json`, `artifacts/agi5_demonstration.json`.
+
+### 1.1 Budget and execution events
+
+| Stage | Used (charged wall s) | Ceiling after recorded transfers |
+|---|---|---|
+| s1 dev | 154 | 160 |
+| src (incl. the killed r1 attempt, 32 s) | 124 | 140 |
+| eval | 197 | 280 |
+| rep | 1 | 20 |
+| **Total** | **476** | **600** |
+
+- The carried ledger now has **218 s**.
+- **Events:**
+  1. Stage 1 went 4 s over its ceiling: direct dev runs bypassed the job runner. This was recorded as a transfer.
+  2. Source lineage r1 was killed at its 32 s cap with no artifact and no output. It was rerun once, alone, with a 40 s cap
+     funded by a recorded eval → src transfer.
+  3. The evaluation ran once (SQLite 162 s, Spark 35 s), with every row written and the one-use claim made once.
+- **Searches:** 7 real searches per target. A2 / A3 / A5 of a lineage share one search; each arm is attributed its measured
+  cost.
+
+### 1.2 Source learning
+
+The learned procedures were composed automatically from the seed `[search, submit_or_abstain]` (inspect
+`artifacts/agi5_src/r*.json` → `policy`, `library`, `policy_log`):
+
+| Lineage | Learned program | Library |
+|---|---|---|
+| r0 | `search → call proc2 → ask(first) → search → submit` | proc1 = [search, ask(first)]; **proc2 = [read_all, resolve(none)]** |
+| r1 | same shape | proc2 = [read_all, resolve(**learned**)] |
+| r2 | same shape | proc2 = [read_all, resolve(**learned**)] |
+
+- **Validation replay** (16 projects): the learned procedure scored 15 / 16 / 15 correct, 0 wrong. F0 scored 14 (1 wrong) /
+  16 / 15. Cost was 20.7 / 12.9 / 17.8 vs F0's 19.7 / 20.1 / 17.8 cost-seconds.
+- **Coverage:** every edit type was proposed and executed in its own comparison. Adoptions came from the exhaustive
+  insertions; no sampled delete / swap / wrap / parameter / call / inline edit was adopted.
+- **Placebo history:** the placebo learner adopted almost nothing and stayed at or near the seed.
+- **Development ablations** (validation replay, every lineage): **stored-answer reuse** scored 7–10 correct with **5–8 wrong**,
+  against 15–16 / 0 for the procedure. Remembering the answer loses because the business decision reverses.
+- **Failure-memory demonstration** (`agi5_demonstration.json`, r0): on validation projects 57502 and 57503, the claim
+  records learned from **refuted** source submissions lower the learned-trust margin to 0.07. So the conflict is not
+  trusted, the question is asked, and the result is correct. With those records removed (counterfactual), trust resolves
+  the conflict and the submission is wrong. r2 has one changed decision, and r1 none.
+- **Rebinding:** the same stored procedure proc2 binds at run time to decision points on `log_pos` / `offset` /
+  `event_ts` / `recorded_at` columns and on checkpoint or watermark state references. On the target set's held-out column
+  names (`evt_time`, `kafka_offset`, `seq_no`, …) it completed 10 / 12 single-decision projects, like every arm.
+
+### 1.3 Target evaluation (72 one-use projects; each lineage arm reported per r = 0 / 1 / 2)
+
+| Arm | Verified / 72 | Accepted wrong repairs | Justified abstentions (of 14) | Questions | Unnecessary questions |
+|---|---|---|---|---|---|
+| A1 Fresh, F0 | **45** | **0** | **14** | 51 | 0 |
+| A2 Memory, F0 | 48 / 48 / 48 | **4 / 6 / 1** | 10 / 9 / 14 | 37 / 41 / 41 | 0 |
+| A3 Memory, learned procedure | 44 / 48 / 47 | 0 / 6 / 1 | 14 / 9 / 14 | 48 / 39 / 38 | 0 |
+| A4 Placebo history, learned procedure | 14 / 4 / 4 | 9 / 0 / 0 | 10 / 14 / 14 | 0 | 0 |
+| A5 A3 without its stored procedures | 39 / 38 / 38 | 0 | 14 | 58 | 13 |
+
+**By kind** (A1 → A2 r0 / r1 / r2):
+
+| Kind | A1 | A2 r0 / r1 / r2 |
+|---|---|---|
+| two-decision held-out combinations | 8 / 24 | 11 / 10 / 9 |
+| Spark engine transfer | 6 / 8 | 6 / 7 / 8 |
+| held-out schema names | 10 / 12 | all arms 10 / 12 |
+| seen single combinations | 16 / 20 | all 16 / 20 |
+| multi-step | 5 / 8 | all 5 / 8 |
+
+**Pre-registered contrasts** (paired over 72 projects, lineage-averaged, Holm over 3):
+
+| Contrast | Mean | p (Holm) | Reading |
+|---|---|---|---|
+| Experience A2 − A1 | **+4.2 pp** (+3 projects per lineage) | 0.077 (0.154) | fails the rule: more accepted wrong repairs (4 / 6 / 1 vs 0) |
+| Procedure A3 − A2 | **−2.3 pp** (−4 / 0 / −1) | 0.124 (0.154) | no gain |
+| A3 − A4 placebo | +54.2 pp | < 0.001 | the placebo history yields no usable procedure (see 1.4) |
+| Removal A3 − A5 (attribution) | +11.1 pp | 0.001 | removing the learned stored procedures removes their contribution |
+
+**Cost on the same correctly completed projects** (cost-seconds = wall + 2 × questions):
+- A2 vs A1: **31 % / 21 % / 30 % cheaper**, mostly fewer questions (A2 lost 2 / 0 / 0 and gained 5 / 3 / 3 projects).
+- A3 vs A2: −42 % (r0 dearer) / 0 % / 0 %.
+
+**Where the wrong repairs came from:**
+- In A2, 9 of the 11 come from **undecided** requirements (two draft claims) and 2 from approved / draft conflicts. In
+  every case **learned trust** resolved a conflict it should have left open.
+- A3 r1 / r2 have the same 6 / 1, because their learned procedure also resolves by learned trust.
+- A3 r0's procedure learned `resolve(none)`. It made no wrong repairs, but it lost the trust-dependent completions.
+- **Diagnosis:** the trust weights absorb uninformative provenance cues (source file, version, date) besides status. Those
+  cues separate two drafts, and no source record taught that two drafts are undecidable: undecided source projects produce
+  only "undetermined" answers, never a trust record.
+- A4 r0's 9 wrong repairs come from its seed-like procedure plus `resolve` on explicit-looking claims, under the placebo
+  repair memory.
+
+### 1.4 What the evidence establishes
+
+**Established:**
+- A complete, inspectable evidence → action → revision → submission / abstention cycle on real `.sql` / `.py` projects, with
+  a bounded clarification. It uses 0 unnecessary questions whenever the procedure reads before asking.
+- Fresh F0 had **0 wrong repairs and 14 / 14 justified abstentions**.
+- Investigation procedures can be **composed automatically** from a minimal seed. They reached F0-equivalent structure
+  (search → read + resolve → ask → submit) in all three lineages, and they rebind to new schemas.
+- Remembering answers is markedly worse than remembering how to obtain them (dev ablation).
+
+**Not established:**
+- A learned procedure that **beats** the strong fixed policy (A3 − A2 = −2.3 pp).
+- A safe experience gain. Experience adds about 3 completions but brings accepted wrong repairs through over-confident
+  trust.
+
+**About the placebo:** the A3 − A4 difference does **not** isolate history content from compute. The placebo learner, given
+permuted feedback, adopts no procedure at all. The result shows that procedure learning needs real feedback; the placebo
+arm is weaker than "deliberately competent".
+
+**Attribution:**
+- **Human:** the primitives, F0, the policy language, the stakeholder and the generator.
+- **Language model:** none.
+- **Learned:** the evidence weights, the repair memory, and the composition / selection of the procedures.
+- **External validity:** untested; no external projects, and Spark is engine transfer of the same generator.
+
+**Break-even:**
+- **Training cost:** about 31 s per lineage, plus 154 s of shared development.
+- **Saving:** about 12 questions per 72 projects (≈ 0.35 cost-s per project) for the experience arm.
+- So repaying training needs on the order of 90 projects, and the wrong repairs mean it should not be deployed as is.
+
+### 1.5 Protection
+
+`artifacts/agi5_protected_hashes_after.json`:
+- 0 violations;
+- 1,578 frozen files (Phases 1–4) unchanged;
+- checkers pinned;
+- `main` = `d7ac8c5`;
+- the 9 additions are this phase's run logs.
+
+### 1.6 Recommended next experiment
+
+**Calibrated trust with abstention-aware evidence.**
+- Restrict trust to provenance features that are validated on held-out source conflicts. Learn "undecided" from
+  stakeholder "undetermined" answers as negative trust evidence.
+- Require the learned-trust resolution itself to pass the corrected admission rule against "ask first" on validation.
+- Then rerun the same frozen comparison on fresh one-use targets. The carried 218 s covers roughly one evaluation of this
+  size, without new source lineages, so new lineages need an explicit allocation.

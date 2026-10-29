@@ -354,3 +354,32 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * suggestive: value of incomplete experience; untouched-mechanism gain;
   * not demonstrated: ≥ 10 pp completion, ≥ 20 % cost, improver gain.
 * **Budget:** 1,419 of the 1,800 s Phase 4 cap; carried 694 s.
+
+## Phase 5: learning to investigate and transferring the procedure (2026-10-29; report `docs/NEXUS_PHASE5_INVESTIGATION_PROCEDURE_REPORT.md`)
+
+* **Human engineering:**
+  * requirement decision points whose business answer reverses per project;
+  * structured requirement documents (a structured-contract diagnostic; no language model);
+  * a 1-row stakeholder clarification;
+  * a typed investigation-policy language, its interpreter and actions;
+  * the fixed policy F0;
+  * the corrected admission rule (equal-zero and same-completed-set loopholes closed);
+  * a Phase 5 closure extension.
+* **Model contribution:** none (no LLM used; cost gap documented).
+* **Learned memory:**
+  * claim-trust weights, counterexamples and action outcomes, with provenance and scope;
+  * Phase 4 repair memory.
+  * Failure-derived records changed later trust decisions (`agi5_demonstration.json`).
+* **Learned procedures:** composed automatically from a minimal seed in 3 / 3 lineages
+  (search → [read_all, resolve] → ask → submit), stored with interface, applicability, provenance and utility, and
+  rebound to new schemas.
+* **Demonstrated transfer** (72 one-use targets):
+  * Fresh F0 45 / 72 with 0 wrong repairs and 14 / 14 justified abstentions.
+  * Memory + F0 48 / 72 (+4.2 pp, Holm p 0.15) **but 4 / 6 / 1 accepted wrong repairs** (over-confident learned trust on
+    undecided conflicts), and 21–31 % cheaper on the same completed projects.
+  * Learned procedure vs F0: −2.3 pp (no gain).
+  * Removing stored procedures: −11 pp.
+  * Placebo: no usable procedure.
+* **Not demonstrated:** a learned procedure beating the strong fixed policy; a safe experience gain; external validity;
+  improvement of the improver.
+* **Budget:** 476 of the 600 s Phase 5 cap; carried 218 s.
