@@ -530,3 +530,29 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Untested:** an improved procedure or improver; completion-enabling methods; cross-domain transfer; multi-table
   repositories.
 * **Budget:** ~1,773 of 3,500 s; ~2,291 s remain, including the reserve.
+
+## Phase 10B: bridge expansion, valley-crossing macros, confirmation (2026-10-29; report `docs/NEXUS_PHASE10B_BRIDGE_EXPANSION_AND_CONFIRMATION_REPORT.md`)
+
+* **Human infrastructure** (all arms):
+  * ROUND primitive `round_uncast` (closes the audited expressiveness gap);
+  * idempotent coverage application (0 / 618 wrong);
+  * fixed M\* validation gate;
+  * ranker-guided bridge expansion (40 / 30 / 30 by expansion count);
+  * valley-crossing detection and promotion priority.
+* **Autonomous changes:**
+  * the first adopted M\* edit (rep0: MDL threshold 10);
+  * 8 promoted methods, 1 valley-crossing;
+  * learned rankers;
+  * calibrated trust.
+* **Verified benefit** (48 fresh targets, 2 repetitions): Full − fresh **+12.5 pp in both** (p ≈ 0.03), from:
+  * calibrated trust: +8.3 pp;
+  * learned ranking: +6.2 pp.
+* **No benefit:**
+  * learned macros (0);
+  * bridge expansion (0);
+  * Tier 3 (7 / 20 everywhere);
+  * the 18-project one-use confirmation set (11 / 18 for every arm).
+* **Gate 6:** passed under the combined definition. The library-only check shows the pass came from learned ranking (no
+  macros 3 / 3; macros + fixed guide 0 / 3).
+* **Untested:** unfamiliar-composition transfer; a matched bridge-for-all 2 × 2; multi-table / MERGE / CDC.
+* **Budget:** ~1,560 of 1,800 s.

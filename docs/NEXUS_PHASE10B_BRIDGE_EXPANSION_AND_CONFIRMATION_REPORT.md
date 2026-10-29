@@ -118,3 +118,143 @@ multi-conflict), 20 P8 / P9, and 4 held-out `require` mutation targets.
 - full training costs.
 
 **Two repetitions are a replication check, not a population estimate.**
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:**
+- protocol `87c32e0`;
+- transfer + job file;
+- gate record + checkpoints + freeze `77a6f0c` (before either one-use set opened);
+- results: this commit.
+
+**Raw data:**
+- `artifacts/agi10b_train/`
+- `artifacts/agi10b_dev/` (checks, gate6, gate6_libonly)
+- `artifacts/agi10b_eval/rows_c*.jsonl` (528) and `confirm_c*.jsonl` (90), plus `result.json` / `confirm_result.json`
+
+### 1.1 Budget and execution events
+
+| Stage | Used | Ceiling after logged transfers |
+|---|---|---|
+| S1 | 106 | 106 (250; 144 → S3) |
+| S2 | 142 | 200 (350; 150 → S4) |
+| S3 | 661 | 661 (744; 83 → S4) |
+| S4 | 607 | 683 |
+| S5 | ~45 | 150 |
+| **Total** | **~1,560** | **1,800** |
+
+**Pool remaining ≈ 2,232 s.** The +1,500 s grant was registered once.
+
+**Events:**
+1. **Repetitions hit the pre-registered 370 s cap.** rep0 reached N3 = **78** tasks, rep1 **40**. rep1's M\* round cost 215 s vs 115 s for rep0. **Exposure is not matched** across repetitions.
+2. **Three evaluation chunks timed out** at 88 s. They were **resumed once**; the written rows stayed byte-identical (`cmp`), and 53 never-executed rows were run. No completed row was rerun.
+3. All 528 evaluation rows and all 90 confirmation rows are present; no build failures.
+
+### 1.2 What the learner did
+
+| | rep0 | rep1 |
+|---|---|---|
+| Tasks (N3) | 78 | 40 |
+| Verified / wrong at source | 63 / 0 | 31 / **1** (an X2 composite, training-time) |
+| Valley crossings detected | 1 (`dedup_first → filter_file`: +0.0 then +0.1) | 1 (`filter_file → filter_cmp`: +0.0 then +1.4) |
+| Methods promoted (MDL + LOPO) | 5 (one multi-step: CDC latest → drop tombstone); **0 valley-crossing** | 3; **1 valley-crossing** (window start + end filter pair) |
+| **M\* round** (fixed gate) | **adopted for the first time:** MDL threshold 0 → 10; 9 vs 8 on 10 fully built validation tasks; no build or truncation failures | 9 vs 9 tie; not adopted |
+
+### 1.3 Gate 1 and the one-use confirmation set
+
+**Gate control 6** under the owner's 10B definition (L\* + ranker with bridge vs plain, unguided search) **passed**: the
+all-fault X1 composite was solved 3 / 3 vs 0 / 3 on fresh replication seeds, with 0 wrong. Controls 1–5 passed in 9B.
+So **agi9de/confirm was opened.**
+
+**Two-parent paired confirmation (18 projects × 5 arms, 0 wrong):**
+- every arm verifies **11 / 18**: A1 fresh, Full_rep0, Full_rep1, TrustOnly_rep0, TrustOnly_rep1;
+- all contrasts are 0.0 pp;
+- only one of its 18 projects realised K ≥ 2;
+- **the learned systems did not outperform fresh search on this set in either parent.**
+
+**Addendum correction.** The addendum requires control 6 to remove *macros only*, leaving bridge search and guidance
+unchanged. That library-only check was run as a post-hoc development diagnostic (`artifacts/agi10b_dev/gate6_libonly.json`)
+on the same replication seeds:
+
+| Arm | X1 solved | P7 solved |
+|---|---|---|
+| Learned ranker + bridge, **no macros** | **3 / 3** | 0 / 3 |
+| Macros + fixed guide | **0 / 3** | 0 / 3 |
+| Plain search | 0 / 3 | 0 / 3 |
+
+The method queue never accepted a macro. **The gate-6 pass was produced by learned ranking, not by library value.**
+Under the addendum's definition the gate would have stood at **5 / 6**, and the confirmation set would not have been
+opened. Its result (a null) is reported as is; nothing is reopened or rerun.
+
+### 1.4 48 fresh one-use targets × 11 arms (528 rows)
+
+| Arm | Verified / 48 | Seen / 24 | Tier 3 / 20 | Mutation / 4 | Multi-conflict | No candidate | Wrong |
+|---|---|---|---|---|---|---|---|
+| A1 fresh | 25 | 14 | 7 | 4 | 0 / 5 | 16 | 0 |
+| **Full rep0 / rep1** | **31 / 31** | **20 / 20** | 7 / 7 | 4 / 4 | **4 / 5** | 14 / 15 | **0 / 0** |
+| noLib | 31 / 31 | 20 | 7 | 4 | 4 / 5 | 14 / 15 | 0 |
+| noBridge | 31 / 31 | 20 | 7 | 4 | 4 / 5 | 14 / 14 | 0 |
+| noRanker (fixed guide) | 28 / 28 | 17 | 7 | 4 | 3 / 5 | 16 | 0 |
+| noTrust | 27 / 27 | 16 | 7 | 4 | 0 / 5 | 14 / 15 | 0 |
+
+**Contrasts** (identical in both repetitions; per-target sign-flip):
+
+| Contrast | Result |
+|---|---|
+| **Full − A1** | **+12.5 pp** (rep0 p = 0.029; rep1 p = 0.030). Gained 85000, 85003, 85005, 85006, 85016, 85020; lost none. |
+| **Learned ranking + bridge (Full − noRanker)** | **+6.2 pp**, 3 targets (85003, 85016, 85020), p = 0.26 |
+| **Calibrated trust (Full − noTrust)** | **+8.3 pp**, 4 targets (85000, 85003, 85005, 85006), p = 0.12 to 0.13 |
+| **Learned macros (Full − noLib)** | **0.0 pp** |
+| **Bridge expansion (Full − noBridge)** | **0.0 pp**: bridge lookahead added nothing beyond the learned ranker |
+| **Tier 3 (P8 / P9)** | **7 / 20 in every arm.** The Migration / Hybrid ceiling did not move. |
+
+**Accepted wrong repairs: 0 / 528, and 0 / 90 in the confirmation set.** The idempotent coverage fix held on every row.
+
+**Candidate-starved searches.** A1 had 16. Learned-ranker arms rescued 1–2; fixed-guide arms rescued 0.
+
+### 1.5 Answers
+
+**Repeatable advantage.** Full beats fresh by +12.5 pp in **both** repetitions, with identical target sets. It comes from:
+- **calibrated trust** (+8.3 pp; multi-conflict 0 / 5 → 4 / 5);
+- **learned ranking** (+6.2 pp).
+
+**What did not help:**
+- **Learned macros** (L\*, including the one valley-crossing macro): 0. The method queue accepted no macro on the gate's
+  replication seeds.
+- **Bridge expansion:** 0 beyond the ranker.
+- **Tier 3:** no transfer gain.
+- **The 18-project confirmation set:** a null for every learned arm.
+
+**What this means.**
+- **Experienced memory and guidance:** the repeatable gain comes from what NEXUS learned (trust from documents and
+  outcomes; a search ranker from its own verified repairs and dreams), not from the shared fixes.
+- **Shared fixes:** ROUND and idempotent coverage are given to every arm, so they cannot explain a difference between
+  arms.
+- **Reusable abstractions:** NEXUS has not shown that its invented abstractions solve unfamiliar compositions.
+- **Valley crossings:** they were rare in source experience (1 per repetition), so the abstraction mechanism had almost
+  nothing to promote.
+
+## §2 Addendum responses and the registered follow-up (not run; the affected targets were already open)
+
+The addendum arrived after both one-use sets had been claimed and opened, so its changes were **not** applied to them.
+
+| Addendum item | Status |
+|---|---|
+| Same bridge capability for controls | **Not met** by this evaluation. Bridge search here is active only with the learned ranker; fixed-guidance arms use the old search. Follow-up: a ranker-free bridge criterion (top-k flat steps by fixed order) so all four cells A–D use the bridge machinery. |
+| A–D 2 × 2 (all with bridge) | Partly available: B = noLib, D = Full, C = noRanker **without bridge**, A = A1 **without bridge**. A matched 2 × 2 is registered as the follow-up. |
+| Unfamiliar compositions | **Not met.** The split withholds repositories (names) and families (Tier 3, `require`), not repair compositions. New seeds and renamed schemas do not establish compositional novelty. Follow-up: withhold composition families (fault-mechanism pairs) from source, dreams and admission; include neutral- and worsening-prefix targets plus a broad ordinary-repair comparison set. |
+| Cost accounting | Macro and bridge steps are charged as engine executions in `work`. Ranking and feature computation are charged in wall / CPU, not in `work`. Queue shares are enforced by **expansion counts, not measured work**, and fallback work was not logged separately. Follow-up: work-based queue allocation with a per-queue work log. |
+| ROUND check | `round_uncast` does remove the enclosing integer cast: it maps `cast_int(E)` → `round2(E)`, unlike `round2`, which wraps `cast_int(E)`. Verified on development task 77303: 2-step witness; verified under F0. |
+| Improver stream | Clones built their streams independently; shared vs candidate-induced build failures are distinguished (`new_build_failures`); none occurred. Follow-up: prebuild one common valid stream. The Phase 10 9-vs-8 candidate was **not** retro-adopted; rep0's adoption is a new, fully built comparison. |
+| Multi-table / MERGE / CDC | Kept separate; not implemented. |
+| Throughput | 120 tasks per repetition was not achievable within the cap: 78 and 40 were measured. |
+
+**Registered follow-up (Phase 10C):**
+1. A matched 2 × 2 with bridge search for all four cells (fixed vs learned guidance × no vs learned macros), with trust,
+   procedure and improver held fixed.
+2. A composition-withheld split, frozen before evaluation.
+3. Work-based queue allocation with logs.
+4. A common prebuilt improver stream.
+5. A new one-use evaluation range, sized from measured throughput.
