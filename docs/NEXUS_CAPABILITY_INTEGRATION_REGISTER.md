@@ -305,3 +305,28 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * not demonstrated: learning from incomplete experience, the improver gain, and unseen-mechanism transfer;
   * demonstrated: the expressivity audit and the full-rollout meta-evaluation harness as working infrastructure.
 * **Budget:** 2,598 of the 3,200 s Phase 2 cap; the carried balance is 4,618 s.
+
+## Phase 3: real-pipeline DE world + Spark 4 ANSI (2026-10-29; report `docs/NEXUS_PHASE3_REAL_PIPELINE_AND_SPARK_REPORT.md`)
+
+* **Built:**
+  * the `src/nexus/campaign3/` real-pipeline project world on SQLite and Spark 4.0.1 ANSI, with an independent
+    hidden-batch evaluator;
+  * a DE learner on the shared experience, admission and M interfaces: generic repair operators, an evidence → operator
+    policy, admitted skills, a failure archive, differential SQLite investigation;
+  * untouched C7, C8, E7 and E8;
+  * the B / D expressibility, reachability and discoverability audit;
+  * JDK 17 and PySpark, installed unattended.
+* **Commits:** freeze `9209c0c`, then the Stage 2, Stage 3 and results commits.
+* **Results:**
+  * **Operating cycle demonstrated** on dev projects: investigate → attempt → learn → repair → verify → reuse, including
+    reuse on Spark.
+  * Unseen DE projects: every arm completes 6 of 12. Full uses 10–58 % fewer runtime executions than Memory-Reset and
+    Baseline at matched completion, but not fewer than Fixed-M0.
+  * Worlds: 0 of 16 for every arm, including untouched C7 / C8 / E7 / E8 at 0 of 8.
+  * Failure memory: no demonstrated value. Meta-edits: 0 of 3 adopted, so M* = M0.
+  * 1 silent DE error in every arm (the G6 holdout).
+* **Capability status:**
+  * demonstrated: the real-runtime repair cycle and a skill-reuse **cost** effect;
+  * not demonstrated: a completion gain, transfer to untouched mechanisms, value of incomplete experience, and an improver
+    gain.
+* **Budget:** 2,505 of 3,200 s; carried 2,113 s.

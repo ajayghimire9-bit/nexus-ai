@@ -155,3 +155,155 @@ opened; results follow in a separate commit.
 * **Primary target, unchanged from the plan:** ≥ +10 pp exact completion against Memory-Reset, Placebo and Baseline with no
   more accepted errors, **or** ≥ 20 % lower cost at matched completion against Fixed-M0 and Baseline.
 * **Improver target:** M* beats both M0 and M_rand on the panel.
+
+## 1. Results
+
+This section was added after the run (NOT LOCKED). Source endpoints `324010a`-style freeze at the Stage 2 commit, meta
+clones at the Stage 3 commit; the one-use evaluation ran on the frozen `9209c0c` code.
+
+### 1.1 Real-pipeline cycle trace (Stage 1, development projects; §0.4 has the full trace)
+
+* **Investigate:** the G1.L2 SQLite legacy pipeline fails `row_count` and `quarantine_ids`. Its evidence is
+  `diff:extra_rows` + the failing checks.
+* **Attempt / learn from failure:** 28 failed candidates, 15 of them refutations.
+* **Repair:** `quarantine_invalid(units)` + `quarantine_invalid(list_price)`.
+* **Verify:** all public checks pass on SQLite, and the independent evaluator passes both hidden batches.
+* **Admit:** the sequence became skill S0. It cut runtime executions on 2 separate admission projects from 54 to 14.
+* **Reuse:**
+  * the same family on **Spark 4 ANSI** was verified with 58 executions, against 75 for Memory-Reset;
+  * G2 on SQLite was verified with 16, against 41;
+  * G2 on Spark with 83, against 102.
+* **Development batch:** Full 269 executions against Memory-Reset 488 at equal 6 of 8 verified. Removing the skill
+  (Full-minus-skill) gives 435.
+
+### 1.2 What NEXUS produced
+
+**DE skills L_de\*** (all `origin = pure_synthesis`; DE has no draft code):
+* **Full r0:** S0 = `dedup_first → filter_file`, precondition {`diff:value`, `fail:example_rows`}, admitted at 86 → 50
+  executions.
+* **Full r1:**
+  * S0 `dedup_first` (169 → 58);
+  * S1 `filter_file` (169 → 68);
+  * S2 `filter_file → dedup_first` (75 → 42);
+  * S3 `dedup_latest`, precondition {`diff:dup_keys`, `diff:value`, `fail:row_count`, `fail:unique`} (32 → 22).
+* **Full r2:** none.
+
+**Other learned state:**
+* **π_de\*:** weights over 8 evidence features in every Full lineage.
+* **P_de:** 20 refutation / partial records in r1, 0 in r0 and r2 (every DE project those lineages met was solved, so
+  there was no failure to record).
+* **World L\* / R\*:** the crowding-out fix let items through. Full r1 has L `filter(\x. lt($0, x), $1)`. Fixed-M0 r1 and
+  r2 admitted 2 and 1 items; Random-Proposal r1 admitted 8.
+* **M\*:** M0 in every repetition.
+  * 0 of 6 full-rollout edits were adopted across Full and Solved-Only: `archive.min_score = 0.2`,
+    `schedule.period = 10`, `add propose_L(max_size = 6)`.
+  * One rollout diverged in curriculum (SolvedOnly r1), and none won on the held-out rollout tasks.
+
+### 1.3 Where knowledge transferred
+
+**(1) Real data-engineering projects** (12 unseen: G1–G4 new instances + G5 / G6 holdout, on SQLite and on Spark;
+verified out of 12):
+
+| arm | r0 | r1 | r2 | SQLite | Spark | silent |
+|---|---|---|---|---|---|---|
+| Full | 6 | 6 | 6 | 5 / 6 | 1 / 6 | 1 |
+| Solved-Only | 6 | 6 | 6 | 5 / 6 | 1 / 6 | 1 |
+| Fixed-M0 | 6 | 6 | 6 | 5 / 6 | 1 / 6 | 1 |
+| Memory-Reset (Init) | 6 | | | 5 / 6 | 1 / 6 | 1 |
+| Baseline (fixed engineer order) | 6 | | | 5 / 6 | 1 / 6 | 1 |
+| Placebo | 7 / 5 / 7 | | | | | 1 |
+| LibOnly | 6 / 7 / 7 | | | | | 1 |
+| ProcOnly / Rand | 6 | 6 | 6 | | | 1 |
+
+* **Completion difference, family-clustered, pooled:**
+  * de_instance, Full − Init: **+12.5 pp** (+1 project in every repetition, CI [0, 37.5]);
+  * de_holdout, Full − Init: **−25 pp** (Init solved the G5.L2 Spark project; Full did not).
+  * Full − Baseline is 0 on both panels.
+* **Primary completion target** (≥ +10 pp against Memory-Reset, Placebo **and** Baseline): **not met**.
+* **Cost at matched completion** (runtime executions on projects that both arms solved):
+
+  | Full against | r0 | r1 | r2 | ≥ 20 % |
+  |---|---|---|---|---|
+  | Baseline | 37.7 % | 58.4 % | 37.0 % | met in 3 of 3 |
+  | Memory-Reset | 10 % | 50 % | 11.3 % | met in 1 of 3 |
+  | Fixed-M0 | 0 % | 4.5 % | **−40.6 %** | not met |
+  | Solved-Only | 63.6 % | 24.7 % | −26 % | met in 2 of 3 |
+
+  * The cost target ("≥ 20 % lower than Fixed-M0 **and** baseline controls") is **not met**, because Fixed-M0 does as well
+    as Full. M never changed, so Full and Fixed differ only in timing and sequence.
+* **Spark:** every arm is limited by the 1.2 s per-project budget (about 30 executions). Only G3.L2 (20 of 23 arms) and
+  G5.L2 (Init, LibOnly, Placebo) were solved; 4 of 6 Spark projects were unsolved by all arms.
+* **The single silent error in every arm** is the holdout G6.L1 (watermark lateness) on SQLite: a repair that passes the
+  visible golden batch fails the hidden batches. All 23 arms made it.
+* **Skill reuse fired** on G3.L1 (2 arms), G4.L1 (6) and G6.L1 (6). Retrieval is evidence-gated.
+
+**(2) Untouched mechanisms C7, C8, E7, E8 (8 tasks):** **0 of 8 for every arm.**
+
+**(3) Instance generalisation C1–C4 / E1–E4 (2) and the Phase-2 comparison C5 / C6 / E5 / E6 (2):** 0 for every arm.
+
+**(4) Withheld A / B / D / F (2) and retention (2):** 0 for every arm. **B / D after the Stage 1 audit:** no B / D task was
+solved by any arm, in evaluation or in source learning beyond the degenerate counters.
+
+### 1.4 Causal ablation verdict
+
+* **Failure memory (Full against Solved-Only, which is its own cohort):** completion is equal on every panel. Cost is mixed
+  (−26 % to +64 %).
+  * In two of the three Full lineages, P_de stayed empty, because every DE project met was solved.
+  * No validated world item came from P.
+  * Result: no demonstrated value of failure memory.
+* **Persistent memory (Full against Memory-Reset):**
+  * DE completion: +1 on new instances, −1 on holdouts.
+  * DE cost: 10–50 % fewer executions at matched completion.
+  * Stage 1 development batch: 45 % fewer at equal completion, with the advantage removed when the skill is removed.
+  * This is the one consistent, causally attributed effect, and it is a cost effect, not a completion effect.
+* **Replacing learned procedures:**
+  * Placebo matches or slightly beats Full on completion (7 / 5 / 7).
+  * ProcOnly and LibOnly equal Full.
+  * Baseline's fixed engineer order costs more than both π0's order and Full.
+
+### 1.5 Multi-round improver verdict
+
+* M′ edits did alter a trajectory in one rollout (curriculum divergence in SolvedOnly r1).
+* **0 of 3 edits were adopted across the 3 Full lineages**, so M* = M0.
+* Improver panel, M* / M0 / M_rand: r0 3 / 3 / 3, r1 1 / 1 / 2, r2 3 / 3 / 2. M* does not beat M0 (identical) and ties or
+  loses to M_rand.
+* **Cost:** the incremental 45 s plus the 100 s acquisition bought no panel gain.
+
+### 1.6 Budget, protection, beta readiness
+
+* **Budget:**
+
+  | stage | used (s) | ceiling (s) |
+  |---|---|---|
+  | s1 | 487 | 550 |
+  | src | 1,123 | 1,350 |
+  | meta | 381 | 450 |
+  | eval | 513 | 650 |
+  | rep | 1 + this step | 200 |
+
+  * Phase 3 total: **2,505 of 3,200 s**. Carried balance: **2,113 s** (≥ 1,418 s floor kept).
+  * Ledger CPU excludes the Spark JVM (a grandchild process): eval CPU is 329 s against 513 s wall.
+* **Protection after-check:** 0 violations over 1,355 frozen files; checkers v1–v5 are pinned; `main` is at `d7ac8c5`.
+  The one-use claims were made once each, under the fcntl lock (4 rows).
+* **Disclosed events:**
+  1. All 9 Stage 3 clones first failed at start-up (an assertion used the Phase 2 digest function; 0 tasks run, about
+     0.1 s each, same run ids). They were fixed and launched once.
+  2. Spark logs contain benign PySpark daemon shutdown tracebacks.
+  3. No human intervention during any stage.
+* **What a December pilot user can run today:**
+  * a local command-line cycle (`scripts/agi3_cycle.py`-style) on a workspace with a CSV landing batch, a declarative
+    pipeline and a machine-checkable contract with golden rows, on SQLite or Spark 4 ANSI.
+  * NEXUS investigates, repairs with 9 generic operators, verifies, submits only when every public check passes, and
+    reuses admitted skills.
+  * **Measured:** SQLite completion is 5 of 6 unseen projects. Spark is 1 of 6 at a 1.2 s search budget; a pilot needs
+    larger budgets.
+  * The accepted-error rate is 1 of 12 projects (a visible-batch overfit on the watermark holdout), so independent hidden
+    checks or human review remain necessary.
+  * It does not yet read free-form SQL / PySpark code (pipelines are declarative specs rendered to SQL), ask stakeholders
+    questions, or cover orchestration / MLOps.
+
+**Recommended next step:** make the DE learner the primary vehicle, since it is the only place learning shows a causal
+(cost) effect.
+* Give Spark a realistic search budget, for example 10 s per project.
+* Add held-back public examples to fight visible-batch overfitting (the G6 silent error).
+* Run a larger frozen DE panel with ≥ 6 projects per family, so that ±1-project differences can be resolved.
