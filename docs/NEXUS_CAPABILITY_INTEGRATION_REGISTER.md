@@ -383,3 +383,28 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Not demonstrated:** a learned procedure beating the strong fixed policy; a safe experience gain; external validity;
   improvement of the improver.
 * **Budget:** 476 of the 600 s Phase 5 cap; carried 218 s.
+
+## Phase 6: nine-paradigm multi-language arena, calibrated trust, invented skills, evolvable improver (2026-10-29; report `docs/NEXUS_PHASE6_NINE_PARADIGM_HYBRID_REPORT.md`)
+
+* **Human engineering:**
+  * the multi-language substrate (sqlglot Hive / Postgres / Snowflake, PySpark, dbt Jinja + schema.yml, read-only Scala;
+    SQLite / DuckDB / Spark);
+  * the nine-paradigm, three-tier arena with cross-engine hybrids;
+  * `de_accept_v3`;
+  * the calibrated-trust rules;
+  * the primitives of the skill-invention, procedure and improver machinery.
+* **Model contribution:** none.
+* **Learned:**
+  * invented skills (role abstraction + anti-unification): one admitted, the CDC tombstone method, in 3 lineages;
+  * calibrated trust records (2–6 per lineage);
+  * automatically composed procedures, all converging on a one-document shortcut;
+  * 1 adopted improver edit.
+* **Demonstrated transfer** (72 one-use targets):
+  * none beyond the base system: Fresh F0 35 / 72, Learned memory + F0 35 / 72, Full 33 / 72;
+  * 29 accepted wrong repairs across arms, all point-in-time (an undecided requirement already implemented by the legacy
+    pipeline; one-document shortcut);
+  * every attribution contrast 0;
+  * improver panel: no difference.
+* **Not demonstrated:** completion / cost / safety gains, value of failure memory, of the skill library or of the
+  procedure, learning to learn.
+* **Budget:** 3,282 of the 3,600 s Phase 6 cap; the grant has 718 s left, plus the untouched 218 s pot.

@@ -197,3 +197,134 @@ the 3 primary completion contrasts.
 
 **Recovery and one-use:** crashed jobs may resume only rows never written; one-use rows are never rerun; build failures
 are logged as rows.
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:** protocol `9a4db08`, Stage 2 rerun deviation `1345351`, source freeze `812cf16`, Stage 3 fix `10c658e`,
+meta freeze `05946e3`, extension runner (committed before scoring), results: this commit.
+**Raw data:** `artifacts/agi6_src/`, `artifacts/agi6_meta/`, `artifacts/agi6_eval/*.jsonl` (1,145 target rows + 36 panel
+rows), `artifacts/agi6_eval/result.json`.
+
+### 1.1 Budget and execution events (charged wall s, `scripts/agi6_budget.py`)
+
+| Stage | Used | Ceiling after recorded transfers |
+|---|---|---|
+| s1 | 536 | 536 (600) |
+| src | 1,416 | 1,417 (1,250) |
+| meta | 350 | 437 (500) |
+| eval | 977 | 1,160 (1,050) |
+| rep | 2 | 50 (200) |
+| **Phase 6** | **3,282** | **3,600** |
+
+The grant has **718 s** left; the earlier 218 s mi pot is untouched.
+
+**Disclosed events:**
+1. **Uncharged dev runs.** About 75 s of development searches ran outside the executor; they were debited after the fact.
+2. **A wasted run.** A 240 s Stage 1 run timed out on a slow generator check.
+3. **Stage 2 crash.** 10 / 12 lineages crashed on one bug (`int(float inf)` when landing stage output) before writing
+   anything. After a minimal fix they were rerun once; the transfers are recorded.
+4. **Stage 3 crash.** All 9 clones crashed at their first skill-invention call (memory re-loaded from JSON). After the fix
+   they were rerun once. The **3 r1 clones then hit their 32 s cap**; they are missing and were not rerun.
+5. **Smaller panel.** The improver panel was reduced to 6 of 18 projects.
+6. **Attribution arms.** A4–A6 on r1 / r2 ran under the pre-registered size rule (decided before scoring). 43 of their 432
+   rows were not run (2 chunks hit their caps).
+
+### 1.2 Stage 2 — what NEXUS learned at source
+
+- **Volume:** in 98 s each lineage saw only 15–31 source projects and verified 4–14.
+- **Invented methods.** Every lineage abstracted its verified repairs into role form: 5–15 records.
+  - The anti-unifier proposed skills in most lineages.
+  - The corrected admission rule admitted **only one invented skill, in 3 lineages**: "exclude rows whose duplicated
+    low-cardinality text column equals `'D'`" (the CDC tombstone method, re-bindable to any schema).
+  - Every other candidate gave no quality-preserving benefit on its admission projects.
+- **Calibrated trust:** 2–6 records per lineage. No lineage reached the support needed to resolve a conflict.
+- **Improver:** **1 adopted M edit** (Full_r0: `stall_frac` 0.4; Solved-Only_r0: `proc_cycles` 5). Every other rollout
+  edit was rejected.
+- **Composed procedures:** every non-Fixed lineage composed `search(whole, skills off) → [read ONE document,
+  resolve(none)] → submit`. That is a **shortcut**: the validation sets contained no case where a second document held a
+  conflicting claim, so reading one document cost nothing in replay.
+
+### 1.3 Stage 4 — 72 one-use targets (search 1.0 s, `de_accept_v3`, every arm)
+
+| Arm | Verified / 72 | Tier 1 / 24 | Tier 2 / 32 | Tier 3 / 16 | Accepted wrong | Justified abstentions | Questions |
+|---|---|---|---|---|---|---|---|
+| A1 Fresh + F0 | **35** | 16 | 13 | 6 | **1** | 8 / 9 | 4 |
+| A2 Learned memory + F0 (r0–r2) | 35 / 35 / 35 | 16 | 13 | 6 | 1 / 1 / 1 | 8 / 9 | 4 |
+| A3 Full: memory + learned procedure | 33 / 33 / 33 | 16 | 11 | 6 | 3 / 3 / 1 | 7–8 / 9 | 0 |
+| A4 Solved-Only | 33 / 33 / 33 | 16 | 11 | 6 | 3 / 2 / 1 | — | 0 |
+| A5 Procedure only (no skills) | 33 / 33 / 33 | 16 | 11 | 6 | 3 / 2 / 1 | — | 0 |
+| A6 Scrambled | 33 / 33 / 32 | 16 | 11 / 11 / 10 | 6 | 3 / 2 / 1 | — | 0 |
+
+(A4–A6 r1 / r2 have 64–65 rows.)
+
+**Pre-registered targets:**
+
+| # | Target | Result | Verdict |
+|---|---|---|---|
+| 1 | 0 accepted wrong repairs | 29 wrong repairs in total across all arms, **all on P7 point-in-time projects**; Fresh F0 had 1 | **Not met** |
+| 2 | Full − Fresh F0 ≥ +10 pp overall and ≥ +15 pp on Tier 3 | **−2.8 pp** overall (Holm p 0.74), **0.0 pp** on Tier 3 | **Not met** |
+| 3 | Learned procedure − F0 > 0 on Tier 2+3 | **−4.2 pp** (Holm p 0.74) | **Not met** |
+| 4 | ≥ 25 % lower cost on shared solves | candidate runs identical (0 % saving); cost-seconds 8–24 % lower, only because the learned procedure never asks | **Not met** |
+
+Notes on the targets:
+- **Target 1:** A1 / A2's single wrong repair is an undecided point-in-time requirement that the legacy pipeline already
+  implemented (see 1.4). A3–A6 add 2 conflict projects where the learned one-document shortcut saw only one of the two
+  claims.
+- **Target 4:** the payback horizon is undefined, because no completion or run saving exists.
+
+**Attribution:** Full − Solved-Only, Full − procedure-only and Full − Scrambled are all **0.0 pp**. Learned memory + F0 vs
+Fresh F0 is **0.0 pp**: the learned memory changed no outcome.
+
+**Improver panel** (6 Tier-2 projects): M* / M0 / M_rand verified 1 / 1 / 1 (r0) and 1 / 1 / 2 (r2). The 30 s clone
+trajectories were identical across M in r0 and r2: too short for M to act. **No learning-to-learn effect was shown.**
+
+### 1.4 Why it failed — diagnosis from the recorded data
+
+1. **Search capacity is the binding limit.** About 34 / 72 targets end with "no repair candidate" in **every** arm.
+   - Invented skills were meant to break this, but only one skill was ever admitted. Each 98 s lineage saw too few
+     solved, multi-fault and multi-stage examples to anti-unify methods that pay off on admission projects.
+   - Tier 3 completion (6 / 16) comes entirely from the base search.
+2. **A gate / investigation gap.** Decision points come only from disagreement among REPAIR alternatives.
+   - When the legacy pipeline already contains the boundary filter (the mechanism is not a fault), the repair never
+     touches it, so the documented undecided requirement is never checked.
+   - Dev check `a6-rep-dbg`: no col_compare alternative is generated, because only path edits are varied.
+   - The fix belongs in the next phase: **check documented claims against the behaviour of the existing pipeline**, not
+     just against new edits.
+3. **The automatically composed procedure learned an unsafe shortcut.** "Read one document" passed the corrected
+   admission rule, because the validation projects (6–8 per lineage, one decision point each) never held a conflicting
+   claim in another document. This is overfitting of procedure composition to a small validation set. Reading all
+   documents, as F0 does, is safe but was not discovered as necessary.
+4. **The improver had nothing to act on.** With 1 adopted edit and 30 s clone trajectories, M* = M0 in effect.
+
+### 1.5 What the evidence establishes
+
+**Built and working:**
+- A real multi-language arena: Hive / Postgres / Snowflake via `sqlglot`, PySpark, dbt Jinja + `schema.yml`, read-only
+  Scala migration.
+- Three engines (SQLite / DuckDB / Spark ANSI), multi-stage hybrid pipelines across engines, and nine paradigms in three
+  tiers.
+- Calibrated trust that never resolved a draft-vs-draft conflict; invariance to file names, dates and versions is tested.
+- **Automatic method invention:** role abstraction, anti-unification, rebinding and chaining. It invented a CDC tombstone
+  method that transferred as a re-bindable skill.
+- Corrected admission and adoption rules. They rejected every non-beneficial skill and M edit; in particular, no
+  equal-zero promotion was observed.
+
+**Not established:** any completion, cost, safety, failure-memory, skill-library, procedure or improver benefit on the
+72 unseen targets. **Phase 6 is a negative result for the learning claims.**
+
+### 1.6 Protection
+
+`artifacts/agi6_protected_hashes_after.json`: 0 violations; 1,624 frozen files (Phases 1–5) unchanged; checkers pinned;
+`main` = `d7ac8c5`; the one-use claims `agi6de/target` and `agi6de/panel` were made once.
+
+### 1.7 Recommended next experiment
+
+**Invention at sufficient scale, with requirement checks on existing behaviour.**
+1. Give each lineage enough source projects for invented methods to recur. Fewer, longer lineages, for example 2 × 400 s,
+   rather than 12 × 98 s.
+2. Make every documented claim a test against the **current** pipeline's behaviour, not only against repair alternatives.
+3. Require procedure admission on validation sets that include multi-document conflicts, so shortcuts like
+   "read one document" are refuted at source.
+4. Run the improver comparison only once lineages are long enough for M's settings to change trajectories.
