@@ -116,7 +116,7 @@ def score():
         missing[a] = [e for e in eps if e not in rows]
         T[a] = rows
     ledger = [json.loads(l) for l in (ROOT / "runs/experimental/wave24-agi/ledger.jsonl").read_text().splitlines() if l.strip()]
-    disc = {r: sum(x["wall_s"] for x in ledger if x["run"].startswith(f"mi-3-disc-{r}")) for r in RUNS}
+    disc = {r: sum(x["wall_s"] for x in ledger if x.get("run", "").startswith(f"mi-3-disc-{r}")) for r in RUNS}
     tab = {}
     for a, rows in T.items():
         rs = list(rows.values())

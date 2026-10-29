@@ -244,3 +244,18 @@ Full-system confirmation objective NOT met (15/16); expression capability beyond
 
 Known gap: the shared bounded acceptance check accepted a wrong `acc + 3` machine (mi2/val seed 26801) in every arm able to
 express it.
+
+## MI-3 — acceptance reliability and discovery-efficiency diagnostic (2026-10-29; report `docs/NEXUS_MI3_ACCEPTANCE_AND_DISCOVERY_DIAGNOSTIC.md`)
+
+Every MI-3 component is **diagnostic / experimental**. None is integrated into a NEXUS runtime arm.
+
+| component | source | call site | activation | evidence | limits |
+|---|---|---|---|---|---|
+| interface-closure acceptance check (`new_check`, `interface_cex`) | `src/nexus/mi3_accept.py` | `full_space3`, the acceptance step of every MI-3 evaluation | MI-3 experiments only | one-use audit: 0/120 incorrect accepted (old check 30/120, all dropped-kind), 119/120 correct (old 119/120); 26801 regression test | needs a declared event-kind interface (`Episode3.interface`); a missing kind is rejected, not learned; constructed audit distribution, not a production error rate |
+| `full_space3` learner stage | `src/nexus/mi3_accept.py` | `mi3_search.eval_one` (Stages 2–4) | MI-3 experiments only | 0 silent errors in 576 calibration + 520 winner evaluations | **not integrated**; the x7 runtime still uses `ba_accept` |
+| staged evaluation (screen 6, TAU 0.75, 10 % rejection audit) | `src/nexus/mi3_search.py`, `artifacts/mi3_schedule.json` | `scripts/mi3_discover.py` (E-S, R-S) | MI-3 discovery only | calibration 36.6 % CPU saving, top quartile kept; in discovery only about +25 % candidates for random search and none for evolution; no downstream gain | the audit can only afford cheap rejected candidates |
+| 8 discovery winners | `artifacts/mi3_disc/*.json`, `artifacts/mi3_freeze.json` | `scripts/mi3_eval.py` only | **inactive** | 4–7/30 fresh unfamiliar (A0 3, MI-1 7, MI-2 A4 12, A6 19, A5 25), 0 silent | not promoted; Milestone B not run |
+| job runner + budget guard | `scripts/mi3_jobs.py`, `scripts/mi3_budget.py` | every MI-3 stage | MI-3 tooling | PID and exit-code tracking, finite timeouts, ceilings enforced | `mi_exec` exits 0 even when its child fails; the status line must be read |
+
+Correction to the MI-2 known gap above, preserved as written: the accepted `acc + 3` update at 26801 was correct. The silent error
+came from a declared event kind (ADD) that was absent from training and therefore never probed. MI-3 §0.3 has the details.

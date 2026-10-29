@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/mi3_eval.py", line 180, in <module>
+    {"freeze": freeze, "plan": plan, "score": score}[sys.argv[1]]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/mi3_eval.py", line 119, in score
+    disc = {r: sum(x["wall_s"] for x in ledger if x["run"].startswith(f"mi-3-disc-{r}")) for r in RUNS}
+               ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/mi3_eval.py", line 119, in <genexpr>
+    disc = {r: sum(x["wall_s"] for x in ledger if x["run"].startswith(f"mi-3-disc-{r}")) for r in RUNS}
+                                                  ~^^^^^^^
+KeyError: 'run'

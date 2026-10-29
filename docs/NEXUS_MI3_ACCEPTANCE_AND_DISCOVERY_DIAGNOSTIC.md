@@ -278,3 +278,703 @@ families are not touched.
   beats MI-2 A4.
 
 The final assessment states which of these the evidence supports.
+
+---
+
+## 1. Results (NOT LOCKED)
+
+All runs were metered by `scripts/mi_exec.py` and launched by `scripts/mi3_jobs.py`. Every job exited 0 and nothing was rerun.
+
+| commit | content |
+|---|---|
+| `c85f082` | protocol and implementation |
+| `0f9f80b` | audit |
+| `0eccc28` | calibration and schedule |
+| `9abb09d` | discovery, freeze and plan |
+| this commit | winner evaluation and report |
+
+### 1.1 Stage 1: acceptance repair and audit (`artifacts/mi3_accept_audit/summary.json`)
+
+The one-use `mi3/accept_audit` set was claimed once (run `mi-3-audit-claim-1`). It ran in 4 family jobs at 274 s charged
+(ceiling 1,200).
+
+* **Construction:** 1,092 candidates from 240 episodes:
+
+  | class | count |
+  |---|---|
+  | C (correct) | 204 |
+  | CONST | 186 |
+  | DELAY | 189 |
+  | REG | 204 |
+  | KIND | 232 |
+  | natural errors | 17 |
+  | perturbations still correct | 7 |
+  | no machine | 27 |
+  | not applicable | 26 |
+
+  Quotas were filled in seed order: 120 correct and 120 incorrect.
+
+* **Gate: PASSED.**
+
+  | the 240 audit candidates | old check (MI-2) | new check (MI-3) |
+  |---|---|---|
+  | correct accepted (of 120) | 119 | **119** |
+  | incorrect accepted (of 120) | **30** | **0** |
+  | … wrong constant (30) | 0 | 0 |
+  | … delayed effect (30) | 0 | 0 |
+  | … nonzero register (30) | 0 | 0 |
+  | … dropped declared kind (26801 mechanism, 30) | **30** | 0 |
+  | check CPU (s, all 240) | 6.57 | 5.78 |
+  | oracle queries (all 240) | 99,956 | 86,384 |
+
+* **Witnesses:** 120 of 120 present, each re-verified by direct simulation.
+* **The one correct candidate both checks reject:** 28827 ADDC. It is correct on the held-out stream, but the bounded tier finds
+  a probe on which it differs from the reference. This is a conservative rejection the two checks share.
+* **Natural errors:** among the 17 natural (unperturbed) errors, the old check accepted one, 28806 ADDC. There the declared kind
+  SETTLE never occurs in training: a spontaneous instance of the 26801 mechanism. The new check rejected it. Both checks
+  rejected the other 16.
+* **Reading:** this is a constructed distribution, and zero false accepts here is not a production error rate. Within it:
+  * The old check's only measured blind spot is the unobserved declared kind, and it accepted every such case.
+  * The perturbation types the old check already caught are easy: its coverage tier rejects them at once. The audit does not
+    test subtler errors that agree with every probe.
+
+### 1.2 Stage 2: screening calibration (`artifacts/mi3_cal/calibration.json`)
+
+24 candidates × 24 episodes. Charged 174 s (ceiling 1,000). Zero silent errors in 576 evaluations.
+
+| TAU | survivors | screen CPU | survivor CPU | audit CPU | staged CPU | full CPU | saving | top quartile lost | gate |
+|---|---|---|---|---|---|---|---|---|---|
+| **0.75** (chosen) | 7 | 49.1 | 59.3 | 0.3 | 108.8 | 171.5 | **36.6 %** | none | pass |
+| 0.5 | 7 | 49.1 | 59.3 | 0.3 | 108.8 | 171.5 | 36.6 % | none | pass |
+| 0.25 | 12 | 49.1 | 102.9 | 0.6 | 152.7 | 171.5 | 11.0 % | none | fail (saving below 20 %) |
+
+* **Rank agreement** (Spearman, screen fitness vs full fitness): 0.947; on exact counts alone, 0.812.
+* **Full exact counts** (of 24) ranged over {0, 1, 2, 3, 6, 9, 10, 13, 17}.
+* **Top quartile:** A5 17, dup_A5 17, A6 13, MI-2 A4 10, spec_ADDC 10, spec_SUBH 9. All passed the screen directly.
+* **Useful candidates:** 16 with at least one exact solve. They have 13 distinct hypothesis spaces and 10 distinct solved-episode
+  sets. The A5 duplicate was behaviourally identical to A5, and the seed duplicate to the seed.
+* **Useful candidates discarded at TAU 0.75 and not recovered:** 8. They hold 20 full-pool solves: MUL 15, ADDC 5, SUBH 0.
+  * MI-1 #17 (6 exact: ADDC 4, MUL 2) had 0 screen solves.
+  * The others were MI-2 A2 (3), seed (2), A0 (2), seed duplicate (2), poor_params3 (2), MI-2 A3 (1) and random_0 (1).
+* **Weakness of the rejection audit:** it recovered only cheap candidates. Its affordability rule (3 × screen CPU within
+  10 % of cumulative screening CPU) never admits an expensive rejected procedure.
+* The gate establishes development feasibility only.
+
+### 1.3 Stage 3: discovery (`artifacts/mi3_disc/*.json`, `artifacts/mi3_attribution.json`)
+
+Charged 2,775 s of the 3,200 s ceiling: 332–363 s per run, all COMPLETE. The deadline rule, with its worst-case stage and
+selection reserves, stopped candidate generation at 310–336 s elapsed. The runs charged 332–363 s, so 9–17 % of each 400 s allowance went unused.
+
+| run | candidates | fully evaluated | screen-rejected | audited | duplicates | degenerate | distinct spaces | best discovery exact (of 24), when | winner (selection exact of 12) |
+|---|---|---|---|---|---|---|---|---|---|
+| E-F L1 | 40 | 40 | — | — | 18 | 7 | 22 | 7 @ 251 s | #34 (3) |
+| E-F L2 | 38 | 38 | — | — | 20 | 7 | 18 | 7 @ 165 s | #24 (3) |
+| E-S L1 | 38 | 35 | 0 | 9 | 28 | 7 | 10 | 4 @ 64 s | #34 (1) |
+| E-S L2 | 44 | 39 | 0 | 9 | 26 | 8 | 18 | 4 @ 71 s | #33 (1) |
+| R-F L1 | 74 | 74 | — | — | 44 | 27 | 30 | 7 @ 34 s | #14 (2) |
+| R-F L2 | 86 | 86 | — | — | 52 | 36 | 34 | 6 @ 142 s | #33 (3) |
+| R-S L1 | 95 | 77 | 12 | 40 | 56 | 31 | 39 | 7 @ 34 s | #14 (2) |
+| R-S L2 | 99 | 88 | 6 | 48 | 59 | 38 | 40 | 6 @ 142 s | #33 (3) |
+
+**Why screening did not pay in discovery** (calibration predicted 36.6 %):
+
+* Seed-derived candidates almost always pass the screen. E-S screened out no candidate at all: 9 were rejected and then all 9
+  were audited, and 3–5 survivors ran out of time.
+* What random search rejects is mostly degenerate programs, which already cost about 0.1 s.
+* Staged random search therefore evaluated only about 25 % more candidates (95 vs 74, 99 vs 86). Staged evolution evaluated
+  about the same number (38 vs 40, 44 vs 38).
+* Pairing: R-S and R-F share proposal streams, so R-S reached the same best candidate at the same time and selected the
+  **byte-identical winner** in both lineages.
+* E-S converged on duplicates (28 of 38 in L1) and plateaued at 4, below E-F's 7. Fitness from candidates that failed the screen
+  ranks them below every fully evaluated candidate, which narrowed the tournament.
+
+### 1.4 Stage 4: fresh winner evaluation (`artifacts/mi3_winner_eval/result.json`)
+
+The plan (`artifacts/mi3_eval_plan.json`, committed before the claim) was N = 40, 10 per family, with a cap of 1.0 s and a
+worst-case bound of 640.6 s. The one-use `mi3/winner_eval` set was claimed once by A0, and all 13 arms ran once on the same 40
+fresh episodes: 520 of 520 rows, charged 216 s (ceiling 1,400).
+
+| arm | K | MUL | ADDC | SUBH | **unfamiliar (30)** | silent | abstain | timeouts | eval CPU s | queries | solved ≤ 0.1 / 0.25 / 0.5 / 1 s | discovery s | cost/episode at 40 / 1,000 / 10,000 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| E-F L1 | 9 | 3 | 4 | 0 | **7** | 0 | 24 | 12 | 20.1 | 15,185 | 0 / 11 / 15 / 16 | 336 | 8.90 / 0.84 / 0.54 |
+| E-F L2 | 8 | 3 | 4 | 0 | **7** | 0 | 25 | 15 | 23.8 | 15,285 | 0 / 11 / 15 / 15 | 338 | 9.03 / 0.93 / 0.63 |
+| E-S L1 | 9 | 2 | 2 | 0 | **4** | 0 | 27 | 13 | 24.6 | 13,425 | 0 / 0 / 10 / 13 | 361 | 9.64 / 0.98 / 0.65 |
+| E-S L2 | 9 | 3 | 2 | 0 | **5** | 0 | 26 | 12 | 21.5 | 13,779 | 0 / 10 / 12 / 14 | 363 | 9.61 / 0.90 / 0.57 |
+| R-F L1 | 9 | 2 | 4 | 0 | **6** | 0 | 25 | 2 | 4.8 | 13,736 | 13 / 15 / 15 / 15 | 336 | 8.53 / 0.46 / 0.15 |
+| R-F L2 | 8 | 6 | 0 | 0 | **6** | 0 | 26 | 11 | 16.2 | 15,127 | 9 / 13 / 14 / 14 | 332 | 8.71 / 0.74 / 0.44 |
+| R-S L1 | 9 | 2 | 4 | 0 | **6** | 0 | 25 | 2 | 4.8 | 13,736 | 13 / 15 / 15 / 15 | 356 | 9.02 / 0.48 / 0.16 |
+| R-S L2 | 8 | 6 | 0 | 0 | **6** | 0 | 26 | 11 | 16.2 | 15,127 | 7 / 13 / 14 / 14 | 353 | 9.22 / 0.76 / 0.44 |
+| A0 original learner | 9 | 3 | 0 | 0 | **3** | 0 | 28 | 5 | 8.9 | 13,164 | 12 / 12 / 12 / 12 | 0 | 0.22 |
+| MI-1 #17 | 9 | 3 | 4 | 0 | **7** | 0 | 24 | 11 | 18.0 | 15,261 | 0 / 14 / 16 / 16 | 390 | 10.20 / 0.84 / 0.49 |
+| MI-2 A4 (params) | 9 | 3 | 9 | 0 | **12** | 0 | 19 | 9 | 14.1 | 17,870 | 17 / 20 / 21 / 21 | 1,311 | 33.13 / 1.66 / 0.48 |
+| A5 human reference | 8 | 9 | 7 | 9 | **25** | 0 | 7 | 6 | 10.9 | 26,199 | 21 / 30 / 32 / 33 | 0 (human) | 0.27 |
+| A6 generic synthesis | 8 | 4 | 8 | 7 | **19** | 0 | 13 | 13 | 22.4 | 21,119 | 0 / 12 / 23 / 27 | 0 | 0.56 |
+
+**Notes on the table:**
+
+* Exact solves are counted out of 10 per family; "unfamiliar" is MUL + ADDC + SUBH.
+* "Abstain" counts episodes with no accepted answer, including timeouts.
+* Cost per episode is evaluation CPU per episode plus discovery cost divided by the horizon, in seconds.
+* No arm made a silent error or hit an interface gap on these 40 episodes.
+* **K retention:** every arm is within one solve of A0's 9: E-F L2, R-F L2, R-S L2, A5 and A6 have 8; the rest have 9.
+* **SUBH:** no discovered procedure solved any SUBH episode. A5 solved 9 of 10 and A6 7.
+
+**Predeclared contrasts** (unfamiliar episodes, paired by lineage; difference = primary − control):
+
+| contrast | L1 | L2 | mean | 95 % bootstrap | seeds agree | pooled discordant | p (one-sided) | Holm |
+|---|---|---|---|---|---|---|---|---|
+| E-S vs E-F | 4 − 7 = −3 | 5 − 7 = −2 | −2.5 | [−5.5, 0.0] | yes | 0 : 5 | 1.0 | 1.0 |
+| R-S vs R-F | 6 − 6 = 0 | 6 − 6 = 0 | 0.0 | [0, 0] | yes (identical winners) | 0 : 0 | 1.0 | 1.0 |
+| E-S vs R-S | 4 − 6 = −2 | 5 − 6 = −1 | −1.5 | [−5.0, 2.0] | yes | 4 : 7 | 0.89 | 1.0 |
+| E-F vs R-F | 7 − 6 = +1 | 7 − 6 = +1 | +1.0 | [−3.0, 5.0] | yes | 7 : 5 | 0.39 | 1.0 |
+
+* There were 0 additional silent errors in every pair.
+* The staged arms cost slightly more in total than their full-evaluation partners (+20 to +30 s), because they ran longer
+  before the selection reserve took effect.
+* N = 2 discovery seeds per arm: none of these contrasts supports an inference about the arms.
+
+### 1.5 Generated procedures: attribution (full source and ancestry trees in §2)
+
+All 8 winners came from the automatic searches, with no human or Claude edit. The language, primitives, operators and seed are
+human-written. There are 6 distinct programs, because R-S equals R-F in each lineage.
+
+| winner | origin | hypothesis space (probe context 3) vs seed (53) | behavioural difference |
+|---|---|---|---|
+| E-F L1 #34 | 6-node lineage: mutations, helper extraction, crossover | 140 (+87, −0) | duplicated +/− closure rounds reach `acc ± small constants`: ADDC 4 |
+| E-F L2 #24 | 12-node lineage, mostly crossovers | 283 (+230, −0) | repeated closure rounds, the same mechanism as MI-2 A2 |
+| E-S L1 #34 | 14-node lineage | 101 (+52, −4) | closure duplication plus a conditional `*` branch |
+| E-S L2 #33 | 14-node lineage | 114 (+61, −0) | closure duplication |
+| R-F / R-S L1 #14 | seed + 3 random edits | 27 (+18, −44) | evidence constants (`dconsts small_obs`) replace the literals 0 and 1: ADDC 4, at 0.12 s per episode |
+| R-F / R-S L2 #33 | seed + 3 random edits | 148 (+105, −10) | a `*` layer under a conditional on `n_trans`: MUL 6 |
+
+* Each winner has 4–7 fresh unfamiliar solves that use a learned update outside the seed's space (a syntactic comparison of
+  update source): E-F L1 7 of 7, E-F L2 4 of 7, E-S 4 of 4 and 4 of 5, R 4 of 6 in both lineages.
+* That is expected for any procedure that beats the seed. None of the mechanisms is new: each is a duplicated closure, evidence
+  constants already in the language, or a multiply layer.
+* None reaches `acc − x/2`, so SUBH stays at 0.
+* No invention is claimed.
+
+### 1.6 Assessment against the predeclared limits
+
+**Larger follow-up criteria: NOT met.**
+
+* Criterion 1 fails: E-S was worse than E-F in both seeds, and R-S equalled R-F with identical winners.
+* Criterion 4 (mechanism beyond volume) therefore does not arise.
+* Staged screening as frozen does not make this discovery cheaper or better.
+
+**The two questions:**
+
+* **Acceptance reliability: answered positively within scope.** The 26801 failure was an observation gap in the check, not a
+  constant error. A general interface-closure tier removes it (audit 0/120 false accepts) at no measured cost to correct
+  acceptance (119 vs 119), and the evaluations afterwards made 0 silent errors.
+* **Discovery efficiency: negative.**
+  * Calibration promised a 36.6 % saving, but that came from a pool dominated by cheap or poor procedures.
+  * In real discovery, survivors dominate the cost, so screening bought about 25 % more candidates for random search and none
+    for evolution, with no downstream gain.
+  * The 10 % rejection audit cannot recover expensive candidates.
+
+**Against the references:**
+
+* The best winners (7 of 30) equal MI-1 #17 (7). They trail MI-2 A4 (12), A6 (19) and the human A5 (25).
+* At workload horizons up to 10,000 episodes, their amortised cost is above A5's and A6's.
+
+**Endpoint (predeclared guidance in §0.6):**
+
+* **(a) Scale up:** not justified.
+* **(b) Pivot to a fundamentally different search or synthesis mechanism:** **supported.**
+  * The best winner (7) is below half of A6 (19 / 2 = 9.5).
+  * The gap is in what the search can construct: no winner contains the SUBH half-term `acc − x/2`.
+  * It is not in how many candidates are evaluated: random search evaluated about twice as many candidates as evolution and
+    reached the same 6–7.
+* **(c) Halt the current LPL evolution line:** its literal condition is not met.
+  * Evolution beat random search by +1 in both full-evaluation seed pairs, but descriptively only, with a CI of [−3, 5].
+  * No winner beat MI-2 A4.
+  * Investing further in mutation and crossover over this LPL, at this budget, is not supported by any result in MI-1, MI-2
+    or MI-3.
+
+### 1.7 Budget, protection, integration, remotes
+
+**Charged MI-3 total: 3,512 s of the 8,000 s cap**, at the score and attribution step, before this report's protection and test
+runs. The carried balance is 10,694 s. No new grant and no stage transfer.
+
+| stage | used (s) | ceiling (s) |
+|---|---|---|
+| s1 | 61 | 800 |
+| audit | 274 | 1,200 |
+| cal | 174 | 1,000 |
+| disc | 2,775 | 3,200 |
+| win | 216 | 1,400 |
+| rep | 12 | 400 |
+
+* **Metering caveat:** `mi_exec` charges its child's wall time. The runner's own startup (about 2 s per job, 45 jobs) is not
+  charged.
+* **Bookkeeping events:**
+  * `mi-3-win-score-1` crashed on ledger rows that have no `run` key, a scoring-path bug. It was fixed in `scripts/mi3_eval.py`
+    after the evaluation, so the frozen hash of that file differs; the run path is unchanged.
+  * `mi-3-rep-protect-1` reports FAILED only because of 49 new MI-3 log files in the shared `artifacts/mi_logs` directory,
+    which the frozen-file glob includes.
+* **Protection (`artifacts/mi3_protected_hashes_after.json`), all unchanged:**
+  * the 912 protected files, 157 sc-ba, 74 ba-oc and 390 x7-sc files;
+  * the MI-1, MI-2 and X7 freezes;
+  * checkers v1–v5 against their pins;
+  * `main` at `d7ac8c5`, with 0 `final_sealed` claims;
+  * the 856 previously frozen MI-1, MI-2 and X7 files: 0 changed, 0 removed.
+* **Tests:** `tests/test_mi3.py`, `test_mi2.py` and `test_checker_kernel.py`: 18 passed.
+* **Integration:** none. See the MI-3 section of `docs/NEXUS_CAPABILITY_INTEGRATION_REGISTER.md`.
+  * `mi3_accept` is used only by MI-3 evaluations. The x7 runtime still uses `ba_accept`.
+  * The schedule and the winners are inactive. Milestone B stays closed, and the MI-2 withheld families were not touched.
+* **Remotes:** each commit is pushed to github and origin, `codex/nexus-data-engineering`.
+
+### 1.8 Recommended next experiment
+
+Change the generator, not the evaluator. Test one fundamentally different construction mechanism against the same frozen
+references, Stage 1 check and cap:
+
+* **Mechanism:** example-guided synthesis of register updates, deriving the candidate update directly from the observed
+  register traces (enumerate small terms that fit the traces, CEGIS-style), instead of mutating procedures that build spaces.
+* **Primary endpoint:** SUBH solves, which no search has produced in MI-1, MI-2 or MI-3.
+* **Fixed beforehand:** a pre-registered budget equal to A6's evaluation cost.
+* **Learner-side follow-up for the Stage 1 finding:** when the interface tier finds a missing declared kind, acquire oracle
+  traces for it and relearn, instead of abstaining.
+
+## 2. Appendix: the 8 frozen winners (generated by `scripts/mi3_attrib.py` from the frozen artifacts)
+
+R-S L1 and R-S L2 are byte-identical to R-F L1 and R-F L2, the same proposal from the shared random stream.
+Ancestry trees list each candidate with its operator, edits and fitness [exact, partial]; full = 24-episode pool, screen = 6.
+
+### E-F_L1: candidate #34 (best selection score of the top-3)
+
+Space 140 expressions on probe context 3 (seed 53): +87 / −0. Fresh unfamiliar solves 7.
+
+```
+def h0:
+  union P2 P3 P4
+def h0b:
+main:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P0 P0 P1 +
+  union P2 P2 P3
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  dedupe P1 P1
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  call h0
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P1 P1
+  combine P5 P0 P2 +
+  union P4 P4 P5
+  call h0
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #34 mutate ['replace@0', 'delete@0', 'perturb@0'] | full [7, 0.3488] screen [2, 0.4393]
+  - #24 mutate ['perturb@16'] | full [4, 0.2715] screen [2, 0.4358]
+    - #20 crossover a[:15] + b[9:] | full [4, 0.2715] screen [2, 0.4358]
+      - #15 mutate ['replace@4', 'extract_helper h0'] | full [4, 0.2645] screen [2, 0.4358]
+        - #10 mutate ['insert@10', 'delete@6'] | full [2, 0.195] screen [2, 0.4358]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+      - #15 mutate ['replace@4', 'extract_helper h0'] | full [4, 0.2645] screen [2, 0.4358]
+        - #10 mutate ['insert@10', 'delete@6'] | full [2, 0.195] screen [2, 0.4358]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+
+### E-F_L2: candidate #24 (best selection score of the top-3)
+
+Space 283 expressions on probe context 3 (seed 53): +230 / −0. Fresh unfamiliar solves 7.
+
+```
+main:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  union P3 P3 P4
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  ret P0
+```
+
+Ancestry:
+
+- #24 crossover a[:18] + b[11:] | full [7, 0.3483] screen [2, 0.4375]
+  - #23 crossover a[:14] + b[12:] | full [4, 0.2715] screen [2, 0.4358]
+    - #22 mutate ['perturb@22'] | full [4, 0.2715] screen [2, 0.4358]
+      - #20 crossover a[:20] + b[14:] | full [4, 0.2715] screen [2, 0.4358]
+        - #15 crossover a[:10] + b[5:] | full [4, 0.2715] screen [2, 0.4358]
+          - #10 crossover a[:16] + b[3:] | full [2, 0.195] screen [2, 0.4358]
+            - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+            - #5 crossover a[:0] + b[15:] | full [0, 0.0243] screen [0, 0.0]
+              - #1 random_program | full [0, 0.0243] screen [0, 0.0]
+              - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+          - #10 crossover a[:16] + b[3:] | full [2, 0.195] screen [2, 0.4358]
+            - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+            - #5 crossover a[:0] + b[15:] | full [0, 0.0243] screen [0, 0.0]
+              - #1 random_program | full [0, 0.0243] screen [0, 0.0]
+              - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+        - #14 mutate ['delete@1'] | full [2, 0.195] screen [2, 0.4358]
+          - #7 mutate ['insert@8', 'wrap_repeat@8'] | full [2, 0.195] screen [2, 0.4358]
+            - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+    - #16 mutate ['insert@1'] | full [4, 0.2541] screen [2, 0.4358]
+      - #14 mutate ['delete@1'] | full [2, 0.195] screen [2, 0.4358]
+        - #7 mutate ['insert@8', 'wrap_repeat@8'] | full [2, 0.195] screen [2, 0.4358]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+  - #15 crossover a[:10] + b[5:] | full [4, 0.2715] screen [2, 0.4358]
+    - #10 crossover a[:16] + b[3:] | full [2, 0.195] screen [2, 0.4358]
+      - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+      - #5 crossover a[:0] + b[15:] | full [0, 0.0243] screen [0, 0.0]
+        - #1 random_program | full [0, 0.0243] screen [0, 0.0]
+        - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+    - #10 crossover a[:16] + b[3:] | full [2, 0.195] screen [2, 0.4358]
+      - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+      - #5 crossover a[:0] + b[15:] | full [0, 0.0243] screen [0, 0.0]
+        - #1 random_program | full [0, 0.0243] screen [0, 0.0]
+        - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [2, 0.4358]
+
+### E-S_L1: candidate #34 (best selection score of the top-3)
+
+Space 101 expressions on probe context 3 (seed 53): +52 / −4. Fresh unfamiliar solves 4.
+
+```
+def h0:
+  union P3 P3 P4
+  union P0 P0 P2
+  dedupe P1 P1
+  union P0 P0 P3
+def h1:
+def h0b:
+  union P3 P3 P4
+  union P0 P0 P2
+  dedupe P1 P1
+  union P0 P0 P3
+def h1b:
+  lits P3 [3, 7]
+def h4:
+  combine P4 P0 P4 *
+def h0bb:
+  union P3 P3 P4
+  dedupe P1 P1
+  union P4 P0 P3
+def h1bb:
+  dedupe P3 P3
+  if n_obs_int_frac < 0.5:
+    repeat 3:
+      if n_trans < 10:
+        combine P4 P0 P4 *
+        combine P0 P2 P1 *
+      else:
+        union P3 P5 P4
+main:
+  terms P0 ['acc', 'x']
+  if n_trans < 15:
+    call h0
+    dedupe P3 P0
+  else:
+    repeat 3:
+      combine P3 P3 P5 +
+      repeat 2:
+        combine P5 P2 P3 +
+        if n_trans < 10:
+          union P4 P5 P5
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P0 P0 P1 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  call h0
+  dedupe P0 P0
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  call h0
+  dedupe P0 P0
+  call h0
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #34 mutate ['wrap_if@1', 'delete@0', 'wrap_if@1'] | full [4, 0.2812] screen [1, 0.1667]
+  - #31 crossover a[:21] + b[19:] | full [4, 0.2812] screen [1, 0.1667]
+    - #23 mutate ['insert@1', 'extract_helper h4'] | full [4, 0.2686] screen [1, 0.1667]
+      - #21 mutate ['insert@0', 'insert@0', 'insert@1'] | full [4, 0.2686] screen [1, 0.1667]
+        - #20 crossover a[:15] + b[9:] | full [4, 0.2686] screen [1, 0.1667]
+          - #18 mutate ['replace@0', 'insert@0', 'insert@0'] | full [4, 0.2645] screen [1, 0.1667]
+            - #15 mutate ['replace@4', 'wrap_if@0'] | full [4, 0.2645] screen [1, 0.1667]
+              - #11 mutate ['extract_helper h1', 'insert@0', 'wrap_repeat@0'] | full [2, 0.195] screen [1, 0.1667]
+                - #10 mutate ['insert@2', 'delete@0'] | full [2, 0.195] screen [1, 0.1667]
+                  - #7 mutate ['insert@1', 'wrap_repeat@0', 'extract_helper h0'] | full [2, 0.195] screen [1, 0.1667]
+                    - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+          - #18 mutate ['replace@0', 'insert@0', 'insert@0'] | full [4, 0.2645] screen [1, 0.1667]
+            - #15 mutate ['replace@4', 'wrap_if@0'] | full [4, 0.2645] screen [1, 0.1667]
+              - #11 mutate ['extract_helper h1', 'insert@0', 'wrap_repeat@0'] | full [2, 0.195] screen [1, 0.1667]
+                - #10 mutate ['insert@2', 'delete@0'] | full [2, 0.195] screen [1, 0.1667]
+                  - #7 mutate ['insert@1', 'wrap_repeat@0', 'extract_helper h0'] | full [2, 0.195] screen [1, 0.1667]
+                    - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+    - #28 mutate ['wrap_repeat@1'] | full [4, 0.2686] screen [1, 0.1667]
+      - #24 mutate ['perturb@2'] | full [4, 0.2686] screen [1, 0.1667]
+        - #22 mutate ['delete@1', 'replace@1', 'replace@0'] | full [4, 0.2686] screen [1, 0.1667]
+          - #21 mutate ['insert@0', 'insert@0', 'insert@1'] | full [4, 0.2686] screen [1, 0.1667]
+            - #20 crossover a[:15] + b[9:] | full [4, 0.2686] screen [1, 0.1667]
+              - #18 mutate ['replace@0', 'insert@0', 'insert@0'] | full [4, 0.2645] screen [1, 0.1667]
+                - #15 mutate ['replace@4', 'wrap_if@0'] | full [4, 0.2645] screen [1, 0.1667]
+                  - #11 mutate ['extract_helper h1', 'insert@0', 'wrap_repeat@0'] | full [2, 0.195] screen [1, 0.1667]
+                    - #10 mutate ['insert@2', 'delete@0'] | full [2, 0.195] screen [1, 0.1667]
+                      - #7 mutate ['insert@1', 'wrap_repeat@0', 'extract_helper h0'] | full [2, 0.195] screen [1, 0.1667]
+                        - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+              - #18 mutate ['replace@0', 'insert@0', 'insert@0'] | full [4, 0.2645] screen [1, 0.1667]
+                - #15 mutate ['replace@4', 'wrap_if@0'] | full [4, 0.2645] screen [1, 0.1667]
+                  - #11 mutate ['extract_helper h1', 'insert@0', 'wrap_repeat@0'] | full [2, 0.195] screen [1, 0.1667]
+                    - #10 mutate ['insert@2', 'delete@0'] | full [2, 0.195] screen [1, 0.1667]
+                      - #7 mutate ['insert@1', 'wrap_repeat@0', 'extract_helper h0'] | full [2, 0.195] screen [1, 0.1667]
+                        - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+
+### E-S_L2: candidate #33 (best selection score of the top-3)
+
+Space 114 expressions on probe context 3 (seed 53): +61 / −0. Fresh unfamiliar solves 5.
+
+```
+main:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  union P3 P3 P4
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  repeat 2:
+    dedupe P5 P2
+    union P3 P3 P4
+    dedupe P0 P2
+    combine P4 P0 P2 +
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #33 mutate ['insert@2'] | full [4, 0.2719] screen [1, 0.1667]
+  - #24 crossover a[:22] + b[18:] | full [4, 0.2719] screen [1, 0.1667]
+    - #22 mutate ['perturb@22'] | full [4, 0.2715] screen [1, 0.1667]
+      - #20 crossover a[:20] + b[14:] | full [4, 0.2715] screen [1, 0.1667]
+        - #15 crossover a[:10] + b[5:] | full [4, 0.2715] screen [1, 0.1667]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+        - #14 mutate ['delete@1'] | full [2, 0.195] screen [1, 0.1667]
+          - #7 mutate ['insert@8', 'wrap_repeat@8'] | full [2, 0.195] screen [1, 0.1667]
+            - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+    - #21 crossover a[:17] + b[8:] | full [4, 0.2645] screen [1, 0.1667]
+      - #17 mutate ['delete@5'] | full [2, 0.195] screen [1, 0.1667]
+        - #10 crossover a[:16] + b[6:] | full [2, 0.195] screen [1, 0.1667]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+          - #3 mutate ['wrap_repeat@1', 'replace@1'] | full [0, 0.0243] screen [0, 0.0]
+            - #1 random_program | full [0, 0.0243] screen [0, 0.0]
+      - #12 mutate ['insert@7', 'delete@12', 'perturb@8'] | full [2, 0.195] screen [1, 0.1667]
+        - #7 mutate ['insert@8', 'wrap_repeat@8'] | full [2, 0.195] screen [1, 0.1667]
+          - #0 seed (transcribed existing procedure) | full [2, 0.195] screen [1, 0.1667]
+
+### R-F_L1: candidate #14 (best selection score of the top-3)
+
+Space 27 expressions on probe context 3 (seed 53): +18 / −44. Fresh unfamiliar solves 6.
+
+```
+def h0:
+  combine P5 P0 P2 -
+  union P4 P4 P5
+def h1:
+  combine P1 P2 P3 /
+  union P3 P3 P4
+main:
+  terms P0 ['acc', 'x']
+  dconsts P1 small_obs
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  call h0
+  call h1
+  union P0 P0 P2
+  union P0 P0 P2
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #14 seed + random edits (no selection) ['insert@12', 'extract_helper h0', 'replace@1', 'extract_helper h1', 'perturb@13'] | full [7, 0.3458] screen [1, 0.3525]
+
+### R-F_L2: candidate #33 (best selection score of the top-3)
+
+Space 148 expressions on probe context 3 (seed 53): +105 / −10. Fresh unfamiliar solves 6.
+
+```
+main:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  filter P3 P1 size_le_5
+  if n_trans >= 10:
+    combine P4 P0 P2 *
+  else:
+    repeat 2:
+      repeat 2:
+        union P3 P5 P3
+        dconsts P3 int_ratios
+        combine P3 P2 P2 *
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  union P3 P3 P4
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #33 seed + random edits (no selection) ['wrap_if@9', 'insert@0', 'insert@9', 'wrap_repeat@0', 'perturb@0'] | full [6, 0.35] screen [6, 0.9445]
+
+### R-S_L1: candidate #14 (best selection score of the top-3)
+
+Space 27 expressions on probe context 3 (seed 53): +18 / −44. Fresh unfamiliar solves 6.
+
+```
+def h0:
+  combine P5 P0 P2 -
+  union P4 P4 P5
+def h1:
+  combine P1 P2 P3 /
+  union P3 P3 P4
+main:
+  terms P0 ['acc', 'x']
+  dconsts P1 small_obs
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  combine P4 P0 P2 +
+  call h0
+  call h1
+  union P0 P0 P2
+  union P0 P0 P2
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #14 seed + random edits (no selection) ['insert@12', 'extract_helper h0', 'replace@1', 'extract_helper h1', 'perturb@13'] | full [7, 0.3458] screen [2, 0.3333]
+
+### R-S_L2: candidate #33 (best selection score of the top-3)
+
+Space 148 expressions on probe context 3 (seed 53): +105 / −10. Fresh unfamiliar solves 6.
+
+```
+main:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+  union P0 P0 P1
+  combine P2 P0 P0 +
+  combine P3 P0 P0 -
+  union P2 P2 P3
+  combine P3 P2 P0 +
+  combine P4 P2 P0 -
+  union P3 P3 P4
+  filter P3 P1 size_le_5
+  if n_trans >= 10:
+    combine P4 P0 P2 *
+  else:
+    repeat 2:
+      repeat 2:
+        union P3 P5 P3
+        dconsts P3 int_ratios
+        combine P3 P2 P2 *
+  combine P5 P0 P2 -
+  union P4 P4 P5
+  union P3 P3 P4
+  union P0 P0 P2
+  union P0 P0 P3
+  dedupe P0 P0
+  sort P0 P0 size
+  ret P0
+```
+
+Ancestry:
+
+- #33 seed + random edits (no selection) ['wrap_if@9', 'insert@0', 'insert@9', 'wrap_repeat@0', 'perturb@0'] | full [6, 0.35] screen [2, 0.3333]
