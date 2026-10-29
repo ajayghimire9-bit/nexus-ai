@@ -437,10 +437,12 @@ class Lineage:
     def proposal_round(self):
         st, M = self.st, self.st["M"]
         adm = I.first(M, "admit")
-        tasks = [self._adm_task() for _ in range(adm["n_tasks"])]
+        # proposals (same RNG use as before), then the budget check, then the admission seeds: drawing the seeds before the
+        # check exhausted Full_r2's admission stream in Stage 2 (fix after the Full lineages; behaviour otherwise identical)
         props = self._proposals(M, st, self.rng)
-        if self.left() < self._round_cost(len(props), len(tasks)) + 1:
+        if self.left() < self._round_cost(len(props), adm["n_tasks"]) + 1:
             return False
+        tasks = [self._adm_task() for _ in range(adm["n_tasks"])]
         base = self._eval_set(st, tasks)
         admitted = []
         for p in props:

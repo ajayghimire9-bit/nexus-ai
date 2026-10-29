@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi2_source.py", line 55, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi2_source.py", line 46, in main
+    lin.run()
+    ~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 605, in run
+    if not self.step():
+           ~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 548, in step
+    if self.proposal_round():
+       ~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 440, in proposal_round
+    tasks = [self._adm_task() for _ in range(adm["n_tasks"])]
+             ~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 508, in _adm_task
+    s = next(self.adm_seeds)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 301, in __next__
+    s = self.seeds[self.i]
+        ~~~~~~~~~~^^^^^^^^
+IndexError: list index out of range
