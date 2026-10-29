@@ -406,6 +406,32 @@ def random_feats(rng, p, existing, st, n=None):
     return out
 
 
+def _fill_holes(b, holes, rng):
+    """Put every unused hole into a random leaf of the same type outside lambda bodies (an int constant, or a duplicate
+    occurrence of another hole of that type); None if impossible."""
+    for k, ht in enumerate(holes):
+        used = {m[1] for m in S.nodes(b) if m[0] == "h"}
+        if k in used:
+            continue
+        counts = {}
+        for m in S.nodes(b):
+            if m[0] == "h":
+                counts[m[1]] = counts.get(m[1], 0) + 1
+        paths = []
+
+        def rec(n, path):
+            if n[0] == "c" and ht == "i" or (n[0] == "h" and holes[n[1]] == ht and counts[n[1]] > 1):
+                paths.append(path)
+            if n[0] in ("p", "m"):
+                for i, a in enumerate(n[2:]):
+                    rec(a, path + (i + 2,))
+        rec(b, ())
+        if not paths:
+            return None
+        b = _replace(b, {rng.choice(paths): ("h", k)})
+    return b
+
+
 def placebo_for(item, rng, existing):
     """An operationally matched irrelevant item: same kind, hole / input types, output type and description length,
     executable and non-constant on probes, but generated at random (no solution parent)."""
@@ -417,7 +443,8 @@ def placebo_for(item, rng, existing):
         b = random_expr(rng, t, sz, holes)
         if b is None or S.size(b) != sz or S.to_src(b) in existing:
             continue
-        if sorted({m[1] for m in S.nodes(b) if m[0] == "h"}) != list(range(len(holes))):
+        b = _fill_holes(b, holes, rng)          # size- and type-preserving: unused holes replace same-typed leaves
+        if b is None or sorted({m[1] for m in S.nodes(b) if m[0] == "h"}) != list(range(len(holes))):
             continue
         try:
             if S.check_types(b, (), "top", holes=holes) != t or not _executes(b, holes, t):
