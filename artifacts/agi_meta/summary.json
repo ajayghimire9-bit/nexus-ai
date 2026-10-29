@@ -1,0 +1,7292 @@
+{
+ "r0_Mstar": {
+  "name": "r0_Mstar",
+  "elapsed": 56.42,
+  "cpu": 56.4,
+  "stop": "budget",
+  "tasks": 44,
+  "solved": 4,
+  "silent": 0,
+  "queries": 21,
+  "by_world": {
+   "A": {
+    "n": 10,
+    "solved": 0
+   },
+   "B": {
+    "n": 10,
+    "solved": 0
+   },
+   "D": {
+    "n": 11,
+    "solved": 0
+   },
+   "F": {
+    "n": 13,
+    "solved": 4
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 13,
+    "solved": 2
+   },
+   "2": {
+    "n": 11,
+    "solved": 2
+   },
+   "3": {
+    "n": 10,
+    "solved": 0
+   },
+   "4": {
+    "n": 10,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 10,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 5,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 6,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 4,
+   "fit_alpha": 0.1
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    1
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    4
+   ],
+   "mod": [
+    2,
+    4
+   ],
+   "min2": [
+    2,
+    4
+   ],
+   "max2": [
+    2,
+    4
+   ],
+   "coalesce": [
+    2,
+    4
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    4
+   ],
+   "and": [
+    2,
+    4
+   ],
+   "or": [
+    2,
+    4
+   ],
+   "not": [
+    2,
+    4
+   ],
+   "ite_i": [
+    2,
+    4
+   ],
+   "ite_l": [
+    2,
+    4
+   ],
+   "ite_L": [
+    2,
+    4
+   ],
+   "len": [
+    2,
+    4
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    4
+   ],
+   "minl": [
+    2,
+    4
+   ],
+   "head": [
+    2,
+    4
+   ],
+   "last": [
+    2,
+    4
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    4
+   ],
+   "sort": [
+    2,
+    4
+   ],
+   "uniq": [
+    2,
+    4
+   ],
+   "take": [
+    2,
+    4
+   ],
+   "drop": [
+    2,
+    4
+   ],
+   "cons": [
+    2,
+    4
+   ],
+   "cat": [
+    2,
+    4
+   ],
+   "list1": [
+    2,
+    4
+   ],
+   "list2": [
+    2,
+    4
+   ],
+   "range": [
+    2,
+    4
+   ],
+   "mem": [
+    2,
+    4
+   ],
+   "subset": [
+    2,
+    4
+   ],
+   "repeat": [
+    2,
+    4
+   ],
+   "map": [
+    2,
+    4
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    4
+   ],
+   "zipw": [
+    2,
+    4
+   ],
+   "scan": [
+    2,
+    4
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    4
+   ],
+   "row": [
+    2,
+    4
+   ],
+   "col": [
+    2,
+    4
+   ],
+   "revL": [
+    2,
+    4
+   ],
+   "transpose": [
+    2,
+    4
+   ],
+   "repeatL": [
+    2,
+    4
+   ],
+   "prod": [
+    2,
+    4
+   ],
+   "gather": [
+    2,
+    4
+   ],
+   "flat": [
+    2,
+    4
+   ],
+   "mapr": [
+    2,
+    4
+   ],
+   "mapri": [
+    2,
+    4
+   ],
+   "filterr": [
+    2,
+    4
+   ],
+   "sortby": [
+    2,
+    4
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    4
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    2
+   ],
+   "c:4": [
+    2,
+    4
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "expanded": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "size": 8,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "expanded": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "size": 8,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31079",
+     "F.F3.L2.35013"
+    ],
+    "util": 2,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul(3, sum($0))",
+    "expanded": "mul(3, sum($0))",
+    "size": 4,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050",
+     "F.F3.L2.31057",
+     "F.F3.L3.31012"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31063"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "L4": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L5": {
+    "kind": "L",
+    "src": "filter((\\x. lt($0, x)), $1)",
+    "expanded": "filter((\\x. lt($0, x)), $1)",
+    "size": 5,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.31010",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L1.31010",
+     "F.F3.L2.31057",
+     "F.F3.L2.31063"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 11,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31058",
+     "F.F1.L1.31065",
+     "F.F3.L2.31070"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34044",
+      "B.B1.L1.34045",
+      "D.D3.L2.34046",
+      "F.F2.L1.34047"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub(sub($0, mul($1, $2)), $1)",
+    "expanded": "sub(sub($0, mul($1, $2)), $1)",
+    "size": 7,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31037",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31030",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31030",
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31067",
+     "F.F1.L1.31077",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L12": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 14,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31066",
+     "F.F1.L1.31077",
+     "F.F1.L1.31087",
+     "F.F1.L1.31089"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34056",
+      "B.B1.L2.34057",
+      "D.D3.L1.34058",
+      "F.F2.L2.34059"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L2.35041"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "R2": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 3,
+    "method": "closed",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R8": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31077"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34048",
+      "B.B1.L2.34049",
+      "D.D3.L1.34050",
+      "F.F2.L2.34051"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R11": {
+    "kind": "R",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [],
+  "digest": "812c7dfaa95501a0",
+  "schedule_len": 44,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    11.3,
+    1
+   ],
+   [
+    21.2,
+    2
+   ],
+   [
+    29.8,
+    2
+   ],
+   [
+    40.2,
+    2
+   ],
+   [
+    49.6,
+    2
+   ],
+   [
+    52.1,
+    2
+   ],
+   [
+    55.2,
+    2
+   ]
+  ]
+ },
+ "r0_M0": {
+  "name": "r0_M0",
+  "elapsed": 56.47,
+  "cpu": 56.45,
+  "stop": "budget",
+  "tasks": 44,
+  "solved": 4,
+  "silent": 0,
+  "queries": 21,
+  "by_world": {
+   "A": {
+    "n": 10,
+    "solved": 0
+   },
+   "B": {
+    "n": 10,
+    "solved": 0
+   },
+   "D": {
+    "n": 11,
+    "solved": 0
+   },
+   "F": {
+    "n": 13,
+    "solved": 4
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 13,
+    "solved": 2
+   },
+   "2": {
+    "n": 11,
+    "solved": 2
+   },
+   "3": {
+    "n": 10,
+    "solved": 0
+   },
+   "4": {
+    "n": 10,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 10,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 5,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 6,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 4,
+   "fit_alpha": 0.1
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    1
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    4
+   ],
+   "mod": [
+    2,
+    4
+   ],
+   "min2": [
+    2,
+    4
+   ],
+   "max2": [
+    2,
+    4
+   ],
+   "coalesce": [
+    2,
+    4
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    4
+   ],
+   "and": [
+    2,
+    4
+   ],
+   "or": [
+    2,
+    4
+   ],
+   "not": [
+    2,
+    4
+   ],
+   "ite_i": [
+    2,
+    4
+   ],
+   "ite_l": [
+    2,
+    4
+   ],
+   "ite_L": [
+    2,
+    4
+   ],
+   "len": [
+    2,
+    4
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    4
+   ],
+   "minl": [
+    2,
+    4
+   ],
+   "head": [
+    2,
+    4
+   ],
+   "last": [
+    2,
+    4
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    4
+   ],
+   "sort": [
+    2,
+    4
+   ],
+   "uniq": [
+    2,
+    4
+   ],
+   "take": [
+    2,
+    4
+   ],
+   "drop": [
+    2,
+    4
+   ],
+   "cons": [
+    2,
+    4
+   ],
+   "cat": [
+    2,
+    4
+   ],
+   "list1": [
+    2,
+    4
+   ],
+   "list2": [
+    2,
+    4
+   ],
+   "range": [
+    2,
+    4
+   ],
+   "mem": [
+    2,
+    4
+   ],
+   "subset": [
+    2,
+    4
+   ],
+   "repeat": [
+    2,
+    4
+   ],
+   "map": [
+    2,
+    4
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    4
+   ],
+   "zipw": [
+    2,
+    4
+   ],
+   "scan": [
+    2,
+    4
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    4
+   ],
+   "row": [
+    2,
+    4
+   ],
+   "col": [
+    2,
+    4
+   ],
+   "revL": [
+    2,
+    4
+   ],
+   "transpose": [
+    2,
+    4
+   ],
+   "repeatL": [
+    2,
+    4
+   ],
+   "prod": [
+    2,
+    4
+   ],
+   "gather": [
+    2,
+    4
+   ],
+   "flat": [
+    2,
+    4
+   ],
+   "mapr": [
+    2,
+    4
+   ],
+   "mapri": [
+    2,
+    4
+   ],
+   "filterr": [
+    2,
+    4
+   ],
+   "sortby": [
+    2,
+    4
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    4
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    2
+   ],
+   "c:4": [
+    2,
+    4
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "expanded": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "size": 8,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "expanded": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "size": 8,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31079",
+     "F.F3.L2.35013"
+    ],
+    "util": 2,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul(3, sum($0))",
+    "expanded": "mul(3, sum($0))",
+    "size": 4,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050",
+     "F.F3.L2.31057",
+     "F.F3.L3.31012"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31063"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "L4": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L5": {
+    "kind": "L",
+    "src": "filter((\\x. lt($0, x)), $1)",
+    "expanded": "filter((\\x. lt($0, x)), $1)",
+    "size": 5,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.31010",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L1.31010",
+     "F.F3.L2.31057",
+     "F.F3.L2.31063"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 11,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31058",
+     "F.F1.L1.31065",
+     "F.F3.L2.31070"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34044",
+      "B.B1.L1.34045",
+      "D.D3.L2.34046",
+      "F.F2.L1.34047"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub(sub($0, mul($1, $2)), $1)",
+    "expanded": "sub(sub($0, mul($1, $2)), $1)",
+    "size": 7,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31037",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31030",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31030",
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31067",
+     "F.F1.L1.31077",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L12": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 14,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31066",
+     "F.F1.L1.31077",
+     "F.F1.L1.31087",
+     "F.F1.L1.31089"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34056",
+      "B.B1.L2.34057",
+      "D.D3.L1.34058",
+      "F.F2.L2.34059"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L2.35041"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "R2": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 3,
+    "method": "closed",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R8": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31077"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34048",
+      "B.B1.L2.34049",
+      "D.D3.L1.34050",
+      "F.F2.L2.34051"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R11": {
+    "kind": "R",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [],
+  "digest": "812c7dfaa95501a0",
+  "schedule_len": 44,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    11.3,
+    1
+   ],
+   [
+    21.2,
+    2
+   ],
+   [
+    29.9,
+    2
+   ],
+   [
+    40.3,
+    2
+   ],
+   [
+    49.7,
+    2
+   ],
+   [
+    52.2,
+    2
+   ],
+   [
+    55.2,
+    2
+   ]
+  ]
+ },
+ "r0_Mrand": {
+  "name": "r0_Mrand",
+  "elapsed": 56.99,
+  "cpu": 56.97,
+  "stop": "budget",
+  "tasks": 49,
+  "solved": 5,
+  "silent": 0,
+  "queries": 24,
+  "by_world": {
+   "A": {
+    "n": 11,
+    "solved": 0
+   },
+   "B": {
+    "n": 11,
+    "solved": 0
+   },
+   "D": {
+    "n": 13,
+    "solved": 0
+   },
+   "F": {
+    "n": 14,
+    "solved": 5
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 14,
+    "solved": 2
+   },
+   "2": {
+    "n": 13,
+    "solved": 3
+   },
+   "3": {
+    "n": 10,
+    "solved": 0
+   },
+   "4": {
+    "n": 12,
+    "solved": 0
+   }
+  },
+  "rounds": 4,
+  "proposals": 24,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 8,
+   "R": 8,
+   "pi_costs": 4,
+   "pi_params": 4
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "random",
+     "min_uses": 2,
+     "max_size": 4,
+     "max_holes": 2,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "random",
+     "min_uses": 3,
+     "max_size": 7,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "random",
+     "lr": 1.0,
+     "alpha": 4.0,
+     "cmax": 3
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "random",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 2,
+     "neutral": false,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 10,
+     "max_R": 2
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "round_robin",
+     "eps": 0.4
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 6,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 4,
+   "fit_alpha": 0.1
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    1
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    4
+   ],
+   "mod": [
+    2,
+    4
+   ],
+   "min2": [
+    2,
+    4
+   ],
+   "max2": [
+    2,
+    4
+   ],
+   "coalesce": [
+    2,
+    4
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    4
+   ],
+   "and": [
+    2,
+    4
+   ],
+   "or": [
+    2,
+    4
+   ],
+   "not": [
+    2,
+    4
+   ],
+   "ite_i": [
+    2,
+    4
+   ],
+   "ite_l": [
+    2,
+    4
+   ],
+   "ite_L": [
+    2,
+    4
+   ],
+   "len": [
+    2,
+    4
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    4
+   ],
+   "minl": [
+    2,
+    4
+   ],
+   "head": [
+    2,
+    4
+   ],
+   "last": [
+    2,
+    4
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    4
+   ],
+   "sort": [
+    2,
+    4
+   ],
+   "uniq": [
+    2,
+    4
+   ],
+   "take": [
+    2,
+    4
+   ],
+   "drop": [
+    2,
+    4
+   ],
+   "cons": [
+    2,
+    4
+   ],
+   "cat": [
+    2,
+    4
+   ],
+   "list1": [
+    2,
+    4
+   ],
+   "list2": [
+    2,
+    4
+   ],
+   "range": [
+    2,
+    4
+   ],
+   "mem": [
+    2,
+    4
+   ],
+   "subset": [
+    2,
+    4
+   ],
+   "repeat": [
+    2,
+    4
+   ],
+   "map": [
+    2,
+    4
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    4
+   ],
+   "zipw": [
+    2,
+    4
+   ],
+   "scan": [
+    2,
+    4
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    4
+   ],
+   "row": [
+    2,
+    4
+   ],
+   "col": [
+    2,
+    4
+   ],
+   "revL": [
+    2,
+    4
+   ],
+   "transpose": [
+    2,
+    4
+   ],
+   "repeatL": [
+    2,
+    4
+   ],
+   "prod": [
+    2,
+    4
+   ],
+   "gather": [
+    2,
+    4
+   ],
+   "flat": [
+    2,
+    4
+   ],
+   "mapr": [
+    2,
+    4
+   ],
+   "mapri": [
+    2,
+    4
+   ],
+   "filterr": [
+    2,
+    4
+   ],
+   "sortby": [
+    2,
+    4
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    4
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    2
+   ],
+   "c:4": [
+    2,
+    4
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "expanded": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+    "size": 8,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.35045"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "expanded": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+    "size": 8,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34032",
+      "B.B1.L2.34033",
+      "D.D3.L1.34034",
+      "F.F2.L2.34035"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31079",
+     "F.F3.L2.35013"
+    ],
+    "util": 2,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul(3, sum($0))",
+    "expanded": "mul(3, sum($0))",
+    "size": 4,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 3,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050",
+     "F.F3.L2.31057",
+     "F.F3.L3.31012"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.31063"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "L4": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 9,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34036",
+      "B.B1.L1.34037",
+      "D.D3.L2.34038",
+      "F.F2.L1.34039"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L5": {
+    "kind": "L",
+    "src": "filter((\\x. lt($0, x)), $1)",
+    "expanded": "filter((\\x. lt($0, x)), $1)",
+    "size": 5,
+    "holes": [
+     "i",
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.31010",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L1.31010",
+     "F.F3.L2.31057",
+     "F.F3.L2.31063"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L2.31049",
+    "birth_round": 10,
+    "support": [
+     "F.F3.L2.31049",
+     "F.F3.L2.31050"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34040",
+      "B.B1.L2.34041",
+      "D.D3.L1.34042",
+      "F.F2.L2.34043"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 11,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31058",
+     "F.F1.L1.31065",
+     "F.F3.L2.31070"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34044",
+      "B.B1.L1.34045",
+      "D.D3.L2.34046",
+      "F.F2.L1.34047"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub(sub($0, mul($1, $2)), $1)",
+    "expanded": "sub(sub($0, mul($1, $2)), $1)",
+    "size": 7,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31037",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31030",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31030",
+     "F.F1.L1.31037",
+     "F.F1.L1.31038",
+     "F.F1.L1.31067",
+     "F.F1.L1.31077",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L12": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 14,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31066",
+     "F.F1.L1.31077",
+     "F.F1.L1.31087",
+     "F.F1.L1.31089"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34056",
+      "B.B1.L2.34057",
+      "D.D3.L1.34058",
+      "F.F2.L2.34059"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L2.35041"
+    ],
+    "util": 1,
+    "cost": 2
+   },
+   "R8": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31001",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.31001",
+     "F.F1.L1.31037",
+     "F.F1.L1.31077"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34048",
+      "B.B1.L2.34049",
+      "D.D3.L1.34050",
+      "F.F2.L2.34051"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R11": {
+    "kind": "R",
+    "src": "mul($0, 1)",
+    "expanded": "mul($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.31036",
+    "birth_round": 13,
+    "support": [
+     "F.F1.L1.31036",
+     "F.F1.L1.31038",
+     "F.F1.L1.31078"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34052",
+      "B.B1.L1.34053",
+      "D.D3.L2.34054",
+      "F.F2.L1.34055"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [
+   {
+    "id": "R2",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "util": 0,
+    "round": 0
+   }
+  ],
+  "digest": "b14117b53d128b0a",
+  "schedule_len": 49,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    14.3,
+    1
+   ],
+   [
+    21.3,
+    2
+   ],
+   [
+    32.9,
+    2
+   ],
+   [
+    44.7,
+    2
+   ],
+   [
+    47.7,
+    2
+   ],
+   [
+    50.2,
+    2
+   ],
+   [
+    53.3,
+    2
+   ],
+   [
+    55.2,
+    5
+   ]
+  ]
+ },
+ "r1_Mstar": {
+  "name": "r1_Mstar",
+  "elapsed": 56.9,
+  "cpu": 56.9,
+  "stop": "budget",
+  "tasks": 45,
+  "solved": 5,
+  "silent": 1,
+  "queries": 29,
+  "by_world": {
+   "A": {
+    "n": 10,
+    "solved": 0
+   },
+   "B": {
+    "n": 12,
+    "solved": 0
+   },
+   "D": {
+    "n": 12,
+    "solved": 0
+   },
+   "F": {
+    "n": 11,
+    "solved": 5
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 11,
+    "solved": 2
+   },
+   "2": {
+    "n": 14,
+    "solved": 1
+   },
+   "3": {
+    "n": 9,
+    "solved": 2
+   },
+   "4": {
+    "n": 11,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 10,
+  "admitted": 1,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 1,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 5,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 0,
+   "n_probes": 6,
+   "lam_max": 5,
+   "feat_k": 8,
+   "qsel": "first",
+   "confirm_q": 3,
+   "fit_alpha": 0.01
+  },
+  "pi_cost_changes": {
+   "add": [
+    2,
+    1
+   ],
+   "sub": [
+    2,
+    3
+   ],
+   "div": [
+    2,
+    3
+   ],
+   "mod": [
+    2,
+    3
+   ],
+   "min2": [
+    2,
+    3
+   ],
+   "max2": [
+    2,
+    3
+   ],
+   "coalesce": [
+    2,
+    3
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    3
+   ],
+   "and": [
+    2,
+    3
+   ],
+   "or": [
+    2,
+    3
+   ],
+   "not": [
+    2,
+    3
+   ],
+   "ite_i": [
+    2,
+    3
+   ],
+   "ite_l": [
+    2,
+    3
+   ],
+   "ite_L": [
+    2,
+    3
+   ],
+   "len": [
+    2,
+    3
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    3
+   ],
+   "minl": [
+    2,
+    3
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "last": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    3
+   ],
+   "sort": [
+    2,
+    3
+   ],
+   "uniq": [
+    2,
+    3
+   ],
+   "take": [
+    2,
+    3
+   ],
+   "drop": [
+    2,
+    3
+   ],
+   "cons": [
+    2,
+    3
+   ],
+   "cat": [
+    2,
+    3
+   ],
+   "list1": [
+    2,
+    3
+   ],
+   "list2": [
+    2,
+    3
+   ],
+   "range": [
+    2,
+    3
+   ],
+   "mem": [
+    2,
+    3
+   ],
+   "subset": [
+    2,
+    3
+   ],
+   "repeat": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    3
+   ],
+   "zipw": [
+    2,
+    3
+   ],
+   "scan": [
+    2,
+    3
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    3
+   ],
+   "row": [
+    2,
+    3
+   ],
+   "col": [
+    2,
+    3
+   ],
+   "revL": [
+    2,
+    3
+   ],
+   "transpose": [
+    2,
+    3
+   ],
+   "repeatL": [
+    2,
+    3
+   ],
+   "prod": [
+    2,
+    3
+   ],
+   "gather": [
+    2,
+    3
+   ],
+   "flat": [
+    2,
+    3
+   ],
+   "mapr": [
+    2,
+    3
+   ],
+   "mapri": [
+    2,
+    3
+   ],
+   "filterr": [
+    2,
+    3
+   ],
+   "sortby": [
+    2,
+    3
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    3
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    3
+   ],
+   "c:2": [
+    1,
+    2
+   ],
+   "c:4": [
+    2,
+    3
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 6,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.169,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L3.32057",
+     "F.F3.L1.32126",
+     "F.F3.L2.32132",
+     "F.F3.L3.32133",
+     "F.F3.L3.32149",
+     "F.F3.L3.35302",
+     "F.F3.L2.35304",
+     "F.F3.L1.35328"
+    ],
+    "util": 8,
+    "cost": 1
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 4,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.148,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L2": {
+    "kind": "L",
+    "src": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "expanded": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32008",
+    "birth_round": 7,
+    "support": [
+     "A.A2.L1.32008",
+     "A.A2.L1.32047"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L6": {
+    "kind": "L",
+    "src": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32081",
+    "birth_round": 13,
+    "support": [
+     "A.A2.L1.32081",
+     "A.A2.L1.32082"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34352",
+      "B.B1.L2.34353",
+      "D.D3.L1.34354",
+      "F.F2.L2.34355"
+     ]
+    },
+    "source_uses": [
+     "A.A2.L1.32085"
+    ],
+    "util": 1,
+    "cost": 3
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 15,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32090",
+     "F.F3.L1.32086"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32099",
+     "F.F1.L1.35326"
+    ],
+    "util": 2,
+    "cost": 3
+   },
+   "L8": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 15,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041",
+     "F.F3.L1.32091"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub($0, mul($1, 3))",
+    "expanded": "sub($0, mul($1, 3))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.32130",
+     "F.F3.L3.32151",
+     "F.F1.L3.35321"
+    ],
+    "util": 3,
+    "cost": 3
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32062",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32077",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R3": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 7,
+    "method": "closed",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 7,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.32050",
+    "birth_round": 9,
+    "support": [
+     "A.A2.L1.32050",
+     "A.A2.L1.32054"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34336",
+      "B.B1.L2.34337",
+      "D.D3.L1.34338",
+      "F.F2.L2.34339"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R5": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 0.955,
+     "tasks": [
+      "A.A1.L2.34348",
+      "B.B1.L1.34349",
+      "D.D3.L2.34350",
+      "F.F2.L1.34351"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32089",
+     "F.F1.L3.35321"
+    ],
+    "util": 2,
+    "cost": 3
+   }
+  },
+  "pruned": [],
+  "digest": "b442399915c415b3",
+  "schedule_len": 45,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    2.6,
+    2
+   ],
+   [
+    12.8,
+    2
+   ],
+   [
+    21.3,
+    2
+   ],
+   [
+    31.8,
+    2
+   ],
+   [
+    39.9,
+    3
+   ],
+   [
+    48.9,
+    5
+   ],
+   [
+    51.9,
+    5
+   ],
+   [
+    54.4,
+    5
+   ]
+  ]
+ },
+ "r1_M0": {
+  "name": "r1_M0",
+  "elapsed": 56.98,
+  "cpu": 56.97,
+  "stop": "budget",
+  "tasks": 45,
+  "solved": 5,
+  "silent": 1,
+  "queries": 29,
+  "by_world": {
+   "A": {
+    "n": 10,
+    "solved": 0
+   },
+   "B": {
+    "n": 12,
+    "solved": 0
+   },
+   "D": {
+    "n": 12,
+    "solved": 0
+   },
+   "F": {
+    "n": 11,
+    "solved": 5
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 11,
+    "solved": 2
+   },
+   "2": {
+    "n": 14,
+    "solved": 1
+   },
+   "3": {
+    "n": 9,
+    "solved": 2
+   },
+   "4": {
+    "n": 11,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 10,
+  "admitted": 1,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 1,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 5,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 0,
+   "n_probes": 6,
+   "lam_max": 5,
+   "feat_k": 8,
+   "qsel": "first",
+   "confirm_q": 3,
+   "fit_alpha": 0.01
+  },
+  "pi_cost_changes": {
+   "add": [
+    2,
+    1
+   ],
+   "sub": [
+    2,
+    3
+   ],
+   "div": [
+    2,
+    3
+   ],
+   "mod": [
+    2,
+    3
+   ],
+   "min2": [
+    2,
+    3
+   ],
+   "max2": [
+    2,
+    3
+   ],
+   "coalesce": [
+    2,
+    3
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    3
+   ],
+   "and": [
+    2,
+    3
+   ],
+   "or": [
+    2,
+    3
+   ],
+   "not": [
+    2,
+    3
+   ],
+   "ite_i": [
+    2,
+    3
+   ],
+   "ite_l": [
+    2,
+    3
+   ],
+   "ite_L": [
+    2,
+    3
+   ],
+   "len": [
+    2,
+    3
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    3
+   ],
+   "minl": [
+    2,
+    3
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "last": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    3
+   ],
+   "sort": [
+    2,
+    3
+   ],
+   "uniq": [
+    2,
+    3
+   ],
+   "take": [
+    2,
+    3
+   ],
+   "drop": [
+    2,
+    3
+   ],
+   "cons": [
+    2,
+    3
+   ],
+   "cat": [
+    2,
+    3
+   ],
+   "list1": [
+    2,
+    3
+   ],
+   "list2": [
+    2,
+    3
+   ],
+   "range": [
+    2,
+    3
+   ],
+   "mem": [
+    2,
+    3
+   ],
+   "subset": [
+    2,
+    3
+   ],
+   "repeat": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    3
+   ],
+   "zipw": [
+    2,
+    3
+   ],
+   "scan": [
+    2,
+    3
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    3
+   ],
+   "row": [
+    2,
+    3
+   ],
+   "col": [
+    2,
+    3
+   ],
+   "revL": [
+    2,
+    3
+   ],
+   "transpose": [
+    2,
+    3
+   ],
+   "repeatL": [
+    2,
+    3
+   ],
+   "prod": [
+    2,
+    3
+   ],
+   "gather": [
+    2,
+    3
+   ],
+   "flat": [
+    2,
+    3
+   ],
+   "mapr": [
+    2,
+    3
+   ],
+   "mapri": [
+    2,
+    3
+   ],
+   "filterr": [
+    2,
+    3
+   ],
+   "sortby": [
+    2,
+    3
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    3
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    3
+   ],
+   "c:2": [
+    1,
+    2
+   ],
+   "c:4": [
+    2,
+    3
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 6,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.169,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L3.32057",
+     "F.F3.L1.32126",
+     "F.F3.L2.32132",
+     "F.F3.L3.32133",
+     "F.F3.L3.32149",
+     "F.F3.L3.35302",
+     "F.F3.L2.35304",
+     "F.F3.L1.35328"
+    ],
+    "util": 8,
+    "cost": 1
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 4,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.148,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L2": {
+    "kind": "L",
+    "src": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "expanded": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32008",
+    "birth_round": 7,
+    "support": [
+     "A.A2.L1.32008",
+     "A.A2.L1.32047"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L6": {
+    "kind": "L",
+    "src": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32081",
+    "birth_round": 13,
+    "support": [
+     "A.A2.L1.32081",
+     "A.A2.L1.32082"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34352",
+      "B.B1.L2.34353",
+      "D.D3.L1.34354",
+      "F.F2.L2.34355"
+     ]
+    },
+    "source_uses": [
+     "A.A2.L1.32085"
+    ],
+    "util": 1,
+    "cost": 3
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 15,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32090",
+     "F.F3.L1.32086"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32099",
+     "F.F1.L1.35326"
+    ],
+    "util": 2,
+    "cost": 3
+   },
+   "L8": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 15,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041",
+     "F.F3.L1.32091"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub($0, mul($1, 3))",
+    "expanded": "sub($0, mul($1, 3))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.32130",
+     "F.F3.L3.32151",
+     "F.F1.L3.35321"
+    ],
+    "util": 3,
+    "cost": 3
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32062",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32077",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R3": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 7,
+    "method": "closed",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 7,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.32050",
+    "birth_round": 9,
+    "support": [
+     "A.A2.L1.32050",
+     "A.A2.L1.32054"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34336",
+      "B.B1.L2.34337",
+      "D.D3.L1.34338",
+      "F.F2.L2.34339"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 3
+   },
+   "R5": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 0.955,
+     "tasks": [
+      "A.A1.L2.34348",
+      "B.B1.L1.34349",
+      "D.D3.L2.34350",
+      "F.F2.L1.34351"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32089",
+     "F.F1.L3.35321"
+    ],
+    "util": 2,
+    "cost": 3
+   }
+  },
+  "pruned": [],
+  "digest": "b442399915c415b3",
+  "schedule_len": 45,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    2.6,
+    2
+   ],
+   [
+    12.8,
+    2
+   ],
+   [
+    21.4,
+    2
+   ],
+   [
+    31.8,
+    2
+   ],
+   [
+    40.0,
+    3
+   ],
+   [
+    48.9,
+    5
+   ],
+   [
+    52.0,
+    5
+   ],
+   [
+    54.5,
+    5
+   ]
+  ]
+ },
+ "r1_Mrand": {
+  "name": "r1_Mrand",
+  "elapsed": 56.93,
+  "cpu": 56.92,
+  "stop": "budget",
+  "tasks": 60,
+  "solved": 5,
+  "silent": 0,
+  "queries": 36,
+  "by_world": {
+   "A": {
+    "n": 14,
+    "solved": 0
+   },
+   "B": {
+    "n": 16,
+    "solved": 0
+   },
+   "D": {
+    "n": 15,
+    "solved": 0
+   },
+   "F": {
+    "n": 15,
+    "solved": 5
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 14,
+    "solved": 2
+   },
+   "2": {
+    "n": 15,
+    "solved": 1
+   },
+   "3": {
+    "n": 15,
+    "solved": 2
+   },
+   "4": {
+    "n": 16,
+    "solved": 0
+   }
+  },
+  "rounds": 2,
+  "proposals": 14,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 6,
+   "R": 4,
+   "pi_costs": 2,
+   "pi_params": 2
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "random",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 1,
+     "top_k": 3
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "random",
+     "min_uses": 2,
+     "max_size": 6,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "random",
+     "lr": 1.5,
+     "alpha": 0.5,
+     "cmax": 5
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "random",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 3,
+     "neutral": false,
+     "speedup": 0.3
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.1
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 10,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 0,
+   "n_probes": 6,
+   "lam_max": 5,
+   "feat_k": 8,
+   "qsel": "first",
+   "confirm_q": 3,
+   "fit_alpha": 0.01
+  },
+  "pi_cost_changes": {
+   "add": [
+    2,
+    1
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    4
+   ],
+   "mod": [
+    2,
+    4
+   ],
+   "min2": [
+    2,
+    4
+   ],
+   "max2": [
+    2,
+    4
+   ],
+   "coalesce": [
+    2,
+    4
+   ],
+   "lt": [
+    2,
+    4
+   ],
+   "eq": [
+    2,
+    4
+   ],
+   "and": [
+    2,
+    4
+   ],
+   "or": [
+    2,
+    4
+   ],
+   "not": [
+    2,
+    4
+   ],
+   "ite_i": [
+    2,
+    4
+   ],
+   "ite_l": [
+    2,
+    4
+   ],
+   "ite_L": [
+    2,
+    4
+   ],
+   "len": [
+    2,
+    4
+   ],
+   "sum": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    4
+   ],
+   "minl": [
+    2,
+    4
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "last": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    4
+   ],
+   "rev": [
+    2,
+    4
+   ],
+   "sort": [
+    2,
+    4
+   ],
+   "uniq": [
+    2,
+    4
+   ],
+   "take": [
+    2,
+    4
+   ],
+   "drop": [
+    2,
+    4
+   ],
+   "cons": [
+    2,
+    4
+   ],
+   "cat": [
+    2,
+    4
+   ],
+   "list1": [
+    2,
+    4
+   ],
+   "list2": [
+    2,
+    4
+   ],
+   "range": [
+    2,
+    4
+   ],
+   "mem": [
+    2,
+    4
+   ],
+   "subset": [
+    2,
+    4
+   ],
+   "repeat": [
+    2,
+    4
+   ],
+   "map": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    4
+   ],
+   "count": [
+    2,
+    4
+   ],
+   "zipw": [
+    2,
+    4
+   ],
+   "scan": [
+    2,
+    4
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    4
+   ],
+   "row": [
+    2,
+    4
+   ],
+   "col": [
+    2,
+    4
+   ],
+   "revL": [
+    2,
+    4
+   ],
+   "transpose": [
+    2,
+    4
+   ],
+   "repeatL": [
+    2,
+    4
+   ],
+   "prod": [
+    2,
+    4
+   ],
+   "gather": [
+    2,
+    4
+   ],
+   "flat": [
+    2,
+    4
+   ],
+   "mapr": [
+    2,
+    4
+   ],
+   "mapri": [
+    2,
+    4
+   ],
+   "filterr": [
+    2,
+    4
+   ],
+   "sortby": [
+    2,
+    4
+   ],
+   "groupsum": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    4
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    4
+   ],
+   "c:2": [
+    1,
+    3
+   ],
+   "c:4": [
+    2,
+    4
+   ],
+   "c:5": [
+    2,
+    4
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 6,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.169,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L3.32057",
+     "F.F3.L1.32126",
+     "F.F3.L2.32132",
+     "F.F3.L3.32133",
+     "F.F3.L3.32149",
+     "F.F3.L3.35302",
+     "F.F3.L2.35304",
+     "F.F3.L1.35328"
+    ],
+    "util": 8,
+    "cost": 4
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 4,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.148,
+     "tasks": [
+      "A.A1.L2.34324",
+      "B.B1.L1.34325",
+      "D.D3.L2.34326",
+      "F.F2.L1.34327"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 4
+   },
+   "L2": {
+    "kind": "L",
+    "src": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "expanded": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32008",
+    "birth_round": 7,
+    "support": [
+     "A.A2.L1.32008",
+     "A.A2.L1.32047"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 4
+   },
+   "L6": {
+    "kind": "L",
+    "src": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. head(x)), $0)",
+    "size": 6,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "A.A2.L1.32081",
+    "birth_round": 13,
+    "support": [
+     "A.A2.L1.32081",
+     "A.A2.L1.32082"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34352",
+      "B.B1.L2.34353",
+      "D.D3.L1.34354",
+      "F.F2.L2.34355"
+     ]
+    },
+    "source_uses": [
+     "A.A2.L1.32085"
+    ],
+    "util": 1,
+    "cost": 4
+   },
+   "L7": {
+    "kind": "L",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 15,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32090",
+     "F.F3.L1.32086"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32099"
+    ],
+    "util": 1,
+    "cost": 4
+   },
+   "L8": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 15,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041",
+     "F.F3.L1.32091"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34360",
+      "B.B1.L2.34361",
+      "D.D3.L1.34362",
+      "F.F2.L2.34363"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 4
+   },
+   "L9": {
+    "kind": "L",
+    "src": "sub($0, mul($1, 3))",
+    "expanded": "sub($0, mul($1, 3))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L2.32130",
+     "F.F3.L3.32151"
+    ],
+    "util": 2,
+    "cost": 2
+   },
+   "L10": {
+    "kind": "L",
+    "src": "sub($0, mul($1, $2))",
+    "expanded": "sub($0, mul($1, $2))",
+    "size": 5,
+    "holes": [
+     "i",
+     "i",
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 17,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32062",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076",
+     "F.F1.L1.32077",
+     "F.F1.L1.32104"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34368",
+      "B.B1.L2.34369",
+      "D.D3.L1.34370",
+      "F.F2.L2.34371"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R3": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 7,
+    "method": "closed",
+    "birth_task": "F.F3.L1.32031",
+    "birth_round": 7,
+    "support": [
+     "F.F3.L1.32031",
+     "F.F3.L1.32037",
+     "F.F3.L1.32041"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34328",
+      "B.B1.L2.34329",
+      "D.D3.L1.34330",
+      "F.F2.L2.34331"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 4
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.32050",
+    "birth_round": 9,
+    "support": [
+     "A.A2.L1.32050",
+     "A.A2.L1.32054"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34336",
+      "B.B1.L2.34337",
+      "D.D3.L1.34338",
+      "F.F2.L2.34339"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 4
+   },
+   "R5": {
+    "kind": "R",
+    "src": "mul($0, 3)",
+    "expanded": "mul($0, 3)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F1.L1.32027",
+    "birth_round": 12,
+    "support": [
+     "F.F1.L1.32027",
+     "F.F1.L1.32074",
+     "F.F1.L1.32076"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 0.955,
+     "tasks": [
+      "A.A1.L2.34348",
+      "B.B1.L1.34349",
+      "D.D3.L2.34350",
+      "F.F2.L1.34351"
+     ]
+    },
+    "source_uses": [
+     "F.F1.L1.32089"
+    ],
+    "util": 1,
+    "cost": 4
+   }
+  },
+  "pruned": [],
+  "digest": "ba645ae49111e7aa",
+  "schedule_len": 60,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    2.6,
+    2
+   ],
+   [
+    20.4,
+    2
+   ],
+   [
+    23.4,
+    2
+   ],
+   [
+    36.3,
+    2
+   ],
+   [
+    38.8,
+    3
+   ],
+   [
+    40.7,
+    5
+   ],
+   [
+    43.7,
+    5
+   ],
+   [
+    46.3,
+    5
+   ],
+   [
+    49.3,
+    5
+   ],
+   [
+    52.3,
+    5
+   ],
+   [
+    55.0,
+    5
+   ]
+  ]
+ },
+ "r2_Mstar": {
+  "name": "r2_Mstar",
+  "elapsed": 56.82,
+  "cpu": 56.79,
+  "stop": "budget",
+  "tasks": 49,
+  "solved": 2,
+  "silent": 0,
+  "queries": 11,
+  "by_world": {
+   "A": {
+    "n": 13,
+    "solved": 0
+   },
+   "B": {
+    "n": 14,
+    "solved": 0
+   },
+   "D": {
+    "n": 12,
+    "solved": 0
+   },
+   "F": {
+    "n": 10,
+    "solved": 2
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 11,
+    "solved": 1
+   },
+   "2": {
+    "n": 13,
+    "solved": 0
+   },
+   "3": {
+    "n": 12,
+    "solved": 1
+   },
+   "4": {
+    "n": 13,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 8,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 3,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 10,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 3,
+   "fit_alpha": 1.0
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    3
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    3
+   ],
+   "mod": [
+    2,
+    3
+   ],
+   "min2": [
+    2,
+    3
+   ],
+   "max2": [
+    2,
+    3
+   ],
+   "coalesce": [
+    2,
+    3
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    3
+   ],
+   "and": [
+    2,
+    3
+   ],
+   "or": [
+    2,
+    3
+   ],
+   "not": [
+    2,
+    3
+   ],
+   "ite_i": [
+    2,
+    3
+   ],
+   "ite_l": [
+    2,
+    3
+   ],
+   "ite_L": [
+    2,
+    3
+   ],
+   "len": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    3
+   ],
+   "minl": [
+    2,
+    3
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    3
+   ],
+   "sort": [
+    2,
+    3
+   ],
+   "uniq": [
+    2,
+    3
+   ],
+   "take": [
+    2,
+    3
+   ],
+   "drop": [
+    2,
+    3
+   ],
+   "cons": [
+    2,
+    3
+   ],
+   "cat": [
+    2,
+    3
+   ],
+   "list1": [
+    2,
+    3
+   ],
+   "list2": [
+    2,
+    3
+   ],
+   "range": [
+    2,
+    3
+   ],
+   "mem": [
+    2,
+    3
+   ],
+   "subset": [
+    2,
+    3
+   ],
+   "repeat": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    3
+   ],
+   "zipw": [
+    2,
+    3
+   ],
+   "scan": [
+    2,
+    3
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    3
+   ],
+   "row": [
+    2,
+    3
+   ],
+   "col": [
+    2,
+    3
+   ],
+   "revL": [
+    2,
+    3
+   ],
+   "transpose": [
+    2,
+    3
+   ],
+   "repeatL": [
+    2,
+    3
+   ],
+   "prod": [
+    2,
+    3
+   ],
+   "gather": [
+    2,
+    3
+   ],
+   "flat": [
+    2,
+    3
+   ],
+   "mapr": [
+    2,
+    3
+   ],
+   "mapri": [
+    2,
+    3
+   ],
+   "filterr": [
+    2,
+    3
+   ],
+   "sortby": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    3
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    3
+   ],
+   "c:3": [
+    2,
+    3
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "util": 4,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040",
+     "F.F3.L1.33046",
+     "F.F3.L1.33048",
+     "F.F3.L1.33049"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34632",
+      "B.B1.L2.34633",
+      "D.D3.L1.34634",
+      "F.F2.L2.34635"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.33009",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33009",
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R2": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 3,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.33007",
+    "birth_round": 12,
+    "support": [
+     "A.A2.L1.33007",
+     "A.A2.L1.33075"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34648",
+      "B.B1.L2.34649",
+      "D.D3.L1.34650",
+      "F.F2.L2.34651"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R5": {
+    "kind": "R",
+    "src": "LL0($0)",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 2,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33056",
+    "birth_round": 13,
+    "support": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.017,
+     "tasks": [
+      "A.A1.L2.34652",
+      "B.B1.L1.34653",
+      "D.D3.L2.34654",
+      "F.F2.L1.34655"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R7": {
+    "kind": "R",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 4,
+    "method": "closed",
+    "birth_task": "F.F1.L1.33071",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [],
+  "digest": "473ae8b2989c6f85",
+  "schedule_len": 49,
+  "solve_curve": [
+   [
+    0.6,
+    0
+   ],
+   [
+    3.7,
+    0
+   ],
+   [
+    10.5,
+    0
+   ],
+   [
+    18.6,
+    0
+   ],
+   [
+    26.5,
+    2
+   ],
+   [
+    35.2,
+    2
+   ],
+   [
+    45.7,
+    2
+   ],
+   [
+    48.8,
+    2
+   ],
+   [
+    51.9,
+    2
+   ],
+   [
+    55.0,
+    2
+   ]
+  ]
+ },
+ "r2_M0": {
+  "name": "r2_M0",
+  "elapsed": 56.83,
+  "cpu": 56.81,
+  "stop": "budget",
+  "tasks": 49,
+  "solved": 2,
+  "silent": 0,
+  "queries": 11,
+  "by_world": {
+   "A": {
+    "n": 13,
+    "solved": 0
+   },
+   "B": {
+    "n": 14,
+    "solved": 0
+   },
+   "D": {
+    "n": 12,
+    "solved": 0
+   },
+   "F": {
+    "n": 10,
+    "solved": 2
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 11,
+    "solved": 1
+   },
+   "2": {
+    "n": 13,
+    "solved": 0
+   },
+   "3": {
+    "n": 12,
+    "solved": 1
+   },
+   "4": {
+    "n": 13,
+    "solved": 0
+   }
+  },
+  "rounds": 5,
+  "proposals": 8,
+  "admitted": 0,
+  "admitted_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 0,
+   "R": 0,
+   "pi_costs": 3,
+   "pi_params": 5
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "antiunify",
+     "min_uses": 2,
+     "max_size": 8,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "closed",
+     "min_uses": 2,
+     "max_size": 5,
+     "top_k": 2
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "counts",
+     "lr": 1.0,
+     "alpha": 1.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "coord",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 4,
+     "neutral": true,
+     "speedup": 0.2
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 12,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 10,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 3,
+   "fit_alpha": 1.0
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    3
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    3
+   ],
+   "mod": [
+    2,
+    3
+   ],
+   "min2": [
+    2,
+    3
+   ],
+   "max2": [
+    2,
+    3
+   ],
+   "coalesce": [
+    2,
+    3
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    3
+   ],
+   "and": [
+    2,
+    3
+   ],
+   "or": [
+    2,
+    3
+   ],
+   "not": [
+    2,
+    3
+   ],
+   "ite_i": [
+    2,
+    3
+   ],
+   "ite_l": [
+    2,
+    3
+   ],
+   "ite_L": [
+    2,
+    3
+   ],
+   "len": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    3
+   ],
+   "minl": [
+    2,
+    3
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    3
+   ],
+   "sort": [
+    2,
+    3
+   ],
+   "uniq": [
+    2,
+    3
+   ],
+   "take": [
+    2,
+    3
+   ],
+   "drop": [
+    2,
+    3
+   ],
+   "cons": [
+    2,
+    3
+   ],
+   "cat": [
+    2,
+    3
+   ],
+   "list1": [
+    2,
+    3
+   ],
+   "list2": [
+    2,
+    3
+   ],
+   "range": [
+    2,
+    3
+   ],
+   "mem": [
+    2,
+    3
+   ],
+   "subset": [
+    2,
+    3
+   ],
+   "repeat": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    3
+   ],
+   "zipw": [
+    2,
+    3
+   ],
+   "scan": [
+    2,
+    3
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    3
+   ],
+   "row": [
+    2,
+    3
+   ],
+   "col": [
+    2,
+    3
+   ],
+   "revL": [
+    2,
+    3
+   ],
+   "transpose": [
+    2,
+    3
+   ],
+   "repeatL": [
+    2,
+    3
+   ],
+   "prod": [
+    2,
+    3
+   ],
+   "gather": [
+    2,
+    3
+   ],
+   "flat": [
+    2,
+    3
+   ],
+   "mapr": [
+    2,
+    3
+   ],
+   "mapri": [
+    2,
+    3
+   ],
+   "filterr": [
+    2,
+    3
+   ],
+   "sortby": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    3
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    3
+   ],
+   "c:3": [
+    2,
+    3
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "util": 4,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040",
+     "F.F3.L1.33046",
+     "F.F3.L1.33048",
+     "F.F3.L1.33049"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34632",
+      "B.B1.L2.34633",
+      "D.D3.L1.34634",
+      "F.F2.L2.34635"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.33009",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33009",
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R2": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 3,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.33007",
+    "birth_round": 12,
+    "support": [
+     "A.A2.L1.33007",
+     "A.A2.L1.33075"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34648",
+      "B.B1.L2.34649",
+      "D.D3.L1.34650",
+      "F.F2.L2.34651"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R5": {
+    "kind": "R",
+    "src": "LL0($0)",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 2,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33056",
+    "birth_round": 13,
+    "support": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.017,
+     "tasks": [
+      "A.A1.L2.34652",
+      "B.B1.L1.34653",
+      "D.D3.L2.34654",
+      "F.F2.L1.34655"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R7": {
+    "kind": "R",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 4,
+    "method": "closed",
+    "birth_task": "F.F1.L1.33071",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [],
+  "digest": "473ae8b2989c6f85",
+  "schedule_len": 49,
+  "solve_curve": [
+   [
+    0.6,
+    0
+   ],
+   [
+    3.8,
+    0
+   ],
+   [
+    10.6,
+    0
+   ],
+   [
+    18.6,
+    0
+   ],
+   [
+    26.6,
+    2
+   ],
+   [
+    35.2,
+    2
+   ],
+   [
+    45.7,
+    2
+   ],
+   [
+    48.8,
+    2
+   ],
+   [
+    51.9,
+    2
+   ],
+   [
+    55.0,
+    2
+   ]
+  ]
+ },
+ "r2_Mrand": {
+  "name": "r2_Mrand",
+  "elapsed": 56.97,
+  "cpu": 56.94,
+  "stop": "budget",
+  "tasks": 45,
+  "solved": 1,
+  "silent": 0,
+  "queries": 8,
+  "by_world": {
+   "A": {
+    "n": 10,
+    "solved": 0
+   },
+   "B": {
+    "n": 13,
+    "solved": 0
+   },
+   "D": {
+    "n": 12,
+    "solved": 0
+   },
+   "F": {
+    "n": 10,
+    "solved": 1
+   }
+  },
+  "by_level": {
+   "1": {
+    "n": 9,
+    "solved": 1
+   },
+   "2": {
+    "n": 12,
+    "solved": 0
+   },
+   "3": {
+    "n": 12,
+    "solved": 0
+   },
+   "4": {
+    "n": 12,
+    "solved": 0
+   }
+  },
+  "rounds": 3,
+  "proposals": 15,
+  "admitted": 9,
+  "admitted_by_kind": {
+   "L": 6,
+   "R": 3,
+   "pi_costs": 0,
+   "pi_params": 0
+  },
+  "proposed_by_kind": {
+   "L": 6,
+   "R": 3,
+   "pi_costs": 3,
+   "pi_params": 3
+  },
+  "meta_edits": [],
+  "meta_adopted": 0,
+  "M": [
+   [
+    "propose_L",
+    {
+     "method": "random",
+     "min_uses": 2,
+     "max_size": 9,
+     "max_holes": 3,
+     "top_k": 2
+    }
+   ],
+   [
+    "propose_R",
+    {
+     "method": "random",
+     "min_uses": 3,
+     "max_size": 5,
+     "top_k": 1
+    }
+   ],
+   [
+    "reweight",
+    {
+     "method": "random",
+     "lr": 0.0,
+     "alpha": 4.0,
+     "cmax": 4
+    }
+   ],
+   [
+    "tune",
+    {
+     "method": "random",
+     "params": [
+      "margin",
+      "n_probes",
+      "lam_max",
+      "feat_k",
+      "confirm_q",
+      "qsel",
+      "fit_alpha"
+     ]
+    }
+   ],
+   [
+    "admit",
+    {
+     "n_tasks": 3,
+     "neutral": true,
+     "speedup": 0.3
+    }
+   ],
+   [
+    "prune",
+    {
+     "max_L": 4,
+     "max_R": 8
+    }
+   ],
+   [
+    "curriculum",
+    {
+     "rule": "progress",
+     "eps": 0.25
+    }
+   ],
+   [
+    "schedule",
+    {
+     "period": 6,
+     "meta_period": 2
+    }
+   ]
+  ],
+  "pi_params": {
+   "margin": 1,
+   "n_probes": 10,
+   "lam_max": 6,
+   "feat_k": 8,
+   "qsel": "entropy",
+   "confirm_q": 3,
+   "fit_alpha": 1.0
+  },
+  "pi_cost_changes": {
+   "sub": [
+    2,
+    3
+   ],
+   "mul": [
+    2,
+    1
+   ],
+   "div": [
+    2,
+    3
+   ],
+   "mod": [
+    2,
+    3
+   ],
+   "min2": [
+    2,
+    3
+   ],
+   "max2": [
+    2,
+    3
+   ],
+   "coalesce": [
+    2,
+    3
+   ],
+   "lt": [
+    2,
+    3
+   ],
+   "eq": [
+    2,
+    3
+   ],
+   "and": [
+    2,
+    3
+   ],
+   "or": [
+    2,
+    3
+   ],
+   "not": [
+    2,
+    3
+   ],
+   "ite_i": [
+    2,
+    3
+   ],
+   "ite_l": [
+    2,
+    3
+   ],
+   "ite_L": [
+    2,
+    3
+   ],
+   "len": [
+    2,
+    3
+   ],
+   "maxl": [
+    2,
+    3
+   ],
+   "minl": [
+    2,
+    3
+   ],
+   "head": [
+    2,
+    3
+   ],
+   "nth": [
+    2,
+    3
+   ],
+   "rev": [
+    2,
+    3
+   ],
+   "sort": [
+    2,
+    3
+   ],
+   "uniq": [
+    2,
+    3
+   ],
+   "take": [
+    2,
+    3
+   ],
+   "drop": [
+    2,
+    3
+   ],
+   "cons": [
+    2,
+    3
+   ],
+   "cat": [
+    2,
+    3
+   ],
+   "list1": [
+    2,
+    3
+   ],
+   "list2": [
+    2,
+    3
+   ],
+   "range": [
+    2,
+    3
+   ],
+   "mem": [
+    2,
+    3
+   ],
+   "subset": [
+    2,
+    3
+   ],
+   "repeat": [
+    2,
+    3
+   ],
+   "filter": [
+    2,
+    3
+   ],
+   "count": [
+    2,
+    3
+   ],
+   "zipw": [
+    2,
+    3
+   ],
+   "scan": [
+    2,
+    3
+   ],
+   "fold": [
+    2,
+    3
+   ],
+   "lenL": [
+    2,
+    3
+   ],
+   "row": [
+    2,
+    3
+   ],
+   "col": [
+    2,
+    3
+   ],
+   "revL": [
+    2,
+    3
+   ],
+   "transpose": [
+    2,
+    3
+   ],
+   "repeatL": [
+    2,
+    3
+   ],
+   "prod": [
+    2,
+    3
+   ],
+   "gather": [
+    2,
+    3
+   ],
+   "flat": [
+    2,
+    3
+   ],
+   "mapr": [
+    2,
+    3
+   ],
+   "mapri": [
+    2,
+    3
+   ],
+   "filterr": [
+    2,
+    3
+   ],
+   "sortby": [
+    2,
+    3
+   ],
+   "iterate": [
+    2,
+    3
+   ],
+   "c:0": [
+    1,
+    3
+   ],
+   "c:1": [
+    1,
+    2
+   ],
+   "c:2": [
+    1,
+    3
+   ],
+   "c:3": [
+    2,
+    3
+   ],
+   "c:5": [
+    2,
+    3
+   ]
+  },
+  "inventory": {
+   "L0": {
+    "kind": "L",
+    "src": "sum(map((\\x. mul(x, x)), $0))",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 6,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "util": 4,
+    "cost": 2
+   },
+   "L1": {
+    "kind": "L",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L3": {
+    "kind": "L",
+    "src": "mul($0, $0)",
+    "expanded": "mul($0, $0)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "antiunify",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 8,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040",
+     "F.F3.L1.33046",
+     "F.F3.L1.33048",
+     "F.F3.L1.33049"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34632",
+      "B.B1.L2.34633",
+      "D.D3.L1.34634",
+      "F.F2.L2.34635"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "L6": {
+    "kind": "L",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 1,
+    "method": "antiunify",
+    "birth_task": "F.F1.L1.33009",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33009",
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R2": {
+    "kind": "R",
+    "src": "map((\\x. mul(x, x)), $0)",
+    "expanded": "map((\\x. mul(x, x)), $0)",
+    "size": 5,
+    "holes": [
+     "l"
+    ],
+    "out": "l",
+    "mdl": 3,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33002",
+    "birth_round": 6,
+    "support": [
+     "F.F3.L1.33002",
+     "F.F3.L1.33040"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34624",
+      "B.B1.L2.34625",
+      "D.D3.L1.34626",
+      "F.F2.L2.34627"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R4": {
+    "kind": "R",
+    "src": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "expanded": "groupsum((\\x. last(x)), (\\x. 1), $0)",
+    "size": 5,
+    "holes": [
+     "L"
+    ],
+    "out": "L",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "A.A2.L1.33007",
+    "birth_round": 12,
+    "support": [
+     "A.A2.L1.33007",
+     "A.A2.L1.33075"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34648",
+      "B.B1.L2.34649",
+      "D.D3.L1.34650",
+      "F.F2.L2.34651"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R5": {
+    "kind": "R",
+    "src": "LL0($0)",
+    "expanded": "sum(map((\\x. mul(x, x)), $0))",
+    "size": 2,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": 2,
+    "method": "closed",
+    "birth_task": "F.F3.L1.33056",
+    "birth_round": 13,
+    "support": [
+     "F.F3.L1.33056",
+     "F.F3.L1.33067",
+     "F.F3.L1.33080",
+     "F.F3.L1.33083"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": 1.017,
+     "tasks": [
+      "A.A1.L2.34652",
+      "B.B1.L1.34653",
+      "D.D3.L2.34654",
+      "F.F2.L1.34655"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R7": {
+    "kind": "R",
+    "src": "mul($0, 4)",
+    "expanded": "mul($0, 4)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": 4,
+    "method": "closed",
+    "birth_task": "F.F1.L1.33071",
+    "birth_round": 16,
+    "support": [
+     "F.F1.L1.33071",
+     "F.F1.L1.33086",
+     "F.F1.L1.33096",
+     "F.F1.L1.33097"
+    ],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L1.34664",
+      "B.B1.L2.34665",
+      "D.D3.L1.34666",
+      "F.F2.L2.34667"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R10": {
+    "kind": "R",
+    "src": "max2($0, 1)",
+    "expanded": "max2($0, 1)",
+    "size": 3,
+    "holes": [
+     "i"
+    ],
+    "out": "i",
+    "mdl": null,
+    "method": "random",
+    "birth_task": null,
+    "birth_round": 0,
+    "support": [],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "D.D3.L2.34750",
+      "F.F2.L1.34751",
+      "A.A1.L1.34752"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R13": {
+    "kind": "R",
+    "src": "range(lenL($0))",
+    "expanded": "range(lenL($0))",
+    "size": 3,
+    "holes": [
+     "L"
+    ],
+    "out": "l",
+    "mdl": null,
+    "method": "random",
+    "birth_task": null,
+    "birth_round": 1,
+    "support": [],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "B.B1.L2.34753",
+      "D.D3.L1.34754",
+      "F.F2.L2.34755"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   },
+   "R16": {
+    "kind": "R",
+    "src": "nth($0, 1)",
+    "expanded": "nth($0, 1)",
+    "size": 3,
+    "holes": [
+     "l"
+    ],
+    "out": "i",
+    "mdl": null,
+    "method": "random",
+    "birth_task": null,
+    "birth_round": 2,
+    "support": [],
+    "admission": {
+     "d_solved": 0,
+     "cpu_ratio": null,
+     "why": "uninformative: additive item admitted (neutral)",
+     "tasks": [
+      "A.A1.L2.34756",
+      "B.B1.L1.34757",
+      "D.D3.L2.34758"
+     ]
+    },
+    "source_uses": [],
+    "util": 0,
+    "cost": 2
+   }
+  },
+  "pruned": [
+   {
+    "id": "L8",
+    "src": "zipw((\\x y. 4), list1($0), $1)",
+    "util": 0,
+    "round": 0
+   },
+   {
+    "id": "L9",
+    "src": "lt(1, lenL(revL($0)))",
+    "util": 0,
+    "round": 0
+   },
+   {
+    "id": "L11",
+    "src": "lt(4, sum($0))",
+    "util": 0,
+    "round": 1
+   },
+   {
+    "id": "L12",
+    "src": "not(subset($0, range(maxl($0))))",
+    "util": 0,
+    "round": 1
+   },
+   {
+    "id": "L14",
+    "src": "lt(5, add($0, 1))",
+    "util": 0,
+    "round": 2
+   },
+   {
+    "id": "L15",
+    "src": "or($0, $0)",
+    "util": 0,
+    "round": 2
+   }
+  ],
+  "digest": "eeaa527276619335",
+  "schedule_len": 45,
+  "solve_curve": [
+   [
+    0.7,
+    0
+   ],
+   [
+    3.8,
+    0
+   ],
+   [
+    14.3,
+    0
+   ],
+   [
+    28.6,
+    0
+   ],
+   [
+    42.1,
+    1
+   ],
+   [
+    45.2,
+    1
+   ],
+   [
+    48.3,
+    1
+   ],
+   [
+    51.4,
+    1
+   ],
+   [
+    54.5,
+    1
+   ]
+  ]
+ }
+}

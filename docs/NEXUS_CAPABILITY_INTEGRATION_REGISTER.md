@@ -259,3 +259,22 @@ Every MI-3 component is **diagnostic / experimental**. None is integrated into a
 
 Correction to the MI-2 known gap above, preserved as written: the accepted `acc + 3` update at 26801 was correct. The silent error
 came from a declared event kind (ADD) that was absent from training and therefore never probed. MI-3 §0.3 has the details.
+
+## Multi-world autonomous-learning campaign (2026-10-29; report `docs/NEXUS_MULTI_WORLD_AGI_CAMPAIGN_REPORT.md`)
+
+* **Built:** new versioned modules only (`src/nexus/campaign/`).
+  * Six worlds: A data, B temporal, C spatial (held out), D planning, E causal (held out), F programs.
+  * 24 families × 4 levels, a shared typed substrate and enumerator, learner state (R, L, π, M), and an 11-step agent loop
+    with entropy queries, confirmation queries and a chance-fit commitment bound.
+  * Not integrated into any runtime.
+* **Commits:** protocol `62204b3`, source results `324010a`, meta clones `0c32d0a`, evaluation and report: this commit.
+* **Results:**
+  * The held-out C + E target was **not met**: Full − Placebo −1.0 pp, Full − Init −2.1 pp, Full − Scratch +4.2 pp (Scratch
+    is the weakest arm), 0 of 3 repetitions positive, 0 silent errors by Full on C and E.
+  * Within-world reuse is real but narrow: a sum-of-squares macro family learned from F3 solves withheld-family F4
+    compositions.
+  * There was no meta-improvement: 0 of 26 edits were adopted, so M* = M0.
+* **Capability status:** autonomous library and representation construction is **demonstrated in a minimal form** (MDL
+  anti-unification over verified solutions). Cross-world transfer, a learned experiment policy, and recursive improver
+  gains are **not demonstrated**.
+* **Budget:** 3,478 of the 4,500 s campaign cap; the carried balance is 7,216 s.

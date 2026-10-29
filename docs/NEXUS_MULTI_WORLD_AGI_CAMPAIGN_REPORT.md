@@ -284,3 +284,251 @@ outcome; results are added in later, separate commits).
   meta step and the 200 s source acquisition.
 * **Inventory:** the exact code of every R* and L* item, with its birth task, MDL score, admission record, source uses,
   target uses in solved episodes, and target tasks lost against Init or Scratch (negative transfer).
+
+## 1. Results
+
+This section was added after the run (NOT LOCKED). The source endpoints are `324010a`, the meta clones `0c32d0a`, and the
+one-use evaluation ran on code frozen at `62204b3`, with the placebo hole-filling fix of `324010a` described in §1.9.
+
+### 1.1 Headline
+
+| question | measured answer |
+|---|---|
+| Primary: held-out C + E, Full − Scratch (family-clustered, pooled) | **+4.2 pp**, cluster CI [0, +10.4] |
+| Primary: held-out C + E, Full − Placebo | **−1.0 pp**, CI [−3.1, 0] |
+| Held-out C + E, Full − Init (the same enumerator with π0) | **−2.1 pp**, CI [−4.2, 0] |
+| Repetitions positive against both Scratch and Placebo | **0 of 3** |
+| Silent errors by Full on C and E | 0 |
+| Pilot interpretation target (≥ +10 pp against both, ≥ 2 of 3 repetitions, 0 silent) | **not met** |
+| M* versus M0 | **identical**: no meta-edit was ever adopted, so M* = M0 byte for byte in all 3 repetitions |
+| M* versus M_rand on the 12-task panel | 1 / 2 / 2 against 1 / 2 / 2 solves: no difference |
+
+* Scratch is the weakest arm, at 1 of 56. Its uniform cost of 1 per production turned out to be a worse prior than π0's
+  primitives at 2 and leaves at 1. The fairer scratch comparator is therefore **Init**, which runs the same enumerator and
+  acceptance loop with no learned state.
+* Against Init, nothing learned transferred to C or E.
+
+### 1.2 Source learning (Stage 2; 1,692 s charged; each lineage ≤ 192.7 s)
+
+| lineage | tasks | verified solves | silent | L / R kept | π effort parameters at end | stop |
+|---|---|---|---|---|---|---|
+| Full r0 | 108 | 30 | 0 | 10 / 3 | n_probes 6 (else π0) | budget |
+| Full r1 | 155 | 46 | 5 | 8 / 3 | margin 0, n_probes 6, lam_max 5, qsel first, confirm_q 3, fit_alpha 0.01 | budget |
+| Full r2 | 127 | 35 | 1 | 4 / 4 | n_probes 10, confirm_q 3, fit_alpha 1.0 | budget |
+| Fixed-M0 r0 / r1 / r2 | 108 / 145 / 127 | 30 / 36 / 35 | 0 / 2 / 2 | 10/3, 7/3, 4/5 | — | exhausted / budget / exhausted |
+| Random r0 / r1 / r2 | 108 / 97 / 127 | 29 / 22 / 28 | 0 / 4 / 0 | 0/0, 0/0, 8/2 | — | exhausted / budget / exhausted |
+
+* **Where solves came from:**
+  * Almost all source solves are World F (27 of 30, 38 of 46, 29 of 35) and World A.
+  * World B gave 0, 0 and 1 solves; World D gave 0 in every lineage.
+  * L3 / L4 compositions were rarely solved, and L4 never.
+* **Curriculum:** the progress rule concentrated effort on F.
+* **Meta-edits (Full):** 26 proposed, 0 adopted. In every one of the 26 comparisons the edited M produced exactly the same
+  admitted-proposal gain as the current M.
+  * Most bounded edits (admission size, curriculum, pruning, schedule, reweight parameters at an unchanged archive) do not
+    change the proposals generated in that same round. The strict-improvement rule therefore cannot reward them.
+  * This is a design limitation of the M-evaluation protocol, not evidence about M's value.
+* **Fixed-M0 r0 reproduces Full r0 exactly** (30 of 108, the same items), as it must when M never changes. The other
+  repetitions differ through timing: the Full lineage spends part of its budget on meta-comparisons.
+* **Random-Proposal:** random items were mostly rejected or pruned. Only r2 kept some (8 L / 2 R), and it had fewer source
+  solves than the guided cohorts. Source silent errors (5 in Full r1) all fell under learned relaxations of π0's
+  conservative acceptance (margin 0, fit_alpha 1.0). The admission check rejects a proposal only when a new silent error
+  appears *on the admission tasks*.
+
+### 1.3 Inventory: what R and L NEXUS actually built (Full endpoints)
+
+**Full r0** (all learned from F3 / F1 source tasks; neutral admission, because no admission task was commonly solved):
+
+| item | birth | MDL | support | uses |
+|---|---|---|---|---|
+| L0 `mul(3, sum(map(\x. mul(x, x), $0)))` | F.F3.L2.31049 | 3 | 2 tasks | — |
+| L1 `mul($0, sum(map(\x. mul(x, x), $1)))` | | 2 | | 1 source use |
+| L3 `mul(3, sum($0))` | | 3 | | 1 source use |
+| L4 `sum(map(\x. mul(x, x), $0))` | | 2 | | **target: F.F4.L2.36014** |
+| L5 `filter(\x. lt($0, x), $1)` | | | | |
+| L6 `map(\x. mul(x, x), $0)` | | | | |
+| L7 `mul($0, 1)` | | | | |
+| L9 `sub(sub($0, mul($1, $2)), $1)` | | | | |
+| L10 `sub($0, mul($1, $2))` | | | | |
+| L12 `mul($0, 3)` | | | | |
+| R2 `map(\x. mul(x, x), $0)` | | | | |
+| R8 `mul($0, 3)` | | | | |
+| R11 `mul($0, 1)` | | | | |
+
+* **Target reuse:** L1 in F.F4.L4.36012 and L4 in F.F4.L2.36014. Both are **withheld-family F4** tasks solved only with the
+  macro.
+* **Lost against Init:** E.E1.L1.36116 and A.A4.L3.36002.
+
+**Full r1:**
+* L0 `sum(map(\x. mul(x, x), $0))` (born F.F3.L1.32031, MDL 6, 5 source uses);
+* L1 `map(\x. mul(x, x), $0)`;
+* L2 `groupsum(\x. head(x), \x. last(x), $0)` and L6 `groupsum(\x. last(x), \x. head(x), $0)` (from A2);
+* L7 `mul($0, 3)`, L8 `mul($0, $0)`, L9 `sub($0, mul($1, 3))`, L10 `sub($0, mul($1, $2))`;
+* R3 `map(\x. mul(x, x), $0)`, R4 `groupsum(\x. last(x), \x. 1, $0)`, R5 `mul($0, 3)`.
+
+  Target reuse: R4 in A.A4.L2.36001, and L0 in F.F4.L2.36014. Lost against Init: C.C2.L2.36101 and A.A4.L3.36002.
+
+**Full r2:**
+* L0 `sum(map(\x. mul(x, x), $0))`, L1 `map(\x. mul(x, x), $0)`, L3 `mul($0, $0)`, L6 `mul($0, 4)`;
+* R2 `map(\x. mul(x, x), $0)`, R4 `groupsum(\x. last(x), \x. 1, $0)`, R5 `R(L0)`, R7 `mul($0, 4)`.
+
+  Target reuse: L0 and L6 in F.F4.L4.36012 and F.F4.L2.36014; L6 in A.A4.L3.36002; R4 in A.A4.L2.36001. Nothing lost
+  against Init or Scratch.
+
+**Character of what was built:**
+* Small arithmetic and aggregation idioms from F1, F3 and A2: the sum of squares, a scaled sum, grouped counts.
+* The R items are input re-encodings, such as squared-element lists and per-key counts. They are constructed from
+  primitives, not selected from human encoders.
+* None is spatial, causal, temporal or planning-specific.
+* π reweighting moved 8 to 57 production costs. In r1 it raised every L item to cost 4.
+
+### 1.4 Frozen evaluation (Stage 4; one use; 56 main tasks × 20 arms + 12 panel tasks × 12 arms; 695 s charged, including the c1 resume)
+
+Solves out of 56, at a 0.6 s CPU cap per task:
+
+| arm | r0 | r1 | r2 | silent (r0 / r1 / r2) |
+|---|---|---|---|---|
+| Full | 5 | 4 | 7 | 0 / 0 / 0 |
+| RL (R*, L* with π0) | 4 | 4 | 4 | 0 |
+| Pol (π* only) | 6 | 4 | 7 | 0 / 0 / 1 |
+| Placebo | 4 | 4 | 6 | 0 |
+| Rand | 5 | 5 | 5 | 0 / 0 / 1 |
+| Fixed | 5 | 4 | 7 | 0 |
+| Init | 5 | | | 0 |
+| Scratch | 1 | | | 0 |
+
+* **By panel (Full r0 / r1 / r2):**
+  * withheld: 4, 3 and 5 of 16;
+  * held-out C + E: 1, 1 and 2 of 32;
+  * retention: 0, 0 and 0 of 8.
+* **For comparison:** Init scored 3 withheld, 2 held-out and 0 retention; Pol r0 had the only retention solve (A.A2.L1).
+* **By world:** every solve is in A, C, E or F; **B and D: 0 of 64 tasks for every arm.**
+* **By verification kind:** D4 plan-validity and E4 control tasks were never submitted by any arm. All 98 submissions
+  were under finite hidden-test, bounded-exhaustive or interventional verification.
+* **Outcomes over 1,120 main episodes:**
+
+  | outcome | episodes |
+  |---|---|
+  | abstain_timeout | 929 |
+  | submitted | 98 |
+  | abstain_nohyp | 51 |
+  | abstain_evidence (chance-fit bound) | 42 |
+
+* **Silent errors:** 2 in total, both on E.E1.L2.36120: `coalesce(last(x0), nth(x1, 1))`, which fails 7 of 30
+  interventions, submitted by Pol r2 and Rand r2. Both arms carry relaxed acceptance parameters.
+
+The tasks solved, and by which arm families:
+
+| task | mechanism | solved by |
+|---|---|---|
+| F.F4.L1.36013 | compose[shift_sorted] | every arm, including Scratch |
+| A.A4.L2.36001 | group ∘ project | all except Scratch (19 arm instances) |
+| C.C2.L2.36101 | rot90 ∘ rot90 = `revL(mapr(rev, x0))` | 18 of 20 instances (Full r1 lost it) |
+| E.E1.L1.36116 | latent switch: `coalesce(last(x0), last(x1))`, discovered with intervention queries | 13 instances, including Init |
+| A.A4.L3.36002 | `add(1, len(flat(x0)))` | 10 instances |
+| F.F4.L2.36014 | sumsq ∘ filter | 10 instances, all of them carrying a learned or random library, or π* |
+| F.F4.L4.36012 | 4 × sumsq ∘ mirror | **Full r0 / r2 and Fixed r0 / r2 only**, via L0 / L1 / L4 / L6 |
+| C.C2.L3.36105 / A.A2.L1.36300 | | Pol r2 / Pol r0 only |
+
+### 1.5 Policy transfer versus library reuse (main suite, family-clustered solve rates)
+
+| rep | Full | RL | Pol | Init | Full − Init | RL − Init | Pol − Init | interaction |
+|---|---|---|---|---|---|---|---|---|
+| r0 | 0.063 | 0.050 | 0.113 | 0.063 | 0.000 | −0.013 | +0.050 | −0.038 (sub-additive) |
+| r1 | 0.050 | 0.050 | 0.050 | 0.063 | −0.013 | −0.013 | −0.013 | +0.013 |
+| r2 | 0.088 | 0.050 | 0.088 | 0.063 | +0.025 | −0.013 | +0.025 | +0.013 |
+
+* With π0 costs, R and L alone (RL) are slightly worse than nothing in every repetition: the extra productions widen the
+  search.
+* π* alone is the most consistent positive component (+5.0, −1.3 and +2.5 pp), but its effect is the same size as the
+  changes of one or two tasks.
+* The combination shows no consistent synergy.
+
+### 1.6 Improver versus improver (Stage 3; 512 s charged including the freezes; 12-task panel)
+
+| rep | M* | M0 | M_rand | pre-meta Full |
+|---|---|---|---|---|
+| r0 | 1 | 1 | 1 | 1 |
+| r1 | 2 | 2 | 2 | 2 |
+| r2 | 2 | 2 | 2 | 2 |
+
+* M* = M0 identically (the same digests), because Stage 2 never adopted an edit.
+* In 60 s the M0 / M* clones admitted nothing in r0 and r2 (their states equal the pre-meta endpoint) and little in r1.
+  M_rand admitted random items but changed no panel solve.
+* **Amortisation:** with a gain of 0 against every comparator, no break-even exists, either for the 60 s meta step or for the
+  ~193 s source acquisition.
+
+### 1.7 Budget
+
+| stage | used (s) | ceiling (s) |
+|---|---|---|
+| s1 | 578 | 600 |
+| src | 1,692 | 1,800 |
+| meta | 512 | 600 |
+| eval | 695 | 1,100 |
+| rep | 1 at this commit (score, analysis, protection) | 400 |
+
+* Campaign total: **3,478 of 4,500 s**. Child CPU is within 2 s of wall time in every stage.
+* The carried mi-track balance is **7,216 s** remaining. There was no new grant. The only transfer is the pre-registered
+  100 s from s1 to eval.
+
+### 1.8 Protection
+
+* **After-check:** zero differences in the 912 / 157 / 74 / 390 manifests and the MI-1 / MI-2 / X7 freezes; checkers v1–v5
+  are pinned and `main` is unchanged at `d7ac8c5`. No `final_sealed` claim was made.
+* The single flagged file is `artifacts/mi_logs/mi-agi-s1-protect-1.log`: the before-snapshot's own log, which was still
+  being written while it was hashed. It is not a protected file.
+* All other additions are new campaign logs.
+
+### 1.9 Bookkeeping events (disclosed)
+
+1. **Placebo fix (after source learning, before any target data):** no matched placebo existed for Full_r0 L9 (three int
+   holes in 7 nodes). `improver.placebo_for` gained a size- and type-preserving hole-filling step, and the freeze was
+   rerun.
+2. **Evaluation claim race:**
+   * Chunk `main-c1` crashed at start-up (`SeedHygieneError`). Four chunks started together, and another chunk claimed the
+     one-use ranges between c1's check and its claim.
+   * It wrote **0 rows** and opened no task.
+   * Each range is claimed exactly once, under `agi-eval`.
+   * The chunk was resumed once with the **unchanged frozen code**; the check passes once the claims exist. Its 140 rows are
+     the only rows for those tasks, and nothing was rerun.
+   * Separately, `mi_exec` exits 0 even when its child fails, so status lines and row counts were checked.
+3. The frozen MI-3 seed test assumes MI-3's ranges are the newest. It fails when imported in the same pytest process as the
+   campaign ranges, so the suites were run as separate processes. The MI-3 test was not edited.
+4. **Evaluation time:** 695 s charged against a predicted 901 s; abstention-heavy episodes end early.
+
+### 1.10 Closing verdict (strictly from the measurements)
+
+1. **What R and L did NEXUS invent?** A small library of arithmetic and aggregation idioms extracted by anti-unification
+   from verified F1, F3 and A2 solutions: the sum of squares, element-wise squaring, scaled sums, a·x + b·c patterns and
+   grouped counts / sums. It also built input re-encodings (R) such as squared-element lists and per-key count tables. These
+   items are genuine programs constructed from primitives. They are small, few (8–13 per lineage), and nearly all from one
+   world.
+2. **What transferred?**
+   * To **withheld families**: the sum-of-squares macro family let Full and Fixed (which carry it) solve F4 compositions,
+     F.F4.L4 uniquely, in 2 of 3 repetitions. That is real but narrow reuse, inside the same world.
+   * To **Worlds C and E: nothing measurable.** Full − Init is −2.1 pp, Full − Placebo is −1.0 pp, and the C / E solves
+     (C2 double rotation, E1 latent switch) are equally available to Init.
+   * There is mild **negative transfer:** learned cost skew cost Full r0 / r1 two tasks each that Init solves.
+3. **Did NEXUS learn a better policy π\* for search and experiments?** Not convincingly. π* alone is the most consistently
+   non-negative component (+2 to +5 pp in 2 of 3 repetitions), which corresponds to 1–3 tasks. Some learned relaxations
+   (margin 0, fit_alpha 1.0) bought speed at the price of the only silent errors.
+4. **Did M\* produce better subsequent learners than M0?** The question is untestable here. No meta-edit was ever adopted,
+   so M* = M0, and against M_rand the panel solves are identical. The meta-comparison protocol could not credit edits that
+   do not change the current round's proposals, and that is where it failed.
+5. **What still fails, and where is the frontier?**
+   * The 0.6 s enumerator reaches cost 9–10, enough for atomic F and A mechanisms and a few two-step compositions.
+   * World B (stateful scans with guards), World D (iteration / graph search and plans) and everything at L4 are beyond it
+     for every arm.
+   * Admission was usually **uninformative**: no admission task was solved under either state, so additive items entered
+     on MDL support alone and π changes were refused.
+   * The library therefore reflects whatever the cheapest-to-solve source family produced. It is far from mechanisms that
+     would carry structure into spatial or causal worlds.
+
+**Recommended next experiment (one):** make admission and meta-evaluation informative before scaling anything else.
+* Give admission a dense graded signal: hypotheses' log-likelihood or partial-output agreement on admission tasks, not
+  binary solves.
+* Evaluate an M-edit over a multi-round window, with paired RNG, instead of a single round.
+* Rerun Stages 2–4 at the same budget, with B and D partial credit as the target.
+
+Until the learning signal reaches beyond F and A, cross-world transfer cannot be tested meaningfully.

@@ -1,0 +1,92 @@
+Full_r0 tasks 108 solved 30 silent 0 rounds 16 admitted {'L': 10, 'R': 3, 'pi_costs': 1, 'pi_params': 1} of {'L': 10, 'R': 3, 'pi_costs': 16, 'pi_params': 16} meta 0 / 8 L/R 10 3 stop budget elapsed 190.88
+     L0 mul(3, sum(map((\x. mul(x, x)), $0))) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L1 mul($0, sum(map((\x. mul(x, x)), $1))) | mdl 2 | support 2 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L3 mul(3, sum($0)) | mdl 3 | support 4 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L4 sum(map((\x. mul(x, x)), $0)) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L5 filter((\x. lt($0, x)), $1) | mdl 1 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L6 map((\x. mul(x, x)), $0) | mdl 1 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L7 mul($0, 1) | mdl 1 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L9 sub(sub($0, mul($1, $2)), $1) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L10 sub($0, mul($1, $2)) | mdl 1 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L12 mul($0, 3) | mdl 2 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R2 map((\x. mul(x, x)), $0) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R8 mul($0, 3) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R11 mul($0, 1) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+    pi {'margin': 1, 'n_probes': 6, 'lam_max': 6, 'feat_k': 8, 'qsel': 'entropy', 'confirm_q': 4, 'fit_alpha': 0.1} cost changes 61
+Fixed-M0_r0 tasks 108 solved 30 silent 0 rounds 16 admitted {'L': 10, 'R': 3, 'pi_costs': 1, 'pi_params': 3} of {'L': 10, 'R': 3, 'pi_costs': 16, 'pi_params': 16} meta 0 / 0 L/R 10 3 stop schedule exhausted elapsed 184.4
+     L0 mul(3, sum(map((\x. mul(x, x)), $0))) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L1 mul($0, sum(map((\x. mul(x, x)), $1))) | mdl 2 | support 2 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L3 mul(3, sum($0)) | mdl 3 | support 4 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L4 sum(map((\x. mul(x, x)), $0)) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L5 filter((\x. lt($0, x)), $1) | mdl 1 | support 3 | uses 0 | adm 0
+     L6 map((\x. mul(x, x)), $0) | mdl 1 | support 2 | uses 0 | adm 0
+     L7 mul($0, 1) | mdl 1 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L9 sub(sub($0, mul($1, $2)), $1) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L10 sub($0, mul($1, $2)) | mdl 1 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L12 mul($0, 3) | mdl 2 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R2 map((\x. mul(x, x)), $0) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R8 mul($0, 3) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R11 mul($0, 1) | mdl 2 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+    pi {'margin': 0, 'n_probes': 10, 'lam_max': 6, 'feat_k': 4, 'qsel': 'entropy', 'confirm_q': 4, 'fit_alpha': 0.1} cost changes 61
+Random-Proposal_r0 tasks 108 solved 29 silent 0 rounds 7 admitted {'L': 0, 'R': 0, 'pi_costs': 0, 'pi_params': 0} of {'L': 14, 'R': 20, 'pi_costs': 7, 'pi_params': 7} meta 0 / 0 L/R 0 0 stop schedule exhausted elapsed 180.89
+    pi {'margin': 1, 'n_probes': 8, 'lam_max': 6, 'feat_k': 8, 'qsel': 'entropy', 'confirm_q': 4, 'fit_alpha': 0.1} cost changes 0
+Full_r1 tasks 155 solved 46 silent 5 rounds 18 admitted {'L': 8, 'R': 3, 'pi_costs': 4, 'pi_params': 6} of {'L': 8, 'R': 4, 'pi_costs': 17, 'pi_params': 18} meta 0 / 9 L/R 8 3 stop budget elapsed 190.66
+     L0 sum(map((\x. mul(x, x)), $0)) | mdl 6 | support 3 | uses 5 | adm 0
+     L1 map((\x. mul(x, x)), $0) | mdl 4 | support 3 | uses 0 | adm 0
+     L2 groupsum((\x. head(x)), (\x. last(x)), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L6 groupsum((\x. last(x)), (\x. head(x)), $0) | mdl 2 | support 2 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L7 mul($0, 3) | mdl 1 | support 5 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L8 mul($0, $0) | mdl 1 | support 4 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L9 sub($0, mul($1, 3)) | mdl 2 | support 4 | uses 2 | adm uninformative: additive item admitted (neutral)
+     L10 sub($0, mul($1, $2)) | mdl 1 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R3 map((\x. mul(x, x)), $0) | mdl 7 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R4 groupsum((\x. last(x)), (\x. 1), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R5 mul($0, 3) | mdl 2 | support 3 | uses 1 | adm 0
+    pi {'margin': 0, 'n_probes': 6, 'lam_max': 5, 'feat_k': 8, 'qsel': 'first', 'confirm_q': 3, 'fit_alpha': 0.01} cost changes 61
+Fixed-M0_r1 tasks 145 solved 36 silent 2 rounds 18 admitted {'L': 7, 'R': 3, 'pi_costs': 5, 'pi_params': 5} of {'L': 7, 'R': 3, 'pi_costs': 17, 'pi_params': 18} meta 0 / 0 L/R 7 3 stop budget elapsed 190.67
+     L0 maxl(map((\x. add(x, $0)), $1)) | mdl 3 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L1 groupsum((\x. head(x)), (\x. last(x)), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L2 map((\x. add(x, $0)), $1) | mdl 1 | support 3 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L5 groupsum((\x. last(x)), (\x. head(x)), $0) | mdl 2 | support 2 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L6 add(add($0, $1), add($0, $1)) | mdl 1 | support 2 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L7 sub($0, mul($1, 3)) | mdl 2 | support 4 | uses 1 | adm uninformative: additive item admitted (neutral)
+     L8 sub($0, mul($1, $2)) | mdl 1 | support 6 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R3 groupsum((\x. last(x)), (\x. 1), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R4 mul($0, 3) | mdl 2 | support 3 | uses 1 | adm 0
+     R9 map((\x. add(x, 4)), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+    pi {'margin': 1, 'n_probes': 8, 'lam_max': 5, 'feat_k': 12, 'qsel': 'first', 'confirm_q': 3, 'fit_alpha': 0.01} cost changes 63
+Random-Proposal_r1 tasks 97 solved 22 silent 4 rounds 10 admitted {'L': 0, 'R': 0, 'pi_costs': 1, 'pi_params': 1} of {'L': 30, 'R': 10, 'pi_costs': 10, 'pi_params': 10} meta 0 / 0 L/R 0 0 stop budget elapsed 190.91
+    pi {'margin': 1, 'n_probes': 8, 'lam_max': 4, 'feat_k': 8, 'qsel': 'entropy', 'confirm_q': 4, 'fit_alpha': 0.1} cost changes 8
+Full_r2 tasks 127 solved 35 silent 1 rounds 18 admitted {'L': 4, 'R': 4, 'pi_costs': 2, 'pi_params': 5} of {'L': 5, 'R': 5, 'pi_costs': 18, 'pi_params': 18} meta 0 / 9 L/R 4 4 stop budget elapsed 190.74
+     L0 sum(map((\x. mul(x, x)), $0)) | mdl 2 | support 2 | uses 4 | adm uninformative: additive item admitted (neutral)
+     L1 map((\x. mul(x, x)), $0) | mdl 1 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L3 mul($0, $0) | mdl 2 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L6 mul($0, 4) | mdl 1 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R2 map((\x. mul(x, x)), $0) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R4 groupsum((\x. last(x)), (\x. 1), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R5 LL0($0) | mdl 2 | support 4 | uses 0 | adm 0
+     R7 mul($0, 4) | mdl 4 | support 4 | uses 0 | adm uninformative: additive item admitted (neutral)
+    pi {'margin': 1, 'n_probes': 10, 'lam_max': 6, 'feat_k': 8, 'qsel': 'entropy', 'confirm_q': 3, 'fit_alpha': 1.0} cost changes 57
+Fixed-M0_r2 tasks 127 solved 35 silent 2 rounds 18 admitted {'L': 4, 'R': 5, 'pi_costs': 2, 'pi_params': 3} of {'L': 5, 'R': 5, 'pi_costs': 18, 'pi_params': 18} meta 0 / 0 L/R 4 5 stop schedule exhausted elapsed 188.48
+     L0 sum(map((\x. mul(x, x)), $0)) | mdl 2 | support 2 | uses 4 | adm uninformative: additive item admitted (neutral)
+     L1 map((\x. mul(x, x)), $0) | mdl 1 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L3 mul($0, $0) | mdl 2 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L6 mul($0, 4) | mdl 1 | support 5 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R2 map((\x. mul(x, x)), $0) | mdl 3 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R4 groupsum((\x. last(x)), (\x. 1), $0) | mdl 2 | support 2 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R5 LL0($0) | mdl 2 | support 4 | uses 0 | adm 0
+     R7 mul($0, 4) | mdl 4 | support 4 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R8 mul($0, 3) | mdl 2 | support 3 | uses 0 | adm 0
+    pi {'margin': 1, 'n_probes': 6, 'lam_max': 6, 'feat_k': 2, 'qsel': 'entropy', 'confirm_q': 4, 'fit_alpha': 0.1} cost changes 57
+Random-Proposal_r2 tasks 127 solved 28 silent 0 rounds 14 admitted {'L': 56, 'R': 28, 'pi_costs': 1, 'pi_params': 2} of {'L': 56, 'R': 28, 'pi_costs': 14, 'pi_params': 14} meta 0 / 0 L/R 8 2 stop schedule exhausted elapsed 184.09
+     L72 groupsum((\x. 4), (\x. 1), $0) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L73 lt(5, $0) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L74 mul(2, maxl($0)) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L75 add(3, len($0)) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L78 mapri((\x. maxl(x)), repeatL($0, lenL($0))) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L79 len(sort(flat($0))) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L80 eq(lenL($0), 3) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     L81 repeatL(transpose($0), head(flat($0))) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R82 repeatL($0, 5) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+     R83 flat($0) | mdl None | support 0 | uses 0 | adm uninformative: additive item admitted (neutral)
+    pi {'margin': 1, 'n_probes': 8, 'lam_max': 6, 'feat_k': 8, 'qsel': 'entropy', 'confirm_q': 2, 'fit_alpha': 0.1} cost changes 7

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi_eval.py", line 332, in <module>
+    run(*sys.argv[2:5])
+    ~~~^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi_eval.py", line 174, in run
+    R.claim(*key, list(R.REGISTRY[key]), run_id="agi-eval")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/seed_registry.py", line 148, in claim
+    raise SeedHygieneError(f"{key} already spent ({spent} claim(s), {overrides} owner override(s))")
+nexus.seed_registry.SeedHygieneError: ('agi', 'eval_heldout') already spent (1 claim(s), 0 owner override(s))
