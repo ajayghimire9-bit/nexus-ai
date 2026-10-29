@@ -15,11 +15,17 @@
    "from": "rep",
    "to": "s1",
    "s": 10
+  },
+  {
+   "from": "eval",
+   "to": "src",
+   "s": 40
   }
  ],
  "notes": [
   "94 s of the carried balance stay in reserve.",
   "Unit tests, generator self-checks (pure Python + in-memory SQLite, no learner outcomes) are not charged, as in Phases 3-4.",
-  "Stage 1 reached 154 s against its 150 s ceiling: direct scripts/mi_exec.py development runs do not check stage ceilings (only scripts/agi5_jobs.py does). Recorded after the fact as a 10 s transfer rep -> s1; no further Stage 1 run; every later run goes through agi5_jobs.py."
+  "Stage 1 reached 154 s against its 150 s ceiling: direct scripts/mi_exec.py development runs do not check stage ceilings (only scripts/agi5_jobs.py does). Recorded after the fact as a 10 s transfer rep -> s1; no further Stage 1 run; every later run goes through agi5_jobs.py.",
+  "Source lineage r1 was killed by its 32 s cap (3 parallel lineages; CPU contention) before writing any artifact or output line; nothing from that attempt was observed. Recorded before the rerun: a 40 s transfer eval -> src and ONE rerun of r1 alone with a 40 s cap."
  ]
 }
