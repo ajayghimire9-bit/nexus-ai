@@ -11,10 +11,32 @@
   "eval": 380,
   "rep": 120
  },
- "transfers": [],
+ "transfers": [
+  {
+   "from": "s1",
+   "to": "eval",
+   "s": 9
+  },
+  {
+   "from": "src",
+   "to": "eval",
+   "s": 82
+  },
+  {
+   "from": "meta",
+   "to": "eval",
+   "s": 64
+  },
+  {
+   "from": "rep",
+   "to": "eval",
+   "s": 80
+  }
+ ],
  "notes": [
   "Stage 2 text says 4 cohorts x 3 reps x 150 s (= 1,800 s) but allocates 600 s; the 600 s stage ceiling binds: 12 lineages share 600 s (about 48 s each).",
   "Package downloads / installs (sqlglot 26.16.4, pure Python) are not charged, as for JDK 17 / PySpark in Phase 3.",
-  "Stage 3 (recorded before any clone ran): 9 clones x 31 s trajectories (not 33.5 s), mi_exec cap 38.5 s, 3 in parallel - concurrent JVM starts took ~6.5 s in Stage 2 wave 1 and Full_r2 was killed by its cap; 9 x 38.5 = 346.5 <= 350 s"
+  "Stage 3 (recorded before any clone ran): 9 clones x 31 s trajectories (not 33.5 s), mi_exec cap 38.5 s, 3 in parallel - concurrent JVM starts took ~6.5 s in Stage 2 wave 1 and Full_r2 was killed by its cap; 9 x 38.5 = 346.5 <= 350 s",
+  "Stage 4 transfers (committed before any Stage 4 target is built): every unused s1 / src / meta ceiling and 80 s of rep move to eval; the pre-registration (0.7) named only Stage 1 / Stage 5 transfers - the src / meta transfers are a disclosed deviation. plan predicted 364.5 s from Stage 1 dev measurements; a category estimate with the k = 3 / untouched targets is ~560 s."
  ]
 }
