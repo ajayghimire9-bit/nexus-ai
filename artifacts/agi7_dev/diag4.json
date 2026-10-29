@@ -1,0 +1,146 @@
+[
+ {
+  "idx": 0,
+  "pid": "P6.P1.P1_sqlite.67000",
+  "s7_4000": {
+   "outcome": "ambiguous",
+   "wall": 0.34,
+   "work": 1630,
+   "kinds": [
+    "improvement",
+    "improvement",
+    "improvement"
+   ],
+   "expanded": 11,
+   "path": [
+    [
+     0,
+     "filter_cmp",
+     "ts lt [\"file\", \"batch.json\", \"end\"]"
+    ],
+    [
+     0,
+     "dedup_first",
+     "id"
+    ],
+    [
+     0,
+     "filter_file",
+     "ts ge [\"file\", \"batch.json\", \"start\"]"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 3,
+  "pid": "P6.P4.P4_duckdb.67003",
+  "s7_4000": {
+   "outcome": "verified",
+   "wall": 0.35,
+   "work": 102,
+   "kinds": [
+    "improvement"
+   ],
+   "expanded": 1,
+   "path": [
+    [
+     0,
+     "dedup_first",
+     "id"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 4,
+  "pid": "P6.P5.P5_sqlite.67004",
+  "s7_4000": {
+   "outcome": "wrong",
+   "wall": 0.2,
+   "work": 1100,
+   "kinds": [
+    "improvement",
+    "improvement"
+   ],
+   "expanded": 2,
+   "path": [
+    [
+     0,
+     "dedup_first",
+     "id"
+    ],
+    [
+     0,
+     "filter_file",
+     "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 10,
+  "pid": "P6.P4.P4_sqlite.67010",
+  "s7_4000": {
+   "outcome": "verified",
+   "wall": 0.03,
+   "work": 101,
+   "kinds": [
+    "improvement"
+   ],
+   "expanded": 1,
+   "path": [
+    [
+     0,
+     "dedup_first",
+     "id"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 13,
+  "pid": "P6.P5.P5_duckdb.67013",
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.19,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 78,
+   "path": [
+    [
+     0,
+     "filter_file",
+     "ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+    ],
+    [
+     0,
+     "dedup_first",
+     "id"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 8,
+  "pid": "P6.X2.P7_duckdb-P6_sqlite.67008",
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.09,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 40,
+   "path": [
+    [
+     0,
+     "require_nonempty",
+     "market"
+    ],
+    [
+     0,
+     "dedup_latest",
+     "outcome_ts by qty"
+    ]
+   ]
+  }
+ }
+]

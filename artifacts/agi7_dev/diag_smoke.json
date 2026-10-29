@@ -1,0 +1,348 @@
+{
+ "rows": [
+  {
+   "pid": "P6.P1.P1_sqlite.67000",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "window",
+    "dup_id"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.02,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.33,
+    "runs": 1232
+   },
+   "s7_whole_300": {
+    "outcome": "none",
+    "wall": 0.07,
+    "work": 300,
+    "kinds": null,
+    "events": {
+     "improvement": 56,
+     "neutral": 68,
+     "worse": 53,
+     "regression": 1,
+     "error": 0,
+     "retained": 93,
+     "evicted": 79,
+     "duplicate": 51,
+     "expanded": 1,
+     "worse_decision": 53,
+     "archive_full": 79
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "amount by feature_ts"
+      ]
+     ],
+     "gain": 1.2375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_300": {
+    "outcome": "none",
+    "wall": 0.07,
+    "work": 300,
+    "kinds": null,
+    "events": {
+     "improvement": 56,
+     "neutral": 68,
+     "worse": 53,
+     "regression": 1,
+     "error": 0,
+     "retained": 93,
+     "evicted": 79,
+     "duplicate": 51,
+     "expanded": 1,
+     "worse_decision": 53,
+     "archive_full": 79
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "amount by feature_ts"
+      ]
+     ],
+     "gain": 1.2375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_700": {
+    "outcome": "none",
+    "wall": 0.18,
+    "work": 700,
+    "kinds": null,
+    "events": {
+     "improvement": 59,
+     "neutral": 151,
+     "worse": 102,
+     "regression": 134,
+     "error": 0,
+     "retained": 132,
+     "evicted": 130,
+     "duplicate": 135,
+     "expanded": 4,
+     "worse_decision": 102,
+     "archive_full": 130
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "amount by feature_ts"
+      ],
+      [
+       0,
+       "exclude_value",
+       "market<>'EU'"
+      ]
+     ],
+     "gain": 1.3375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_700": {
+    "outcome": "none",
+    "wall": 0.18,
+    "work": 700,
+    "kinds": null,
+    "events": {
+     "improvement": 59,
+     "neutral": 151,
+     "worse": 102,
+     "regression": 134,
+     "error": 0,
+     "retained": 132,
+     "evicted": 130,
+     "duplicate": 135,
+     "expanded": 4,
+     "worse_decision": 102,
+     "archive_full": 130
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "amount by feature_ts"
+      ],
+      [
+       0,
+       "exclude_value",
+       "market<>'EU'"
+      ]
+     ],
+     "gain": 1.3375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": false,
+    "depth": 8,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     }
+    ],
+    "wall": 0.04
+   }
+  },
+  {
+   "pid": "P6.P2.P2_duckdb.67001",
+   "spec": {
+    "paradigm": "P2",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "latest"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.5,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.36,
+    "runs": 234
+   },
+   "s7_whole_300": {
+    "outcome": "verified",
+    "wall": 0.41,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_300": {
+    "outcome": "verified",
+    "wall": 0.38,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_700": {
+    "outcome": "verified",
+    "wall": 0.38,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_700": {
+    "outcome": "verified",
+    "wall": 0.37,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_latest",
+      "kind": "improvement",
+      "gain": 2.3
+     }
+    ],
+    "wall": 0.2
+   }
+  }
+ ],
+ "wall": 6.9
+}

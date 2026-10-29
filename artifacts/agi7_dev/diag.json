@@ -1,0 +1,2342 @@
+{
+ "rows": [
+  {
+   "pid": "P6.P1.P1_sqlite.67000",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "window",
+    "dup_id"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.02,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.33,
+    "runs": 1232
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_cmp",
+      "kind": "improvement",
+      "gain": 1.237
+     }
+    ],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 0.35,
+    "runs": 1348
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.39,
+    "work": 1500,
+    "kinds": null,
+    "events": {
+     "improvement": 68,
+     "neutral": 364,
+     "worse": 153,
+     "regression": 397,
+     "error": 0,
+     "retained": 164,
+     "evicted": 238,
+     "duplicate": 300,
+     "expanded": 8,
+     "worse_decision": 153,
+     "archive_full": 238
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_first",
+       "feature_ts"
+      ],
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"batch.json\", \"start\"]"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 1.09,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 71,
+     "neutral": 903,
+     "worse": 332,
+     "regression": 1458,
+     "error": 0,
+     "retained": 171,
+     "evicted": 351,
+     "duplicate": 921,
+     "expanded": 24,
+     "worse_decision": 341,
+     "archive_full": 351
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_first",
+       "feature_ts"
+      ],
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"batch.json\", \"start\"]"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 1.09,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 71,
+     "neutral": 903,
+     "worse": 332,
+     "regression": 1458,
+     "error": 0,
+     "retained": 171,
+     "evicted": 351,
+     "duplicate": 921,
+     "expanded": 24,
+     "worse_decision": 341,
+     "archive_full": 351
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_first",
+       "feature_ts"
+      ],
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"batch.json\", \"start\"]"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "improvement",
+      "gain": 0.1
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_cmp",
+      "kind": "improvement",
+      "gain": 2.538
+     }
+    ],
+    "wall": 0.01
+   }
+  },
+  {
+   "pid": "P6.P2.P2_duckdb.67001",
+   "spec": {
+    "paradigm": "P2",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "latest"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.47,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.36,
+    "runs": 234
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_latest",
+      "kind": "improvement",
+      "gain": 2.3
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.35,
+    "runs": 234
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.36,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.36,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.37,
+    "work": 290,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 5,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 102,
+     "error": 0,
+     "retained": 24,
+     "evicted": 0,
+     "duplicate": 37,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_latest",
+      "kind": "improvement",
+      "gain": 2.3
+     }
+    ],
+    "wall": 0.2
+   }
+  },
+  {
+   "pid": "P6.P3.P3_sqlite.67002",
+   "spec": {
+    "paradigm": "P3",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "parse"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.01,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.05,
+    "runs": 210
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "default_fill",
+      "kind": "improvement",
+      "gain": 1.035
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.05,
+    "runs": 210
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.06,
+    "work": 229,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 18,
+     "worse": 1,
+     "regression": 113,
+     "error": 0,
+     "retained": 3,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.06,
+    "work": 229,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 18,
+     "worse": 1,
+     "regression": 113,
+     "error": 0,
+     "retained": 3,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.06,
+    "work": 229,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 18,
+     "worse": 1,
+     "regression": 113,
+     "error": 0,
+     "retained": 3,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "default_fill",
+      "kind": "improvement",
+      "gain": 1.035
+     }
+    ],
+    "wall": 0.0
+   }
+  },
+  {
+   "pid": "P6.P4.P4_duckdb.67003",
+   "spec": {
+    "paradigm": "P4",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "fanout"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.09,
+   "p6": {
+    "outcome": "none",
+    "wall": 3.47,
+    "runs": 259
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 0,
+    "steps": [],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 3.83,
+    "runs": 266
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 10.95,
+    "work": 742,
+    "kinds": null,
+    "events": {
+     "improvement": 69,
+     "neutral": 116,
+     "worse": 0,
+     "regression": 158,
+     "error": 0,
+     "retained": 82,
+     "evicted": 91,
+     "duplicate": 47,
+     "expanded": 4,
+     "worse_decision": 0,
+     "archive_full": 91
+    },
+    "exhausted": false,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.6,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 10.04,
+    "work": 625,
+    "kinds": null,
+    "events": {
+     "improvement": 43,
+     "neutral": 116,
+     "worse": 0,
+     "regression": 97,
+     "error": 0,
+     "retained": 77,
+     "evicted": 65,
+     "duplicate": 47,
+     "expanded": 3,
+     "worse_decision": 0,
+     "archive_full": 65
+    },
+    "exhausted": false,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.6,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 10.99,
+    "work": 742,
+    "kinds": null,
+    "events": {
+     "improvement": 69,
+     "neutral": 116,
+     "worse": 0,
+     "regression": 158,
+     "error": 0,
+     "retained": 82,
+     "evicted": 91,
+     "duplicate": 47,
+     "expanded": 4,
+     "worse_decision": 0,
+     "archive_full": 91
+    },
+    "exhausted": false,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.6,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "improvement",
+      "gain": 1.6
+     }
+    ],
+    "wall": 0.23
+   }
+  },
+  {
+   "pid": "P6.P5.P5_sqlite.67004",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "checkpoint",
+    "replay"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.06,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.45,
+    "runs": 1616
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "improvement",
+      "gain": 0.2
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 1.1
+     }
+    ],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 0.54,
+    "runs": 1973
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.4,
+    "work": 1500,
+    "kinds": null,
+    "events": {
+     "improvement": 143,
+     "neutral": 176,
+     "worse": 99,
+     "regression": 583,
+     "error": 0,
+     "retained": 166,
+     "evicted": 142,
+     "duplicate": 183,
+     "expanded": 6,
+     "worse_decision": 107,
+     "archive_full": 142
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "feature_ts by rev"
+      ],
+      [
+       0,
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 1.21,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 714,
+     "neutral": 176,
+     "worse": 99,
+     "regression": 2458,
+     "error": 0,
+     "retained": 166,
+     "evicted": 713,
+     "duplicate": 215,
+     "expanded": 23,
+     "worse_decision": 107,
+     "archive_full": 713
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "feature_ts by rev"
+      ],
+      [
+       0,
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 1.2,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 714,
+     "neutral": 176,
+     "worse": 99,
+     "regression": 2458,
+     "error": 0,
+     "retained": 166,
+     "evicted": 713,
+     "duplicate": 215,
+     "expanded": 23,
+     "worse_decision": 107,
+     "archive_full": 713
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "feature_ts by rev"
+      ],
+      [
+       0,
+       "filter_file",
+       "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": false,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "improvement",
+      "gain": 0.2
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 1.1
+     }
+    ],
+    "note": "no candidate increases agreement",
+    "wall": 0.01
+   }
+  },
+  {
+   "pid": "P6.P6.P6_duckdb.67005",
+   "spec": {
+    "paradigm": "P6",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "require",
+    "normalize"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.11,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.42,
+    "runs": 389
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "normalize_text",
+      "kind": "improvement",
+      "gain": 1.214
+     },
+     {
+      "stage": 0,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.092
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.42,
+    "runs": 389
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.45,
+    "work": 484,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 22,
+     "neutral": 55,
+     "worse": 40,
+     "regression": 193,
+     "error": 0,
+     "retained": 52,
+     "evicted": 5,
+     "duplicate": 65,
+     "expanded": 2,
+     "worse_decision": 107,
+     "archive_full": 5
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.45,
+    "work": 484,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 22,
+     "neutral": 55,
+     "worse": 40,
+     "regression": 193,
+     "error": 0,
+     "retained": 52,
+     "evicted": 5,
+     "duplicate": 65,
+     "expanded": 2,
+     "worse_decision": 107,
+     "archive_full": 5
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.45,
+    "work": 484,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 22,
+     "neutral": 55,
+     "worse": 40,
+     "regression": 193,
+     "error": 0,
+     "retained": 52,
+     "evicted": 5,
+     "duplicate": 65,
+     "expanded": 2,
+     "worse_decision": 107,
+     "archive_full": 5
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "normalize_text",
+      "kind": "improvement",
+      "gain": 1.214
+     },
+     {
+      "stage": 0,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.092
+     }
+    ],
+    "wall": 0.3
+   }
+  },
+  {
+   "pid": "P6.P7.P7_duckdb.67006",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "ratio"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.37,
+   "p6": {
+    "outcome": "wrong",
+    "wall": 0.4,
+    "runs": 719
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 0,
+    "steps": [],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "wrong",
+    "wall": 0.41,
+    "runs": 719
+   },
+   "s7_whole_1500": {
+    "outcome": "wrong",
+    "wall": 0.42,
+    "work": 780,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 2,
+     "neutral": 61,
+     "worse": 0,
+     "regression": 260,
+     "error": 0,
+     "retained": 5,
+     "evicted": 0,
+     "duplicate": 58,
+     "expanded": 2,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "wrong",
+    "wall": 0.42,
+    "work": 780,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 2,
+     "neutral": 61,
+     "worse": 0,
+     "regression": 260,
+     "error": 0,
+     "retained": 5,
+     "evicted": 0,
+     "duplicate": 58,
+     "expanded": 2,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "wrong",
+    "wall": 0.42,
+    "work": 780,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 2,
+     "neutral": 61,
+     "worse": 0,
+     "regression": 260,
+     "error": 0,
+     "retained": 5,
+     "evicted": 0,
+     "duplicate": 58,
+     "expanded": 2,
+     "worse_decision": 2,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": false,
+    "depth": 0,
+    "steps": [],
+    "note": "no candidate increases agreement",
+    "wall": 0.12
+   }
+  },
+  {
+   "pid": "P6.X1.P3_sqlite-P2_duckdb.67007",
+   "spec": {
+    "paradigm": "X1"
+   },
+   "faults": [
+    "parse",
+    "tombstone"
+   ],
+   "n_stages": 2,
+   "gen_s": 0.43,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.59,
+    "runs": 1196
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "try_parse",
+      "kind": "worse",
+      "gain": -0.029
+     },
+     {
+      "stage": 0,
+      "op": "quarantine_invalid",
+      "kind": "improvement",
+      "gain": 2.229
+     },
+     {
+      "stage": 1,
+      "op": "exclude_value",
+      "kind": "improvement",
+      "gain": 1.038
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.58,
+    "runs": 1196
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.76,
+    "work": 1592,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 31,
+     "neutral": 161,
+     "worse": 37,
+     "regression": 255,
+     "error": 0,
+     "retained": 69,
+     "evicted": 27,
+     "duplicate": 155,
+     "expanded": 2,
+     "worse_decision": 125,
+     "archive_full": 27
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.72,
+    "work": 1592,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 31,
+     "neutral": 161,
+     "worse": 37,
+     "regression": 255,
+     "error": 0,
+     "retained": 69,
+     "evicted": 27,
+     "duplicate": 155,
+     "expanded": 2,
+     "worse_decision": 125,
+     "archive_full": 27
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 1.18,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 8,
+     "neutral": 535,
+     "worse": 16,
+     "regression": 888,
+     "error": 0,
+     "retained": 30,
+     "evicted": 0,
+     "duplicate": 537,
+     "expanded": 16,
+     "worse_decision": 66,
+     "archive_full": 0
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       1,
+       "exclude_value",
+       "change_type<>'D'"
+      ]
+     ],
+     "gain": 1.0375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "try_parse",
+      "kind": "worse",
+      "gain": -0.029
+     },
+     {
+      "stage": 0,
+      "op": "quarantine_invalid",
+      "kind": "improvement",
+      "gain": 2.229
+     },
+     {
+      "stage": 1,
+      "op": "exclude_value",
+      "kind": "improvement",
+      "gain": 1.038
+     }
+    ],
+    "wall": 0.38
+   }
+  },
+  {
+   "pid": "P6.X2.P7_duckdb-P6_sqlite.67008",
+   "spec": {
+    "paradigm": "X2"
+   },
+   "faults": [
+    "pit",
+    "require"
+   ],
+   "n_stages": 2,
+   "gen_s": 0.34,
+   "p6": {
+    "outcome": "ambiguous",
+    "wall": 1.06,
+    "runs": 4280
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "col_compare",
+      "kind": "improvement",
+      "gain": 0.138
+     },
+     {
+      "stage": 1,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.088
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "ambiguous",
+    "wall": 1.04,
+    "runs": 4280
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.35,
+    "work": 1500,
+    "kinds": null,
+    "events": {
+     "improvement": 22,
+     "neutral": 128,
+     "worse": 0,
+     "regression": 469,
+     "error": 0,
+     "retained": 26,
+     "evicted": 0,
+     "duplicate": 124,
+     "expanded": 2,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "col_compare",
+       "obs_ts le outcome_ts"
+      ],
+      [
+       0,
+       "dedup_latest",
+       "outcome_ts by event_ts"
+      ]
+     ],
+     "gain": 0.1625,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "ambiguous",
+    "wall": 1.1,
+    "work": 4536,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 24,
+     "neutral": 128,
+     "worse": 0,
+     "regression": 480,
+     "error": 0,
+     "retained": 28,
+     "evicted": 0,
+     "duplicate": 124,
+     "expanded": 2,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "ambiguous",
+    "wall": 1.14,
+    "work": 3946,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 10,
+     "neutral": 56,
+     "worse": 0,
+     "regression": 242,
+     "error": 0,
+     "retained": 14,
+     "evicted": 0,
+     "duplicate": 52,
+     "expanded": 2,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "col_compare",
+      "kind": "improvement",
+      "gain": 0.138
+     },
+     {
+      "stage": 1,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.088
+     }
+    ],
+    "wall": 0.32
+   }
+  },
+  {
+   "pid": "P6.P1.P1_spark.67009",
+   "spec": {
+    "paradigm": "P1",
+    "engine": "spark"
+   },
+   "faults": [
+    "window",
+    "dup_id"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.02,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.17,
+    "runs": 657
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_cmp",
+      "kind": "improvement",
+      "gain": 0.086
+     }
+    ],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 0.17,
+    "runs": 658
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.4,
+    "work": 1501,
+    "kinds": null,
+    "events": {
+     "improvement": 11,
+     "neutral": 399,
+     "worse": 21,
+     "regression": 649,
+     "error": 0,
+     "retained": 53,
+     "evicted": 62,
+     "duplicate": 322,
+     "expanded": 9,
+     "worse_decision": 21,
+     "archive_full": 62
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "log_pos by version"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ]
+     ],
+     "gain": 0.1714,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "neutral"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 10.01,
+    "work": 2964,
+    "kinds": null,
+    "events": {
+     "improvement": 299,
+     "neutral": 451,
+     "worse": 31,
+     "regression": 1472,
+     "error": 0,
+     "retained": 101,
+     "evicted": 372,
+     "duplicate": 376,
+     "expanded": 20,
+     "worse_decision": 31,
+     "archive_full": 372
+    },
+    "exhausted": false,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "log_pos by version"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ],
+      [
+       0,
+       "filter_file",
+       "ts ge [\"file\", \"batch.json\", \"start\"]"
+      ]
+     ],
+     "gain": 1.5143,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement",
+      "neutral"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 8.59,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 580,
+     "neutral": 451,
+     "worse": 31,
+     "regression": 2227,
+     "error": 0,
+     "retained": 101,
+     "evicted": 653,
+     "duplicate": 395,
+     "expanded": 29,
+     "worse_decision": 31,
+     "archive_full": 653
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "log_pos by version"
+      ],
+      [
+       0,
+       "filter_cmp",
+       "ts lt [\"file\", \"batch.json\", \"end\"]"
+      ],
+      [
+       0,
+       "filter_file",
+       "ts ge [\"file\", \"batch.json\", \"start\"]"
+      ]
+     ],
+     "gain": 1.5143,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement",
+      "neutral"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 0.086
+     },
+     {
+      "stage": 0,
+      "op": "filter_cmp",
+      "kind": "improvement",
+      "gain": 1.429
+     }
+    ],
+    "wall": 0.22
+   }
+  },
+  {
+   "pid": "P6.P4.P4_sqlite.67010",
+   "spec": {
+    "paradigm": "P4",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "fanout"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.01,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.34,
+    "runs": 1318
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 0,
+    "steps": [],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 0.36,
+    "runs": 1325
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.41,
+    "work": 1500,
+    "kinds": null,
+    "events": {
+     "improvement": 286,
+     "neutral": 37,
+     "worse": 80,
+     "regression": 667,
+     "error": 0,
+     "retained": 91,
+     "evicted": 316,
+     "duplicate": 40,
+     "expanded": 12,
+     "worse_decision": 80,
+     "archive_full": 316
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 1.11,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 1034,
+     "neutral": 37,
+     "worse": 80,
+     "regression": 2419,
+     "error": 0,
+     "retained": 91,
+     "evicted": 1064,
+     "duplicate": 40,
+     "expanded": 41,
+     "worse_decision": 80,
+     "archive_full": 1064
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 1.11,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 1034,
+     "neutral": 37,
+     "worse": 80,
+     "regression": 2419,
+     "error": 0,
+     "retained": 91,
+     "evicted": 1064,
+     "duplicate": 40,
+     "expanded": 41,
+     "worse_decision": 80,
+     "archive_full": 1064
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "dedup_latest",
+       "offset by rev"
+      ]
+     ],
+     "gain": 1.4,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "improvement",
+      "gain": 1.4
+     }
+    ],
+    "wall": 0.01
+   }
+  },
+  {
+   "pid": "P6.P6.P6_sqlite.67011",
+   "spec": {
+    "paradigm": "P6",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "require",
+    "normalize"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.0,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.12,
+    "runs": 389
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "normalize_text",
+      "kind": "improvement",
+      "gain": 1.3
+     },
+     {
+      "stage": 0,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.066
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.12,
+    "runs": 389
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.15,
+    "work": 485,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 23,
+     "neutral": 55,
+     "worse": 41,
+     "regression": 191,
+     "error": 0,
+     "retained": 57,
+     "evicted": 11,
+     "duplicate": 61,
+     "expanded": 2,
+     "worse_decision": 106,
+     "archive_full": 11
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.15,
+    "work": 485,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 23,
+     "neutral": 55,
+     "worse": 41,
+     "regression": 191,
+     "error": 0,
+     "retained": 57,
+     "evicted": 11,
+     "duplicate": 61,
+     "expanded": 2,
+     "worse_decision": 106,
+     "archive_full": 11
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.15,
+    "work": 485,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 23,
+     "neutral": 55,
+     "worse": 41,
+     "regression": 191,
+     "error": 0,
+     "retained": 57,
+     "evicted": 11,
+     "duplicate": 61,
+     "expanded": 2,
+     "worse_decision": 106,
+     "archive_full": 11
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "normalize_text",
+      "kind": "improvement",
+      "gain": 1.3
+     },
+     {
+      "stage": 0,
+      "op": "require_nonempty",
+      "kind": "improvement",
+      "gain": 2.066
+     }
+    ],
+    "wall": 0.01
+   }
+  },
+  {
+   "pid": "P6.P2.P2_sqlite.67012",
+   "spec": {
+    "paradigm": "P2",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "latest"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.01,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.07,
+    "runs": 234
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_latest",
+      "kind": "improvement",
+      "gain": 2.3
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.06,
+    "runs": 234
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.08,
+    "work": 293,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 6,
+     "neutral": 59,
+     "worse": 0,
+     "regression": 98,
+     "error": 0,
+     "retained": 31,
+     "evicted": 0,
+     "duplicate": 34,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.08,
+    "work": 293,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 6,
+     "neutral": 59,
+     "worse": 0,
+     "regression": 98,
+     "error": 0,
+     "retained": 31,
+     "evicted": 0,
+     "duplicate": 34,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.08,
+    "work": 293,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 6,
+     "neutral": 59,
+     "worse": 0,
+     "regression": 98,
+     "error": 0,
+     "retained": 31,
+     "evicted": 0,
+     "duplicate": 34,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_latest",
+      "kind": "improvement",
+      "gain": 2.3
+     }
+    ],
+    "wall": 0.01
+   }
+  },
+  {
+   "pid": "P6.P5.P5_duckdb.67013",
+   "spec": {
+    "paradigm": "P5",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "watermark",
+    "checkpoint",
+    "replay"
+   ],
+   "n_stages": 1,
+   "gen_s": 5.69,
+   "p6": {
+    "outcome": "none",
+    "wall": 0.38,
+    "runs": 1339
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 0.4
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 2.238
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "none",
+    "wall": 0.38,
+    "runs": 1341
+   },
+   "s7_whole_1500": {
+    "outcome": "none",
+    "wall": 0.42,
+    "work": 1500,
+    "kinds": null,
+    "events": {
+     "improvement": 92,
+     "neutral": 292,
+     "worse": 108,
+     "regression": 607,
+     "error": 0,
+     "retained": 136,
+     "evicted": 171,
+     "duplicate": 274,
+     "expanded": 7,
+     "worse_decision": 121,
+     "archive_full": 171
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+      ],
+      [
+       0,
+       "dedup_latest",
+       "offset by gross"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_whole_4000": {
+    "outcome": "none",
+    "wall": 1.14,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 125,
+     "neutral": 754,
+     "worse": 200,
+     "regression": 1966,
+     "error": 0,
+     "retained": 154,
+     "evicted": 240,
+     "duplicate": 793,
+     "expanded": 20,
+     "worse_decision": 223,
+     "archive_full": 240
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+      ],
+      [
+       0,
+       "dedup_latest",
+       "offset by gross"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "s7_decompose_4000": {
+    "outcome": "none",
+    "wall": 1.14,
+    "work": 4000,
+    "kinds": null,
+    "events": {
+     "improvement": 125,
+     "neutral": 754,
+     "worse": 200,
+     "regression": 1966,
+     "error": 0,
+     "retained": 154,
+     "evicted": 240,
+     "duplicate": 793,
+     "expanded": 20,
+     "worse_decision": 223,
+     "archive_full": 240
+    },
+    "exhausted": true,
+    "partial": {
+     "path": [
+      [
+       0,
+       "filter_file",
+       "ts gt [\"file\", \"watermark.json\", \"watermark\"]"
+      ],
+      [
+       0,
+       "dedup_latest",
+       "offset by gross"
+      ]
+     ],
+     "gain": 1.5375,
+     "stage_fixed": 0,
+     "kinds": [
+      "improvement",
+      "improvement"
+     ]
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "dedup_first",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 0.4
+     },
+     {
+      "stage": 0,
+      "op": "filter_file",
+      "kind": "improvement",
+      "gain": 2.238
+     }
+    ],
+    "wall": 0.51
+   }
+  },
+  {
+   "pid": "P6.P3.P3_duckdb.67014",
+   "spec": {
+    "paradigm": "P3",
+    "engine": "duckdb"
+   },
+   "faults": [
+    "parse"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.16,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.35,
+    "runs": 211
+   },
+   "witness_phase6_language": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "try_parse",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "quarantine_invalid",
+      "kind": "improvement",
+      "gain": 2.071
+     }
+    ]
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.36,
+    "runs": 211
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.35,
+    "work": 231,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 20,
+     "worse": 0,
+     "regression": 112,
+     "error": 0,
+     "retained": 4,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.35,
+    "work": 231,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 20,
+     "worse": 0,
+     "regression": 112,
+     "error": 0,
+     "retained": 4,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.35,
+    "work": 231,
+    "kinds": [
+     "improvement"
+    ],
+    "events": {
+     "improvement": 1,
+     "neutral": 20,
+     "worse": 0,
+     "regression": 112,
+     "error": 0,
+     "retained": 4,
+     "evicted": 0,
+     "duplicate": 17,
+     "expanded": 1,
+     "worse_decision": 0,
+     "archive_full": 0
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "try_parse",
+      "kind": "neutral",
+      "gain": 0.0
+     },
+     {
+      "stage": 0,
+      "op": "quarantine_invalid",
+      "kind": "improvement",
+      "gain": 2.071
+     }
+    ],
+    "wall": 0.29
+   }
+  },
+  {
+   "pid": "P6.P7.P7_sqlite.67015",
+   "spec": {
+    "paradigm": "P7",
+    "engine": "sqlite"
+   },
+   "faults": [
+    "pit",
+    "ratio"
+   ],
+   "n_stages": 1,
+   "gen_s": 0.01,
+   "p6": {
+    "outcome": "verified",
+    "wall": 0.21,
+    "runs": 1015
+   },
+   "witness_phase6_language": {
+    "found": false,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "col_compare",
+      "kind": "improvement",
+      "gain": 1.094
+     }
+    ],
+    "note": "no candidate increases agreement"
+   },
+   "p6_ext": {
+    "outcome": "verified",
+    "wall": 0.21,
+    "runs": 1015
+   },
+   "s7_whole_1500": {
+    "outcome": "verified",
+    "wall": 0.25,
+    "work": 1165,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 30,
+     "neutral": 88,
+     "worse": 62,
+     "regression": 326,
+     "error": 0,
+     "retained": 77,
+     "evicted": 38,
+     "duplicate": 95,
+     "expanded": 3,
+     "worse_decision": 112,
+     "archive_full": 38
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_whole_4000": {
+    "outcome": "verified",
+    "wall": 0.26,
+    "work": 1165,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 30,
+     "neutral": 88,
+     "worse": 62,
+     "regression": 326,
+     "error": 0,
+     "retained": 77,
+     "evicted": 38,
+     "duplicate": 95,
+     "expanded": 3,
+     "worse_decision": 112,
+     "archive_full": 38
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "s7_decompose_4000": {
+    "outcome": "verified",
+    "wall": 0.25,
+    "work": 1165,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "events": {
+     "improvement": 30,
+     "neutral": 88,
+     "worse": 62,
+     "regression": 326,
+     "error": 0,
+     "retained": 77,
+     "evicted": 38,
+     "duplicate": 95,
+     "expanded": 3,
+     "worse_decision": 112,
+     "archive_full": 38
+    },
+    "exhausted": false,
+    "partial": null
+   },
+   "witness": {
+    "found": false,
+    "depth": 1,
+    "steps": [
+     {
+      "stage": 0,
+      "op": "col_compare",
+      "kind": "improvement",
+      "gain": 1.094
+     }
+    ],
+    "note": "no candidate increases agreement",
+    "wall": 0.01
+   }
+  }
+ ],
+ "wall": 108.3
+}

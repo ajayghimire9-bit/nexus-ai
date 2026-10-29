@@ -1,0 +1,345 @@
+[
+ {
+  "idx": 0,
+  "pid": "P6.P1.P1_sqlite.67000",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 0.44,
+   "work": 1501,
+   "kinds": null,
+   "expanded": 29,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "seq by units"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.22,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 78,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "seq by units"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 3,
+  "pid": "P6.P4.P4_duckdb.67003",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 2.35,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 30,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "offset by rev"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 3.09,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 94,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "offset by rev"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 4,
+  "pid": "P6.P5.P5_sqlite.67004",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 0.47,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 30,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "log_pos by rev"
+    ],
+    [
+     0,
+     "filter_file",
+     "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.34,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 92,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "log_pos by rev"
+    ],
+    [
+     0,
+     "filter_file",
+     "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 9,
+  "pid": "P6.P1.P1_spark.67009",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 3.52,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 28,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "log_pos by version"
+    ],
+    [
+     0,
+     "filter_cmp",
+     "ts lt [\"file\", \"batch.json\", \"end\"]"
+    ],
+    [
+     0,
+     "filter_file",
+     "ts ge [\"file\", \"batch.json\", \"start\"]"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 2.91,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 92,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "log_pos by version"
+    ],
+    [
+     0,
+     "filter_cmp",
+     "ts lt [\"file\", \"batch.json\", \"end\"]"
+    ],
+    [
+     0,
+     "filter_file",
+     "ts ge [\"file\", \"batch.json\", \"start\"]"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 10,
+  "pid": "P6.P4.P4_sqlite.67010",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 0.42,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 30,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "offset by rev"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.12,
+   "work": 4000,
+   "kinds": null,
+   "expanded": 94,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "offset by rev"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 13,
+  "pid": "P6.P5.P5_duckdb.67013",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 0.45,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 30,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "version by qty"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.24,
+   "work": 4001,
+   "kinds": null,
+   "expanded": 78,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "version by qty"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 1,
+  "pid": "P6.P2.P2_duckdb.67001",
+  "s7_1500": {
+   "outcome": "verified",
+   "wall": 0.37,
+   "work": 129,
+   "kinds": [
+    "improvement"
+   ],
+   "expanded": 1,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "account_id by version"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "verified",
+   "wall": 0.37,
+   "work": 129,
+   "kinds": [
+    "improvement"
+   ],
+   "expanded": 1,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "account_id by version"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 7,
+  "pid": "P6.X1.P3_sqlite-P2_duckdb.67007",
+  "s7_1500": {
+   "outcome": "verified",
+   "wall": 0.52,
+   "work": 852,
+   "kinds": [
+    "improvement",
+    "improvement"
+   ],
+   "expanded": 6,
+   "path": [
+    [
+     0,
+     "quarantine_invalid",
+     "amount"
+    ],
+    [
+     1,
+     "exclude_value",
+     "change_type<>'D'"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "verified",
+   "wall": 0.44,
+   "work": 852,
+   "kinds": [
+    "improvement",
+    "improvement"
+   ],
+   "expanded": 6,
+   "path": [
+    [
+     0,
+     "quarantine_invalid",
+     "amount"
+    ],
+    [
+     1,
+     "exclude_value",
+     "change_type<>'D'"
+    ]
+   ]
+  }
+ },
+ {
+  "idx": 8,
+  "pid": "P6.X2.P7_duckdb-P6_sqlite.67008",
+  "s7_1500": {
+   "outcome": "none",
+   "wall": 0.45,
+   "work": 1500,
+   "kinds": null,
+   "expanded": 16,
+   "path": [
+    [
+     0,
+     "dedup_latest",
+     "outcome_ts by event_ts"
+    ]
+   ]
+  },
+  "s7_4000": {
+   "outcome": "none",
+   "wall": 1.17,
+   "work": 4002,
+   "kinds": null,
+   "expanded": 37,
+   "path": [
+    [
+     1,
+     "dedup_latest",
+     "outcome_ts by event_ts"
+    ],
+    [
+     0,
+     "dedup_latest",
+     "gross by rev"
+    ]
+   ]
+  }
+ }
+]

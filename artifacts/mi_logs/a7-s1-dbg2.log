@@ -1,0 +1,16 @@
+P6.P4.P4_duckdb.67003 witness [(0, 'dedup_first', 'improvement', 1.6)]
+ legacy failed ['example_rows'] stage_fail [[]] score 4.8 folds 1
+ outcome none wall 19.85 work 625 {'improvement': 43, 'neutral': 116, 'worse': 0, 'regression': 97, 'error': 0, 'retained': 77, 'evicted': 65, 'duplicate': 47, 'expanded': 3, 'worse_decision': 0, 'archive_full': 65}
+ trace [('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None)]
+ partial {'path': [(0, 'dedup_latest', 'offset by rev')], 'gain': 1.6, 'stage_fixed': 0, 'kinds': ['improvement']}
+   Ordered by: cumulative time
+   List reduced from 586 to 2 due to restriction <'_find_and_load'>
+
+Function                                                     was called by...
+                                                                 ncalls  tottime  cumtime
+<frozen importlib._bootstrap>:1349(_find_and_load)           <-    1353    0.002    0.070  /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py:163(run)
+                                                                      1    0.000    0.001  /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/uuid.py:1(<module>)
+                                                                   5617    0.002    0.007  <frozen importlib._bootstrap>:1375(_gcd_import)
+<frozen importlib._bootstrap>:1304(_find_and_load_unlocked)  <- 347259/347258    0.209   13.833  <frozen importlib._bootstrap>:1349(_find_and_load)
+
+

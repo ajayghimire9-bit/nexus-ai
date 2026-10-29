@@ -1,0 +1,50 @@
+P6.P1.P1_sqlite.67000 witness [(0, 'dedup_first', 'improvement', 0.1), (0, 'filter_file', 'neutral', 0.0), (0, 'filter_cmp', 'improvement', 2.538)]
+ legacy failed ['example_rows', 'row_count'] stage_fail [[]] score 3.763 folds 5
+ outcome none wall 1.68 work 4000 {'improvement': 71, 'neutral': 903, 'worse': 332, 'regression': 1458, 'error': 0, 'retained': 171, 'evicted': 351, 'duplicate': 921, 'expanded': 24, 'worse_decision': 341, 'archive_full': 351}
+ trace []
+ partial {'path': [(0, 'dedup_first', 'feature_ts'), (0, 'filter_file', 'ts gt ["file", "batch.json", "start"]'), (0, 'filter_cmp', 'ts lt ["file", "batch.json", "end"]')], 'gain': 1.5375, 'stage_fixed': 0, 'kinds': ['improvement', 'improvement', 'improvement']}
+         5865837 function calls (5649527 primitive calls) in 1.664 seconds
+
+   Ordered by: cumulative time
+   List reduced from 129 to 12 due to restriction <12>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.014    0.014    1.675    1.675 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase7/search7.py:66(search)
+     4000    0.003    0.000    1.303    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py:114(exec)
+     4000    0.022    0.000    1.300    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/world6.py:213(run_pipeline)
+     4000    0.201    0.000    1.181    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/world.py:65(run)
+     2765    0.008    0.000    1.035    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py:163(run)
+     4000    0.515    0.000    0.515    0.000 {method 'executescript' of 'sqlite3.Connection' objects}
+     1235    0.001    0.000    0.424    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py:366(okey)
+     4000    0.148    0.000    0.148    0.000 {method 'executemany' of 'sqlite3.Connection' objects}
+    20024    0.126    0.000    0.126    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+  2912000    0.108    0.000    0.108    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/world.py:70(<genexpr>)
+      336    0.000    0.000    0.107    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase7/ops7.py:19(candidates)
+      336    0.001    0.000    0.107    0.000 /Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/engines6.py:70(candidates)
+
+
+P6.P4.P4_duckdb.67003 witness [(0, 'dedup_first', 'improvement', 1.6)]
+ legacy failed ['example_rows'] stage_fail [[]] score 4.8 folds 1
+ outcome none wall 19.58 work 625 {'improvement': 43, 'neutral': 116, 'worse': 0, 'regression': 97, 'error': 0, 'retained': 77, 'evicted': 65, 'duplicate': 47, 'expanded': 3, 'worse_decision': 0, 'archive_full': 65}
+ trace [('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption', 'relabelling'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None), ('gate_reject', None, ['corruption'], None)]
+ partial {'path': [(0, 'dedup_latest', 'offset by rev')], 'gain': 1.6, 'stage_fixed': 0, 'kinds': ['improvement']}
+         84254713 function calls (84098149 primitive calls) in 17.420 seconds
+
+   Ordered by: cumulative time
+   List reduced from 586 to 12 due to restriction <12>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+352875/352874    0.446    0.000   16.557    0.000 <frozen importlib._bootstrap>:1349(_find_and_load)
+347259/347258    0.210    0.000   13.682    0.000 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+   347259    0.745    0.000   13.440    0.000 <frozen importlib._bootstrap>:1240(_find_spec)
+   347259    0.083    0.000   11.602    0.000 <frozen importlib._bootstrap_external>:1551(find_spec)
+   347259    0.764    0.000   11.519    0.000 <frozen importlib._bootstrap_external>:1522(_get_spec)
+  1736288    3.242    0.000   10.402    0.000 <frozen importlib._bootstrap_external>:1624(find_spec)
+  8681438    2.539    0.000    4.291    0.000 <frozen importlib._bootstrap_external>:131(_path_join)
+  1736293    0.206    0.000    2.121    0.000 <frozen importlib._bootstrap_external>:145(_path_stat)
+  1736293    1.915    0.000    1.915    0.000 {built-in method posix.stat}
+   347259    0.101    0.000    1.683    0.000 <frozen importlib._bootstrap>:416(__enter__)
+   347259    0.400    0.000    1.188    0.000 <frozen importlib._bootstrap>:304(acquire)
+ 17363636    0.979    0.000    0.979    0.000 {method 'rstrip' of 'str' objects}
+
+

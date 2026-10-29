@@ -1,0 +1,28 @@
+{
+ "phase": "Phase 7 (NOT LOCKED): learning from incomplete programs, method consolidation and transfer",
+ "authority": "artifacts/agi7_grant.json",
+ "start_revision": "e97a4c7",
+ "total_cap_s": 2600,
+ "ceilings": {
+  "s1": 300,
+  "src": 1250,
+  "meta": 0,
+  "eval": 950,
+  "rep": 100
+ },
+ "transfers": [
+  {
+   "from": "s1",
+   "to": "eval",
+   "s": 23,
+   "when": "Stage 1 closed at 276.6/300 s, before any Stage 2 or target outcome",
+   "why": "unused Stage 1 funds move forward to evaluation margin"
+  }
+ ],
+ "notes": [
+  "Stage 3 (improver campaign) is 0 s by default; up to 520 s may move from eval to meta before any Stage 2 outcome only if Stage 4 demonstrably still covers all 648 main rows, 108 panel rows and a margin.",
+  "Only unused earlier-stage funds move forward, logged before target outcomes; reporting funds are not borrowed.",
+  "Stage 3 decision (made before any Stage 2 outcome, from Stage 1 timing): DEFERRED. The evaluation rehearsal projects ~1.2 s per row, so 648 main rows need ~800 s of the 950 s Stage 4 allocation; moving up to 520 s to Stage 3 would leave Stage 4 unable to cover all 648 main rows plus 108 panel rows with a margin. The improver comparator (lineage7.meta_compare / judge_edit) is implemented and unit-tested; the agi7de/panel range stays UNOPENED; the improver claim is reported as untested.",
+  "Within-lineage improver rollouts are also not run in Stage 2: a paired rollout must span several complete learn/admit/use cycles per clone, which a 300 s job cannot contain next to its own learning. Both cohorts keep M0 (no eligible tested M change exists)."
+ ]
+}

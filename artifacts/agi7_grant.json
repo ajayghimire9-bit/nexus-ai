@@ -1,0 +1,17 @@
+{
+ "id": "GRANT-NEXUS-PHASE7-2200S",
+ "kind": "explicit owner grant (owner Phase 7 instruction 2026-10-29: 'authorizes a NEW +2,200 charged-second grant, once, and permits combining it with genuinely remaining balances for this new phase')",
+ "recorded_at_parent": "e97a4c7",
+ "new_amount_s": 2200,
+ "released_balances": {
+  "phase6_grant_remaining_s": 718,
+  "mi_pot_remaining_s": 218
+ },
+ "verified_at_registration": {
+  "agi6_budget.remaining": 718,
+  "mi_budget.left": 218
+ },
+ "pool_s": 3136,
+ "metered_prefix": "a7-",
+ "note": "Idempotent: this file is written once; a restart never re-credits. The released balances are spent only through a7- rows; agi6_budget / mi_budget keep their own unchanged records (a7- rows are invisible to them), so nothing is counted twice: the Phase 7 pool is the single authority for these released seconds."
+}

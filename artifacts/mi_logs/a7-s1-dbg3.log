@@ -1,0 +1,36 @@
+duckdb exec 0.038 sqlite exec 0.0029 invariants 0.172 ['corruption']
+1352 pandas   File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/pipeline6.py", line 118, in exec
+    final, per = W6.run_pipeline(self.stages, specs, self.rows if rows is None else rows, self.state, fast=prescreen)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/world6.py", line 223, in run_pipeline
+    res = rt.run(ir6.lower(sp, E.EXEC_LANG[eng]), header, cur, state)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase6/engines6.py", line 40, in run
+    con.execute("INSERT INTO raw VALUES " + ",".join([one] * len(rows)), vals)
+
+16 os   File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 26, in getline
+    lines = getlines(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 42, in getlines
+    return updatecache(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 111, in updatecache
+    import os
+
+9 sys   File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 26, in getline
+    lines = getlines(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 42, in getlines
+    return updatecache(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 112, in updatecache
+    import sys
+
+9 tokenize   File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 26, in getline
+    lines = getlines(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 42, in getlines
+    return updatecache(filename, module_globals)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/linecache.py", line 113, in updatecache
+    import tokenize
+
+7 sqlglot.dialects Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/sqlglot/dialects/dialect.py", line 999, in generate
+    return self.generator(**opts).generate(expression, copy=copy)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/sqlglot/dialects/dialect.py", line 1022, in generator
+    return self.generator_class(dialect=self, **opts)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/sqlglot/generator.py", line 702, in __init__
+    from sqlglot.dialects import Dialect
+
