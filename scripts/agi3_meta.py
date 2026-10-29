@@ -27,7 +27,9 @@ def main(cmd, rep, imp, *flags):
     else:
         e = json.loads((ROOT / "artifacts/agi3_freeze_source.json").read_text())["endpoints"][f"Full_r{rep}"]
         st = ST.from_json(e["state"])
-        assert ST.digest(st) == e["digest"]
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from agi3_eval import digest                     # the Phase 3 digest covers world AND DE memory
+        assert digest(st) == e["digest"]
         out = ROOT / "artifacts/agi3_meta"
         if (out / f"r{rep}_{imp}.json").exists():
             raise SystemExit("meta clones are never rerun")
