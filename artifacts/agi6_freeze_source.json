@@ -1,0 +1,693 @@
+{
+ "files": {
+  "src/nexus/de_phase6/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "src/nexus/de_phase6/engines6.py": "95092fb470a8731d66424de9a46d91e325b72864bd6bc70b055cb0f4aba52564",
+  "src/nexus/de_phase6/ir6.py": "f510d63399fc483b2ac258e6041bb5ac625663025182f78f77169def330918d5",
+  "src/nexus/de_phase6/lineage6.py": "1f48a917501b8056868bd5e02857796ee5568ad1cb1e5a4122cd5f9af9235745",
+  "src/nexus/de_phase6/pipeline6.py": "02a3fb2cdc6290b9f3da4c823f05006d63774a978bc2d2058d4dee71ecf96194",
+  "src/nexus/de_phase6/procedure6.py": "33b8fe89b8a4fce64fee8d53eedee42c97dcc6e07b8c6843845db65c2442e1ba",
+  "src/nexus/de_phase6/seeds6.py": "1d71f65096c83e5b3c0c8a9bc81d99a7ef3b62cce4022bcfedcbac0ed2ca940c",
+  "src/nexus/de_phase6/skills6.py": "cc19960f8e3a869829d644664252206a65338e5f451d0867a0f05cd81df27210",
+  "src/nexus/de_phase6/trust6.py": "500987908c2feb9e145be07324fbe5810627ad0f131593026ccf6f9d5bcd5964",
+  "src/nexus/de_phase6/world6.py": "bcc903ea33f51677c3f88a309b9261ae8b9086466f9bd1a05e27ed4716444927",
+  "scripts/agi6_eval.py": "0c2f2b24a986010a2c9c20c7753dbcda26d1299cb3254986f83712595709571f",
+  "artifacts/agi6_src/Fixed_r0.json": "9fb3f4079ea29604606dcddfd9cda1bf0fe965213f5147d30d641f700d501064",
+  "artifacts/agi6_src/Fixed_r1.json": "89789c2821a867912d59e2088d0dd2393c2f35de7a3d7d0a85ae29bd50c20d57",
+  "artifacts/agi6_src/Fixed_r2.json": "512f355923a6391740f2bcf0e2d8aece4532b1b7483306cb763d3867fa8ff9c7",
+  "artifacts/agi6_src/Full_r0.json": "e3cb02901299ce27f9e4c6e69d7d1e8ffb4c79ca8425a41f3d4300b0bb061944",
+  "artifacts/agi6_src/Full_r1.json": "9849598cfe0b6f0e9d417b84c787b79843711f0887e2f0e4beafa6438e938293",
+  "artifacts/agi6_src/Full_r2.json": "f7f9ce45dad104eabc037e5cd57c89d786b47310288a8143dccfd3cf9936e748",
+  "artifacts/agi6_src/Scrambled_r0.json": "ad31552795d50708e019474ed67e17a152b45c0e10051b58caff3fb74df65f9f",
+  "artifacts/agi6_src/Scrambled_r1.json": "edd252b150c620d9e9f095068dc9092731b3309b6aefc0ee2ce9d09616e92012",
+  "artifacts/agi6_src/Scrambled_r2.json": "1e55616a35d9258e6b016a5eea1ed2b912ed00eff22dcca0ee5aab919d41abda",
+  "artifacts/agi6_src/SolvedOnly_r0.json": "14feb644a7086f23b98a88268d96fd7ababbfb216c0e5b50ae9c255014c20cf9",
+  "artifacts/agi6_src/SolvedOnly_r1.json": "676ff0f5d8497f7940d6758993e67fc9abf2261b8c6a9c141ad96c1079ac938b",
+  "artifacts/agi6_src/SolvedOnly_r2.json": "fd7dafb6ac02a297f0d58e85ff2663f505aefe9c2f4ad34331f11b4d3294f0cf"
+ },
+ "manifest": [
+  {
+   "paradigm": "P1",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "dp_mode": "explicit",
+   "seed": 66000
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "dp_mode": "missing",
+   "seed": 66001
+  },
+  {
+   "paradigm": "P1",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "dp_mode": "conflict_approved",
+   "seed": 66002
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "dp_mode": "undecided",
+   "seed": 66003
+  },
+  {
+   "paradigm": "P1",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "dp_mode": "visible",
+   "seed": 66004
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "dp_mode": "undecided",
+   "seed": 66005
+  },
+  {
+   "paradigm": "P1",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "dp_mode": "missing",
+   "seed": 66006
+  },
+  {
+   "paradigm": "P1",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "dp_mode": "conflict_approved",
+   "seed": 66007
+  },
+  {
+   "paradigm": "P2",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "seed": 66008
+  },
+  {
+   "paradigm": "P2",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66009
+  },
+  {
+   "paradigm": "P2",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "seed": 66010
+  },
+  {
+   "paradigm": "P2",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66011
+  },
+  {
+   "paradigm": "P2",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "seed": 66012
+  },
+  {
+   "paradigm": "P2",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66013
+  },
+  {
+   "paradigm": "P2",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "seed": 66014
+  },
+  {
+   "paradigm": "P2",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66015
+  },
+  {
+   "paradigm": "P3",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "seed": 66016
+  },
+  {
+   "paradigm": "P3",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66017
+  },
+  {
+   "paradigm": "P3",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "seed": 66018
+  },
+  {
+   "paradigm": "P3",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66019
+  },
+  {
+   "paradigm": "P3",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 1,
+   "seed": 66020
+  },
+  {
+   "paradigm": "P3",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66021
+  },
+  {
+   "paradigm": "P3",
+   "engine": "spark",
+   "names": "base",
+   "tier": 1,
+   "seed": 66022
+  },
+  {
+   "paradigm": "P3",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 1,
+   "seed": 66023
+  },
+  {
+   "paradigm": "P4",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "seed": 66024
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66025
+  },
+  {
+   "paradigm": "P4",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "seed": 66026
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66027
+  },
+  {
+   "paradigm": "P4",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "seed": 66028
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66029
+  },
+  {
+   "paradigm": "P4",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "seed": 66030
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66031
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "explicit",
+   "seed": 66032
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "missing",
+   "seed": 66033
+  },
+  {
+   "paradigm": "P5",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "conflict_approved",
+   "seed": 66034
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "undecided",
+   "seed": 66035
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "visible",
+   "seed": 66036
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "undecided",
+   "seed": 66037
+  },
+  {
+   "paradigm": "P5",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "missing",
+   "seed": 66038
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "conflict_approved",
+   "seed": 66039
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "seed": 66040
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66041
+  },
+  {
+   "paradigm": "P6",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "seed": 66042
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66043
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "seed": 66044
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66045
+  },
+  {
+   "paradigm": "P6",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "seed": 66046
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "seed": 66047
+  },
+  {
+   "paradigm": "P7",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "explicit",
+   "seed": 66048
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "missing",
+   "seed": 66049
+  },
+  {
+   "paradigm": "P7",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "conflict_approved",
+   "seed": 66050
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "undecided",
+   "seed": 66051
+  },
+  {
+   "paradigm": "P7",
+   "engine": "sqlite",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "visible",
+   "seed": 66052
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "undecided",
+   "seed": 66053
+  },
+  {
+   "paradigm": "P7",
+   "engine": "spark",
+   "names": "base",
+   "tier": 2,
+   "dp_mode": "missing",
+   "seed": 66054
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "names": "heldout",
+   "tier": 2,
+   "dp_mode": "conflict_approved",
+   "seed": 66055
+  },
+  {
+   "paradigm": "P8",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "explicit",
+   "seed": 66056
+  },
+  {
+   "paradigm": "P8",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "missing",
+   "seed": 66057
+  },
+  {
+   "paradigm": "P8",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "conflict_approved",
+   "seed": 66058
+  },
+  {
+   "paradigm": "P8",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "undecided",
+   "seed": 66059
+  },
+  {
+   "paradigm": "P8",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "visible",
+   "seed": 66060
+  },
+  {
+   "paradigm": "P8",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "undecided",
+   "seed": 66061
+  },
+  {
+   "paradigm": "P8",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "missing",
+   "seed": 66062
+  },
+  {
+   "paradigm": "P8",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "conflict_approved",
+   "seed": 66063
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "undecided",
+   "seed": 66064
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "visible",
+   "seed": 66065
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "undecided",
+   "seed": 66066
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "missing",
+   "seed": 66067
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "conflict_approved",
+   "seed": 66068
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "C",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "explicit",
+   "seed": 66069
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "A",
+   "names": "base",
+   "tier": 3,
+   "dp_mode": "missing",
+   "seed": 66070
+  },
+  {
+   "paradigm": "P9",
+   "hybrid": "B",
+   "names": "heldout",
+   "tier": 3,
+   "dp_mode": "conflict_approved",
+   "seed": 66071
+  }
+ ],
+ "panel": [
+  {
+   "paradigm": "P4",
+   "engine": "sqlite",
+   "tier": 2,
+   "seed": 66200,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66201,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P4",
+   "engine": "spark",
+   "tier": 2,
+   "seed": 66202,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P4",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66203,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "tier": 2,
+   "seed": 66204,
+   "dp_mode": "missing"
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66205,
+   "dp_mode": "explicit"
+  },
+  {
+   "paradigm": "P5",
+   "engine": "spark",
+   "tier": 2,
+   "seed": 66206,
+   "dp_mode": "conflict_approved"
+  },
+  {
+   "paradigm": "P5",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66207,
+   "dp_mode": "visible"
+  },
+  {
+   "paradigm": "P6",
+   "engine": "sqlite",
+   "tier": 2,
+   "seed": 66208,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66209,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P6",
+   "engine": "spark",
+   "tier": 2,
+   "seed": 66210,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P6",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66211,
+   "dp_mode": null
+  },
+  {
+   "paradigm": "P7",
+   "engine": "sqlite",
+   "tier": 2,
+   "seed": 66212,
+   "dp_mode": "missing"
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66213,
+   "dp_mode": "explicit"
+  },
+  {
+   "paradigm": "P7",
+   "engine": "spark",
+   "tier": 2,
+   "seed": 66214,
+   "dp_mode": "conflict_approved"
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66215,
+   "dp_mode": "visible"
+  },
+  {
+   "paradigm": "P5",
+   "engine": "sqlite",
+   "tier": 2,
+   "seed": 66216,
+   "dp_mode": "missing"
+  },
+  {
+   "paradigm": "P7",
+   "engine": "duckdb",
+   "tier": 2,
+   "seed": 66217,
+   "dp_mode": "explicit"
+  }
+ ]
+}

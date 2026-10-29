@@ -54,6 +54,9 @@ def arms(kind, dev):
         full = endpoint(src, f"Full_r{r}")
         A[f"A2_learnedmem_F0_r{r}"] = dict(endpoint(src, f"Fixed_r{r}"), prog=PR.F0, lib={}) if (src / f"Fixed_r{r}.json").exists() else None
         A[f"A3_full_r{r}"] = full
+        if r != 0:                                     # attribution arms on r0 only (pre-registered size rule 0.6)
+            A[f"A2_learnedmem_F0_r{r}"], A[f"A3_full_r{r}"] = A[f"A2_learnedmem_F0_r{r}"], full
+            continue
         if (src / f"SolvedOnly_r{r}.json").exists():
             A[f"A4_solvedonly_r{r}"] = endpoint(src, f"SolvedOnly_r{r}")
         po = copy.deepcopy(full)
@@ -67,6 +70,8 @@ def arms(kind, dev):
 
 def manifest(kind, dev):
     T = S6.panel_manifest() if kind == "panel" else S6.target_manifest()
+    if kind == "panel" and not dev:
+        T = T[::3]                                    # 6 of 18 (recorded budget deviation, artifacts/agi6_allocation.json)
     if dev:
         T = copy.deepcopy(T)[::9] if kind != "panel" else copy.deepcopy(T)[::6]
         for i, t in enumerate(T):
