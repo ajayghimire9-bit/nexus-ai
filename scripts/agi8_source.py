@@ -9,7 +9,7 @@ from pathlib import Path  # noqa: E402
 from nexus.de_phase4 import world as W  # noqa: E402
 from nexus.de_phase8 import lineage8 as L8, seeds8 as S  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
-ROUND_AFTER, ROUND_MIN_S = 8, 100.0
+ROUND_AFTER, ROUND_MIN_S = 8, 85.0
 
 
 def main(cohort, rep, budget, *flags):
