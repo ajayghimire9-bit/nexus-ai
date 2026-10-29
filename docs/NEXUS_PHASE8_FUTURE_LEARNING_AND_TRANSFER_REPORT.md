@@ -182,3 +182,176 @@ the resume skips written rows. No lineage is selected after results.
   requirement claims, pipeline repair search or probe-row clarification. So there is no semantics-preserving adapter for
   the procedure language's read / check_coverage / resolve / ask actions, and the probe is not run. This is an
   architectural finding.
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:**
+- protocol `ef5eaa3`, plus the pre-registered threshold fix and job file `6291f34`;
+- checkpoints, freeze and target manifest `7f68548`;
+- results: this commit.
+
+**Raw data:**
+- `artifacts/agi8_src/*.json` (sha256 in `agi8_freeze_source.json`)
+- `artifacts/agi8_target_manifest.json`
+- `artifacts/agi8_eval/targets_c*.jsonl` (648 rows) and `result.json`
+- `artifacts/agi8_dev/`
+- `artifacts/mi_logs/a8-*.log`
+
+### 1.1 Budget reconciliation (charged wall s)
+
+| Stage | Used | Ceiling after logged transfers |
+|---|---|---|
+| S1 | 199.4 | 200 (250; 50 → S4) |
+| S2 | 921 | 922 (1,000; 78 → S4) |
+| S3 | 0 | 0 |
+| S4 | 438 (9 chunks, all COMPLETE, no resume) | 878 |
+| S5 | ~3 | 100 |
+| **Phase 8** | **~1,562** | **2,100** |
+
+**Pool remaining ≈ 1,027 s** (2,589.4 − 1,562), above the ≥ 489 s floor. No missing, interrupted or resumed rows; no
+build failures.
+
+**Disclosed process error.** I did not take a Phase 8 *before* protection snapshot. Protection was therefore verified
+against the starting commit `5db8fee` instead (1.7).
+
+### 1.2 Stage 2: what each lineage did (250 s caps)
+
+| | Full_r0 | Full_r1 | FixedLearner_r0 | FixedLearner_r1 |
+|---|---|---|---|---|
+| Main-lineage projects | 16 | 18 | 64 | 74 |
+| Verified at source | 15 | 15 | 49 | 54 |
+| Wrong | 0 | 0 | 0 | 0 |
+| Consolidation cycles | 4 | 4 | 16 | 17 |
+| Trust records | 1 | 9 | 21 | 39 |
+| Skill sources | 16 | 15 | 62 | 71 |
+| Methods admitted / candidates | 0 / 4 | 0 / 4 | **1 / 16** | 0 / 17 |
+| Seconds in future-learning rounds | 195 | 186 | – | – |
+
+**Rounds:**
+
+| Round | Shortlisted edit | Trajectory comparison | Downstream | Result |
+|---|---|---|---|---|
+| Full_r0 #0 | `wrap read_all in if multi_unresolved` | candidate read **0** documents vs 36, trust records **1 vs 5**, verified 10 vs 10, cost 32.0 vs 35.6 | 5 / 6 vs 5 / 6 | rejected (tie) |
+| Full_r0 #1 | `wrap read_all in if asked` | the candidate clone hit the job deadline after 5 projects (1 cycle after exercise) | – | **uninformative** |
+| Full_r1 #0 | `insert ask(unclaimed)` | **identical** trajectories on the real stream (it differed only on the screen pool) | 4 vs 4 | rejected (tie) |
+| Full_r1 #1 | `delete` the second `resolve(calibrated)` | 4 questions vs 2, otherwise the same memory | 3 vs 3 | rejected (tie) |
+
+- **No procedure change was adopted.** Both Full checkpoints end with F0.
+- **The admitted method:** FixedLearner_r0's `dedup_latest → exclude_value 'D'` composition was admitted for cutting
+  deterministic work by ≥ 20 % on the same correct set. Of 66 method candidates in all lineages, 15 had partial-program
+  support; none of those was admitted.
+
+### 1.3 Stage 4: 72 fresh one-use targets × 9 endpoints (648 rows, all present)
+
+| Endpoint | Verified / 72 | Tier 1 / 24 | Tier 2 / 32 | Tier 3 / 16 | Wrong | Justified abstentions | Questions | No candidate |
+|---|---|---|---|---|---|---|---|---|
+| A0 fresh + F0 | 51 | 23 | 22 | 6 | **0** | 5 / 5 | 15 | 13 |
+| A1_r0 / r1 FixedLearner + F0 | **53 / 53** | 23 | 24 | 6 | **0** | 5 / 5 | 9 / 9 | 13 |
+| A2_r0 / r1 Full + its procedure (= F0) | 51 / 51 | 23 | 22 | 6 | **0** | 5 / 5 | 15 | 13 |
+| A3_r0 / r1 Full memory + F0 | 51 / 51 | 23 | 22 | 6 | 0 | 5 / 5 | 15 | 13 |
+| A4_r0 / r1 as A3, methods removed | 51 / 51 | 23 | 22 | 6 | 0 | 5 / 5 | 15 | 13 |
+
+**Contrasts** (per-target mean over repetitions; sign-flip, two-sided):
+
+| Contrast | Mean | r0 / r1 | p (Holm) |
+|---|---|---|---|
+| **A2 − A0** (primary) | **0.0 pp** | 0.0 / 0.0 | 1.0 (1.0) |
+| **A2 − A1** (primary) | **−2.8 pp** | −2.8 / −2.8 | 0.51 (1.0) |
+| A3 − A1 (memory from Full's training process) | −2.8 pp | −2.8 / −2.8 | 0.51 |
+| A2 − A3 (target-time effect of the learned procedure) | 0.0 pp | | (A2 ≡ A3: no adopted edit) |
+| A3 − A4 (skill library) | 0.0 pp | | (Full admitted no method) |
+| A1 − A0 (experience, fixed procedure) | **+2.8 pp** | +2.8 / +2.8 | 0.50 |
+| Tier 3: A2 − A0 / A2 − A1 | 0.0 / 0.0 pp | | |
+
+**Family sensitivity:** every family shows 0.0 except P5, where A2 − A1 = −25 pp (2 of 8 P5 targets).
+
+**Verdicts:**
+
+| Goal | Result | Verdict |
+|---|---|---|
+| Safety: 0 wrong | **0 accepted wrong repairs in all 648 rows.** All 5 unanswerable targets were justified abstentions in every arm. Coverage v8 recorded 4–5 satisfied and 1–2 conflict obligations per arm and no absent obligations on these targets, so the repair was never tested by a target that needed it. | **Met** for these draws (not a general guarantee) |
+| Primary net benefit | 0.0 and −2.8 pp | **Not met** |
+| Learning to learn | No adopted, confirmed longitudinal improvement; A3 − A1 −2.8 pp | **Not shown** |
+| Skill library | A3 − A4 0.0 (Full admitted none). FixedLearner_r0's method was accepted by the method queue in 8 rows, all also solved by A0, with no measurable cost difference (A1_r0 315.3 vs A1_r1 316.7 s). | **Not shown** |
+| Cost | No advantage to repay; break-even undefined | – |
+
+### 1.4 Strongest causal traces
+
+**Positive (experience under a fixed procedure).** On 76034 and 76039 (both P5), both FixedLearner memories resolved
+**both** conflicting requirement points by **calibrated trust**, with 0 questions, and verified. Fresh and Full abstained:
+they spent their single question on the first conflict, and the second stayed unresolved.
+
+The chain is complete:
+- **F0 reads every document** → 21 / 39 verified-outcome trust records at source → at the target, trust resolves
+  approved-vs-draft conflicts → the question budget is freed → a verified completion.
+- This is the same mechanism as Phase 7's 71058 / 71039. **It is learning from experience, not learning to learn:** the
+  procedure is the human-chosen F0.
+
+**Negative (the core experiment).** Full_r0 round 0 exercised its edit from the first project and ran 3 complete cycles
+after it.
+- **Evidence changed:** 0 documents read vs 36.
+- **Memory changed:** 1 trust record vs 5.
+- **Downstream behaviour did not change:** the 6 downstream projects produced the same decisions and the same 5 / 6.
+  None of them needed trust to resolve a conflict.
+
+So the future-learning comparison **detected a change in memory but had no downstream task able to reveal its value.**
+The edit was rejected as a tie. The opposite edit ("read more, record more") was never shortlisted, because F0 already
+reads everything.
+
+**Overhead.** Full spent 186–195 s of its 233 s in rounds, so its main memory came from 16–18 projects instead of 64–74.
+That is the whole A3 − A1 gap: Full's memory held 1 / 9 trust records against 21 / 39, and it lost exactly the two
+trust-dependent P5 targets.
+
+### 1.5 Answers to the required questions
+
+1. **What did NEXUS produce without a human writing it?** One admitted method: FixedLearner_r0's `dedup_latest →
+   exclude 'D'` composition, re-invented from experience as in Phase 7. It also produced calibrated trust records and
+   evidence weights. **No learning procedure:** all four procedure candidates were rejected or uninformative.
+2. **What different evidence did it acquire because of a procedure?** In the Full_r0 round-0 clone, 0 documents read
+   instead of 36, so 1 trust record instead of 5. In Full_r1 round 1, 4 questions instead of 2.
+3. **What changed later?** In the clones: trust-record counts, while the skill sources were identical. In the main
+   lineages: nothing procedural, because no edit was adopted.
+4. **Which unfamiliar tasks benefited or regressed?** Gains for experience under F0 (A1 vs A0): 76034, 76039 (P5).
+   Nothing gained or lost for Full vs fresh. Relative to A1, Full lost 76034 and 76039.
+5. **Did it survive the controls?** No advantage exists to test. A2 = A0; A2 < A1.
+6. **Did it repay its cost?** No. The rounds cost about 380 s of source compute across the two Full lineages, displaced
+   about 100 source projects of experience, and produced no adopted change.
+7. **What remains untested?**
+   - Meta-learning: no adopted, confirmed procedure.
+   - Self-evolution of the improver M (S3 = 0 s; panel unopened).
+   - Failure memory (no Solved-Only cohort).
+   - Cross-domain transfer: no shared executable interface (0.7).
+   - Interface or mechanism transfer beyond the data-engineering arena.
+
+### 1.6 Decision
+
+**Edits changed memory but did not help, and overhead consumed the learner's experience.** Where it failed:
+
+- **Evidence acquisition worked mechanically.** The edits changed what was read, what was asked and what was recorded.
+- **The measurement of future value failed.** Six random downstream projects almost never contain the conflict-type tasks
+  where trust records matter, so every exercised comparison tied. A comparison that cannot distinguish 1 from 5 trust
+  records is insensitive, not evidence of equality.
+- **The economics failed.** Each round cost about 90–105 s, roughly 40 % of a lineage, for a 6-project verdict.
+
+**Recommended next experiment: one, general.**
+- Make the downstream evaluation of a future-learning comparison **evidence-stratified**. Draw it from a fixed proportion
+  of each evidence type the procedure language can change: documented conflicts, absent documents, legacy disagreement,
+  undecided and benign.
+- Run the incumbent clone **once per parent** and share it across candidates. This is output-equivalent, so the cost
+  account stays honest.
+- Spend the saving on longer rollouts rather than more rounds.
+
+Language extension is not the bottleneck. The language could already express "read less" and "ask more". What it could
+not get was a test that sees their consequences.
+
+### 1.7 Protection
+
+Against the verified starting commit `5db8fee`:
+- **0 tracked files modified or deleted** (`git diff --name-status 5db8fee` shows additions only).
+- All 7 protection manifests show 0 differences.
+- Checkers v1–v5 match their pins.
+- `main` = `d7ac8c5`.
+- `agi8de/target` was claimed once; `agi8de/panel` is unopened.
+- All earlier frozen artifacts and historical reports are unchanged.

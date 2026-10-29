@@ -437,3 +437,27 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * learning-to-learn;
   * external cross-domain transfer.
 * **Budget:** ~2,047 of the 2,600 s cap; the pool has ~1,089 s left.
+
+## Phase 8: learning to learn through future transfer (2026-10-29; report `docs/NEXUS_PHASE8_FUTURE_LEARNING_AND_TRANSFER_REPORT.md`)
+
+* **Human infrastructure** (shared by every arm):
+  * coverage v8, semantic obligations: absent implementations block; consistent-cut rule; misleading comparisons rejected
+    on dev cases;
+  * bounded method queue with a shared total work budget;
+  * future-learning round machinery: behaviour-signature screen, paired clone rollouts, F0 downstream evaluation,
+    confirmation;
+  * the F0 prior for both cohorts.
+* **Automatic abstraction:** one method admitted (FixedLearner_r0: `dedup_latest → exclude 'D'`, a work saving). Of 66
+  candidates, 15 had partial-program support; none was admitted.
+* **Learned procedures:** none adopted. Four Full rounds: 3 downstream ties, 1 uninformative (clone ran out of time).
+  One exercised edit changed the evidence acquired (0 vs 36 documents read; 1 vs 5 trust records) without changing
+  downstream decisions.
+* **Verified transfer** (72 fresh targets, 648 rows, **0 accepted wrong repairs**):
+  * fresh 51, trained fixed learner 53 / 53, Full 51 / 51;
+  * A2 − A0 0.0 pp, A2 − A1 −2.8 pp, A3 − A1 −2.8 pp, A1 − A0 +2.8 pp;
+  * the only gains are two P5 targets solved through calibrated trust acquired by the fixed procedure.
+
+  This is learning from experience, not learning to learn.
+* **Untested:** meta-learning (no adopted procedure); the improver (S3 = 0 s); failure memory; cross-domain transfer (no
+  shared executable interface with the `campaign/worlds` TaskView).
+* **Budget:** ~1,562 of the 2,100 s cap; pool remaining ≈ 1,027 s.
