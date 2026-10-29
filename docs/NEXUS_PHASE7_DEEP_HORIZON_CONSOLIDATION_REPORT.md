@@ -267,3 +267,205 @@ python scripts/agi7_eval.py run CHUNK 8
 ```
 python scripts/agi7_eval.py score
 ```
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:** protocol + implementation `46e1e7f` (before any Stage 2 outcome); source checkpoints + freeze + target
+manifest `91b591a` (before target evaluation); results: this commit.
+
+**Raw data:**
+- `artifacts/agi7_src/*.json` (4 checkpoints, sha256 in `artifacts/agi7_freeze_source.json`)
+- `artifacts/agi7_eval/targets_c*.jsonl` (648 rows) and `result.json`
+- `artifacts/agi7_dev/` (Stage 1)
+- `artifacts/mi_logs/a7-*.log`
+
+### 1.1 Budget and execution events (charged wall s, `scripts/agi7_budget.py`)
+
+| Stage | Used | Ceiling (after logged transfers) |
+|---|---|---|
+| S1 | 276.6 | 277 (300; 23 → S4) |
+| S2 | 1,113.4 | 1,114 (1,250; 136 → S4) |
+| S3 | 0 | 0 (deferred) |
+| S4 | 654 | 1,109 |
+| S5 | ~3 | 100 |
+| **Phase 7** | **~2,047** | **2,600** |
+
+The pool has **~1,089 s** left: 536 s of promised reserve plus ~553 s of unused cap. The Phase 6 records are unchanged
+(3,282 / 3,600 s, 718 s shown there), but those 718 s were released into the Phase 7 pool, so they must not be spent
+twice.
+
+**Events:**
+1. About 5 s of uncharged generator checks were debited after the fact.
+2. **Chunk c2 timed out** (130 s cap) after 44 of 81 rows. It was **resumed once** (`a7-eval-c2-resume`, 58 s). The
+   resumable evaluator skipped the 44 written rows, which stayed byte-identical (checked with `cmp`), and ran only the 37
+   never-executed rows. No completed outcome was rerun.
+3. All 648 main rows are present; there were no build failures.
+4. The `agi7de/panel` range was not opened.
+
+### 1.2 Stage 2: what NEXUS learned at source (two repetitions per cohort, 300 s each)
+
+| | Full_r0 | Full_r1 | FixedLearner_r0 | FixedLearner_r1 |
+|---|---|---|---|---|
+| Source projects (unique, new) | 37 | 36 | 94 | 98 |
+| Verified at source | 24 | 23 | 63 | 75 |
+| Wrong first submissions | 0 | 0 | 1 | 0 |
+| Complete cycles | 5 | 6 | 14 | 16 |
+| Skill candidates tried / admitted | 10 / 3 | 12 / 1 | 27 / 3 | 28 / 3 |
+| Candidates whose support includes a partial program | 2 | 5 | 11 | 11 |
+| Archive-policy updates (delayed utility) | 24 | 23 | – | – |
+| Procedure rounds / changes adopted | 5 / 1 | 6 / 1 | – | – |
+
+**Invented methods.** There are 6 distinct canonical methods; aliases were collapsed by canonical form.
+
+| # | Method | Kind | Admitted in |
+|---|---|---|---|
+| 1 | `dedup_latest(key: text role, order: int role)` | single-operator specialisation | Full_r0, FixedLearner_r0 |
+| 2 | `default_fill(int-dirty column, 0)` | single-operator specialisation | Full_r0, FixedLearner_r0 |
+| 3 | `require_nonempty(text column)` | single-operator specialisation | Full_r0, FixedLearner_r1 |
+| 4 | `exclude_value(low-card text, 'D')` | single-operator specialisation | FixedLearner_r1 |
+| 5 | `dedup_latest → exclude_value 'D'` (a CDC "latest version, drop tombstones" method) | **multi-operator composition** | Full_r1, FixedLearner_r1 |
+| 6 | `normalize_text → require_nonempty` | **multi-operator composition** | FixedLearner_r0 |
+
+Notes on the methods:
+- Method 6's support **includes the best retained intermediate program of an unsolved project** (`from_partial`): an
+  unsuccessful experience that became an admitted method.
+- Every admission passed by the corrected rule, as "cheaper by ≥ 20 % (deterministic work) on the same correctly
+  completed admission projects". Each trace shows the skill bound, executed and on the verified path.
+- All six are recombinations of authored operators. No new executable structure outside the supported language was
+  produced.
+
+**The learned procedure.** Both Full repetitions independently adopted the same round-0 change: insert
+`check_coverage → ask(first)`, packaged as the reusable `proc1`.
+- It was confirmed on untouched projects: correct 1→2 (r0), 2→2 (r1), wrong 0→0.
+- The final program is `search(whole, skills off) → proc1 → submit_or_abstain`. **It never reads a requirement
+  document, and it switches its own skills off.**
+- No later round found an admissible change.
+- Retention checks never showed a regression.
+
+**Did the learned procedure change subsequent learning?** Yes, mechanically: every later source project ran under it
+(2 procedure digests per lineage). Source verification went from 2 / 6 before the change to 22 / 31 and 21 / 30 after.
+That comparison is confounded by the stream order (the first batch is P1 / P2), so it is not a causal estimate.
+
+**The improver.** M stayed at M0 by design; no M edit was tested.
+
+### 1.3 Stage 4: 72 one-use targets × 9 endpoints (648 rows, all present)
+
+| Endpoint | Verified / 72 | Tier 1 / 24 | Tier 2 / 32 | Tier 3 / 16 | Accepted wrong | Justified abstentions | Questions | No candidate |
+|---|---|---|---|---|---|---|---|---|
+| A0 fresh + fixed strategy | **51** | 23 | 23 | 5 | 1 | 4 | 12 | 13 |
+| A1_r0 / r1 FixedLearner | 49 / 53 | 23 / 23 | 20 / 24 | 6 / 6 | 1 / 1 | 4 / 4 | 9 / 8 | 16 / 13 |
+| A2_r0 / r1 **Full, learned** | 49 / 46 | 22 / 20 | 22 / 21 | 5 / 5 | **0 / 0** | 4 / 4 | 16 / 14 | 14 / 17 |
+| A3_r0 / r1 Full ckpt + fixed strategy | 48 / 51 | 23 / 23 | 20 / 23 | 5 / 5 | 1 / 1 | 4 / 4 | 12 / 12 | 16 / 13 |
+| A4_r0 / r1 as A3, skills removed | 51 / 51 | 23 / 23 | 23 / 23 | 5 / 5 | 1 / 1 | 4 / 4 | 12 / 12 | 13 / 13 |
+
+**Pre-registered contrasts** (per-target mean over repetitions; sign-flip, two-sided):
+
+| Contrast | Mean | r0 / r1 | p | Holm p |
+|---|---|---|---|---|
+| **A2 − A0** (primary) | **−4.9 pp** | −2.8 / −6.9 | 0.063 | 0.125 |
+| **A2 − A1** (primary) | **−4.9 pp** | 0.0 / −9.7 | 0.172 | 0.172 |
+| A2 − A0, Tier 3 | 0.0 pp | | 1.0 | |
+| A2 − A1, Tier 3 | −6.2 pp | | | |
+| A2 − A3 (learned target-time decisions) | −2.8 pp | +1.4 / −6.9 | 0.44 | |
+| A3 − A4 (skill library) | −2.1 pp | −4.2 / 0.0 | 0.25 | |
+| A1 − A0 (experience, fixed learner) | 0.0 pp | −2.8 / +2.8 | 1.0 | |
+
+**Verdicts against the goals:**
+
+| # | Goal | Result | Verdict |
+|---|---|---|---|
+| 1 | 0 accepted wrong repairs in all arms | 7 wrong rows, all on **one** project (P5, seed 71032), in every fixed-strategy endpoint; A2 had 0 (it abstained there) | **Not met** |
+| 2 | Full ≥ +10 pp over both A0 and A1 (Tier 3 ≥ +15 pp) | −4.9 pp and −4.9 pp; Tier 3 0 and −6.2 pp | **Not met** |
+| 3 | Demonstrated contribution of learned decisions or skills | A2 − A3 −2.8 pp, A3 − A4 −2.1 pp (see below) | **Not met** |
+| 4 | Cost at matched correctness | The correct sets differ (A2 vs A1 not the same set), so there is no cost claim; on shared solves A2 cost 92.5 vs 86.4 s (r0) and 73.3 vs 59.1 s (r1) | **No advantage** |
+
+Notes on goal 3:
+- The skills **were exercised**: bound in 42 / 11 A3 rows and on the verified solution path in 20 / 8. But A4, without
+  skills, solved as many or more of the same projects. The admitted methods did not add completions on unfamiliar
+  targets; in r0 they displaced better repairs.
+- The learned procedure never uses skills (`search off`), so A2 cannot benefit from them.
+- The secondary target of five distinct useful methods: six were invented and admitted, but none was shown useful at
+  transfer.
+
+### 1.4 What changed relative to Phase 6, and why
+
+**The base system got better, from shared infrastructure.** The same kind of fresh, fixed-procedure endpoint solved
+35 / 72 in Phase 6 and **51 / 72** here. The targets are different draws, so this is an indication, not a paired
+estimate.
+
+That gain belongs to the human infrastructure that every arm shares:
+- the dedup-on-`id` parameterisation;
+- the de_accept_v7 gate repair;
+- the archive search (widening, interleaving, neutral / worse retention);
+- the coverage barrier.
+
+**None of it is learning by NEXUS.**
+
+**Wrong repairs fell** from 29 rows on 3 projects to 7 rows on 1 project. The legacy-contradicts-requirement targets were
+solved by every fixed-strategy arm, and A2 solved 2 / 3 per repetition.
+
+**The remaining wrong project** (post-hoc analysis, `a7-rep-posthoc`; no outcome changed). No option combination of the
+search's candidate verifies:
+- The search replaced a missing checkpoint filter with a spurious column-to-column comparison (`rev ≤ log_pos`) that
+  fits the visible batch.
+- The clarification was spent on that spurious decision point.
+- The documented checkpoint subject had **no implementing filter at all**. `accept7.coverage` records such subjects as
+  "uncovered" but does not make them obligations.
+
+That is a barrier design gap: **a documented requirement with no implementation must block or demand evidence.**
+
+**Why learning did not help:**
+1. **The learned procedure optimised for its pool, not for transfer.** `check_coverage → ask` without reading documents
+   is admissible on a 6-project pool where one question resolves the single obligation. On targets with two or more
+   open points it abstains (A2: 12 + 2 rows "unresolved decision point(s)" vs A0's 4 + 1). The pool-and-confirmation
+   guard prevented wrong submissions; it did not prevent a narrower procedure.
+2. **The learned archive policy reduced search success.** A2 has more "no repair candidate" rows than A0 (31 over two
+   repetitions vs 13). Delayed-utility updates on ~24 verified source solves increased the weight on depth (1.8) and on
+   stage-operator features. That generalised poorly.
+3. **Admitted skills are cost-admitted shortcuts.** They are cheaper on 2 admission projects but not broader. On targets
+   they redirect search to a bound skill path that the fixed search would have found or beaten.
+4. **Full's exposure was limited.** Full spent most of its 300 s on procedure rounds (37 / 36 projects vs 94 / 98 for
+   FixedLearner). This is the matched-compute design; it is still a confound for skill and trust learning (Full recorded
+   0 trust records, because its procedure never reads documents).
+
+### 1.5 Answers to the closing questions
+
+- **What did NEXUS invent?** Six admitted methods: four specialisations and two multi-operator compositions (a CDC
+  latest-then-drop-tombstones method; normalise-then-require-nonempty). It also composed one reusable investigation
+  sub-procedure (`check_coverage → ask`) and a learned archive-expansion policy. All are recombinations of human-authored
+  operators and actions.
+- **Which unsuccessful experiences became useful?** The best retained partial program of unsolved projects supported 2–11
+  skill candidates per lineage. One became an admitted method (normalise → require-nonempty, FixedLearner_r0). Neutral and
+  worse intermediate programs appear on verified solution paths and were the positive examples of the archive-policy
+  updates. None of this produced a target-level gain.
+- **Did a learned procedure change subsequent learning?** Yes in the mechanical sense: the adopted procedure ran on every
+  later source batch, and later rounds kept it under retention checks. Its causal effect on learning was not isolated.
+- **Which discoveries helped unfamiliar projects?** None measurably. The skill library was exercised but net −2.1 pp; the
+  learned decisions were −2.8 pp.
+- **Did the benefits survive strong controls and repay their cost?** There was no benefit to repay. The fresh,
+  strong-fixed-strategy control (A0) was not beaten by any learned endpoint.
+- **What failed or remains untested?**
+  - Failed: every primary learning target; zero wrong repairs (1 project).
+  - Untested: the improver (M fixed, Stage 3 deferred, panel unopened); failure memory (no Solved-Only cohort).
+  - External cross-domain transfer is not established; everything is inside one authored arena.
+
+### 1.6 Protection
+
+`artifacts/agi7_protected_hashes_after.json`: **0 violations**.
+- 1,765 frozen files (Phases 1–6) unchanged.
+- Checkers v1–v5 match their pins.
+- `main` = `d7ac8c5`.
+- `agi7de/target` claimed once; `agi7de/panel` unopened.
+
+### 1.7 Recommended next experiment
+
+**One experiment: transfer-shaped procedure admission plus barrier completeness.**
+1. Make documented-but-unimplemented subjects obligations in the barrier: the single remaining wrong case. This is a
+   versioned barrier change for all arms, tested on development data first.
+2. Admit procedure and archive-policy changes only on a **held-out-family** validation set (leave one source paradigm
+   out per round). That way "check, then ask once" and depth-heavy policies are refuted when they fail to transfer, not
+   only when they cause errors.
+3. Admit skills on breadth (applicability across ≥ 2 paradigms), not on cost alone.
+4. Keep A0 = fresh + strong fixed strategy as the bar. It is now the strongest arm.

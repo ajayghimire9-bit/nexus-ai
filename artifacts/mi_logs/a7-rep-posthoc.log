@@ -1,0 +1,8 @@
+decision {'kind': 'submit', 'choices': {'0:0': 'ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', '0:2': 'rev lt log_pos'}} faults ['watermark', 'checkpoint', 'replay'] inclusive {'checkpoint': False, 'watermark': False}
+path [(0, 'filter_file', 'ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]'), (0, 'dedup_first', 'id'), (0, 'col_compare', 'rev le log_pos')]
+ dp 0 0 filter_file ['ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', 'ts ge ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]'] resolved ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]] via claim effects ['excluded', 'kept'] claims [('excluded', 'draft')]
+ dp 0 2 col_compare ['rev le log_pos', 'rev lt log_pos'] resolved rev lt log_pos via clarification effects ['kept', 'excluded'] claims []
+ combo ('ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', 'rev le log_pos') False
+ combo ('ts gt ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', 'rev lt log_pos') False
+ combo ('ts ge ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', 'rev le log_pos') False
+ combo ('ts ge ["sub", ["file", "watermark.json", "watermark"], ["file", "watermark.json", "allowed_lateness"]]', 'rev lt log_pos') False

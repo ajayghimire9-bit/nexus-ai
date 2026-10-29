@@ -408,3 +408,32 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Not demonstrated:** completion / cost / safety gains, value of failure memory, of the skill library or of the
   procedure, learning to learn.
 * **Budget:** 3,282 of the 3,600 s Phase 6 cap; the grant has 718 s left, plus the untouched 218 s pot.
+
+## Phase 7: learning from incomplete programs, method consolidation, transfer (2026-10-29; report `docs/NEXUS_PHASE7_DEEP_HORIZON_CONSOLIDATION_REPORT.md`; erratum `docs/NEXUS_PHASE6_ERRATUM.md`)
+
+* **Human infrastructure** (shared by every arm):
+  * dedup-on-`id` parameterisation (fixes an unrepairable mechanism);
+  * de_accept_v7 gate repair (the false `corruption` rejection of grouped aggregates);
+  * bounded archive search (neutral / worse retention, progressive widening, operator interleaving, SQLite gate screen);
+  * requirement-coverage barrier;
+  * legacy-contradiction projects;
+  * the strong fixed investigation strategy.
+
+  Base completion of the fresh fixed endpoint: 51 / 72, vs 35 / 72 in Phase 6 (different draws).
+* **Automatic abstraction:** six distinct admitted methods, all recombinations of authored operators:
+  * four single-operator specialisations;
+  * two multi-operator compositions (dedup-latest → drop-tombstone; normalise → require-nonempty, the latter supported
+    by a partial program of an unsolved project).
+* **Learned procedures and decisions:** `check_coverage → ask(first)` (both Full repetitions, confirmed on untouched
+  projects, used on every later source batch); delayed-utility archive policy.
+* **Verified transfer:** none.
+  * Primary: Full vs fresh −4.9 pp; Full vs trained fixed learner −4.9 pp.
+  * Learned decisions: −2.8 pp. Skill library: −2.1 pp, although exercised (bound in 11–42 rows).
+  * Tier 3: 0 / −6.2 pp.
+  * 7 wrong rows, all on one P5 project (a documented-but-unimplemented requirement the barrier does not block on).
+* **Untested hypotheses:**
+  * the improver (M fixed; comparator implemented and unit-tested; panel unopened);
+  * failure memory (no Solved-Only cohort);
+  * learning-to-learn;
+  * external cross-domain transfer.
+* **Budget:** ~2,047 of the 2,600 s cap; the pool has ~1,089 s left.
