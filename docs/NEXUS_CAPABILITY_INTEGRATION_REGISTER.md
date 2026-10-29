@@ -282,3 +282,26 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * F.F4.L4.36012 was solved by Full and Fixed in r0 and r2, so a level-4 task *was* solved.
   * Full lineages had a baseline admission solve in 15 of 52 rounds.
   * B / D is 12 distinct tasks per arm, all unsolved (240 arm–task evaluations), not 64.
+
+## Multi-world campaign Phase 2 (2026-10-29; report `docs/NEXUS_MULTI_WORLD_PHASE2_REPORT.md`)
+
+* **Built:** new modules `src/nexus/campaign2/`:
+  * the expressivity / reachability audit, with lazy lambda pools replacing the excluding lambda cap;
+  * the provisional experience archive P against validated R / L;
+  * graded admission and a locked acceptance barrier;
+  * draft-origin tags and pure-synthesis F tasks;
+  * full-rollout M evaluation;
+  * untouched C5 / C6 / E5 / E6;
+  * fcntl-locked one-use claims.
+* **Commits:** errata `b07e86b`, protocol `b21b171`, source `da7dbed`, meta `63fa3c7`, results: this commit.
+* **Results:**
+  * Every R / L proposal of the P cohorts was provisional and refused, so **0 validated items came from incomplete
+    experience**.
+  * All evaluation arms solve 2 of 32 (identical solver states): withheld, fresh-seed C / E and untouched-mechanism transfer
+    are all **0.0** against Init, Placebo and Scratch.
+  * B / D: 0 of 4. Untouched: 0 of 16.
+  * 0 of 3 full-rollout meta-edits were adopted, so M* = M0 and the improver panel is 0 of 12 for all improvers.
+* **Capability status:**
+  * not demonstrated: learning from incomplete experience, the improver gain, and unseen-mechanism transfer;
+  * demonstrated: the expressivity audit and the full-rollout meta-evaluation harness as working infrastructure.
+* **Budget:** 2,598 of the 3,200 s Phase 2 cap; the carried balance is 4,618 s.

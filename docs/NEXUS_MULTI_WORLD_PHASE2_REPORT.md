@@ -168,3 +168,148 @@ exhaustive input was compared.
   * items by origin: pure / draft / mixed;
   * meta-edits adopted, M* against M0, curriculum divergence, and the panel scores of M*, M0 and M_rand;
   * silent errors per arm.
+
+## 1. Results
+
+This section was added after the run (NOT LOCKED). The source endpoints are `da7dbed`, the meta clones `63fa3c7`, and the
+one-use evaluation ran on code frozen at `b21b171`, plus the neutral Stage 2 fix described in §1.8.
+
+### 1.1 Headline
+
+| question | measured answer |
+|---|---|
+| B / D after the bound fix | evaluation: **0 of 4** B / D tasks for every arm (N = 32 keeps B4 L2 / L4 and D1 L1 / L3). Source: 1 "solve" each in 4 lineages, a degenerate B2.L2 composition equal to the step counter `scan(\x y. add(x, 1), 0, x0)` |
+| Validated R* / L* items from incomplete attempts (P) | **0**. Every L / R proposal of the P cohorts (Full 28, Fixed-M0 55) had provisional support and every one was refused for insufficient evidence, so Full and Fixed-M0 end with **no R or L items at all** |
+| Full − SolvedOnly | withheld +4.2 pp pooled, CI [0, 12.5] (1 of 3 repetitions positive: SolvedOnly_r0 lost A.A4.L1 to its learned cost reweight); ce_fresh 0; untouched 0 |
+| Fixed − SolvedOnly, the pure P contrast | 0 on every panel and in every repetition |
+| Full − Init / Placebo / Scratch, per panel | **0.0** on withheld, ce_fresh and untouched, in every repetition |
+| Untouched C5, C6, E5, E6 | **0 of 16 for every arm** |
+| Meta-edits adopted (full rollouts) | **0 of 3**, so M* = M0 (identical digests) |
+| Improver panel (12 tasks) | M*, M0, M_rand and the pre-meta Full all score **0 of 12** in every repetition |
+| Silent errors | 1 in most arms, the same task: E.E1.L1.43708, `coalesce(maxl(x0), head(x1))`, made by the Init-equivalent configuration under the locked barrier. 0 in SolvedOnly_r0, Rand_r1 and Rand_r2 |
+
+### 1.2 Why the arms coincide
+
+Each Full endpoint is π0 (no cost or effort change was admitted), R = L = ∅ and M = M0. P holds 40 entries, but the solver
+never uses P.
+* Full, RL, Pol, Placebo and Init are therefore **the same solver**, and they produce identical rows.
+* The only deviations are:
+  * Fixed_r0 and SolvedOnly_r0: an admitted counts-based cost reweight lost A.A4.L1 (2 → 1 solve);
+  * Rand_r2: a random R item changed the C2 program and lost A.A4.L1;
+  * Rand_r1: differs on the E1 task and has no silent error.
+* The evaluation solves are A.A4.L1.43600 (projection) and C.C2.L2.43702 (double reflection). Init and Scratch solve both.
+
+### 1.3 Incomplete experience: what happened, causally
+
+* **P filled to its cap of 40 in every P lineage.** The best partial candidates are mostly low-information fits: zero
+  lists, constants passed through input-reading wrappers, prefix-matching counters. Typical scores are 0.6–0.97 on
+  outputs that are mostly zero.
+* **The anti-unifier found patterns in this material.** Because P entries support almost every pattern, every proposal
+  became provisional, including patterns that the solved archive alone would have supported (SolvedOnly r0 admitted
+  `sum(map(\x. mul(x, x), $0))`, `map(\x. mul(x, x), $0)` and R `map(\x. mul(x, x), $0)`; r1 admitted R `mul($0, 4)`).
+* **Provisional items needed positive admission evidence**: an exact-solve gain, or a graded gain of at least 0.05. In 83 of
+  83 cases they did not get it.
+* **Net effect:** P **crowded out** validated library growth rather than adding to it. It also cost search time: the P
+  cohorts ran 55–71 source tasks against SolvedOnly's 66–71, because partial scoring runs on every candidate.
+* **Answer to the causal question:** in this design, learning from incomplete attempts gave **0** validated abstractions and
+  **0** downstream solve gain.
+* **What could be different:** a provisional tag that does not override solved-only support, and partial candidates
+  filtered for exact matches on held-out labels. Those are not tested here.
+
+### 1.4 Draft seeding against pure discovery
+
+| | pure-synthesis F tasks (odd seeds) | draft-repair F tasks |
+|---|---|---|
+| Full r0 / r1 / r2 source solves | 4/14, 4/13, 4/13 | 4/13, 7/18, 2/9 |
+
+* By solution origin, Full's source solves were 9 / 5 / 8 `pure_synthesis` against 2 / 6 / 2 `draft_subtree`.
+* No R / L item survived in Full. SolvedOnly's three items were all `pure_synthesis`.
+* In this phase, pure input-output synthesis is as productive as draft repair, so the Phase 1 World F concentration is not
+  explained by draft seeding alone.
+
+### 1.5 Full-trajectory improver evolution
+
+* There were three full-rollout comparisons, one per Full lineage (each 2 × 24 s plus 3 evaluation tasks):
+
+  | repetition | edit | result |
+  |---|---|---|
+  | r0 | `archive.min_score = 0.2` | rollouts identical |
+  | r1 | `schedule.period = 10` | curricula **diverged**: the edited improver ran 42 tasks and 0 rounds, against 17 tasks and 1 round |
+  | r2 | `add propose_L(max_size = 6)` | rollouts identical |
+
+* All three scored equally on the held-out rollout-evaluation tasks: 0 solved, the same graded credit. None was adopted.
+* M* = M0. The Stage 3 M* and M0 clones are digest-identical, and M_rand admitted random items. All score 0 of 12 on the
+  improver panel.
+* The rollout harness now really executes the edited curriculum, schedule and admission, which fixes the Phase 1 flaw. But
+  at 24 s per rollout and 3 evaluation tasks, learning progress is too small for any edit to separate on held-out tasks.
+
+### 1.6 Transfer separation (family-clustered, pooled over repetitions, 95 % cluster bootstrap)
+
+| panel | Full − Init | Full − Placebo | Full − Scratch | Full − SolvedOnly |
+|---|---|---|---|---|
+| (a) withheld (A4, B4, D1, F4; 8 tasks) | 0.0 [0, 0] | 0.0 [0, 0] | 0.0 [0, 0] | +4.2 pp [0, 12.5] |
+| (b) ce_fresh C1–C4 / E1–E4 (8 tasks) | 0.0 | 0.0 | 0.0 | 0.0 |
+| (c) untouched C5, C6, E5, E6 (16 tasks) | 0.0 | 0.0 | 0.0 | 0.0 |
+
+Every arm's solve rate is 2 of 32. Untouched-mechanism transfer: none, because nothing transferable was learned and the
+initial solver solves none of the 16.
+
+### 1.7 Budget and protection
+
+* **Budget:**
+
+  | stage | used (s) | ceiling (s) |
+  |---|---|---|
+  | s1 | 422 | 450 |
+  | src | 1,291 | 1,450 |
+  | meta | 381 | 450 |
+  | eval | 503 | 650 |
+  | rep | 1 at this commit | 200 |
+
+  * Phase 2 total: **2,598 of 3,200 s**. The carried balance is **4,618 s**, at least 4,016 s as required.
+  * CPU is within 4 s of wall time in every stage.
+* **Protection after-check:** zero violations; all manifests show 0 differences; checkers v1–v5 are pinned; `main` is at
+  `d7ac8c5`; Phase 1 campaign files and artifacts are unchanged.
+* The one-use panels were claimed exactly once, under the fcntl lock (4 claim rows, `run_id` `agi2-eval`).
+
+### 1.8 Bookkeeping events (disclosed)
+
+1. **Full_r2 crash:** `proposal_round` drew admission seeds before its budget check. Near the end of the budget it retried on
+   every task, and Full_r2 exhausted its 200-seed stream and crashed at 103.8 s of 114.
+   * Its endpoint is the last atomic save (70 tasks, at most 4 tasks lost), marked final with the crash reason. It was not
+     rerun.
+   * The fix (generate proposals, check the budget, then draw the seeds) is behaviour-identical apart from the crash. It was
+     applied before the 9 control lineages ran.
+   * Full_r0 and Full_r1 ran the pre-fix code; they wasted seeds at their ends but did not crash.
+2. **Protocol-check replacement:** before any outcome, the withheld target seed 43614 (a behavioural copy of a possible source
+   task) was replaced by 43664.
+3. **Scratch ≡ Init:** the development tuning rule chose Init's configuration, so their rows are shared.
+4. **Lineage budget:** 120 s per lineage instead of 150 s, to fit the required 4th (SolvedOnly) cohort.
+
+### 1.9 Closing answers
+
+1. **Expressivity against credit assignment in B and D.**
+   * The audit found one true language-bound block: the fixed lambda cap excluded every B2–B4 and D1–D3 reference body. It
+     was repaired with lazy lagged lambda pools.
+   * Every B / D reference is expressible.
+   * The binding constraint is search budget under the π0 prior: the references cost 11–41, against cost 9–10 reachable in
+     0.6 s.
+   * **0 of the B / D evaluation tasks** were solved after the fix: 0 of 4 here (N = 32), against Phase 1's 0 of 12.
+2. **Causal value of incomplete experience:** **0** validated items from P. Full − SolvedOnly is +4.2 pp on withheld (one
+   repetition, from a cost reweight that SolvedOnly admitted) and 0 elsewhere. The pure P contrast, Fixed − SolvedOnly, is 0.
+   As designed, P blocked library growth instead of feeding it.
+3. **Draft seeding against pure discovery:** source solves split 22 pure against 10 draft across the Full lineages. No
+   draft-origin item survived. Pure synthesis is not less productive than repair here.
+4. **Full-trajectory improvers:** 0 of 3 edits were adopted. One edit visibly changed the curriculum and schedule in its
+   rollout, but no candidate won on held-out tasks, so M* = M0. M*, M0 and M_rand are all 0 of 12 on the panel.
+5. **Transfer separation:** withheld, fresh-seed C / E and untouched C5 / C6 / E5 / E6 all show **0.0** difference against
+   Init, Placebo and Scratch, in every repetition.
+
+**Frontier, and the next experiment.** Learning is limited by a search budget that solves about 15 % of atomic source tasks
+and about 0 % of compositions, so every learning signal (solves, admission, rollouts) is too sparse to move anything. The
+next step should change that budget, not add more machinery.
+* Raise the per-task CPU cap on *source* learning only, for example to 3 s with the evaluation cap kept at 0.6 s, at equal
+  total source seconds.
+* Let P items count as provisional only when they lack solved-only support.
+* Test whether the denser solved archive then produces validated items that move the B2 / D1 / D2 references (cost 16–22)
+  into reach.
