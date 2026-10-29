@@ -1,0 +1,385 @@
+{
+ "j": 16,
+ "name": "spec_MUL",
+ "signature": "995f0caf90669df0",
+ "space_sizes": [
+  57,
+  57,
+  57
+ ],
+ "rows": [
+  {
+   "seed": 29100,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 1.025,
+   "cpu_s": 1.028,
+   "queries": 1354,
+   "explained": 1.0,
+   "updates": [
+    {
+     "(1, 'ADD')": "(acc + x)",
+     "(2, 'ADD')": "(acc + x)",
+     "(1, 'SETTLE')": "(acc + x)",
+     "(2, 'OPEN')": "(x - acc)",
+     "(2, 'SETTLE')": "(acc * x)",
+     "(3, 'ADD')": "0",
+     "(3, 'CLOSE')": "(acc + x)"
+    }
+   ]
+  },
+  {
+   "seed": 29101,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 1.031,
+   "cpu_s": 1.0369,
+   "queries": 1286,
+   "explained": 1.0,
+   "updates": [
+    {
+     "(0, 'FLUSH')": "(acc - x)",
+     "(0, 'OPEN')": "0",
+     "(1, 'SETTLE')": "1",
+     "(1, 'TICK')": "0",
+     "(2, 'RELEASE')": "(x - acc)",
+     "(3, 'RELEASE')": "(acc * x)",
+     "(3, 'TICK')": "0",
+     "(0, 'RELEASE')": "(acc * x)",
+     "(1, 'FLUSH')": "(acc - x)"
+    }
+   ]
+  },
+  {
+   "seed": 29100,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.141,
+   "cpu_s": 1.1434,
+   "queries": 132,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29101,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.002,
+   "cpu_s": 0.0031,
+   "queries": 88,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29100,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.427,
+   "cpu_s": 0.4285,
+   "queries": 108,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29101,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.002,
+   "cpu_s": 0.0034,
+   "queries": 75,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29102,
+   "family": "MUL",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.114,
+   "cpu_s": 1.1154,
+   "queries": 129,
+   "explained": 1.0,
+   "updates": null
+  },
+  {
+   "seed": 29103,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 0.187,
+   "cpu_s": 0.1909,
+   "queries": 811,
+   "explained": 0.667,
+   "updates": [
+    {
+     "(0, 'OPEN')": "(acc + x)",
+     "(0, 'SETTLE')": "0",
+     "(1, 'ADD')": "(acc + x)",
+     "(1, 'AMEND')": "(acc * x)"
+    },
+    {
+     "(0, 'AMEND')": "(acc + x)",
+     "(0, 'OPEN')": "(acc + x)",
+     "(0, 'SETTLE')": "(acc + 1)",
+     "(1, 'AMEND')": "(acc * x)",
+     "(1, 'SETTLE')": "(acc + x)"
+    }
+   ]
+  },
+  {
+   "seed": 29104,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 0.047,
+   "cpu_s": 0.0503,
+   "queries": 610,
+   "explained": 1.0,
+   "updates": [
+    {
+     "(1, 'FLUSH')": "0",
+     "(1, 'TICK')": "(acc - x)",
+     "(1, 'VOID')": "(acc + x)"
+    }
+   ]
+  },
+  {
+   "seed": 29105,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 0.044,
+   "cpu_s": 0.048,
+   "queries": 500,
+   "explained": 1.0,
+   "updates": [
+    {
+     "(1, 'AMEND')": "0",
+     "(1, 'VOID')": "x"
+    }
+   ]
+  },
+  {
+   "seed": 29106,
+   "family": "MUL",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.076,
+   "cpu_s": 1.0775,
+   "queries": 190,
+   "explained": 0.647,
+   "updates": null
+  },
+  {
+   "seed": 29107,
+   "family": "MUL",
+   "exact": true,
+   "silent": false,
+   "accepted": true,
+   "outcome": "accepted",
+   "learner_cpu_s": 0.071,
+   "cpu_s": 0.0752,
+   "queries": 530,
+   "explained": 0.75,
+   "updates": [
+    {
+     "(0, 'FLUSH')": "1",
+     "(1, 'ADD')": "0",
+     "(1, 'FLUSH')": "x",
+     "(1, 'OPEN')": "(acc + x)",
+     "(2, 'FLUSH')": "(acc * x)"
+    },
+    {
+     "(0, 'FLUSH')": "x",
+     "(1, 'ADD')": "0",
+     "(2, 'FLUSH')": "0"
+    }
+   ]
+  },
+  {
+   "seed": 29102,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.005,
+   "cpu_s": 0.0063,
+   "queries": 77,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29103,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.082,
+   "cpu_s": 1.0833,
+   "queries": 105,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29104,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.001,
+   "cpu_s": 0.0028,
+   "queries": 68,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29105,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.07,
+   "cpu_s": 1.0712,
+   "queries": 93,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29106,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.004,
+   "cpu_s": 0.0057,
+   "queries": 80,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29107,
+   "family": "ADDC",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.17,
+   "cpu_s": 1.1717,
+   "queries": 109,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29102,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.279,
+   "cpu_s": 0.2816,
+   "queries": 104,
+   "explained": 0.333,
+   "updates": null
+  },
+  {
+   "seed": 29103,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.128,
+   "cpu_s": 1.1296,
+   "queries": 135,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29104,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.105,
+   "cpu_s": 1.1096,
+   "queries": 108,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29105,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.002,
+   "cpu_s": 0.0036,
+   "queries": 90,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29106,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "cap_timeout",
+   "learner_cpu_s": 1.133,
+   "cpu_s": 1.135,
+   "queries": 161,
+   "explained": 0.0,
+   "updates": null
+  },
+  {
+   "seed": 29107,
+   "family": "SUBH",
+   "exact": false,
+   "silent": false,
+   "accepted": false,
+   "outcome": "register_search_failed",
+   "learner_cpu_s": 0.052,
+   "cpu_s": 0.0534,
+   "queries": 138,
+   "explained": 0.0,
+   "updates": null
+  }
+ ],
+ "cpu_s": 13.256
+}
