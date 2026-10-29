@@ -1,0 +1,16 @@
+........F....                                                            [100%]
+=================================== FAILURES ===================================
+__________________ test_antiunify_proposes_shared_abstraction __________________
+
+    def test_antiunify_proposes_shared_abstraction():
+        p1 = ("p", "sum", ("p", "filter", ("lam", "i", ("p", "lt", ("c", 3), ("a", 0))), ("x", 0)))
+        p2 = ("p", "sum", ("p", "filter", ("lam", "i", ("p", "lt", ("c", 3), ("a", 0))), ("p", "rev", ("x", 0))))
+        arch = [dict(tid="t1", sig=["l"], prog=p1), dict(tid="t2", sig=["l"], prog=p2)]
+        st = ST.empty_state(I.M0)
+        props = I.propose_L(arch, st, dict(method="antiunify", min_uses=2, max_size=8, max_holes=2, top_k=3), random.Random(0), set())
+>       assert props and all(p["holes"] and "x0" not in S.to_src(p["body"]) for p in props)
+E       assert ([])
+
+tests/test_agi_campaign.py:110: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agi_campaign.py::test_antiunify_proposes_shared_abstraction

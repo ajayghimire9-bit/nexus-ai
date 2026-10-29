@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi_dev.py", line 114, in <module>
+    sys.exit({"worlds": worlds, "solve": solve, "timing": timing}[m](*sys.argv[2:]) or 0)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi_dev.py", line 27, in worlds
+    t = make_task(w, f, lv, s, role, SD.partners_for(w, f, role))
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign/worlds/__init__.py", line 12, in make_task
+    return build_task(WORLDS, world, family, level, seed, role, partners, WORLDS[world].Q_BUDGET)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign/worlds/base.py", line 215, in build_task
+    raise RuntimeError(f"could not build {world}.{family}.L{level}.{seed}")
+RuntimeError: could not build D.D4.L1.30060

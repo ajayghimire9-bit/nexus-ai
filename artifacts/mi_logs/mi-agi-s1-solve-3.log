@@ -1,0 +1,65 @@
+A.A1.L1.30500 filter[eq(f3,2)] submitted solved  0.3343 84753 10 0 filterr((\x. eq(2, last(x))), x0)
+A.A1.L2.30501 group[k=f0,sum f1]<filter[eq(f0,3)]> abstain_timeout   0.6008 180480 10 0 None
+A.A1.L3.30502 cooldown[trig==3,k=3]<col1<filter[eq(f0, submitted  SILENT 0.006 862 4 0 range(0)
+A.A1.L4.30503 arith[3x+0]<len<group[k=f1,count]<filter abstain_timeout   0.6005 213760 10 1 None
+A.A2.L1.30504 group[k=f1,sum f2] abstain_timeout   0.6016 208640 10 0 None
+A.A2.L2.30505 group[k=f0,sum f1]<group[k=f1*10+f0,sum  abstain_timeout   0.6012 211456 10 0 None
+A.A2.L3.30506 since[==3]<col0<group[k=f2,sum f0]>> abstain_timeout   0.6001 182016 10 0 None
+A.A2.L4.30507 arith[3x+3]<len<group[k=f1,count]<group[ abstain_timeout   0.6005 218112 10 0 None
+A.A3.L1.30508 semijoin[f0 in T2.f0] abstain_timeout   0.6021 136448 9 0 None
+A.A3.L2.30509 group[k=f0,sum f1]<semijoin[f0 in T2.f2] abstain_timeout   0.603 135680 9 0 None
+A.A3.L3.30510 arith[2x+2]<len<semijoin[f1 in T2.f0]>> submitted  SILENT 0.0957 11477 7 0 maxl(row(x1, 0))
+A.A3.L4.30511 fold[horner,k=1]<col1<group[k=f0,sum f1] submitted  SILENT 0.0923 18628 8 0 minl(row(x1, 4))
+A.A4.L1.30512 project[f2,f1] submitted solved  0.3223 80846 10 0 mapr((\x. rev(drop(x, 1))), x0)
+A.A4.L2.30513 group[k=f1,sum f0]<route[f0<5?(f3,f1):(f abstain_timeout   0.6002 217600 10 0 None
+A.A4.L3.30514 fold[horner,k=3]<col0<project[f2,f1]>> abstain_timeout   0.6006 175104 10 0 None
+A.A4.L4.30515 arith[4x+0]<len<group[k=f1,sum f0]<proje abstain_timeout   0.6011 243968 10 0 None
+B.B1.L1.30516 window[win2] abstain_timeout   0.6008 218368 9 0 None
+B.B1.L2.30517 latch[set>4]<window[win2]> abstain_timeout   0.6021 273920 10 0 None
+B.B1.L3.30518 fold[max_plus,k=1]<window[rundiff]> abstain_timeout   0.6005 290048 10 0 None
+B.B1.L4.30519 arith[2x+2]<sum<since[==5]<window[runmax abstain_timeout   0.6001 309504 10 0 None
+B.B2.L1.30520 hysteresis[on>=5,off<=3] submitted  SILENT 0.1491 47973 9 0 map((\x. div(x, 5)), x0)
+B.B2.L2.30521 latch[set>5]<hysteresis[on>=6,off<=3]> submitted solved  0.0103 2534 5 0 map((\x. 0), x0)
+B.B2.L3.30522 arith[2x+0]<sum<hysteresis[on>=5,off<=3] abstain_timeout   0.6 249856 10 0 None
+B.B2.L4.30523 arith[4x+2]<sum<cooldown[trig==1,k=3]<hy abstain_timeout   0.6014 292864 10 0 None
+B.B3.L1.30524 since[==2] abstain_timeout   0.6001 293888 10 0 None
+B.B3.L2.30525 latch[set>2]<cooldown[trig==1,k=2]> submitted solved  0.0112 2534 5 0 map((\x. 0), x0)
+B.B3.L3.30526 arith[3x+1]<sum<cooldown[trig==2,k=3]>> abstain_timeout   0.6009 218112 9 0 None
+B.B3.L4.30527 arith[3x+0]<sum<cooldown[trig==1,k=3]<si abstain_timeout   0.6002 329728 10 0 None
+B.B4.L1.30528 registers[delayed,kind=0] abstain_timeout   0.6013 212736 10 0 None
+B.B4.L2.30529 hysteresis[on>=3,off<=1]<registers[reset abstain_timeout   0.6017 150784 10 0 None
+B.B4.L3.30530 arith[2x+2]<sum<registers[delayed,kind=1 abstain_timeout   0.6001 189440 10 0 None
+B.B4.L4.30531 fold[sumsq,k=2]<cooldown[trig==5,k=3]<re submitted  SILENT 0.0002 32 2 0 0
+D.D1.L1.30532 reach[k=1] abstain_timeout   0.6049 170752 9 0 None
+D.D1.L2.30533 fold[sum_gt,k=2]<reach[k=1]> abstain_timeout   0.6002 180992 9 0 None
+D.D1.L3.30534 fold[sum_gt,k=3]<reach[k=1]> abstain_timeout   0.6004 199168 9 0 None
+D.D1.L4.30535 since[==2]<hysteresis[on>=4,off<=1]<reac abstain_timeout   0.6001 304384 10 0 None
+D.D2.L1.30536 unlock[new] abstain_timeout   0.6004 262144 10 0 None
+D.D2.L2.30537 fold[count_eq,k=3]<unlock[all]> submitted  SILENT 0.2 57992 9 2 mod(head(flat(x0)), 2)
+D.D2.L3.30538 hysteresis[on>=3,off<=1]<unlock[all]> abstain_timeout   0.6009 233984 10 0 None
+D.D2.L4.30539 arith[4x+0]<fold[sum_gt,k=4]<unlock[all] abstain_timeout   0.6002 282368 10 2 None
+D.D3.L1.30540 fuel[steps,B=6] submitted  SILENT 0.0617 18619 8 0 min2(2, nth(x0, 2))
+D.D3.L2.30541 arith[3x+0]<fuel[steps,B=6]> abstain_timeout   0.6002 290560 10 0 None
+D.D3.L3.30542 arith[3x+0]<fuel[left,B=5]> abstain_timeout   0.6002 289792 10 0 None
+D.D3.L4.30543 arith[2x+1]<arith[2x+1]<fuel[steps,B=8]> abstain_timeout   0.6003 321792 10 0 None
+D.D4.L1.30544 plan[stages=0] abstain_timeout   0.6018 203776 10 0 None
+D.D4.L2.30545 plan[stages=1] abstain_timeout   0.6008 200192 10 0 None
+D.D4.L3.30546 plan[stages=1] abstain_timeout   0.6009 201216 10 0 None
+D.D4.L4.30547 plan[stages=2] abstain_timeout   0.6006 209408 10 0 None
+F.F1.L1.30548 arith[diff,k=4] submitted solved  0.0159 7156 5 0 sub(x0, mul(x1, 4))
+F.F1.L2.30549 arith[4x+1]<arith[modprod,k=4]> abstain_timeout   0.6001 499968 9 0 None
+F.F1.L3.30550 arith[2x+3]<arith[scale_sum,k=3]> submitted solved  0.2349 125968 9 0 add(add(add(x0, x1), 3), mul(add(x0, x1), 5))
+F.F1.L4.30551 arith[3x+1]<arith[3x+1]<arith[scale_sum, abstain_timeout   0.6002 612608 9 0 None
+F.F2.L1.30552 guard[both,k=2] submitted  SILENT 0.0002 46 2 0 add(x0, x1)
+F.F2.L2.30553 arith[2x+1]<guard[both,k=2]> abstain_timeout   0.6003 432384 9 0 None
+F.F2.L3.30554 arith[3x+3]<guard[branch,k=4]> abstain_timeout   0.6002 408064 9 0 None
+F.F2.L4.30555 arith[3x+1]<arith[3x+1]<guard[branch,k=5 abstain_timeout   0.6002 451072 9 0 None
+F.F3.L1.30556 fold[horner,k=1] submitted solved  0.0038 1007 4 0 sum(x0)
+F.F3.L2.30557 arith[4x+3]<fold[count_eq,k=4]> submitted  SILENT 0.0004 101 3 0 3
+F.F3.L3.30558 arith[3x+2]<fold[sumsq,k=3]> abstain_timeout   0.6012 271104 9 0 None
+F.F3.L4.30559 arith[2x+3]<arith[2x+3]<fold[sumsq,k=1]> abstain_timeout   0.6019 285952 9 0 None
+F.F4.L1.30560 compose[filter_rev,k=4] abstain_timeout   0.6001 259584 9 0 None
+F.F4.L2.30561 fold[sumsq,k=1]<compose[filter_rev,k=1]> abstain_timeout   0.6006 256000 9 0 None
+F.F4.L3.30562 latch[set>2]<compose[shift_sorted,k=1]> abstain_timeout   0.6006 260096 9 0 None
+F.F4.L4.30563 arith[3x+2]<fold[max_plus,k=4]<compose[m abstain_timeout   0.6006 233728 9 0 None
+{'n': 64, 'solved': 7, 'silent': 9, 'mean_cpu': 0.475}

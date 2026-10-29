@@ -1,0 +1,20 @@
+{
+ "grant": "no new grant: the campaign charges at most 4,500 s of the carried mi-track balance (10,694 s at the start, scripts/mi_budget.py)",
+ "unit": "ledger wall_s per metered child (scripts/mi_exec.py); child_cpu_s recorded separately",
+ "ceilings": {
+  "s1": 700,
+  "src": 1800,
+  "meta": 600,
+  "eval": 1000,
+  "rep": 400
+ },
+ "transfers": [
+  {
+   "from": "s1",
+   "to": "eval",
+   "s": 100,
+   "when": "2026-10-29, at the protocol commit, before any source-learning or target outcome",
+   "why": "Stage 1 used 578 of 700 s; margin for resuming genuinely missing evaluation records after a crash"
+  }
+ ]
+}

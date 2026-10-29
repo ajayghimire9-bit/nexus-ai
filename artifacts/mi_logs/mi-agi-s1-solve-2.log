@@ -1,0 +1,17 @@
+A.A1.L1.30500 filter[eq(f3,2)] submitted solved  0.3311 84753 10 0 filterr((\x. eq(2, last(x))), x0)
+A.A2.L1.30501 group[k=f2*10+f0,sum f3] abstain_timeout   0.6008 211968 10 0 None
+A.A3.L1.30502 semijoin[f2 in T2.f1] abstain_timeout   0.6 150016 10 0 None
+A.A4.L1.30503 project[f1,f0] submitted solved  0.3207 79354 10 0 mapr((\x. rev(take(x, 2))), x0)
+B.B1.L1.30504 window[runsum] submitted solved  0.201 71517 9 0 scan((\x y. add(x, y)), 0, x0)
+B.B2.L1.30505 hysteresis[on>=6,off<=3] abstain_timeout   0.6001 297472 10 0 None
+B.B3.L1.30506 cooldown[trig==2,k=2] abstain_timeout   0.601 306944 10 0 None
+B.B4.L1.30507 registers[total,kind=1] abstain_timeout   0.6012 210944 10 0 None
+D.D1.L1.30508 reach[k=1] submitted solved  0.5886 172303 10 0 uniq(cons(x1, row(x0, x1)))
+D.D2.L1.30509 unlock[all] abstain_timeout   0.6001 242688 10 0 None
+D.D3.L1.30510 fuel[left,B=7] abstain_timeout   0.6007 303872 10 1 None
+D.D4.L1.30511 plan[stages=0] abstain_timeout   0.6007 204544 10 0 None
+F.F1.L1.30512 arith[scale_sum,k=4] submitted solved  0.3216 199100 9 0 mul(4, add(x0, x1))
+F.F2.L1.30513 guard[both,k=3] submitted  SILENT 0.6001 413440 9 2 ite_i(lt(x1, 6), add(x0, x1), mul(x0, x1))
+F.F3.L1.30514 fold[sum_gt,k=3] abstain_timeout   0.6002 360960 9 0 None
+F.F4.L1.30515 compose[shift_sorted,k=3] submitted solved  0.157 41619 8 0 map((\x. sub(x, 1)), map((\x. add(x, 4)), sort(x0)))
+{'n': 16, 'solved': 6, 'silent': 1, 'mean_cpu': 0.495}

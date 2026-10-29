@@ -1,0 +1,71 @@
+{
+ "Full_r2": [
+  {
+   "id": "L0",
+   "orig": "groupsum((\\x. head(x)), (\\x. last(x)), $0)",
+   "placebo": "prod($0, sortby((\\x. 5), transpose($0)))",
+   "size": [
+    6,
+    6
+   ]
+  }
+ ],
+ "Full_r2_episode": "abstain_timeout",
+ "Random-Proposal_r2": [
+  {
+   "id": "L0",
+   "orig": "groupsum((\\x. 3), (\\x. 4), $0)",
+   "placebo": "prod($0, revL($0))",
+   "size": [
+    4,
+    4
+   ]
+  },
+  {
+   "id": "L1",
+   "orig": "take($0, coalesce(1, 1))",
+   "placebo": "take(sort($0), sum($0))",
+   "size": [
+    5,
+    5
+   ]
+  },
+  {
+   "id": "L2",
+   "orig": "repeatL(revL($0), coalesce(1, 2))",
+   "placebo": "groupsum((\\x. 1), (\\x. head(x)), transpose($0))",
+   "size": [
+    6,
+    6
+   ]
+  },
+  {
+   "id": "L3",
+   "orig": "revL(revL($0))",
+   "placebo": "prod($0, $0)",
+   "size": [
+    3,
+    3
+   ]
+  },
+  {
+   "id": "R4",
+   "orig": "revL($0)",
+   "placebo": "transpose($0)",
+   "size": [
+    2,
+    2
+   ]
+  },
+  {
+   "id": "R5",
+   "orig": "mem(0, $0)",
+   "placebo": "mem(1, $0)",
+   "size": [
+    3,
+    3
+   ]
+  }
+ ],
+ "Random-Proposal_r2_episode": "abstain_timeout"
+}

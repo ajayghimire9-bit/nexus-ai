@@ -1,0 +1,16 @@
+.............F...........                                                [100%]
+=================================== FAILURES ===================================
+______________________ test_seed_ranges_fresh_and_one_use ______________________
+
+    def test_seed_ranges_fresh_and_one_use():
+        mine = {k: r for k, r in R.REGISTRY.items() if k[0] == "mi3"}
+        assert len(mine) == 6
+        others = [r for k, r in R.REGISTRY.items() if k[0] != "mi3"]
+>       assert min(r.start for r in mine.values()) >= max(r.stop for r in others)
+E       assert 28400 >= 36600
+E        +  where 28400 = min(<generator object test_seed_ranges_fresh_and_one_use.<locals>.<genexpr> at 0x1080e2bc0>)
+E        +  and   36600 = max(<generator object test_seed_ranges_fresh_and_one_use.<locals>.<genexpr> at 0x108d99600>)
+
+tests/test_mi3.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_mi3.py::test_seed_ranges_fresh_and_one_use - assert 28400 >...

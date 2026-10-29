@@ -1,0 +1,17 @@
+
+==================================== ERRORS ====================================
+_________________ ERROR collecting tests/test_agi_campaign.py __________________
+ImportError while importing test module '/Users/ajayghimire/.claude-worktrees/nexus-s456/tests/test_agi_campaign.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_agi_campaign.py:13: in <module>
+    from nexus.campaign.worlds import FAMILIES, make_task, verify, QueryBudgetExceeded  # noqa: E402,F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'QueryBudgetExceeded' from 'nexus.campaign.worlds' (/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign/worlds/__init__.py)
+=========================== short test summary info ============================
+ERROR tests/test_agi_campaign.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!

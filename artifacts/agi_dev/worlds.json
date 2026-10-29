@@ -1,0 +1,1695 @@
+{
+ "n": 96,
+ "bad": [],
+ "rows": [
+  {
+   "tid": "A.A1.L1.30000",
+   "descr": "filter[eq(f3,5)]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A1.L2.30001",
+   "descr": "group[k=f1,count]<filter[eq(f0,4)&lt(f2,2)]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A1.L3.30002",
+   "descr": "latch[set>4]<col1<filter[eq(f3,5)]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A1.L4.30003",
+   "descr": "arith[2x+2]<len<group[k=f1,sum f0]<filter[ge(f2,1)]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A2.L1.30004",
+   "descr": "group[k=f0,count]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A2.L2.30005",
+   "descr": "group[k=f0,count]<group[k=f1,count]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A2.L3.30006",
+   "descr": "arith[3x+1]<len<group[k=f1,sum f0]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A2.L4.30007",
+   "descr": "since[==4]<col0<group[k=f1,sum f0]<group[k=f0*10+f2,sum f1]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A3.L1.30008",
+   "descr": "join[f1==T2.f2]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A3.L2.30009",
+   "descr": "group[k=f0,sum f1]<semijoin[f0 in T2.f2]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A3.L3.30010",
+   "descr": "cooldown[trig==2,k=3]<col1<semijoin[f1 in T2.f1]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A3.L4.30011",
+   "descr": "arith[4x+3]<len<group[k=f0,count]<semijoin[f0 in T2.f0]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A4.L1.30012",
+   "descr": "project[f2,f0]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A4.L2.30013",
+   "descr": "group[k=f0,count]<route[f1<5?(f0,f1):(f1,f0)]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A4.L3.30014",
+   "descr": "arith[3x+0]<len<project[f3,f1]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "A.A4.L4.30015",
+   "descr": "arith[3x+0]<len<group[k=f0,sum f1]<route[f3<1?(f3,f1):(f1,f3)]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "B.B1.L1.30016",
+   "descr": "window[runsum]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B1.L2.30017",
+   "descr": "since[==3]<window[runmax]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B1.L3.30018",
+   "descr": "arith[3x+2]<sum<window[rundiff]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B1.L4.30019",
+   "descr": "fold[count_eq,k=2]<cooldown[trig==1,k=2]<window[runmax]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B2.L1.30020",
+   "descr": "latch[set>3]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B2.L2.30021",
+   "descr": "since[==4]<latch[set>3]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B2.L3.30022",
+   "descr": "arith[4x+3]<sum<hysteresis[on>=5,off<=2]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B2.L4.30023",
+   "descr": "fold[sumsq,k=2]<since[==5]<hysteresis[on>=4,off<=1]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B3.L1.30024",
+   "descr": "since[==2]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B3.L2.30025",
+   "descr": "cooldown[trig==4,k=3]<since[==2]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B3.L3.30026",
+   "descr": "arith[3x+0]<sum<cooldown[trig==1,k=3]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B3.L4.30027",
+   "descr": "fold[sumsq,k=1]<since[==2]<cooldown[trig==1,k=3]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "B.B4.L1.30028",
+   "descr": "registers[delayed,kind=0]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 303
+  },
+  {
+   "tid": "B.B4.L2.30029",
+   "descr": "cooldown[trig==1,k=2]<registers[delayed,kind=1]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 303
+  },
+  {
+   "tid": "B.B4.L3.30030",
+   "descr": "fold[count_eq,k=3]<registers[delayed,kind=0]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 303
+  },
+  {
+   "tid": "B.B4.L4.30031",
+   "descr": "fold[max_plus,k=1]<since[==3]<registers[delayed,kind=1]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 303
+  },
+  {
+   "tid": "C.C1.L1.30032",
+   "descr": "stats[largest]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C1.L2.30033",
+   "descr": "arith[3x+0]<stats[occupied_rows]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C1.L3.30034",
+   "descr": "arith[2x+0]<stats[largest]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C1.L4.30035",
+   "descr": "arith[2x+3]<arith[2x+3]<stats[n_components]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C2.L1.30036",
+   "descr": "transform[recolour,1->2]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C2.L2.30037",
+   "descr": "act[gravity_left]<transform[rot90]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C2.L3.30038",
+   "descr": "hysteresis[on>=4,off<=1]<col1<transform[rot90]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C2.L4.30039",
+   "descr": "group[k=f1,sum f0]<act[gravity_down]<transform[recolour,3->2]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C3.L1.30040",
+   "descr": "restore[ud]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C3.L2.30041",
+   "descr": "act[shift_down]<restore[fill]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C3.L3.30042",
+   "descr": "group[k=f0*10+f1,sum f1]<restore[ud]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C3.L4.30043",
+   "descr": "cooldown[trig==3,k=3]<col1<transform[recolour,2->4]<restore[ud]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C4.L1.30044",
+   "descr": "act[gravity_left]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C4.L2.30045",
+   "descr": "stats[largest]<act[shift_right]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C4.L3.30046",
+   "descr": "cooldown[trig==4,k=3]<col1<act[gravity_left]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "C.C4.L4.30047",
+   "descr": "group[k=f1,count]<act[shift_right]<act[gravity_down]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 2,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D1.L1.30048",
+   "descr": "reach[k=1]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D1.L2.30049",
+   "descr": "cooldown[trig==1,k=3]<reach[k=1]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D1.L3.30050",
+   "descr": "cooldown[trig==1,k=2]<reach[k=3]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D1.L4.30051",
+   "descr": "arith[4x+1]<sum<since[==2]<reach[k=2]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D2.L1.30052",
+   "descr": "unlock[all]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D2.L2.30053",
+   "descr": "fold[sumsq,k=2]<unlock[all]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D2.L3.30054",
+   "descr": "cooldown[trig==4,k=3]<unlock[new]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D2.L4.30055",
+   "descr": "arith[2x+0]<arith[2x+0]<sum<unlock[new]>>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D3.L1.30056",
+   "descr": "fuel[left,B=6]",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D3.L2.30057",
+   "descr": "arith[4x+2]<fuel[steps,B=7]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D3.L3.30058",
+   "descr": "arith[2x+0]<fuel[left,B=8]>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D3.L4.30059",
+   "descr": "arith[4x+3]<arith[4x+3]<fuel[steps,B=10]>>",
+   "protocol": "io",
+   "verify_kind": "finite_hidden",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D4.L1.30060",
+   "descr": "plan[stages=0]",
+   "protocol": "valid",
+   "verify_kind": "plan_validity",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D4.L2.30061",
+   "descr": "plan[stages=1]",
+   "protocol": "valid",
+   "verify_kind": "plan_validity",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D4.L3.30062",
+   "descr": "plan[stages=1]",
+   "protocol": "valid",
+   "verify_kind": "plan_validity",
+   "n_train": 5,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "D.D4.L4.30063",
+   "descr": "plan[stages=2]",
+   "protocol": "valid",
+   "verify_kind": "plan_validity",
+   "n_train": 3,
+   "q_budget": 4,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E1.L1.30064",
+   "descr": "switch[X=c0,Y<-c1]",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E1.L2.30065",
+   "descr": "resp[copy,3]<switch[X=c2,Y<-X]>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E1.L3.30066",
+   "descr": "arith[2x+2]<switch[X=c1,Y<-c0]>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E1.L4.30067",
+   "descr": "arith[2x+1]<resp[add,1]<switch[X=c2,Y<-c0]>>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 3,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E2.L1.30068",
+   "descr": "do[X=c0,Y=copy(X,c2)]",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E2.L2.30069",
+   "descr": "resp[max,2]<do[X=c0,Y=add(X,c2)]>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E2.L3.30070",
+   "descr": "arith[4x+2]<do[X=c0,Y=add(X,c0)]>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E2.L4.30071",
+   "descr": "arith[2x+1]<resp[add,2]<do[X=c0,Y=copy(X,c0)]>>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 3,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E3.L1.30072",
+   "descr": "chain[acc=2]",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E3.L2.30073",
+   "descr": "resp[add,2]<sum<chain[lag=2]>>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E3.L3.30074",
+   "descr": "fold[max_plus,k=2]<chain[lag=2]>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E3.L4.30075",
+   "descr": "arith[4x+1]<resp[mul,3]<sum<chain[lag=2]>>>",
+   "protocol": "io",
+   "verify_kind": "interventional",
+   "n_train": 3,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E4.L1.30076",
+   "descr": "control[Y=(3a+c0),goal=c3]",
+   "protocol": "valid",
+   "verify_kind": "interactive_control",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E4.L2.30077",
+   "descr": "control[Y=(1a+c1),goal=c3]",
+   "protocol": "valid",
+   "verify_kind": "interactive_control",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E4.L3.30078",
+   "descr": "control[Y=(1a+c0)+c2,goal=c3]",
+   "protocol": "valid",
+   "verify_kind": "interactive_control",
+   "n_train": 5,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "E.E4.L4.30079",
+   "descr": "control[Y=(3a+c1)+c2,goal=c3]",
+   "protocol": "valid",
+   "verify_kind": "interactive_control",
+   "n_train": 3,
+   "q_budget": 6,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 30
+  },
+  {
+   "tid": "F.F1.L1.30080",
+   "descr": "arith[diff,k=4]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F1.L2.30081",
+   "descr": "arith[3x+2]<arith[lin,k=2]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F1.L3.30082",
+   "descr": "arith[4x+2]<arith[scale_sum,k=2]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F1.L4.30083",
+   "descr": "arith[3x+3]<arith[3x+3]<arith[modprod,k=3]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F2.L1.30084",
+   "descr": "guard[branch,k=4]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F2.L2.30085",
+   "descr": "arith[4x+0]<guard[both,k=3]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F2.L3.30086",
+   "descr": "arith[3x+3]<guard[eqmax,k=4]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F2.L4.30087",
+   "descr": "arith[2x+0]<arith[2x+0]<guard[nested,k=2]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 130
+  },
+  {
+   "tid": "F.F3.L1.30088",
+   "descr": "fold[count_eq,k=4]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F3.L2.30089",
+   "descr": "arith[2x+1]<fold[sum_gt,k=4]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F3.L3.30090",
+   "descr": "arith[3x+1]<fold[sum_gt,k=3]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F3.L4.30091",
+   "descr": "arith[2x+0]<arith[2x+0]<fold[count_eq,k=3]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F4.L1.30092",
+   "descr": "compose[scaled_prefix,k=2]",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F4.L2.30093",
+   "descr": "arith[4x+0]<sum<compose[scaled_prefix,k=3]>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F4.L3.30094",
+   "descr": "since[==5]<compose[scaled_prefix,k=3]>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 5,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  },
+  {
+   "tid": "F.F4.L4.30095",
+   "descr": "arith[4x+2]<arith[4x+2]<sum<compose[shift_sorted,k=2]>>>",
+   "protocol": "io",
+   "verify_kind": "bounded_exhaustive+hidden",
+   "n_train": 3,
+   "q_budget": 3,
+   "deterministic": true,
+   "reference_passes": true,
+   "constant_passes": false,
+   "n_verify": 1141
+  }
+ ],
+ "interpreter": [
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 4))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 4)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mul(add(x0, x1), 2)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mul(add(x0, x1), 2)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 2), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 3))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 4), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 3), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 2))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 3), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mul(add(x0, x1), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 3), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 2)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 4))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 3), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 4))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 2)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 3))",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 2), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "add(mul(x0, 4), x1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 2)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "mod(mul(x0, x1), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F1",
+   "src": "sub(x0, mul(x1, 4))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(4, x0), lt(4, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(eq(x0, x1), 4, max2(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 5), x1, ite_i(lt(x1, 5), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 4), x1, ite_i(lt(x1, 4), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 2), x1, ite_i(lt(x1, 2), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, x1), add(x0, 4), sub(x1, x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, x1), add(x0, 5), sub(x1, x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(eq(x0, x1), 4, max2(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, x1), add(x0, 4), sub(x1, x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(2, x0), lt(2, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(4, x0), lt(4, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, x1), add(x0, 3), sub(x1, x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(eq(x0, x1), 5, max2(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 5), x1, ite_i(lt(x1, 5), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 5), x1, ite_i(lt(x1, 5), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 3), x1, ite_i(lt(x1, 3), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, x1), add(x0, 3), sub(x1, x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 3), x1, ite_i(lt(x1, 3), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(2, x0), lt(2, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(2, x0), lt(2, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 5), x1, ite_i(lt(x1, 5), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(lt(x0, 3), x1, ite_i(lt(x1, 3), x0, add(x0, x1)))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(eq(x0, x1), 2, max2(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(and(lt(4, x0), lt(4, x1)), mul(x0, x1), add(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F2",
+   "src": "ite_i(eq(x0, x1), 2, max2(x0, x1))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(filter((\\x. lt(2, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 2)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 1)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(filter((\\x. lt(4, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 1)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 4)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "fold((\\x y. add(mul(x, 4), y)), 0, x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 1)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 3)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "fold((\\x y. add(mul(x, 2), y)), 0, x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(filter((\\x. lt(4, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 2)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 4)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 3)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 4)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "maxl(map((\\x. add(x, 1)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "count((\\x. eq(x, 2)), x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "fold((\\x y. add(mul(x, 2), y)), 0, x0)",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(filter((\\x. lt(3, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F3",
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 2)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "filter((\\x. lt(x, 6)), rev(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "take(sort(x0), 1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "take(sort(x0), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "take(sort(x0), 1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "take(sort(x0), 1)",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "map((\\x. add(x, 1)), sort(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 4)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "map((\\x. add(x, 2)), sort(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 1)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 2)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 4)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "map((\\x. add(x, 3)), sort(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 2)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "filter((\\x. lt(x, 3)), rev(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 4)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "cat(x0, rev(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "take(sort(x0), 3)",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "cat(x0, rev(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 3)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "cat(x0, rev(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "map((\\x. add(x, 4)), sort(x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 2)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "scan((\\x y. add(x, y)), 0, map((\\x. mul(x, 1)), x0))",
+   "mismatches": 0
+  },
+  {
+   "family": "F4",
+   "src": "filter((\\x. lt(x, 4)), rev(x0))",
+   "mismatches": 0
+  }
+ ],
+ "interp_bad": [],
+ "split": {
+  "A": {
+   "learn": [
+    "A2",
+    "A3"
+   ],
+   "admit": "A1",
+   "withheld": "A4"
+  },
+  "B": {
+   "learn": [
+    "B2",
+    "B3"
+   ],
+   "admit": "B1",
+   "withheld": "B4"
+  },
+  "D": {
+   "learn": [
+    "D2",
+    "D4"
+   ],
+   "admit": "D3",
+   "withheld": "D1"
+  },
+  "F": {
+   "learn": [
+    "F1",
+    "F3"
+   ],
+   "admit": "F2",
+   "withheld": "F4"
+  }
+ }
+}
