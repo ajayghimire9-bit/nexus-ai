@@ -278,3 +278,7 @@ came from a declared event kind (ADD) that was absent from training and therefor
   anti-unification over verified solutions). Cross-world transfer, a learned experiment policy, and recursive improver
   gains are **not demonstrated**.
 * **Budget:** 3,478 of the 4,500 s campaign cap; the carried balance is 7,216 s.
+* **Errata to the `86953d3` summary** (see the campaign report §2):
+  * F.F4.L4.36012 was solved by Full and Fixed in r0 and r2, so a level-4 task *was* solved.
+  * Full lineages had a baseline admission solve in 15 of 52 rounds.
+  * B / D is 12 distinct tasks per arm, all unsolved (240 arm–task evaluations), not 64.

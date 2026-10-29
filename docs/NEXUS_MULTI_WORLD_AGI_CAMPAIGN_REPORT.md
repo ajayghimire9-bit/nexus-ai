@@ -532,3 +532,17 @@ The tasks solved, and by which arm families:
 * Rerun Stages 2–4 at the same budget, with B and D partial credit as the target.
 
 Until the learning signal reaches beyond F and A, cross-world transfer cannot be tested meaningfully.
+
+## 2. Errata (2026-10-29, after `86953d3`; the negative transfer conclusion is unchanged)
+
+Each correction below was checked against the saved artifacts.
+
+1. **Level-4 solves.** The statement "no level-4 task was ever solved" is false for the evaluation. `F.F4.L4.36012` was solved
+   by Full and Fixed in repetitions 0 and 2 (4 arm-runs; `artifacts/agi_eval/main_c*.jsonl`). §1.2's "L4 never" refers to
+   source learning only, where it is correct.
+2. **Admission solves.** "No admission task was solved under either state" is too strong. The three Full lineages recorded
+   a baseline admission solve in **15 of 52** proposal rounds (`artifacts/agi_src/Full_r*.json`, `rounds[].base_solved`).
+   Admission was uninformative in the remaining 37 rounds and for most proposals.
+3. **B / D denominator.** "B and D: 0 of 64 tasks for every arm" used the wrong denominator. The main evaluation contains
+   **12 distinct B / D tasks per arm**, all unsolved: **240 unsuccessful arm–task evaluations** across the 20 evaluated
+   arm-runs.
