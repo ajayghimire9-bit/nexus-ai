@@ -1,0 +1,783 @@
+{
+ "files": {
+  "src/nexus/de_phase5/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "src/nexus/de_phase5/admission5.py": "9b327d5bc7d98542a06ad3d49a603c6b96eeeb2a5c5de6ed63c8404ca8162217",
+  "src/nexus/de_phase5/investigate.py": "f6fd21d1c6d24f2989cbf902a6479c9c34959a8cbdffa34680297a981ea2de2e",
+  "src/nexus/de_phase5/lineage5.py": "723b52072bd0fce6e35faae03900e14be4734fb542afae8bf150a485226854a8",
+  "src/nexus/de_phase5/policy_learn.py": "831a6a674c0f1db44abe0466c541662a06b1303a56557c77d08173eb465ee5b7",
+  "src/nexus/de_phase5/seeds5.py": "8e997e62eb6ec9ebf8d35c797a3d42d58b3515d2b860b430573b7bdf973c1a7d",
+  "src/nexus/de_phase5/world5.py": "05d96f255d2bd9d5b754459553afbfe1cb9c3f5868e7737464ca0e935971307e",
+  "scripts/agi5_eval.py": "7922c5578857e5e823886be6126fad5afd7640051a5338d806c42df89e3c7494",
+  "artifacts/agi5_src/r0.json": "4b8bee2bcc70458ada43e526f2b7f22045477dec6c33460bac0b375276d5921a",
+  "artifacts/agi5_src/r1.json": "5680bedcace0b0d1d68e7a12174de5fe38c75a27715a2131f92c6408bbf7efda",
+  "artifacts/agi5_src/r2.json": "afb723696f44ab18ed838e3be72d32a318faf95f2905fcf9e96de40254643e81"
+ },
+ "manifest": [
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58400
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58401
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58402
+  },
+  {
+   "dps": {
+    "watermark": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58403
+  },
+  {
+   "dps": {
+    "watermark": "visible"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58404
+  },
+  {
+   "dps": {
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58405
+  },
+  {
+   "dps": {
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58406
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58407
+  },
+  {
+   "dps": {
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58408
+  },
+  {
+   "dps": {
+    "checkpoint": "visible"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 0,
+   "seed": 58409
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58410
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58411
+  },
+  {
+   "dps": {
+    "watermark": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58412
+  },
+  {
+   "dps": {
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58413
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58414
+  },
+  {
+   "dps": {
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 0,
+   "seed": 58415
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58416
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58417
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58418
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58419
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58420
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58421
+  },
+  {
+   "dps": {
+    "watermark": "undecided",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58422
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58423
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58424
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58425
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58426
+  },
+  {
+   "dps": {
+    "watermark": "visible",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 0,
+   "seed": 58427
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 0,
+   "seed": 58428
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 0,
+   "seed": 58429
+  },
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 0,
+   "seed": 58430
+  },
+  {
+   "dps": {
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 0,
+   "seed": 58431
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 0,
+   "seed": 58432
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 0,
+   "seed": 58433
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 0,
+   "seed": 58434
+  },
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 0,
+   "seed": 58435
+  },
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58436
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58437
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58438
+  },
+  {
+   "dps": {
+    "watermark": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58439
+  },
+  {
+   "dps": {
+    "watermark": "visible"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58440
+  },
+  {
+   "dps": {
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58441
+  },
+  {
+   "dps": {
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58442
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58443
+  },
+  {
+   "dps": {
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58444
+  },
+  {
+   "dps": {
+    "checkpoint": "visible"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "single_seen",
+   "instance": 1,
+   "seed": 58445
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58446
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58447
+  },
+  {
+   "dps": {
+    "watermark": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58448
+  },
+  {
+   "dps": {
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58449
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58450
+  },
+  {
+   "dps": {
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "single_heldout_schema",
+   "instance": 1,
+   "seed": 58451
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58452
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58453
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58454
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58455
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58456
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58457
+  },
+  {
+   "dps": {
+    "watermark": "undecided",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58458
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58459
+  },
+  {
+   "dps": {
+    "watermark": "missing",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58460
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58461
+  },
+  {
+   "dps": {
+    "watermark": "explicit",
+    "checkpoint": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58462
+  },
+  {
+   "dps": {
+    "watermark": "visible",
+    "checkpoint": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 0,
+   "kind": "two_dp_heldout_combo",
+   "instance": 1,
+   "seed": 58463
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 1,
+   "seed": 58464
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 1,
+   "seed": 58465
+  },
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 1,
+   "seed": 58466
+  },
+  {
+   "dps": {
+    "checkpoint": "undecided"
+   },
+   "runtime": "sqlite",
+   "k_extra": 2,
+   "kind": "multistep",
+   "instance": 1,
+   "seed": 58467
+  },
+  {
+   "dps": {
+    "watermark": "conflict_approved",
+    "checkpoint": "missing"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 1,
+   "seed": 58468
+  },
+  {
+   "dps": {
+    "watermark": "missing"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 1,
+   "seed": 58469
+  },
+  {
+   "dps": {
+    "checkpoint": "conflict_approved"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 1,
+   "seed": 58470
+  },
+  {
+   "dps": {
+    "watermark": "explicit"
+   },
+   "runtime": "spark",
+   "k_extra": 0,
+   "names": "heldout",
+   "kind": "spark_engine",
+   "instance": 1,
+   "seed": 58471
+  }
+ ]
+}
