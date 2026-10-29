@@ -180,3 +180,175 @@ Discovery (dev only, `scripts/mi2_discover.py`):
   amortisation.
 * **Precondition:** B runs only if A passes confirmation and the remaining budget covers B's allocation. Otherwise the precise
   reason is reported.
+
+## 1. Results: Milestone A NEGATIVE (validation gate failed), confirmation closed, Milestone B not run
+
+| stage | commit | outcome |
+|---|---|---|
+| pre-registration + implementation + dev diagnosis | `1585ed2` | as §0 |
+| discovery + selection (dev) | `68cb401` | evolve weakest of the search arms |
+| freeze | `52ea81b` | A2 = evolve L3, A3 = random_struct L3, A4 = params L1 |
+| **validation** (mi2/val, one-use, run once) | this commit | **gate failed** (G1, G2, G3 fail; G4 passes) |
+| confirmation (mi2/test, withheld SCL / AVG / MAX) | — | **not run**: closed by the failed gate; seeds unclaimed |
+| Milestone B | — | **not run**: no procedure passed Milestone A, so no accepted procedure exists for the call site |
+
+### 1.1 Discovery (dev, CPU-matched lineages; `artifacts/mi2_dev/summary_a.json`)
+
+| lineage | candidates | eval CPU s | best on 60-episode pool (MUL / ADDC / SUBH) | improvements over running best | selection winner on 30-episode pool |
+|---|---|---|---|---|---|
+| evolve L1 | 43 | 1,206 | 1 (1 / 0 / 0) | 1 | #35, 0 |
+| evolve L2 | 29 | 1,200 | 2 (1 / 1 / 0) | 4 | #27, 2 |
+| evolve L3 | 28 | 1,269 | 4 (1 / 3 / 0) | 1 | #10, 2 → **A2** |
+| random_struct L1 | 46 | 1,204 | 6 (6 / 0 / 0) | 1 | #12, 4 |
+| random_struct L2 | 70 | 1,250 | 15 (15 / 0 / 0) | 4 | #45, 6 |
+| random_struct L3 | 64 | 1,208 | 15 (1 / 14 / 0) | 2 | #12, 8 → **A3** |
+| params L1 | 18 | 1,201 | 19 (1 / 18 / 0) | 3 | #13, 7 → **A4** |
+
+* 0 silent rows in any discovery candidate.
+* No lineage solved any SUBH episode.
+* Partial-credit check: across all 298 candidates the partial-credit term correlates with independent exactness (Spearman
+  0.91). Of 3,358 episode evaluations with partial credit > 0, 416 were exact. The signal tracks correctness but is far from
+  sufficient for it.
+
+### 1.2 Validation (110 fresh episodes; 15 s CPU cap per episode, identical for all arms; `artifacts/mi2_val/gate.json`)
+
+| arm | K (20) | MUL (30) | ADDC (30) | SUBH (30) | dev-unfamiliar (90) | exact ≤ 3 s (90) | silent | full-space CPU s | total CPU s | queries | discovery CPU s (fully loaded) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| A0 original learner | 20 | 4 | 2 | 0 | 6 | 6 | 0 | 365 | 914 | 62,050 | 0 |
+| A1 MI-1 procedure | 20 | 4 | 14 | 0 | 18 | 18 | 1 | 463 | 1,012 | 71,810 | 390 (MI-1 evolve arm; MI-1 selection extra) |
+| **A2 evolve (new)** | 20 | 4 | 10 | 0 | **14** | 14 | 1 | 553 | 1,102 | 69,469 | 3,675 + 220 selection |
+| A2_L2 | 20 | 4 | 3 | 0 | 7 | 7 | 0 | 462 | 1,011 | 62,975 | (in A2) |
+| A2_L1 | 20 | 4 | 2 | 0 | 6 | 6 | 0 | 373 | 923 | 62,050 | (in A2) |
+| A3 random structural | 20 | 14 | 2 | 0 | 16 | 16 | 0 | 195 | 744 | 70,558 | 3,662 + 172 |
+| A3_L2 | 20 | 22 | 2 | 0 | 24 | 24 | 0 | 390 | 939 | 75,578 | (in A3) |
+| A3_L1 | 20 | 10 | 2 | 0 | 12 | 12 | 0 | 608 | 1,157 | 66,975 | (in A3) |
+| A4 params (restricted) | 20 | 4 | 27 | 0 | 31 | 30 | 1 | 425 | 974 | 84,539 | 1,201 + 110 |
+| **A5 human-written** | 20 | 26 | 20 | 28 | **74** | 67 | 1 | 248 | 798 | 115,493 | 0 machine (human design) |
+| A6 generic direct synthesis | 20 | 18 | 21 | 20 | 59 | 52 | 1 | 601 | 1,150 | 102,606 | 0 |
+
+Shared costs: the fast path for every arm (549 s of the totals) and the shared cache, diagnosis and pool building (698 s).
+
+Pre-registered comparisons (A2 vs control on the 90 dev-unfamiliar episodes; Bonferroni α = 0.05/6):
+
+| control | A2 | control | diff | A2-only : control-only | one-sided p |
+|---|---|---|---|---|---|
+| A0 | 14 | 6 | +8 | 8 : 0 | 0.0039 |
+| A1 | 14 | 18 | −4 | 2 : 6 | 0.96 |
+| A3 | 14 | 16 | −2 | 8 : 10 | 0.76 |
+| A4 | 14 | 31 | −17 | 0 : 17 | 1.0 |
+| A5 | 14 | 74 | −60 | 3 : 63 | 1.0 |
+| A6 | 14 | 59 | −45 | 1 : 46 | 1.0 |
+
+Gate:
+
+* **G1 fails** (A2 is below five of six controls).
+* **G2 fails.**
+* **G3 fails:** silent 1 vs 0. All five silent rows across arms are the same ADDC episode (seed 26801): every space containing
+  `acc + 3` learns it, the bounded acceptance check passes it, and the held-out stream rejects it. This is an acceptance-check
+  gap in the shared engine, not an A2-specific defect.
+* **G4 passes** (K 20/20).
+
+**Milestone A: negative.** No revision; the confirmation stays closed; the `mi2/test` seeds are never claimed.
+
+### 1.3 The generated procedure A2 (complete source, ancestry, attribution)
+
+```
+def h0:
+  terms P0 ['acc', 'x']
+  lits P1 [0, 1]
+main:
+  call h0; union P0 P0 P1
+  combine P2 P0 P0 +; combine P3 P0 P0 -; union P2 P2 P3
+  combine P3 P2 P0 +; combine P4 P2 P0 -; union P3 P3 P4; combine P4 P0 P2 +; combine P5 P0 P2 -; union P4 P4 P5; union P3 P3 P4
+  union P0 P0 P2; union P0 P0 P3; dedupe P0 P0                       # = the seed's closure (GRAMMAR5)
+  combine P3 P2 P0 +; combine P4 P2 P0 -; union P3 P3 P4; combine P4 P0 P2 +; combine P5 P0 P2 -; union P4 P4 P5; union P3 P3 P4
+  union P0 P0 P2; union P0 P0 P3; dedupe P0 P0                       # the same closure round again, over the enlarged pool
+  sort P0 P0 size; ret P0
+```
+
+Ancestry (`artifacts/mi2_dev/disc_a_evolve_L3.json`):
+
+* #0 the seed;
+* #4 = #0 with `extract_helper h0` (behaviourally identical);
+* #10 = crossover(#4[:15], #9[6:]), which splices a second copy of the closure block after the first.
+
+No human or Claude edit; no external model.
+
+Behavioural difference from its parent (the seed / GRAMMAR5):
+
+* 189 expressions vs 53, a superset; only + and − (152 / 33), no new operator.
+* It reaches sums such as `acc + 2` and `acc + 3` (as `acc + ((1 + 1) + 1)`), but not `acc + 5`, `acc · x` or `acc − x/2`.
+
+Development ablation (selection pool, `artifacts/mi2_dev/ablation_A2.json`):
+
+| variant | exact / 30 |
+|---|---|
+| frozen | 2 |
+| second closure round removed | 0 (seed behaviour) |
+| first segment removed / helper emptied | 0 (empty space) |
+
+The entire gain comes from repeating the closure round. That is equivalent to raising the closure size bound, which is a
+parameter change, and the restricted parameter-tuning arm A4 does it better (31 vs 14).
+
+Attribution:
+
+* Humans (Claude) supplied the language, all primitives and the seed.
+* The search generated only the duplication: a helper extraction plus a crossover splice.
+* Novelty level: **none beyond "a new program for this task distribution"**. Not a new learning method; not materially
+  different from parameter tuning; not research-novel. The unused-helper-free structure does not change this assessment.
+
+### 1.4 Why discovery does not yet improve the learner (diagnosis)
+
+1. **The language and engine are not the bottleneck.** A human-written procedure in the same language with the same miners
+   (A5) solves 74/90 fresh dev-unfamiliar episodes, including SUBH 28/30, and does it with the least full-space CPU (248 s).
+   Generic enumeration (A6) solves 59/90. The witness diagnosis (§0.2) gives 100 % on failing dev episodes.
+2. **The search is compute-starved at this budget.**
+   * One candidate costs 20–100 CPU s on the 60-episode pool, so each 1,200 s lineage evaluated only 18–70 candidates.
+   * A5-quality procedures need about 30 coordinated statements (literal choice, miners, four-operator layer, additive layer).
+     The generic statement distribution almost never assembles them in so few draws.
+3. **Evolution was weaker than random structural search under CPU matching.**
+   * Evolve's archive is dominated by expensive seed descendants (the seed costs 56 s per evaluation), so it evaluates fewer
+     candidates (28–43) than random search (46–70), whose random programs are cheap.
+   * Tournament selection then refines seed variants (closure repetition) instead of exploring new operators.
+4. **Discovery winners specialise.** The best random and parameter lineages solve one family (MUL-only or ADDC-only), and
+   selection on 30 episodes cannot reward breadth.
+5. **The shared acceptance check accepts one wrong machine** (seed 26801) for every arm able to express `acc + 3`. That is a
+   separate correctness gap that any future gate on silent errors will keep hitting.
+
+### 1.5 Milestone B: not run (precise reason)
+
+* **Precondition unmet:** Milestone A did not pass validation, so there is no accepted machine-generated procedure.
+  `artifacts/mi2_accepted.json` does not exist, the B pools (`mi2/bdev`, SCL / AVG / MAX) were never opened (code-enforced),
+  and `mi2/btest` is unclaimed.
+* **Architectural finding stands.** The original improver never invokes a learned procedure. The connection
+  (`mi2_lpl.mutate_lib`, library insertion at the mutation call site) is implemented and unit-tested (identical to the original
+  operator with an empty library). It is **inactive**.
+* Using A5 (human-written) or any failed candidate as the library would test a different claim, so it was not done.
+
+### 1.6 Budget, protection, remotes
+
+* MI-2 ledger rows (`mi-2-*`): 15,038 s.
+
+  | stage | s | allocation |
+  |---|---|---|
+  | diagnosis | 248 | |
+  | pool cache | 450 | |
+  | discovery | 8,546 | 8,400 |
+  | selection | 503 | |
+  | validation | 5,237 | 3,200; the overrun came from the reserve and is disclosed |
+  | ablation | 54 | |
+* Remaining carried balance: **14,206 s**. No new grant was used.
+* Protected manifests unchanged: 912 / 157 / 74 / 390. Checkers v1–v5 pinned. `main` and `final_sealed` untouched. MI-1 and X7
+  files untouched (MI-2 uses separately versioned files).
+
+### 1.7 Next experiment (recommendation)
+
+Make discovery cheap enough to search, before asking whether it can improve itself. Two options:
+
+* **Racing evaluation.** Score each candidate on 6 episodes first and spend the full pool only on candidates that solve ≥ 1.
+  This should give about 10× more candidates per CPU s.
+* **Compositional search operators** that can insert whole layered blocks. These would still be generic, not copied from A5.
+
+Both variants should be tested against the same random-structural and parameter controls, with A5 kept as the frozen human
+reference. Separately, the bounded acceptance check needs a held-out-style probe for constant-offset updates (seed 26801)
+before any silent-error gate can be met by an arm that can express constants.

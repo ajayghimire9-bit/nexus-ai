@@ -1,6 +1,7 @@
 """MI-2 development-only component ablation of a frozen procedure (NOT LOCKED; after the freeze; selection pool mi2/sel only).
-  python scripts/mi2_ablate.py ARM        ARM = a frozen arm tag in artifacts/mi2_freeze.json (e.g. A2)
-Variants: the frozen procedure; each top-level main statement except `ret` removed in turn; each helper emptied in turn. Scored
+  python scripts/mi2_ablate.py ARM [segments]   ARM = a frozen arm tag in artifacts/mi2_freeze.json (e.g. A2)
+Variants: the frozen procedure; each top-level main statement except `ret` removed in turn (or, with `segments`, each
+dedupe-terminated segment of main removed in turn); each helper emptied in turn. Scored
 with the discovery evaluator (3 s CPU cap). Never feeds back into any frozen candidate. -> artifacts/mi2_dev/ablation_<ARM>.json"""
 import copy, json, sys, time
 from pathlib import Path
@@ -10,7 +11,7 @@ from nexus import mi_learner as ML, mi_lpl as LP
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def main(arm):
+def main(arm, mode="statements"):
     fr = json.loads((ROOT / "artifacts/mi2_freeze.json").read_text())
     w = json.loads((ROOT / fr["arms"]["val"][arm]["file"]).read_text())["winner"]
     prog = w["prog"]
@@ -18,7 +19,13 @@ def main(arm):
     out = json.loads(out_p.read_text()) if out_p.exists() else dict(arm=arm, source=LP.source(prog), variants=[])
     done = {v["name"] for v in out["variants"]}
     variants = [("frozen", prog)]
-    for i, st in enumerate(prog["main"]):
+    if mode == "segments":
+        cuts = [-1] + [i for i, st in enumerate(prog["main"]) if st[0] == "dedupe"]
+        for a, b in zip(cuts, cuts[1:]):
+            p = copy.deepcopy(prog)
+            del p["main"][a + 1:b + 1]
+            variants.append((f"-main[{a + 1}:{b + 1}] segment", p))
+    for i, st in enumerate(prog["main"] if mode == "statements" else []):
         if st[0] != "ret":
             p = copy.deepcopy(prog)
             del p["main"][i]
@@ -40,4 +47,4 @@ def main(arm):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], *sys.argv[2:3])

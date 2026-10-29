@@ -231,3 +231,16 @@ Full-system confirmation objective NOT met (15/16); expression capability beyond
 | LPL procedure language + generic operators | `src/nexus/mi_lpl.py` | `mi_learner.lpl_domain` | mi experiments only | seed = existing procedure (identical) | human-written primitives |
 | procedure-driven full-space learner | `src/nexus/mi_learner.py` (`LearnerMI`) | `scripts/mi_eval.py`, `mi_discover.py` | after the shared fast path fails | invented procedure +9 dev-unfamiliar episodes on validation (19 vs 10 of 60) | gate not passed; **not integrated** into any NEXUS runtime arm |
 | invented procedure #17 | `artifacts/mi_dev/select_evolve.json` | — | inactive | gain from evidence-derived constants (ablation) | confirmation not run |
+
+## MI-2 — method invention and one step of recursive improvement (2026-10-29; report `docs/NEXUS_METHOD_INVENTION_AND_RECURSIVE_IMPROVEMENT_REPORT.md`)
+
+| component | source | call site | activation | evidence | limits |
+|---|---|---|---|---|---|
+| CPU-capped procedure-driven learner | `src/nexus/mi2_learner.py` (`full_space`, `LearnerMI2`) | `scripts/mi2_discover.py` `evaluate`, `scripts/mi2_eval.py` | mi2 experiments only, after the shared fast path fails | witness diagnosis 18/18; validation run for 11 arms | **not integrated** into any NEXUS runtime arm |
+| A5 human-written evidence-aware procedure | `src/nexus/mi2_learner.py` `A5_PROG` | `mi2_eval.arm_domain` | evaluation reference only | 74/90 fresh dev-unfamiliar (SUBH 28/30), 1 shared silent | human-written; not a NEXUS-generated method; **not integrated** |
+| A6 generic direct synthesis | `src/nexus/mi2_learner.py` `a6_domain` | `mi2_eval.arm_domain` | evaluation control only | 59/90 | cap 3,000 expressions |
+| generated procedure A2 (evolve L3 #10) | `artifacts/mi2_dev/select_a_evolve_L3.json` | — | **inactive** | 14/90 (vs A0 6, A5 74); gain = duplicated closure round (parameter-equivalent) | validation gate failed; confirmation not run |
+| improver library call site (`mutate_lib`) | `src/nexus/mi2_lpl.py` | the mutation call in `mi2_discover.propose` (arm b1 only) | **inactive**: no accepted procedure (`artifacts/mi2_accepted.json` absent) | unit-tested: identical to `mi_lpl.mutate` with an empty library | Milestone B not run |
+
+Known gap: the shared bounded acceptance check accepted a wrong `acc + 3` machine (mi2/val seed 26801) in every arm able to
+express it.

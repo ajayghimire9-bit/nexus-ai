@@ -1,0 +1,62 @@
+{
+ "arm": "A2",
+ "source": "def h0:\n  terms P0 ['acc', 'x']\n  lits P1 [0, 1]\nmain:\n  call h0\n  union P0 P0 P1\n  combine P2 P0 P0 +\n  combine P3 P0 P0 -\n  union P2 P2 P3\n  combine P3 P2 P0 +\n  combine P4 P2 P0 -\n  union P3 P3 P4\n  combine P4 P0 P2 +\n  combine P5 P0 P2 -\n  union P4 P4 P5\n  union P3 P3 P4\n  union P0 P0 P2\n  union P0 P0 P3\n  dedupe P0 P0\n  combine P3 P2 P0 +\n  combine P4 P2 P0 -\n  union P3 P3 P4\n  combine P4 P0 P2 +\n  combine P5 P0 P2 -\n  union P4 P4 P5\n  union P3 P3 P4\n  union P0 P0 P2\n  union P0 P0 P3\n  dedupe P0 P0\n  sort P0 P0 size\n  ret P0",
+ "variants": [
+  {
+   "name": "frozen",
+   "fitness": [
+    2,
+    0.1961,
+    -37.42
+   ],
+   "per_family": {
+    "MUL": 0,
+    "ADDC": 2,
+    "SUBH": 0
+   },
+   "space_size": 189
+  },
+  {
+   "name": "-main[0:15] segment",
+   "fitness": [
+    0,
+    0.0489,
+    -0.05
+   ],
+   "per_family": {
+    "MUL": 0,
+    "ADDC": 0,
+    "SUBH": 0
+   },
+   "space_size": 1
+  },
+  {
+   "name": "-main[15:25] segment",
+   "fitness": [
+    0,
+    0.0868,
+    -16.37
+   ],
+   "per_family": {
+    "MUL": 0,
+    "ADDC": 0,
+    "SUBH": 0
+   },
+   "space_size": 53
+  },
+  {
+   "name": "-helper h0",
+   "fitness": [
+    0,
+    0.0489,
+    -0.05
+   ],
+   "per_family": {
+    "MUL": 0,
+    "ADDC": 0,
+    "SUBH": 0
+   },
+   "space_size": 1
+  }
+ ]
+}
