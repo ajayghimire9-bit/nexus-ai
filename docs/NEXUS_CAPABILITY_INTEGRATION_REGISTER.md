@@ -461,3 +461,28 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Untested:** meta-learning (no adopted procedure); the improver (S3 = 0 s); failure memory; cross-domain transfer (no
   shared executable interface with the `campaign/worlds` TaskView).
 * **Budget:** ~1,562 of the 2,100 s cap; pool remaining ≈ 1,027 s.
+
+## Phase 9: measurable future value; capability roadmap (2026-10-29; report `docs/NEXUS_PHASE9_LEARNING_VALUE_AND_CAPABILITY_ROADMAP.md`)
+
+* **Human infrastructure** (evaluation only):
+  * evidence-stratified blocks (6 strata) and balanced 9-family cycles;
+  * the future-learning comparator, with per-task exposure, C_acquire / C_future / C_discovery accounting and proxy
+    sensitivity;
+  * the predeclared selection rule.
+* **Autonomous changes:** none (Stages 2–3 not run).
+* **Verified benefits:** none.
+* **Sensitivity audit** (development):
+  * equivalent and irrelevant-memory controls pass;
+  * useful-vs-removed and useful-vs-corrupted trust **fail**: 5 / 9 tasks reach no repair candidate; the single question
+    rescues single-conflict tasks; corrupted trust fails safe;
+  * cheaper-equivalent and method channels not run (the first audit timed out with no incremental saving).
+* **Untested hypotheses:**
+  * learning to learn;
+  * autonomous procedure improvement;
+  * method causal utility;
+  * the improver M;
+  * failure memory;
+  * cross-domain transfer;
+  * external SQL repair (BIRD-Critic not yet checked);
+  * local-model assistance.
+* **Budget:** ~168 of the 900 s authorised (no new grant); the one-use `agi9de/confirm` is unopened.
