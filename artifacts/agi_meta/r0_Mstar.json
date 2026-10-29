@@ -1,0 +1,2712 @@
+{
+"name": "r0_Mstar",
+"final": true,
+"stop_reason": "budget",
+"elapsed": 56.42,
+"cpu": 56.4,
+"digest": "812c7dfaa95501a0",
+"state": {
+"R": {
+"R2": {
+"body": [
+"p",
+"map",
+[
+"lam",
+"i",
+[
+"p",
+"mul",
+[
+"a",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+0
+]
+],
+"method": "closed",
+"mdl": 3,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 8,
+"birth_lineage": "Full_r0",
+"size": 5,
+"src": "map((\\x. mul(x, x)), $0)",
+"uses": [],
+"util": 0,
+"tin": "l",
+"tout": "l",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34032",
+"B.B1.L2.34033",
+"D.D3.L1.34034",
+"F.F2.L2.34035"
+]
+}
+},
+"R8": {
+"body": [
+"p",
+"mul",
+[
+"h",
+0
+],
+[
+"c",
+3
+]
+],
+"method": "closed",
+"mdl": 2,
+"support": [
+"F.F1.L1.31001",
+"F.F1.L1.31037",
+"F.F1.L1.31077"
+],
+"birth_task": "F.F1.L1.31001",
+"birth_round": 12,
+"birth_lineage": "Full_r0",
+"size": 3,
+"src": "mul($0, 3)",
+"uses": [],
+"util": 0,
+"tin": "i",
+"tout": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34048",
+"B.B1.L2.34049",
+"D.D3.L1.34050",
+"F.F2.L2.34051"
+]
+}
+},
+"R11": {
+"body": [
+"p",
+"mul",
+[
+"h",
+0
+],
+[
+"c",
+1
+]
+],
+"method": "closed",
+"mdl": 2,
+"support": [
+"F.F1.L1.31036",
+"F.F1.L1.31038",
+"F.F1.L1.31078"
+],
+"birth_task": "F.F1.L1.31036",
+"birth_round": 13,
+"birth_lineage": "Full_r0",
+"size": 3,
+"src": "mul($0, 1)",
+"uses": [],
+"util": 0,
+"tin": "i",
+"tout": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34052",
+"B.B1.L1.34053",
+"D.D3.L2.34054",
+"F.F2.L1.34055"
+]
+}
+}
+},
+"L": {
+"L0": {
+"body": [
+"p",
+"mul",
+[
+"c",
+3
+],
+[
+"p",
+"sum",
+[
+"p",
+"map",
+[
+"lam",
+"i",
+[
+"p",
+"mul",
+[
+"a",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+0
+]
+]
+]
+],
+"method": "antiunify",
+"mdl": 3,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 8,
+"birth_lineage": "Full_r0",
+"size": 8,
+"src": "mul(3, sum(map((\\x. mul(x, x)), $0)))",
+"uses": [],
+"util": 0,
+"holes": [
+"l"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34032",
+"B.B1.L2.34033",
+"D.D3.L1.34034",
+"F.F2.L2.34035"
+]
+}
+},
+"L1": {
+"body": [
+"p",
+"mul",
+[
+"h",
+0
+],
+[
+"p",
+"sum",
+[
+"p",
+"map",
+[
+"lam",
+"i",
+[
+"p",
+"mul",
+[
+"a",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+1
+]
+]
+]
+],
+"method": "antiunify",
+"mdl": 2,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 8,
+"birth_lineage": "Full_r0",
+"size": 8,
+"src": "mul($0, sum(map((\\x. mul(x, x)), $1)))",
+"uses": [
+"F.F3.L2.31079",
+"F.F3.L2.35013"
+],
+"util": 2,
+"holes": [
+"i",
+"l"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34032",
+"B.B1.L2.34033",
+"D.D3.L1.34034",
+"F.F2.L2.34035"
+]
+}
+},
+"L3": {
+"body": [
+"p",
+"mul",
+[
+"c",
+3
+],
+[
+"p",
+"sum",
+[
+"h",
+0
+]
+]
+],
+"method": "antiunify",
+"mdl": 3,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050",
+"F.F3.L2.31057",
+"F.F3.L3.31012"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 9,
+"birth_lineage": "Full_r0",
+"size": 4,
+"src": "mul(3, sum($0))",
+"uses": [
+"F.F3.L2.31063"
+],
+"util": 1,
+"holes": [
+"l"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34036",
+"B.B1.L1.34037",
+"D.D3.L2.34038",
+"F.F2.L1.34039"
+]
+}
+},
+"L4": {
+"body": [
+"p",
+"sum",
+[
+"p",
+"map",
+[
+"lam",
+"i",
+[
+"p",
+"mul",
+[
+"a",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+0
+]
+]
+],
+"method": "antiunify",
+"mdl": 2,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 9,
+"birth_lineage": "Full_r0",
+"size": 6,
+"src": "sum(map((\\x. mul(x, x)), $0))",
+"uses": [],
+"util": 0,
+"holes": [
+"l"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34036",
+"B.B1.L1.34037",
+"D.D3.L2.34038",
+"F.F2.L1.34039"
+]
+}
+},
+"L5": {
+"body": [
+"p",
+"filter",
+[
+"lam",
+"i",
+[
+"p",
+"lt",
+[
+"h",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+1
+]
+],
+"method": "antiunify",
+"mdl": 1,
+"support": [
+"F.F3.L1.31010",
+"F.F3.L2.31057",
+"F.F3.L2.31063"
+],
+"birth_task": "F.F3.L1.31010",
+"birth_round": 10,
+"birth_lineage": "Full_r0",
+"size": 5,
+"src": "filter((\\x. lt($0, x)), $1)",
+"uses": [],
+"util": 0,
+"holes": [
+"i",
+"l"
+],
+"out": "l",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34040",
+"B.B1.L2.34041",
+"D.D3.L1.34042",
+"F.F2.L2.34043"
+]
+}
+},
+"L6": {
+"body": [
+"p",
+"map",
+[
+"lam",
+"i",
+[
+"p",
+"mul",
+[
+"a",
+0
+],
+[
+"a",
+0
+]
+]
+],
+[
+"h",
+0
+]
+],
+"method": "antiunify",
+"mdl": 1,
+"support": [
+"F.F3.L2.31049",
+"F.F3.L2.31050"
+],
+"birth_task": "F.F3.L2.31049",
+"birth_round": 10,
+"birth_lineage": "Full_r0",
+"size": 5,
+"src": "map((\\x. mul(x, x)), $0)",
+"uses": [],
+"util": 0,
+"holes": [
+"l"
+],
+"out": "l",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34040",
+"B.B1.L2.34041",
+"D.D3.L1.34042",
+"F.F2.L2.34043"
+]
+}
+},
+"L7": {
+"body": [
+"p",
+"mul",
+[
+"h",
+0
+],
+[
+"c",
+1
+]
+],
+"method": "antiunify",
+"mdl": 1,
+"support": [
+"F.F1.L1.31036",
+"F.F1.L1.31038",
+"F.F1.L1.31058",
+"F.F1.L1.31065",
+"F.F3.L2.31070"
+],
+"birth_task": "F.F1.L1.31036",
+"birth_round": 11,
+"birth_lineage": "Full_r0",
+"size": 3,
+"src": "mul($0, 1)",
+"uses": [],
+"util": 0,
+"holes": [
+"i"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34044",
+"B.B1.L1.34045",
+"D.D3.L2.34046",
+"F.F2.L1.34047"
+]
+}
+},
+"L9": {
+"body": [
+"p",
+"sub",
+[
+"p",
+"sub",
+[
+"h",
+0
+],
+[
+"p",
+"mul",
+[
+"h",
+1
+],
+[
+"h",
+2
+]
+]
+],
+[
+"h",
+1
+]
+],
+"method": "antiunify",
+"mdl": 2,
+"support": [
+"F.F1.L1.31037",
+"F.F1.L1.31038",
+"F.F1.L1.31078"
+],
+"birth_task": "F.F1.L1.31037",
+"birth_round": 13,
+"birth_lineage": "Full_r0",
+"size": 7,
+"src": "sub(sub($0, mul($1, $2)), $1)",
+"uses": [],
+"util": 0,
+"holes": [
+"i",
+"i",
+"i"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34052",
+"B.B1.L1.34053",
+"D.D3.L2.34054",
+"F.F2.L1.34055"
+]
+}
+},
+"L10": {
+"body": [
+"p",
+"sub",
+[
+"h",
+0
+],
+[
+"p",
+"mul",
+[
+"h",
+1
+],
+[
+"h",
+2
+]
+]
+],
+"method": "antiunify",
+"mdl": 1,
+"support": [
+"F.F1.L1.31030",
+"F.F1.L1.31037",
+"F.F1.L1.31038",
+"F.F1.L1.31067",
+"F.F1.L1.31077",
+"F.F1.L1.31078"
+],
+"birth_task": "F.F1.L1.31030",
+"birth_round": 13,
+"birth_lineage": "Full_r0",
+"size": 5,
+"src": "sub($0, mul($1, $2))",
+"uses": [],
+"util": 0,
+"holes": [
+"i",
+"i",
+"i"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L2.34052",
+"B.B1.L1.34053",
+"D.D3.L2.34054",
+"F.F2.L1.34055"
+]
+}
+},
+"L12": {
+"body": [
+"p",
+"mul",
+[
+"h",
+0
+],
+[
+"c",
+3
+]
+],
+"method": "antiunify",
+"mdl": 2,
+"support": [
+"F.F1.L1.31001",
+"F.F1.L1.31037",
+"F.F1.L1.31066",
+"F.F1.L1.31077",
+"F.F1.L1.31087",
+"F.F1.L1.31089"
+],
+"birth_task": "F.F1.L1.31001",
+"birth_round": 14,
+"birth_lineage": "Full_r0",
+"size": 3,
+"src": "mul($0, 3)",
+"uses": [
+"F.F1.L2.35041"
+],
+"util": 1,
+"holes": [
+"i"
+],
+"out": "i",
+"admission": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: additive item admitted (neutral)",
+"tasks": [
+"A.A1.L1.34056",
+"B.B1.L2.34057",
+"D.D3.L1.34058",
+"F.F2.L2.34059"
+]
+}
+}
+},
+"pi": {
+"costs": {
+"add": 2,
+"sub": 1,
+"mul": 1,
+"div": 4,
+"mod": 4,
+"min2": 4,
+"max2": 4,
+"coalesce": 4,
+"lt": 3,
+"eq": 4,
+"and": 4,
+"or": 4,
+"not": 4,
+"ite_i": 4,
+"ite_l": 4,
+"ite_L": 4,
+"len": 4,
+"sum": 3,
+"maxl": 4,
+"minl": 4,
+"head": 4,
+"last": 4,
+"nth": 3,
+"rev": 4,
+"sort": 4,
+"uniq": 4,
+"take": 4,
+"drop": 4,
+"cons": 4,
+"cat": 4,
+"list1": 4,
+"list2": 4,
+"range": 4,
+"mem": 4,
+"subset": 4,
+"repeat": 4,
+"map": 4,
+"filter": 3,
+"count": 4,
+"zipw": 4,
+"scan": 4,
+"fold": 3,
+"lenL": 4,
+"row": 4,
+"col": 4,
+"revL": 4,
+"transpose": 4,
+"repeatL": 4,
+"prod": 4,
+"gather": 4,
+"flat": 4,
+"mapr": 4,
+"mapri": 4,
+"filterr": 4,
+"sortby": 4,
+"groupsum": 3,
+"iterate": 4,
+"x": 1,
+"a": 1,
+"c:0": 3,
+"c:1": 2,
+"c:2": 2,
+"c:3": 2,
+"c:4": 4,
+"c:5": 3
+},
+"margin": 1,
+"n_probes": 6,
+"lam_max": 6,
+"feat_k": 8,
+"qsel": "entropy",
+"confirm_q": 4,
+"fit_alpha": 0.1,
+"item_cost": 2
+},
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+],
+"next_id": 13,
+"history": []
+},
+"schedule": [
+[
+"F",
+"F1",
+3,
+35000
+],
+[
+"F",
+"F3",
+4,
+35001
+],
+[
+"A",
+"A2",
+2,
+35002
+],
+[
+"F",
+"F3",
+1,
+35003
+],
+[
+"A",
+"A3",
+1,
+35004
+],
+[
+"D",
+"D4",
+4,
+35005
+],
+[
+"D",
+"D2",
+1,
+35006
+],
+[
+"B",
+"B3",
+1,
+35007
+],
+[
+"D",
+"D2",
+3,
+35008
+],
+[
+"F",
+"F1",
+2,
+35009
+],
+[
+"F",
+"F1",
+1,
+35010
+],
+[
+"B",
+"B3",
+2,
+35011
+],
+[
+"B",
+"B3",
+4,
+35012
+],
+[
+"F",
+"F3",
+2,
+35013
+],
+[
+"D",
+"D2",
+4,
+35014
+],
+[
+"D",
+"D4",
+1,
+35015
+],
+[
+"A",
+"A3",
+2,
+35016
+],
+[
+"A",
+"A2",
+4,
+35017
+],
+[
+"F",
+"F1",
+4,
+35018
+],
+[
+"B",
+"B2",
+2,
+35019
+],
+[
+"B",
+"B3",
+3,
+35020
+],
+[
+"B",
+"B2",
+3,
+35021
+],
+[
+"B",
+"B2",
+4,
+35022
+],
+[
+"D",
+"D2",
+2,
+35023
+],
+[
+"B",
+"B2",
+1,
+35024
+],
+[
+"A",
+"A2",
+1,
+35025
+],
+[
+"A",
+"A2",
+3,
+35026
+],
+[
+"A",
+"A3",
+3,
+35027
+],
+[
+"D",
+"D4",
+3,
+35028
+],
+[
+"A",
+"A3",
+4,
+35029
+],
+[
+"D",
+"D4",
+2,
+35030
+],
+[
+"F",
+"F3",
+3,
+35031
+],
+[
+"F",
+"F1",
+3,
+35032
+],
+[
+"F",
+"F3",
+4,
+35033
+],
+[
+"A",
+"A2",
+2,
+35034
+],
+[
+"F",
+"F3",
+1,
+35035
+],
+[
+"A",
+"A3",
+1,
+35036
+],
+[
+"D",
+"D4",
+4,
+35037
+],
+[
+"D",
+"D2",
+1,
+35038
+],
+[
+"B",
+"B3",
+1,
+35039
+],
+[
+"D",
+"D2",
+3,
+35040
+],
+[
+"F",
+"F1",
+2,
+35041
+],
+[
+"F",
+"F1",
+1,
+35042
+],
+[
+"B",
+"B3",
+2,
+35043
+]
+],
+"rows": [
+{
+"tid": "F.F1.L3.35000",
+"world": "F",
+"family": "F1",
+"level": 3,
+"seed": 35000,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.601,
+"n_cands": 268800,
+"level_reached": 8,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 0.7,
+"phase": "source"
+},
+{
+"tid": "F.F3.L4.35001",
+"world": "F",
+"family": "F3",
+"level": 4,
+"seed": 35001,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.6005,
+"n_cands": 169984,
+"level_reached": 10,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 1.3,
+"phase": "source"
+},
+{
+"tid": "A.A2.L2.35002",
+"world": "A",
+"family": "A2",
+"level": 2,
+"seed": 35002,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6008,
+"n_cands": 135424,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 1.9,
+"phase": "source"
+},
+{
+"tid": "F.F3.L1.35003",
+"world": "F",
+"family": "F3",
+"level": 1,
+"seed": 35003,
+"role": "learn",
+"outcome": "submitted",
+"solved": true,
+"silent": false,
+"verify": {
+"ok": true,
+"kind": "bounded_exhaustive+hidden",
+"n": 1141,
+"fails": 0,
+"first_fail": null
+},
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.0319,
+"n_cands": 3373,
+"level_reached": 6,
+"prog": "maxl(map((\\x. add(x, 3)), x0))",
+"prog_size": 6,
+"used_items": [],
+"t": 1.9,
+"phase": "source"
+},
+{
+"tid": "A.A3.L1.35004",
+"world": "A",
+"family": "A3",
+"level": 1,
+"seed": 35004,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6007,
+"n_cands": 96768,
+"level_reached": 13,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 2.5,
+"phase": "source"
+},
+{
+"tid": "D.D4.L4.35005",
+"world": "D",
+"family": "D4",
+"level": 4,
+"seed": 35005,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6053,
+"n_cands": 113664,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 3.1,
+"phase": "source"
+},
+{
+"tid": "D.D2.L1.35006",
+"world": "D",
+"family": "D2",
+"level": 1,
+"seed": 35006,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6076,
+"n_cands": 133120,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 9.4,
+"phase": "source"
+},
+{
+"tid": "B.B3.L1.35007",
+"world": "B",
+"family": "B3",
+"level": 1,
+"seed": 35007,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6042,
+"n_cands": 124672,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 10.0,
+"phase": "source"
+},
+{
+"tid": "D.D2.L3.35008",
+"world": "D",
+"family": "D2",
+"level": 3,
+"seed": 35008,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6066,
+"n_cands": 131072,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 10.6,
+"phase": "source"
+},
+{
+"tid": "F.F1.L2.35009",
+"world": "F",
+"family": "F1",
+"level": 2,
+"seed": 35009,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.6001,
+"n_cands": 323584,
+"level_reached": 8,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 11.2,
+"phase": "source"
+},
+{
+"tid": "F.F1.L1.35010",
+"world": "F",
+"family": "F1",
+"level": 1,
+"seed": 35010,
+"role": "learn",
+"outcome": "abstain_evidence",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.0695,
+"n_cands": 21103,
+"level_reached": 7,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 11.3,
+"phase": "source"
+},
+{
+"tid": "B.B3.L2.35011",
+"world": "B",
+"family": "B3",
+"level": 2,
+"seed": 35011,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6061,
+"n_cands": 149248,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 11.9,
+"phase": "source"
+},
+{
+"tid": "B.B3.L4.35012",
+"world": "B",
+"family": "B3",
+"level": 4,
+"seed": 35012,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6013,
+"n_cands": 205824,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 20.0,
+"phase": "source"
+},
+{
+"tid": "F.F3.L2.35013",
+"world": "F",
+"family": "F3",
+"level": 2,
+"seed": 35013,
+"role": "learn",
+"outcome": "submitted",
+"solved": true,
+"silent": false,
+"verify": {
+"ok": true,
+"kind": "bounded_exhaustive+hidden",
+"n": 1141,
+"fails": 0,
+"first_fail": null
+},
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.0232,
+"n_cands": 2008,
+"level_reached": 6,
+"prog": "LL1(2, x0)",
+"prog_size": 3,
+"used_items": [
+"L:L1"
+],
+"t": 20.0,
+"phase": "source"
+},
+{
+"tid": "D.D2.L4.35014",
+"world": "D",
+"family": "D2",
+"level": 4,
+"seed": 35014,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 1,
+"q_budget": 4,
+"cpu_s": 0.6026,
+"n_cands": 131584,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 20.6,
+"phase": "source"
+},
+{
+"tid": "D.D4.L1.35015",
+"world": "D",
+"family": "D4",
+"level": 1,
+"seed": 35015,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6011,
+"n_cands": 123136,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 21.2,
+"phase": "source"
+},
+{
+"tid": "A.A3.L2.35016",
+"world": "A",
+"family": "A3",
+"level": 2,
+"seed": 35016,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6062,
+"n_cands": 134912,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 21.8,
+"phase": "source"
+},
+{
+"tid": "A.A2.L4.35017",
+"world": "A",
+"family": "A2",
+"level": 4,
+"seed": 35017,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.601,
+"n_cands": 135680,
+"level_reached": 15,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 22.4,
+"phase": "source"
+},
+{
+"tid": "F.F1.L4.35018",
+"world": "F",
+"family": "F1",
+"level": 4,
+"seed": 35018,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.6,
+"n_cands": 353024,
+"level_reached": 8,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 28.6,
+"phase": "source"
+},
+{
+"tid": "B.B2.L2.35019",
+"world": "B",
+"family": "B2",
+"level": 2,
+"seed": 35019,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6043,
+"n_cands": 151808,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 29.2,
+"phase": "source"
+},
+{
+"tid": "B.B3.L3.35020",
+"world": "B",
+"family": "B3",
+"level": 3,
+"seed": 35020,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6012,
+"n_cands": 119296,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 29.8,
+"phase": "source"
+},
+{
+"tid": "B.B2.L3.35021",
+"world": "B",
+"family": "B2",
+"level": 3,
+"seed": 35021,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 1,
+"q_budget": 4,
+"cpu_s": 0.6004,
+"n_cands": 124160,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 30.4,
+"phase": "source"
+},
+{
+"tid": "B.B2.L4.35022",
+"world": "B",
+"family": "B2",
+"level": 4,
+"seed": 35022,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.601,
+"n_cands": 207872,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 31.0,
+"phase": "source"
+},
+{
+"tid": "D.D2.L2.35023",
+"world": "D",
+"family": "D2",
+"level": 2,
+"seed": 35023,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.601,
+"n_cands": 157696,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 31.7,
+"phase": "source"
+},
+{
+"tid": "B.B2.L1.35024",
+"world": "B",
+"family": "B2",
+"level": 1,
+"seed": 35024,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6056,
+"n_cands": 129536,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 39.6,
+"phase": "source"
+},
+{
+"tid": "A.A2.L1.35025",
+"world": "A",
+"family": "A2",
+"level": 1,
+"seed": 35025,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.602,
+"n_cands": 123392,
+"level_reached": 14,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 40.2,
+"phase": "source"
+},
+{
+"tid": "A.A2.L3.35026",
+"world": "A",
+"family": "A2",
+"level": 3,
+"seed": 35026,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.601,
+"n_cands": 115200,
+"level_reached": 13,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 40.8,
+"phase": "source"
+},
+{
+"tid": "A.A3.L3.35027",
+"world": "A",
+"family": "A3",
+"level": 3,
+"seed": 35027,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6006,
+"n_cands": 144128,
+"level_reached": 13,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 41.5,
+"phase": "source"
+},
+{
+"tid": "D.D4.L3.35028",
+"world": "D",
+"family": "D4",
+"level": 3,
+"seed": 35028,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6087,
+"n_cands": 111616,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 42.1,
+"phase": "source"
+},
+{
+"tid": "A.A3.L4.35029",
+"world": "A",
+"family": "A3",
+"level": 4,
+"seed": 35029,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6054,
+"n_cands": 105728,
+"level_reached": 14,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 42.7,
+"phase": "source"
+},
+{
+"tid": "D.D4.L2.35030",
+"world": "D",
+"family": "D4",
+"level": 2,
+"seed": 35030,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6061,
+"n_cands": 112128,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 49.6,
+"phase": "source"
+},
+{
+"tid": "F.F3.L3.35031",
+"world": "F",
+"family": "F3",
+"level": 3,
+"seed": 35031,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.6007,
+"n_cands": 165632,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 50.2,
+"phase": "source"
+},
+{
+"tid": "F.F1.L3.35032",
+"world": "F",
+"family": "F1",
+"level": 3,
+"seed": 35032,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 3,
+"cpu_s": 0.6006,
+"n_cands": 270592,
+"level_reached": 8,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 50.8,
+"phase": "source"
+},
+{
+"tid": "F.F3.L4.35033",
+"world": "F",
+"family": "F3",
+"level": 4,
+"seed": 35033,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 1,
+"q_budget": 3,
+"cpu_s": 0.6005,
+"n_cands": 218624,
+"level_reached": 10,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 51.5,
+"phase": "source"
+},
+{
+"tid": "A.A2.L2.35034",
+"world": "A",
+"family": "A2",
+"level": 2,
+"seed": 35034,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6002,
+"n_cands": 147712,
+"level_reached": 13,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 52.1,
+"phase": "source"
+},
+{
+"tid": "F.F3.L1.35035",
+"world": "F",
+"family": "F3",
+"level": 1,
+"seed": 35035,
+"role": "learn",
+"outcome": "abstain_evidence",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.0259,
+"n_cands": 2940,
+"level_reached": 6,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 52.1,
+"phase": "source"
+},
+{
+"tid": "A.A3.L1.35036",
+"world": "A",
+"family": "A3",
+"level": 1,
+"seed": 35036,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6006,
+"n_cands": 81408,
+"level_reached": 13,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 52.7,
+"phase": "source"
+},
+{
+"tid": "D.D4.L4.35037",
+"world": "D",
+"family": "D4",
+"level": 4,
+"seed": 35037,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6028,
+"n_cands": 112896,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 53.3,
+"phase": "source"
+},
+{
+"tid": "D.D2.L1.35038",
+"world": "D",
+"family": "D2",
+"level": 1,
+"seed": 35038,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6001,
+"n_cands": 130560,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 53.9,
+"phase": "source"
+},
+{
+"tid": "B.B3.L1.35039",
+"world": "B",
+"family": "B3",
+"level": 1,
+"seed": 35039,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6076,
+"n_cands": 118784,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 54.6,
+"phase": "source"
+},
+{
+"tid": "D.D2.L3.35040",
+"world": "D",
+"family": "D2",
+"level": 3,
+"seed": 35040,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6141,
+"n_cands": 157184,
+"level_reached": 11,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 55.2,
+"phase": "source"
+},
+{
+"tid": "F.F1.L2.35041",
+"world": "F",
+"family": "F1",
+"level": 2,
+"seed": 35041,
+"role": "learn",
+"outcome": "submitted",
+"solved": true,
+"silent": false,
+"verify": {
+"ok": true,
+"kind": "bounded_exhaustive+hidden",
+"n": 130,
+"fails": 0,
+"first_fail": null
+},
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.5904,
+"n_cands": 233298,
+"level_reached": 9,
+"prog": "sub(1, sub(add(x0, x1), LL12(mul(add(x0, x1), 3))))",
+"prog_size": 12,
+"used_items": [
+"L:L12"
+],
+"t": 55.8,
+"phase": "source"
+},
+{
+"tid": "F.F1.L1.35042",
+"world": "F",
+"family": "F1",
+"level": 1,
+"seed": 35042,
+"role": "learn",
+"outcome": "submitted",
+"solved": true,
+"silent": false,
+"verify": {
+"ok": true,
+"kind": "bounded_exhaustive+hidden",
+"n": 130,
+"fails": 0,
+"first_fail": null
+},
+"queries": 3,
+"q_budget": 3,
+"cpu_s": 0.0115,
+"n_cands": 2809,
+"level_reached": 5,
+"prog": "add(mul(add(x0, x1), 3), add(x0, x1))",
+"prog_size": 9,
+"used_items": [],
+"t": 55.8,
+"phase": "source"
+},
+{
+"tid": "B.B3.L2.35043",
+"world": "B",
+"family": "B3",
+"level": 2,
+"seed": 35043,
+"role": "learn",
+"outcome": "abstain_timeout",
+"solved": false,
+"silent": false,
+"verify": null,
+"queries": 0,
+"q_budget": 4,
+"cpu_s": 0.6011,
+"n_cands": 120320,
+"level_reached": 12,
+"prog": null,
+"prog_size": null,
+"used_items": [],
+"t": 56.4,
+"phase": "source"
+}
+],
+"rounds": [
+{
+"round": 0,
+"t": 8.8,
+"adm_tasks": [
+"D.D3.L2.34150",
+"F.F2.L1.34151",
+"A.A1.L1.34152",
+"B.B1.L2.34153"
+],
+"base_solved": 0,
+"proposals": [
+{
+"kind": "pi_costs",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "counts-based costs over 1 solutions (lr 1.0, alpha 1.0)",
+"method": null,
+"mdl": null,
+"support": null
+},
+{
+"kind": "pi_params",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "margin 1->0",
+"method": null,
+"mdl": null,
+"support": null
+}
+],
+"meta": null,
+"n_L": 10,
+"n_R": 3,
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+]
+},
+{
+"round": 1,
+"t": 19.4,
+"adm_tasks": [
+"D.D3.L1.34154",
+"F.F2.L2.34155",
+"A.A1.L2.34156",
+"B.B1.L1.34157"
+],
+"base_solved": 0,
+"proposals": [
+{
+"kind": "pi_costs",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "counts-based costs over 1 solutions (lr 1.0, alpha 1.0)",
+"method": null,
+"mdl": null,
+"support": null
+},
+{
+"kind": "pi_params",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "n_probes 6->8",
+"method": null,
+"mdl": null,
+"support": null
+}
+],
+"meta": null,
+"n_L": 10,
+"n_R": 3,
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+]
+},
+{
+"round": 2,
+"t": 28.0,
+"adm_tasks": [
+"D.D3.L2.34158",
+"F.F2.L1.34159",
+"A.A1.L1.34160",
+"B.B1.L2.34161"
+],
+"base_solved": 0,
+"proposals": [
+{
+"kind": "pi_costs",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "counts-based costs over 2 solutions (lr 1.0, alpha 1.0)",
+"method": null,
+"mdl": null,
+"support": null
+},
+{
+"kind": "pi_params",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "lam_max 6->7",
+"method": null,
+"mdl": null,
+"support": null
+}
+],
+"meta": null,
+"n_L": 10,
+"n_R": 3,
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+]
+},
+{
+"round": 3,
+"t": 39.0,
+"adm_tasks": [
+"D.D3.L1.34162",
+"F.F2.L2.34163",
+"A.A1.L2.34164",
+"B.B1.L1.34165"
+],
+"base_solved": 0,
+"proposals": [
+{
+"kind": "pi_costs",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "counts-based costs over 2 solutions (lr 1.0, alpha 1.0)",
+"method": null,
+"mdl": null,
+"support": null
+},
+{
+"kind": "pi_params",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "feat_k 8->12",
+"method": null,
+"mdl": null,
+"support": null
+}
+],
+"meta": null,
+"n_L": 10,
+"n_R": 3,
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+]
+},
+{
+"round": 4,
+"t": 49.0,
+"adm_tasks": [
+"D.D3.L2.34166",
+"F.F2.L1.34167",
+"A.A1.L1.34168",
+"B.B1.L2.34169"
+],
+"base_solved": 0,
+"proposals": [
+{
+"kind": "pi_costs",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "counts-based costs over 2 solutions (lr 1.0, alpha 1.0)",
+"method": null,
+"mdl": null,
+"support": null
+},
+{
+"kind": "pi_params",
+"ok": false,
+"info": {
+"d_solved": 0,
+"cpu_ratio": null,
+"why": "uninformative: not admitted"
+},
+"src": "confirm_q 4->3",
+"method": null,
+"mdl": null,
+"support": null
+}
+],
+"meta": null,
+"n_L": 10,
+"n_R": 3,
+"M": [
+[
+"propose_L",
+{
+"method": "antiunify",
+"min_uses": 2,
+"max_size": 8,
+"max_holes": 3,
+"top_k": 2
+}
+],
+[
+"propose_R",
+{
+"method": "closed",
+"min_uses": 2,
+"max_size": 5,
+"top_k": 2
+}
+],
+[
+"reweight",
+{
+"method": "counts",
+"lr": 1.0,
+"alpha": 1.0,
+"cmax": 4
+}
+],
+[
+"tune",
+{
+"method": "coord",
+"params": [
+"margin",
+"n_probes",
+"lam_max",
+"feat_k",
+"confirm_q",
+"qsel",
+"fit_alpha"
+]
+}
+],
+[
+"admit",
+{
+"n_tasks": 4,
+"neutral": true,
+"speedup": 0.2
+}
+],
+[
+"prune",
+{
+"max_L": 12,
+"max_R": 8
+}
+],
+[
+"curriculum",
+{
+"rule": "progress",
+"eps": 0.25
+}
+],
+[
+"schedule",
+{
+"period": 6,
+"meta_period": 2
+}
+]
+]
+}
+],
+"meta_log": []
+}
