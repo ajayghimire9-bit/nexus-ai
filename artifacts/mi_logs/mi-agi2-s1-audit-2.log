@@ -1,0 +1,94 @@
+A.A1.L1.36600 filter[eq(f2,3)&ge(f1,2)] expr True cost 22 lam 19 focus (20, 'filterr((\\x. lt(1, nth(x, 1))), filterr((\\x. eq(3, nth(x, 2))), x0))', 0.22) full6 lvl 10 full6 False fullR False 
+A.A1.L1.36602 filter[ge(f1,1)] expr True cost 12 lam 9 focus None full6 lvl None full6 False fullR False 
+A.A1.L1.36604 filter[eq(f1,4)] expr True cost 11 lam 8 focus None full6 lvl None full6 False fullR False 
+A.A2.L1.36606 group[k=f3,sum f0] expr True cost 12 lam 5 focus (12, 'groupsum((\\x. nth(x, 3)), (\\x. nth(x, 0)), x0)', 0.076) full6 lvl 9 full6 True fullR True 
+A.A2.L1.36608 group[k=f3,sum f0] expr True cost 12 lam 5 focus None full6 lvl None full6 False fullR False 
+A.A2.L1.36610 group[k=f1,sum f2] expr True cost 11 lam 4 focus None full6 lvl None full6 False fullR False 
+A.A3.L1.36612 join[f1==T2.f1] expr True cost 17 lam 11 focus None full6 lvl 9 full6 False fullR False join: the prod primitive is invalid above 40 row pairs, the reference truncates
+A.A3.L1.36614 join[f2==T2.f2] expr True cost 17 lam 11 focus None full6 lvl None full6 False fullR False join: the prod primitive is invalid above 40 row pairs, the reference truncates
+A.A3.L1.36616 join[f2==T2.f0] expr True cost 17 lam 11 focus None full6 lvl None full6 False fullR False join: the prod primitive is invalid above 40 row pairs, the reference truncates
+A.A4.L1.36618 project[f1,f0] expr True cost 13 lam 10 focus (13, 'mapr((\\x. list2(nth(x, 1), nth(x, 0))), x0)', 0.049) full6 lvl 9 full6 True fullR True 
+A.A4.L1.36620 project[f2,f1] expr True cost 13 lam 10 focus None full6 lvl None full6 False fullR False 
+A.A4.L1.36622 project[f2,f0] expr True cost 13 lam 10 focus None full6 lvl None full6 False fullR False 
+B.B1.L1.36624 window[rundiff] expr True cost 11 lam 4 focus (11, 'zipw((\\x y. sub(x, y)), x0, cons(0, x0))', 0.051) full6 lvl 10 full6 False fullR False 
+B.B1.L1.36626 window[runmax] expr True cost 8 lam 4 focus None full6 lvl None full6 False fullR False 
+B.B1.L1.36628 window[win2] expr True cost 11 lam 4 focus None full6 lvl None full6 False fullR False 
+B.B2.L1.36630 hysteresis[on>=3,off<=1] expr True cost 19 lam 15 focus None full6 lvl 10 full6 False fullR False 
+B.B2.L1.36632 hysteresis[on>=4,off<=2] expr True cost 21 lam 17 focus None full6 lvl None full6 False fullR False 
+B.B2.L1.36634 latch[set>5] expr True cost 13 lam 9 focus None full6 lvl None full6 False fullR False 
+B.B3.L1.36636 cooldown[trig==1,k=2] expr True cost 24 lam 20 focus None full6 lvl 10 full6 False fullR False 
+B.B3.L1.36638 cooldown[trig==1,k=3] expr True cost 25 lam 21 focus None full6 lvl None full6 False fullR False 
+B.B3.L1.36640 cooldown[trig==4,k=3] expr True cost 26 lam 22 focus None full6 lvl None full6 False fullR False 
+B.B4.L1.36642 registers[reset,kind=2,reset=0] expr True cost 41 lam 24 focus None full6 lvl 10 full6 False fullR False 
+B.B4.L1.36644 registers[total,kind=0] expr True cost 22 lam 12 focus None full6 lvl None full6 False fullR False 
+B.B4.L1.36646 registers[reset,kind=0,reset=1] expr True cost 41 lam 24 focus None full6 lvl None full6 False fullR False 
+C.C1.L1.36652 stats[row_counts] expr True cost 10 lam 7 focus None full6 lvl None full6 False fullR False 
+C.C2.L1.36654 transform[recolour,2->1] expr True cost 14 lam 11 focus (14, 'mapr((\\x. map((\\x. ite_i(eq(x, 2), 1, x)), x)), x0)', 0.043) full6 lvl 10 full6 False fullR False 
+C.C2.L1.36656 transform[reflect_lr] expr True cost 6 lam 3 focus None full6 lvl None full6 False fullR False 
+C.C2.L1.36658 transform[scale2] expr True cost 10 lam 4 focus None full6 lvl None full6 False fullR False 
+C.C3.L1.36660 restore[fill] expr True cost 10 lam 7 focus (10, 'mapr((\\x. map((\\x. max2(x, 0)), x)), x0)', 0.007) full6 lvl 10 full6 False fullR False 
+C.C3.L1.36662 restore[fill] expr True cost 10 lam 7 focus None full6 lvl None full6 False fullR False 
+C.C3.L1.36664 restore[lr] expr True cost 20 lam 17 focus None full6 lvl None full6 False fullR False 
+C.C4.L1.36666 act[shift_right] expr True cost 12 lam 9 focus (12, 'mapr((\\x. take(cons(0, x), len(x))), x0)', 0.015) full6 lvl 10 full6 False fullR False 
+C.C4.L1.36668 act[gravity_left] expr True cost 19 lam 16 focus None full6 lvl None full6 False fullR False 
+C.C4.L1.36670 act[shift_right] expr True cost 12 lam 9 focus None full6 lvl None full6 False fullR False 
+D.D1.L1.36672 reach[k=3] expr True cost 16 lam 9 focus (16, 'iterate((\\x. uniq(cat(x, gather(x0, x)))), list1(x1), 3)', 0.999) full6 lvl 9 full6 False fullR False 
+D.D1.L1.36674 reach[k=3] expr True cost 16 lam 9 focus None full6 lvl None full6 False fullR False 
+D.D1.L1.36676 reach[k=2] expr True cost 15 lam 9 focus None full6 lvl None full6 False fullR False 
+D.D2.L1.36678 unlock[new] expr True cost 22 lam 15 focus (22, 'filter((\\x. not(mem(x, x1))), filter((\\x. subset(row(x0, x), x1)), range(lenL(x0))))', 4.522) full6 lvl 9 full6 False fullR False 
+D.D2.L1.36680 unlock[new] expr True cost 22 lam 15 focus None full6 lvl None full6 False fullR False 
+D.D2.L1.36682 unlock[new] expr True cost 22 lam 15 focus None full6 lvl None full6 False fullR False 
+D.D3.L1.36684 fuel[left,B=9] expr True cost 29 lam 9 focus None full6 lvl 10 full6 False fullR False 
+D.D3.L1.36686 fuel[steps,B=12] expr True cost 23 lam 13 focus None full6 lvl None full6 False fullR False 
+D.D3.L1.36688 fuel[steps,B=6] expr True cost 18 lam 8 focus None full6 lvl None full6 False fullR False 
+D.D4.L1.36690 plan[stages=0] expr True cost 40 lam 0 focus None full6 lvl 10 full6 False fullR False 
+D.D4.L1.36692 plan[stages=0] expr True cost 40 lam 0 focus None full6 lvl None full6 False fullR False 
+D.D4.L1.36694 plan[stages=0] expr True cost 40 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E1.L1.36696 switch[X=c0,Y<-c2] expr True cost 10 lam 0 focus (10, 'coalesce(nth(x0, 1), nth(x1, 2))', 0.003) full6 lvl 9 full6 False fullR False 
+E.E1.L1.36698 switch[X=c0,Y<-c2] expr True cost 10 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E1.L1.36700 switch[X=c2,Y<-c0] expr True cost 10 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E2.L1.36702 do[X=c0,Y=mul(X,c1)] expr True cost 26 lam 0 focus None full6 lvl 9 full6 False fullR False 
+E.E2.L1.36704 do[X=c0,Y=mul(X,c1)] expr True cost 26 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E2.L1.36706 do[X=c0,Y=max(X,c1)] expr True cost 22 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E3.L1.36708 chain[lag=1] expr True cost 16 lam 4 focus (15, 'zipw((\\x y. y), x0, cons(0, zipw((\\x y. coalesce(x, y)), x0, x1)))', 4.693) full6 lvl 9 full6 False fullR False 
+E.E3.L1.36710 chain[acc=1] expr True cost 23 lam 4 focus None full6 lvl None full6 False fullR False 
+E.E3.L1.36712 chain[acc=2] expr True cost 26 lam 4 focus None full6 lvl None full6 False fullR False 
+E.E4.L1.36714 control[Y=(1a+c1),goal=c3] expr True cost 15 lam 0 focus (15, 'mod(sub(nth(x0, 3), nth(x0, 1)), 4)', 0.6) full6 lvl 10 full6 False fullR False 
+E.E4.L1.36716 control[Y=(3a+c0),goal=c3] expr True cost 19 lam 0 focus None full6 lvl None full6 False fullR False 
+E.E4.L1.36718 control[Y=(1a+c0),goal=c3] expr True cost 15 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F1.L1.36720 arith[modprod,k=3] expr True cost 8 lam 0 focus (8, 'mod(mul(x0, x1), 3)', 0.003) full6 lvl 8 full6 True fullR True 
+F.F1.L1.36722 arith[scale_sum,k=2] expr True cost 7 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F1.L1.36724 arith[diff,k=3] expr True cost 8 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F2.L1.36726 guard[both,k=5] expr True cost 22 lam 0 focus None full6 lvl 9 full6 False fullR False 
+F.F2.L1.36728 guard[nested,k=3] expr True cost 20 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F2.L1.36730 guard[eqmax,k=4] expr True cost 12 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F3.L1.36732 fold[sumsq,k=2] expr True cost 9 lam 4 focus (9, 'sum(map((\\x. mul(x, x)), x0))', 0.006) full6 lvl 9 full6 True fullR True 
+F.F3.L1.36734 fold[sumsq,k=2] expr True cost 9 lam 4 focus None full6 lvl None full6 False fullR False 
+F.F3.L1.36736 fold[horner,k=3] expr True cost 12 lam 8 focus None full6 lvl None full6 False fullR False 
+F.F4.L1.36738 compose[shift_sorted,k=2] expr True cost 9 lam 4 focus (9, 'map((\\x. add(x, 2)), sort(x0))', 0.006) full6 lvl 9 full6 True fullR True 
+F.F4.L1.36740 compose[mirror,k=3] expr True cost 6 lam 0 focus None full6 lvl None full6 False fullR False 
+F.F4.L1.36742 compose[filter_rev,k=2] expr True cost 10 lam 5 focus None full6 lvl None full6 False fullR False 
+A1 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+A2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 1, 'fullR': 1, 'notes': []}
+A3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': ['join: the prod primitive is invalid above 40 row pairs, the reference truncates']}
+A4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 1, 'fullR': 1, 'notes': []}
+B1 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+B2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+B3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+B4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+C1 {'instances': 3, 'expressible': 1, 'lam_block_pi0': 1, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': ['connected components need 2-D flood fill: no adjacency / visited-set construction over grids']}
+C2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 1, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+C3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+C4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+D1 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+D2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+D3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 3, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+D4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+E1 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+E2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+E3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+E4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 0, 'fullR': 0, 'notes': []}
+F1 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 1, 'fullR': 1, 'notes': []}
+F2 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 0, 'full6': 0, 'fullR': 0, 'notes': []}
+F3 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 1, 'focus_reached': 1, 'full6': 1, 'fullR': 1, 'notes': []}
+F4 {'instances': 3, 'expressible': 3, 'lam_block_pi0': 0, 'focus_reached': 1, 'full6': 1, 'fullR': 1, 'notes': []}

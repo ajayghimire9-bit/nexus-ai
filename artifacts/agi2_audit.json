@@ -1,0 +1,2903 @@
+{
+ "raised_lam_max": 99,
+ "rows": [
+  {
+   "tid": "A.A1.L1.36600",
+   "descr": "filter[eq(f2,3)&ge(f1,2)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. and(eq(nth(x, 2), 3), not(lt(nth(x, 1), 2)))), x0)",
+   "nodes": 14,
+   "depth": 6,
+   "cost_pi0": 22,
+   "max_lambda_cost": 19,
+   "prims": [
+    "and",
+    "eq",
+    "filterr",
+    "lt",
+    "not",
+    "nth"
+   ],
+   "consts": [
+    1,
+    2,
+    3
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     20,
+     "filterr((\\x. lt(1, nth(x, 1))), filterr((\\x. eq(3, nth(x, 2))), x0))",
+     0.22
+    ],
+    "level_completed": 20,
+    "cpu": 0.22,
+    "n_cands": 33140
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.601,
+    "n_cands": 156928
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.603,
+    "n_cands": 75520
+   }
+  },
+  {
+   "tid": "A.A1.L1.36602",
+   "descr": "filter[ge(f1,1)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. not(lt(nth(x, 1), 1))), x0)",
+   "nodes": 8,
+   "depth": 5,
+   "cost_pi0": 12,
+   "max_lambda_cost": 9,
+   "prims": [
+    "filterr",
+    "lt",
+    "not",
+    "nth"
+   ],
+   "consts": [
+    1
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A1.L1.36604",
+   "descr": "filter[eq(f1,4)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. eq(nth(x, 1), 4)), x0)",
+   "nodes": 7,
+   "depth": 4,
+   "cost_pi0": 11,
+   "max_lambda_cost": 8,
+   "prims": [
+    "eq",
+    "filterr",
+    "nth"
+   ],
+   "consts": [
+    1,
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A2.L1.36606",
+   "descr": "group[k=f3,sum f0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "groupsum((\\x. nth(x, 3)), (\\x. nth(x, 0)), x0)",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 12,
+   "max_lambda_cost": 5,
+   "prims": [
+    "groupsum",
+    "nth"
+   ],
+   "consts": [
+    0,
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     12,
+     "groupsum((\\x. nth(x, 3)), (\\x. nth(x, 0)), x0)",
+     0.076
+    ],
+    "level_completed": 12,
+    "cpu": 0.076,
+    "n_cands": 3192
+   },
+   "reach_full_lam6": {
+    "found": [
+     9,
+     "groupsum((\\x. last(x)), (\\x. head(x)), x0)",
+     0.15
+    ],
+    "level_completed": 9,
+    "cpu": 0.15,
+    "n_cands": 28784
+   },
+   "reach_full_raised": {
+    "found": [
+     9,
+     "groupsum((\\x. last(x)), (\\x. head(x)), x0)",
+     0.326
+    ],
+    "level_completed": 9,
+    "cpu": 0.326,
+    "n_cands": 45074
+   }
+  },
+  {
+   "tid": "A.A2.L1.36608",
+   "descr": "group[k=f3,sum f0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "groupsum((\\x. nth(x, 3)), (\\x. nth(x, 0)), x0)",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 12,
+   "max_lambda_cost": 5,
+   "prims": [
+    "groupsum",
+    "nth"
+   ],
+   "consts": [
+    0,
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A2.L1.36610",
+   "descr": "group[k=f1,sum f2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "groupsum((\\x. nth(x, 1)), (\\x. nth(x, 2)), x0)",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 11,
+   "max_lambda_cost": 4,
+   "prims": [
+    "groupsum",
+    "nth"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A3.L1.36612",
+   "descr": "join[f1==T2.f1]",
+   "note": "join: the prod primitive is invalid above 40 row pairs, the reference truncates",
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. eq(nth(x, 1), nth(x, 4))), prod(x0, x1))",
+   "nodes": 11,
+   "depth": 4,
+   "cost_pi0": 17,
+   "max_lambda_cost": 11,
+   "prims": [
+    "eq",
+    "filterr",
+    "nth",
+    "prod"
+   ],
+   "consts": [
+    1,
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 27,
+    "cpu": 5.007,
+    "n_cands": 183552
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.602,
+    "n_cands": 122880
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 74496
+   }
+  },
+  {
+   "tid": "A.A3.L1.36614",
+   "descr": "join[f2==T2.f2]",
+   "note": "join: the prod primitive is invalid above 40 row pairs, the reference truncates",
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. eq(nth(x, 2), nth(x, 5))), prod(x0, x1))",
+   "nodes": 11,
+   "depth": 4,
+   "cost_pi0": 17,
+   "max_lambda_cost": 11,
+   "prims": [
+    "eq",
+    "filterr",
+    "nth",
+    "prod"
+   ],
+   "consts": [
+    2,
+    5
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A3.L1.36616",
+   "descr": "join[f2==T2.f0]",
+   "note": "join: the prod primitive is invalid above 40 row pairs, the reference truncates",
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filterr((\\x. eq(nth(x, 2), nth(x, 3))), prod(x0, x1))",
+   "nodes": 11,
+   "depth": 4,
+   "cost_pi0": 17,
+   "max_lambda_cost": 11,
+   "prims": [
+    "eq",
+    "filterr",
+    "nth",
+    "prod"
+   ],
+   "consts": [
+    2,
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A4.L1.36618",
+   "descr": "project[f1,f0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. list2(nth(x, 1), nth(x, 0))), x0)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 13,
+   "max_lambda_cost": 10,
+   "prims": [
+    "list2",
+    "mapr",
+    "nth"
+   ],
+   "consts": [
+    0,
+    1
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     13,
+     "mapr((\\x. list2(nth(x, 1), nth(x, 0))), x0)",
+     0.049
+    ],
+    "level_completed": 13,
+    "cpu": 0.049,
+    "n_cands": 3591
+   },
+   "reach_full_lam6": {
+    "found": [
+     9,
+     "mapr((\\x. rev(take(x, 2))), x0)",
+     0.157
+    ],
+    "level_completed": 9,
+    "cpu": 0.157,
+    "n_cands": 27245
+   },
+   "reach_full_raised": {
+    "found": [
+     9,
+     "mapr((\\x. rev(take(x, 2))), x0)",
+     0.353
+    ],
+    "level_completed": 9,
+    "cpu": 0.353,
+    "n_cands": 43258
+   }
+  },
+  {
+   "tid": "A.A4.L1.36620",
+   "descr": "project[f2,f1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. list2(nth(x, 2), nth(x, 1))), x0)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 13,
+   "max_lambda_cost": 10,
+   "prims": [
+    "list2",
+    "mapr",
+    "nth"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "A.A4.L1.36622",
+   "descr": "project[f2,f0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. list2(nth(x, 2), nth(x, 0))), x0)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 13,
+   "max_lambda_cost": 10,
+   "prims": [
+    "list2",
+    "mapr",
+    "nth"
+   ],
+   "consts": [
+    0,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B1.L1.36624",
+   "descr": "window[rundiff]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "zipw((\\x y. sub(x, y)), x0, cons(0, x0))",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 11,
+   "max_lambda_cost": 4,
+   "prims": [
+    "cons",
+    "sub",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     11,
+     "zipw((\\x y. sub(x, y)), x0, cons(0, x0))",
+     0.051
+    ],
+    "level_completed": 11,
+    "cpu": 0.051,
+    "n_cands": 2673
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 200704
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 83456
+   }
+  },
+  {
+   "tid": "B.B1.L1.36626",
+   "descr": "window[runmax]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. max2(x, y)), 0, x0)",
+   "nodes": 6,
+   "depth": 3,
+   "cost_pi0": 8,
+   "max_lambda_cost": 4,
+   "prims": [
+    "max2",
+    "scan"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B1.L1.36628",
+   "descr": "window[win2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "zipw((\\x y. add(x, y)), x0, cons(0, x0))",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 11,
+   "max_lambda_cost": 4,
+   "prims": [
+    "add",
+    "cons",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B2.L1.36630",
+   "descr": "hysteresis[on>=3,off<=1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(lt(2, y), 1, ite_i(lt(y, 2), 0, x))), 0, x0)",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 19,
+   "max_lambda_cost": 15,
+   "prims": [
+    "ite_i",
+    "lt",
+    "scan"
+   ],
+   "consts": [
+    0,
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 17,
+    "cpu": 5.0,
+    "n_cands": 269312
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 219648
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 88832
+   }
+  },
+  {
+   "tid": "B.B2.L1.36632",
+   "descr": "hysteresis[on>=4,off<=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(lt(3, y), 1, ite_i(lt(y, 3), 0, x))), 0, x0)",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 21,
+   "max_lambda_cost": 17,
+   "prims": [
+    "ite_i",
+    "lt",
+    "scan"
+   ],
+   "consts": [
+    0,
+    1,
+    3
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B2.L1.36634",
+   "descr": "latch[set>5]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(lt(5, y), 1, x)), 0, x0)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 13,
+   "max_lambda_cost": 9,
+   "prims": [
+    "ite_i",
+    "lt",
+    "scan"
+   ],
+   "consts": [
+    0,
+    1,
+    5
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B3.L1.36636",
+   "descr": "cooldown[trig==1,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(and(eq(y, 1), eq(x, 0)), 2, max2(sub(x, 1), 0))), 0, x0)",
+   "nodes": 17,
+   "depth": 5,
+   "cost_pi0": 24,
+   "max_lambda_cost": 20,
+   "prims": [
+    "and",
+    "eq",
+    "ite_i",
+    "max2",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 15,
+    "cpu": 5.0,
+    "n_cands": 305408
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 222720
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 90368
+   }
+  },
+  {
+   "tid": "B.B3.L1.36638",
+   "descr": "cooldown[trig==1,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(and(eq(y, 1), eq(x, 0)), 3, max2(sub(x, 1), 0))), 0, x0)",
+   "nodes": 17,
+   "depth": 5,
+   "cost_pi0": 25,
+   "max_lambda_cost": 21,
+   "prims": [
+    "and",
+    "eq",
+    "ite_i",
+    "max2",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    1,
+    3
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B3.L1.36640",
+   "descr": "cooldown[trig==4,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(and(eq(y, 4), eq(x, 0)), 3, max2(sub(x, 1), 0))), 0, x0)",
+   "nodes": 17,
+   "depth": 5,
+   "cost_pi0": 26,
+   "max_lambda_cost": 22,
+   "prims": [
+    "and",
+    "eq",
+    "ite_i",
+    "max2",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    1,
+    3,
+    4
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B4.L1.36642",
+   "descr": "registers[reset,kind=2,reset=0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 303,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(lt(y, 0), 0, add(x, y))), 0, mapri((\\x. ite_i(eq(head(x), 0), sub(0, 1), ite_i(eq(head(x), 2), last(x), 0))), x0))",
+   "nodes": 28,
+   "depth": 7,
+   "cost_pi0": 41,
+   "max_lambda_cost": 24,
+   "prims": [
+    "add",
+    "eq",
+    "head",
+    "ite_i",
+    "last",
+    "lt",
+    "mapri",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 16,
+    "cpu": 5.008,
+    "n_cands": 612352
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.601,
+    "n_cands": 143360
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.605,
+    "n_cands": 71936
+   }
+  },
+  {
+   "tid": "B.B4.L1.36644",
+   "descr": "registers[total,kind=0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 303,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. add(x, y)), 0, mapri((\\x. ite_i(eq(head(x), 0), last(x), 0)), x0))",
+   "nodes": 15,
+   "depth": 6,
+   "cost_pi0": 22,
+   "max_lambda_cost": 12,
+   "prims": [
+    "add",
+    "eq",
+    "head",
+    "ite_i",
+    "last",
+    "mapri",
+    "scan"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "B.B4.L1.36646",
+   "descr": "registers[reset,kind=0,reset=1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 303,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "scan((\\x y. ite_i(lt(y, 0), 0, add(x, y))), 0, mapri((\\x. ite_i(eq(head(x), 1), sub(0, 1), ite_i(eq(head(x), 0), last(x), 0))), x0))",
+   "nodes": 28,
+   "depth": 7,
+   "cost_pi0": 41,
+   "max_lambda_cost": 24,
+   "prims": [
+    "add",
+    "eq",
+    "head",
+    "ite_i",
+    "last",
+    "lt",
+    "mapri",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    1
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C1.L1.36648",
+   "descr": "stats[n_components]",
+   "note": "connected components need 2-D flood fill: no adjacency / visited-set construction over grids",
+   "expressible": false
+  },
+  {
+   "tid": "C.C1.L1.36650",
+   "descr": "stats[n_components]",
+   "note": "connected components need 2-D flood fill: no adjacency / visited-set construction over grids",
+   "expressible": false
+  },
+  {
+   "tid": "C.C1.L1.36652",
+   "descr": "stats[row_counts]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapri((\\x. count((\\x. lt(0, x)), x)), x0)",
+   "nodes": 7,
+   "depth": 4,
+   "cost_pi0": 10,
+   "max_lambda_cost": 7,
+   "prims": [
+    "count",
+    "lt",
+    "mapri"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C2.L1.36654",
+   "descr": "transform[recolour,2->1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. map((\\x. ite_i(eq(x, 2), 1, x)), x)), x0)",
+   "nodes": 10,
+   "depth": 5,
+   "cost_pi0": 14,
+   "max_lambda_cost": 11,
+   "prims": [
+    "eq",
+    "ite_i",
+    "map",
+    "mapr"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     14,
+     "mapr((\\x. map((\\x. ite_i(eq(x, 2), 1, x)), x)), x0)",
+     0.043
+    ],
+    "level_completed": 14,
+    "cpu": 0.043,
+    "n_cands": 7201
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 145664
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 69632
+   }
+  },
+  {
+   "tid": "C.C2.L1.36656",
+   "descr": "transform[reflect_lr]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. rev(x)), x0)",
+   "nodes": 4,
+   "depth": 3,
+   "cost_pi0": 6,
+   "max_lambda_cost": 3,
+   "prims": [
+    "mapr",
+    "rev"
+   ],
+   "consts": [],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C2.L1.36658",
+   "descr": "transform[scale2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "repeatL(mapr((\\x. repeat(x, 2)), x0), 2)",
+   "nodes": 7,
+   "depth": 4,
+   "cost_pi0": 10,
+   "max_lambda_cost": 4,
+   "prims": [
+    "mapr",
+    "repeat",
+    "repeatL"
+   ],
+   "consts": [
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C3.L1.36660",
+   "descr": "restore[fill]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. map((\\x. max2(x, 0)), x)), x0)",
+   "nodes": 7,
+   "depth": 4,
+   "cost_pi0": 10,
+   "max_lambda_cost": 7,
+   "prims": [
+    "map",
+    "mapr",
+    "max2"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     10,
+     "mapr((\\x. map((\\x. max2(x, 0)), x)), x0)",
+     0.007
+    ],
+    "level_completed": 10,
+    "cpu": 0.007,
+    "n_cands": 477
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.604,
+    "n_cands": 143872
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 66048
+   }
+  },
+  {
+   "tid": "C.C3.L1.36662",
+   "descr": "restore[fill]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. map((\\x. max2(x, 0)), x)), x0)",
+   "nodes": 7,
+   "depth": 4,
+   "cost_pi0": 10,
+   "max_lambda_cost": 7,
+   "prims": [
+    "map",
+    "mapr",
+    "max2"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C3.L1.36664",
+   "descr": "restore[lr]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. zipw((\\x y. ite_i(lt(x, 0), max2(y, 0), x)), x, rev(x))), x0)",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 20,
+   "max_lambda_cost": 17,
+   "prims": [
+    "ite_i",
+    "lt",
+    "mapr",
+    "max2",
+    "rev",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C4.L1.36666",
+   "descr": "act[shift_right]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. take(cons(0, x), len(x))), x0)",
+   "nodes": 8,
+   "depth": 4,
+   "cost_pi0": 12,
+   "max_lambda_cost": 9,
+   "prims": [
+    "cons",
+    "len",
+    "mapr",
+    "take"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     12,
+     "mapr((\\x. take(cons(0, x), len(x))), x0)",
+     0.015
+    ],
+    "level_completed": 12,
+    "cpu": 0.015,
+    "n_cands": 636
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.601,
+    "n_cands": 142848
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.606,
+    "n_cands": 72704
+   }
+  },
+  {
+   "tid": "C.C4.L1.36668",
+   "descr": "act[gravity_left]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. cat(filter((\\x. lt(0, x)), x), filter((\\x. lt(x, 1)), x))), x0)",
+   "nodes": 13,
+   "depth": 5,
+   "cost_pi0": 19,
+   "max_lambda_cost": 16,
+   "prims": [
+    "cat",
+    "filter",
+    "lt",
+    "mapr"
+   ],
+   "consts": [
+    0,
+    1
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "C.C4.L1.36670",
+   "descr": "act[shift_right]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mapr((\\x. take(cons(0, x), len(x))), x0)",
+   "nodes": 8,
+   "depth": 4,
+   "cost_pi0": 12,
+   "max_lambda_cost": 9,
+   "prims": [
+    "cons",
+    "len",
+    "mapr",
+    "take"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D1.L1.36672",
+   "descr": "reach[k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "iterate((\\x. uniq(cat(x, gather(x0, x)))), list1(x1), 3)",
+   "nodes": 10,
+   "depth": 5,
+   "cost_pi0": 16,
+   "max_lambda_cost": 9,
+   "prims": [
+    "cat",
+    "gather",
+    "iterate",
+    "list1",
+    "uniq"
+   ],
+   "consts": [
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     16,
+     "iterate((\\x. uniq(cat(x, gather(x0, x)))), list1(x1), 3)",
+     0.999
+    ],
+    "level_completed": 16,
+    "cpu": 1.0,
+    "n_cands": 50897
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.603,
+    "n_cands": 171520
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 98560
+   }
+  },
+  {
+   "tid": "D.D1.L1.36674",
+   "descr": "reach[k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "iterate((\\x. uniq(cat(x, gather(x0, x)))), list1(x1), 3)",
+   "nodes": 10,
+   "depth": 5,
+   "cost_pi0": 16,
+   "max_lambda_cost": 9,
+   "prims": [
+    "cat",
+    "gather",
+    "iterate",
+    "list1",
+    "uniq"
+   ],
+   "consts": [
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D1.L1.36676",
+   "descr": "reach[k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "iterate((\\x. uniq(cat(x, gather(x0, x)))), list1(x1), 2)",
+   "nodes": 10,
+   "depth": 5,
+   "cost_pi0": 15,
+   "max_lambda_cost": 9,
+   "prims": [
+    "cat",
+    "gather",
+    "iterate",
+    "list1",
+    "uniq"
+   ],
+   "consts": [
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D2.L1.36678",
+   "descr": "unlock[new]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filter((\\x. and(subset(row(x0, x), x1), not(mem(x, x1)))), range(lenL(x0)))",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 22,
+   "max_lambda_cost": 15,
+   "prims": [
+    "and",
+    "filter",
+    "lenL",
+    "mem",
+    "not",
+    "range",
+    "row",
+    "subset"
+   ],
+   "consts": [],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     22,
+     "filter((\\x. not(mem(x, x1))), filter((\\x. subset(row(x0, x), x1)), range(lenL(x0))))",
+     4.522
+    ],
+    "level_completed": 22,
+    "cpu": 4.522,
+    "n_cands": 484241
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.603,
+    "n_cands": 154880
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 97792
+   }
+  },
+  {
+   "tid": "D.D2.L1.36680",
+   "descr": "unlock[new]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filter((\\x. and(subset(row(x0, x), x1), not(mem(x, x1)))), range(lenL(x0)))",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 22,
+   "max_lambda_cost": 15,
+   "prims": [
+    "and",
+    "filter",
+    "lenL",
+    "mem",
+    "not",
+    "range",
+    "row",
+    "subset"
+   ],
+   "consts": [],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D2.L1.36682",
+   "descr": "unlock[new]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filter((\\x. and(subset(row(x0, x), x1), not(mem(x, x1)))), range(lenL(x0)))",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 22,
+   "max_lambda_cost": 15,
+   "prims": [
+    "and",
+    "filter",
+    "lenL",
+    "mem",
+    "not",
+    "range",
+    "row",
+    "subset"
+   ],
+   "consts": [],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D3.L1.36684",
+   "descr": "fuel[left,B=9]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "sub(add(5, 4), last(filter((\\x. lt(x, add(5, 5))), scan((\\x y. add(x, y)), 0, x0))))",
+   "nodes": 17,
+   "depth": 6,
+   "cost_pi0": 29,
+   "max_lambda_cost": 9,
+   "prims": [
+    "add",
+    "filter",
+    "last",
+    "lt",
+    "scan",
+    "sub"
+   ],
+   "consts": [
+    0,
+    4,
+    5
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 16,
+    "cpu": 5.068,
+    "n_cands": 279808
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 244480
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.602,
+    "n_cands": 100352
+   }
+  },
+  {
+   "tid": "D.D3.L1.36686",
+   "descr": "fuel[steps,B=12]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "count((\\x. lt(x, add(add(5, 5), 3))), scan((\\x y. add(x, y)), 0, x0))",
+   "nodes": 14,
+   "depth": 5,
+   "cost_pi0": 23,
+   "max_lambda_cost": 13,
+   "prims": [
+    "add",
+    "count",
+    "lt",
+    "scan"
+   ],
+   "consts": [
+    0,
+    3,
+    5
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D3.L1.36688",
+   "descr": "fuel[steps,B=6]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "finite_hidden",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "count((\\x. lt(x, add(5, 2))), scan((\\x y. add(x, y)), 0, x0))",
+   "nodes": 12,
+   "depth": 4,
+   "cost_pi0": 18,
+   "max_lambda_cost": 8,
+   "prims": [
+    "add",
+    "count",
+    "lt",
+    "scan"
+   ],
+   "consts": [
+    0,
+    2,
+    5
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D4.L1.36690",
+   "descr": "plan[stages=0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "plan_validity",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "repeat(list1(ite_i(lt(nth(x0, 1), nth(x0, 2)), 1, 2)), max2(sub(nth(x0, 2), nth(x0, 1)), sub(nth(x0, 1), nth(x0, 2))))",
+   "nodes": 27,
+   "depth": 6,
+   "cost_pi0": 40,
+   "max_lambda_cost": 0,
+   "prims": [
+    "ite_i",
+    "list1",
+    "lt",
+    "max2",
+    "nth",
+    "repeat",
+    "sub"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 16,
+    "cpu": 5.005,
+    "n_cands": 942336
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.602,
+    "n_cands": 188928
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 108544
+   }
+  },
+  {
+   "tid": "D.D4.L1.36692",
+   "descr": "plan[stages=0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "plan_validity",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "repeat(list1(ite_i(lt(nth(x0, 1), nth(x0, 2)), 1, 2)), max2(sub(nth(x0, 2), nth(x0, 1)), sub(nth(x0, 1), nth(x0, 2))))",
+   "nodes": 27,
+   "depth": 6,
+   "cost_pi0": 40,
+   "max_lambda_cost": 0,
+   "prims": [
+    "ite_i",
+    "list1",
+    "lt",
+    "max2",
+    "nth",
+    "repeat",
+    "sub"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "D.D4.L1.36694",
+   "descr": "plan[stages=0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "plan_validity",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "repeat(list1(ite_i(lt(nth(x0, 1), nth(x0, 2)), 1, 2)), max2(sub(nth(x0, 2), nth(x0, 1)), sub(nth(x0, 1), nth(x0, 2))))",
+   "nodes": 27,
+   "depth": 6,
+   "cost_pi0": 40,
+   "max_lambda_cost": 0,
+   "prims": [
+    "ite_i",
+    "list1",
+    "lt",
+    "max2",
+    "nth",
+    "repeat",
+    "sub"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E1.L1.36696",
+   "descr": "switch[X=c0,Y<-c2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), nth(x1, 2))",
+   "nodes": 7,
+   "depth": 3,
+   "cost_pi0": 10,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "nth"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     10,
+     "coalesce(nth(x0, 1), nth(x1, 2))",
+     0.003
+    ],
+    "level_completed": 10,
+    "cpu": 0.003,
+    "n_cands": 1192
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 189952
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.607,
+    "n_cands": 126208
+   }
+  },
+  {
+   "tid": "E.E1.L1.36698",
+   "descr": "switch[X=c0,Y<-c2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), nth(x1, 2))",
+   "nodes": 7,
+   "depth": 3,
+   "cost_pi0": 10,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "nth"
+   ],
+   "consts": [
+    1,
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E1.L1.36700",
+   "descr": "switch[X=c2,Y<-c0]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), nth(x1, 0))",
+   "nodes": 7,
+   "depth": 3,
+   "cost_pi0": 10,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "nth"
+   ],
+   "consts": [
+    0,
+    1
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E2.L1.36702",
+   "descr": "do[X=c0,Y=mul(X,c1)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), mod(mul(coalesce(nth(x0, 0), nth(x1, 0)), nth(x1, 1)), 4))",
+   "nodes": 17,
+   "depth": 6,
+   "cost_pi0": 26,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "mod",
+    "mul",
+    "nth"
+   ],
+   "consts": [
+    0,
+    1,
+    4
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 17,
+    "cpu": 5.0,
+    "n_cands": 1474560
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.601,
+    "n_cands": 188416
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.604,
+    "n_cands": 125952
+   }
+  },
+  {
+   "tid": "E.E2.L1.36704",
+   "descr": "do[X=c0,Y=mul(X,c1)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), mod(mul(coalesce(nth(x0, 0), nth(x1, 0)), nth(x1, 1)), 4))",
+   "nodes": 17,
+   "depth": 6,
+   "cost_pi0": 26,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "mod",
+    "mul",
+    "nth"
+   ],
+   "consts": [
+    0,
+    1,
+    4
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E2.L1.36706",
+   "descr": "do[X=c0,Y=max(X,c1)]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "coalesce(nth(x0, 1), max2(coalesce(nth(x0, 0), nth(x1, 0)), nth(x1, 1)))",
+   "nodes": 15,
+   "depth": 5,
+   "cost_pi0": 22,
+   "max_lambda_cost": 0,
+   "prims": [
+    "coalesce",
+    "max2",
+    "nth"
+   ],
+   "consts": [
+    0,
+    1
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E3.L1.36708",
+   "descr": "chain[lag=1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "take(cons(0, zipw((\\x y. coalesce(x, y)), x0, x1)), len(x0))",
+   "nodes": 11,
+   "depth": 5,
+   "cost_pi0": 16,
+   "max_lambda_cost": 4,
+   "prims": [
+    "coalesce",
+    "cons",
+    "len",
+    "take",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     15,
+     "zipw((\\x y. y), x0, cons(0, zipw((\\x y. coalesce(x, y)), x0, x1)))",
+     4.693
+    ],
+    "level_completed": 15,
+    "cpu": 4.693,
+    "n_cands": 210899
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.602,
+    "n_cands": 194816
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 8,
+    "cpu": 0.601,
+    "n_cands": 100864
+   }
+  },
+  {
+   "tid": "E.E3.L1.36710",
+   "descr": "chain[acc=1]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "take(cons(0, scan((\\x y. add(x, y)), 0, zipw((\\x y. coalesce(x, y)), x0, x1))), len(x0))",
+   "nodes": 16,
+   "depth": 6,
+   "cost_pi0": 23,
+   "max_lambda_cost": 4,
+   "prims": [
+    "add",
+    "coalesce",
+    "cons",
+    "len",
+    "scan",
+    "take",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E3.L1.36712",
+   "descr": "chain[acc=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interventional",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "take(cons(0, cons(0, scan((\\x y. add(x, y)), 0, zipw((\\x y. coalesce(x, y)), x0, x1)))), len(x0))",
+   "nodes": 18,
+   "depth": 7,
+   "cost_pi0": 26,
+   "max_lambda_cost": 4,
+   "prims": [
+    "add",
+    "coalesce",
+    "cons",
+    "len",
+    "scan",
+    "take",
+    "zipw"
+   ],
+   "consts": [
+    0
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E4.L1.36714",
+   "descr": "control[Y=(1a+c1),goal=c3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interactive_control",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mod(sub(nth(x0, 3), nth(x0, 1)), 4)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 15,
+   "max_lambda_cost": 0,
+   "prims": [
+    "mod",
+    "nth",
+    "sub"
+   ],
+   "consts": [
+    1,
+    3,
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     15,
+     "mod(sub(nth(x0, 3), nth(x0, 1)), 4)",
+     0.6
+    ],
+    "level_completed": 15,
+    "cpu": 0.6,
+    "n_cands": 168745
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 10,
+    "cpu": 0.6,
+    "n_cands": 226048
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 100096
+   }
+  },
+  {
+   "tid": "E.E4.L1.36716",
+   "descr": "control[Y=(3a+c0),goal=c3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interactive_control",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mod(mul(sub(nth(x0, 3), nth(x0, 0)), 3), 4)",
+   "nodes": 11,
+   "depth": 5,
+   "cost_pi0": 19,
+   "max_lambda_cost": 0,
+   "prims": [
+    "mod",
+    "mul",
+    "nth",
+    "sub"
+   ],
+   "consts": [
+    0,
+    3,
+    4
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "E.E4.L1.36718",
+   "descr": "control[Y=(1a+c0),goal=c3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "interactive_control",
+    "n": 30,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mod(sub(nth(x0, 3), nth(x0, 0)), 4)",
+   "nodes": 9,
+   "depth": 4,
+   "cost_pi0": 15,
+   "max_lambda_cost": 0,
+   "prims": [
+    "mod",
+    "nth",
+    "sub"
+   ],
+   "consts": [
+    0,
+    3,
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F1.L1.36720",
+   "descr": "arith[modprod,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mod(mul(x0, x1), 3)",
+   "nodes": 5,
+   "depth": 3,
+   "cost_pi0": 8,
+   "max_lambda_cost": 0,
+   "prims": [
+    "mod",
+    "mul"
+   ],
+   "consts": [
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     8,
+     "mod(mul(x0, x1), 3)",
+     0.003
+    ],
+    "level_completed": 8,
+    "cpu": 0.003,
+    "n_cands": 1490
+   },
+   "reach_full_lam6": {
+    "found": [
+     8,
+     "mod(mul(x0, x1), 3)",
+     0.069
+    ],
+    "level_completed": 8,
+    "cpu": 0.069,
+    "n_cands": 33920
+   },
+   "reach_full_raised": {
+    "found": [
+     8,
+     "mod(mul(x0, x1), 3)",
+     0.068
+    ],
+    "level_completed": 8,
+    "cpu": 0.068,
+    "n_cands": 33920
+   }
+  },
+  {
+   "tid": "F.F1.L1.36722",
+   "descr": "arith[scale_sum,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "mul(add(x0, x1), 2)",
+   "nodes": 5,
+   "depth": 3,
+   "cost_pi0": 7,
+   "max_lambda_cost": 0,
+   "prims": [
+    "add",
+    "mul"
+   ],
+   "consts": [
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F1.L1.36724",
+   "descr": "arith[diff,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "sub(x0, mul(x1, 3))",
+   "nodes": 5,
+   "depth": 3,
+   "cost_pi0": 8,
+   "max_lambda_cost": 0,
+   "prims": [
+    "mul",
+    "sub"
+   ],
+   "consts": [
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F2.L1.36726",
+   "descr": "guard[both,k=5]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "ite_i(and(lt(5, x0), lt(5, x1)), mul(x0, x1), add(x0, x1))",
+   "nodes": 14,
+   "depth": 4,
+   "cost_pi0": 22,
+   "max_lambda_cost": 0,
+   "prims": [
+    "add",
+    "and",
+    "ite_i",
+    "lt",
+    "mul"
+   ],
+   "consts": [
+    5
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": null,
+    "level_completed": 16,
+    "cpu": 5.001,
+    "n_cands": 2013184
+   },
+   "reach_full_lam6": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 300800
+   },
+   "reach_full_raised": {
+    "found": null,
+    "level_completed": 9,
+    "cpu": 0.6,
+    "n_cands": 188160
+   }
+  },
+  {
+   "tid": "F.F2.L1.36728",
+   "descr": "guard[nested,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "ite_i(lt(x0, 3), x1, ite_i(lt(x1, 3), x0, add(x0, x1)))",
+   "nodes": 13,
+   "depth": 4,
+   "cost_pi0": 20,
+   "max_lambda_cost": 0,
+   "prims": [
+    "add",
+    "ite_i",
+    "lt"
+   ],
+   "consts": [
+    3
+   ],
+   "within_cost_bound": false,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F2.L1.36730",
+   "descr": "guard[eqmax,k=4]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 130,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "ite_i(eq(x0, x1), 4, max2(x0, x1))",
+   "nodes": 8,
+   "depth": 3,
+   "cost_pi0": 12,
+   "max_lambda_cost": 0,
+   "prims": [
+    "eq",
+    "ite_i",
+    "max2"
+   ],
+   "consts": [
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F3.L1.36732",
+   "descr": "fold[sumsq,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "nodes": 6,
+   "depth": 4,
+   "cost_pi0": 9,
+   "max_lambda_cost": 4,
+   "prims": [
+    "map",
+    "mul",
+    "sum"
+   ],
+   "consts": [],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     9,
+     "sum(map((\\x. mul(x, x)), x0))",
+     0.006
+    ],
+    "level_completed": 9,
+    "cpu": 0.006,
+    "n_cands": 600
+   },
+   "reach_full_lam6": {
+    "found": [
+     9,
+     "sum(map((\\x. mul(x, x)), x0))",
+     0.169
+    ],
+    "level_completed": 9,
+    "cpu": 0.169,
+    "n_cands": 48598
+   },
+   "reach_full_raised": {
+    "found": [
+     9,
+     "sum(map((\\x. mul(x, x)), x0))",
+     0.312
+    ],
+    "level_completed": 9,
+    "cpu": 0.312,
+    "n_cands": 67057
+   }
+  },
+  {
+   "tid": "F.F3.L1.36734",
+   "descr": "fold[sumsq,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "sum(map((\\x. mul(x, x)), x0))",
+   "nodes": 6,
+   "depth": 4,
+   "cost_pi0": 9,
+   "max_lambda_cost": 4,
+   "prims": [
+    "map",
+    "mul",
+    "sum"
+   ],
+   "consts": [],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F3.L1.36736",
+   "descr": "fold[horner,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "fold((\\x y. add(mul(x, 3), y)), 0, x0)",
+   "nodes": 8,
+   "depth": 4,
+   "cost_pi0": 12,
+   "max_lambda_cost": 8,
+   "prims": [
+    "add",
+    "fold",
+    "mul"
+   ],
+   "consts": [
+    0,
+    3
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": false,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F4.L1.36738",
+   "descr": "compose[shift_sorted,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "map((\\x. add(x, 2)), sort(x0))",
+   "nodes": 6,
+   "depth": 3,
+   "cost_pi0": 9,
+   "max_lambda_cost": 4,
+   "prims": [
+    "add",
+    "map",
+    "sort"
+   ],
+   "consts": [
+    2
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true,
+   "reach_focus": {
+    "found": [
+     9,
+     "map((\\x. add(x, 2)), sort(x0))",
+     0.006
+    ],
+    "level_completed": 9,
+    "cpu": 0.006,
+    "n_cands": 545
+   },
+   "reach_full_lam6": {
+    "found": [
+     9,
+     "sort(map((\\x. add(x, 2)), x0))",
+     0.171
+    ],
+    "level_completed": 9,
+    "cpu": 0.171,
+    "n_cands": 48288
+   },
+   "reach_full_raised": {
+    "found": [
+     9,
+     "sort(map((\\x. add(x, 2)), x0))",
+     0.314
+    ],
+    "level_completed": 9,
+    "cpu": 0.314,
+    "n_cands": 66747
+   }
+  },
+  {
+   "tid": "F.F4.L1.36740",
+   "descr": "compose[mirror,k=3]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "cat(x0, rev(x0))",
+   "nodes": 4,
+   "depth": 3,
+   "cost_pi0": 6,
+   "max_lambda_cost": 0,
+   "prims": [
+    "cat",
+    "rev"
+   ],
+   "consts": [],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  },
+  {
+   "tid": "F.F4.L1.36742",
+   "descr": "compose[filter_rev,k=2]",
+   "note": null,
+   "expressible": true,
+   "verify": {
+    "ok": true,
+    "kind": "bounded_exhaustive+hidden",
+    "n": 1141,
+    "fails": 0,
+    "first_fail": null
+   },
+   "src": "filter((\\x. lt(x, 4)), rev(x0))",
+   "nodes": 6,
+   "depth": 3,
+   "cost_pi0": 10,
+   "max_lambda_cost": 5,
+   "prims": [
+    "filter",
+    "lt",
+    "rev"
+   ],
+   "consts": [
+    4
+   ],
+   "within_cost_bound": true,
+   "within_lam_pi0": true,
+   "within_lam_raised": true
+  }
+ ],
+ "families": {
+  "A1": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "A2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 1,
+   "fullR": 1,
+   "notes": []
+  },
+  "A3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": [
+    "join: the prod primitive is invalid above 40 row pairs, the reference truncates"
+   ]
+  },
+  "A4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 1,
+   "fullR": 1,
+   "notes": []
+  },
+  "B1": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "B2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "B3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "B4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "C1": {
+   "instances": 3,
+   "expressible": 1,
+   "lam_block_pi0": 1,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": [
+    "connected components need 2-D flood fill: no adjacency / visited-set construction over grids"
+   ]
+  },
+  "C2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 1,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "C3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "C4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "D1": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "D2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "D3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 3,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "D4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "E1": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "E2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "E3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "E4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "F1": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 1,
+   "fullR": 1,
+   "notes": []
+  },
+  "F2": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 0,
+   "full6": 0,
+   "fullR": 0,
+   "notes": []
+  },
+  "F3": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 1,
+   "focus_reached": 1,
+   "full6": 1,
+   "fullR": 1,
+   "notes": []
+  },
+  "F4": {
+   "instances": 3,
+   "expressible": 3,
+   "lam_block_pi0": 0,
+   "focus_reached": 1,
+   "full6": 1,
+   "fullR": 1,
+   "notes": []
+  }
+ }
+}

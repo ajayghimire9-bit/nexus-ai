@@ -1,0 +1,1 @@
+"""NEXUS multi-world campaign Phase 2 (NOT LOCKED): versioned copies of the Phase 1 modules (src/nexus/campaign/ stays frozen) with incomplete-experience archive, full-rollout improver evaluation, draft-origin tagging and untouched C5/C6/E5/E6 families. See docs/NEXUS_MULTI_WORLD_PHASE2_REPORT.md."""

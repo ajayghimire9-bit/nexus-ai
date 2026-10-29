@@ -1,0 +1,20 @@
+{
+ "grant": "no new grant: Phase 2 charges at most 3,200 s of the carried mi-track balance (7,216 s at 86953d3; >= 4,016 s stay untouched)",
+ "unit": "ledger wall_s per metered child (scripts/mi_exec.py); child_cpu_s recorded separately",
+ "ceilings": {
+  "s1": 550,
+  "src": 1350,
+  "meta": 450,
+  "eval": 650,
+  "rep": 200
+ },
+ "transfers": [
+  {
+   "from": "s1",
+   "to": "src",
+   "s": 100,
+   "when": "2026-10-29, at the Phase 2 protocol commit, before any source-learning or target outcome",
+   "why": "Stage 1 used 422 of 550 s; the required No-Incomplete-Experience ablation adds a 4th cohort (12 lineages), so each lineage gets 120 s (1,440 <= 1,450)"
+  }
+ ]
+}
