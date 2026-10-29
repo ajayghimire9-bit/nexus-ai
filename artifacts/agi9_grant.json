@@ -1,0 +1,12 @@
+{
+ "id": "PHASE9-ALLOCATION-FROM-EXISTING-BALANCE",
+ "kind": "NO NEW GRANT. Owner Phase 9 instruction 2026-10-29: 'use at most 900 charged seconds from the CURRENT unspent, transferable grant balance. No new compute grant and no paid API calls are authorized.'",
+ "recorded_at_parent": "a9b9bd0",
+ "new_amount_s": 0,
+ "source_balance": {
+  "phase8_pool_remaining_s": 1030.185
+ },
+ "pool_s": 900.0,
+ "metered_prefix": "a9-",
+ "note": "Exact Phase 8 charge 1,559.217 s (the Phase 8 report's ~1,562 / ~1,027 were approximations): remaining 1,030.185 s. Phase 9 may draw at most 900 s of it; after Phase 9 at least 130.185 s stay unspent. Reserve check: no ledger or grant file records a binding reserve; the Phase 8 owner text 'leaving at least 489 seconds' defined Phase 8's own cap (respected: Phase 8 used 1,559 of 2,100). The owner's Phase 9 instruction authorises 900 s from the current balance, so the 489 s figure is not treated as binding here - disclosed, not silent. a9- rows are invisible to agi8_budget; this file is the single authority for the 900 s, nothing is counted twice."
+}
