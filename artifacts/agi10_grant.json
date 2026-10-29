@@ -1,0 +1,14 @@
+{
+ "id": "GRANT-NEXUS-PHASE10-3000S",
+ "kind": "explicit owner grant (owner unified Phase 9B/10 instruction: 'an explicit owner-authorized new compute grant of +3,000.0 s ... Hard Compute Cap: Use at most 3,500.0 charged seconds (leaving at least 362.185 s carried reserve)')",
+ "recorded_at_parent": "e205c7a",
+ "new_amount_s": 3000.0,
+ "released_balances": {
+  "phase9b_pool_remaining_s": 1064.015
+ },
+ "pool_s": 4064.015,
+ "cap_s": 3500.0,
+ "carried_reserve_s": 564.015,
+ "metered_prefix": "a10-",
+ "note": "Idempotent: written once. The owner text pooled 862.185 s, the balance BEFORE Phase 9B; Phase 9B since added its +350 s buffer and charged 148.571 s, so the verified carried balance is 1064.015 s (not added again: the +350 s is inside it). Verified pool 4064.015 s; after the 3,500 s cap at least 564.015 s remain (>= 362.185 s required). a10- rows are invisible to earlier budget guards; this file is the single authority."
+}
