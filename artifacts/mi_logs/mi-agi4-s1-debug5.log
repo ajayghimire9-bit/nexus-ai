@@ -1,0 +1,11 @@
+faults ['F3', 'F2', 'F1'] oks [] params {'policy': 'quarantine', 'label': 'UNKNOWN', 'lateness': 5, 'parse_col': 'list_price'}
+n alts 37 round2 alts [(3, 'unit_price')]
+visible_ok True inv []
+stress rows 5
+{'id': 'PZ2', 'order_id': 'PZ2', 'version': '5', 'list_price': '', 'quantity': '8', 'total_value': '117'}
+{'id': 'PZ3', 'order_id': 'PZ3', 'version': '9', 'list_price': '9', 'quantity': '0', 'total_value': '19'}
+{'id': 'PZ4', 'order_id': 'PZ4', 'version': '7', 'list_price': '28', 'quantity': '3', 'total_value': '7'}
+X on stress ([('PZ3', 9, 9, None), ('PZ4', 7, 28, 2.333333)], ['PZ0', 'PZ1', 'PZ2'])
+Y on stress ([('PZ3', 9, 9, None), ('PZ4', 7, 28, 2.33)], ['PZ0', 'PZ1', 'PZ2'])
+int_like {'total_value', 'list_price', 'quantity', 'version'} dirty {'list_price'}
+[{"edits": [["real_div", ""], ["dedup_latest", "order_id by version"], ["quarantine_invalid", "list_price"]], "closure": "unique", "scope": {"alternatives": 37, "visible_consistent": 6, "competitors": 6, "disagreeing": 0}, "classes": null}]

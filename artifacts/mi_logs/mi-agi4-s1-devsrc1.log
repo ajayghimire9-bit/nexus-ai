@@ -1,0 +1,20 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi4_source.py", line 52, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi4_source.py", line 43, in main
+    lin.run()
+    ~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/lineage.py", line 299, in run
+    if not self.meta_rollout():
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/lineage.py", line 265, in meta_rollout
+    roll_learn = [next(self.roll) for _ in range(2)]
+                  ~~~~^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/campaign2/agent_loop.py", line 301, in __next__
+    s = self.seeds[self.i]
+        ~~~~~~~~~~^^^^^^^^
+IndexError: list index out of range

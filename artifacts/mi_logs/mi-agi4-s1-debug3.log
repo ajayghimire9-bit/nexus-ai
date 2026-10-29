@@ -1,0 +1,8 @@
+abstain_none {'engine': 111, 'sqlite_screen': 0} 0.024
+{'step': 'investigate', 'file': 'pipeline.sql', 'error': None, 'failed': [], 'features': [], 'differential_sqlite': None}
+{'step': 'next_fold', 'fold': 1, 'after_s': 0.003}
+[{'step': 'attempt', 'engine': 'sqlite', 'edits': ['try_parse(unit_cost)', 'normalize_text(unit_cost)', "exclude_value(order_id<>'k1')"], 'error': None, 'failed': ['example_rows', 'row_count']}, {'step': 'attempt', 'engine': 'sqlite', 'edits': ['try_parse(unit_cost)', 'normalize_text(unit_cost)', "exclude_value(order_id<>'k2')"], 'error': None, 'failed': ['example_rows', 'row_count']}, {'step': 'attempt', 'engine': 'sqlite', 'edits': ['try_parse(unit_cost)', 'normalize_text(unit_cost)', "exclude_value(order_id<>'k3')"], 'error': None, 'failed': ['example_rows', 'row_count']}]
+fold 0 legacy ok on synth True [] held [['k2', 9, 0, 28.67]]
+fold 1 legacy ok on synth False ['example_rows'] held [['k3', 9, 0, 74.0]]
+fold 2 legacy ok on synth False ['example_rows'] held [['k1', 6, 13, 97.0]]
+fold 3 legacy ok on synth False ['example_rows'] held [['k0', 8, 23, None]]

@@ -1,0 +1,7 @@
+names msg_id offset delta x {"outputs": [["total", ["cast_int", ["col", "delta"]]]], "group": ["sku", ["col", "sku"]], "filter": ["gt", ["cast_int", ["col", "offset"]], ["file", "checkpoint.json", "last_committed_offset"]], "dedup": {"key": "msg_id", "order": ["cast_int", ["col", "delta"]]}}
+COMP 1 dedup_latest msg_id by offset same  
+COMP 1 dedup_latest offset by delta differs [('a', 20), ('b', 31), ('c', 27)] [('PZ1002', 5), ('a', 20), ('b', 31), ('c', 27)]
+fresh {'msg_id', 'id', 'sku'} text {'sku', 'msg_id'} int {'offset', 'delta'}
+F1 {'policy': 'default', 'label': 'OTHER', 'lateness': 5, 'parse_col': 'unit_cost'} unit_cost {"outputs": [["order_id", ["col", "order_id"]], ["seq", ["cast_int", ["col", "seq"]]], ["unit_cost", ["cast_int", ["col", "unit_cost"]]], ["unit_price", ["round2", ["div_real", ["cast_int", ["col", "amount"]], ["nullif_zero", ["cast_int", ["col", "quantity"]]]]]]], "dedup": {"key": "order_id", "orde
+abstain_none {'engine': 17, 'sqlite_screen': 0} [] [([('try_parse', 'seq')], 'held_back'), ([('try_parse', 'amount')], 'held_back'), ([('try_parse', 'quantity')], 'held_back'), ([('quarantine_invalid', 'seq')], 'held_back'), ([('quarantine_invalid', 'amount')], 'held_back'), ([('quarantine_invalid', 'quantity')], 'held_back'), ([('default_fill', 'seq=0')], 'held_back'), ([('default_fill', 'amount=0')], 'held_back'), ([('default_fill', 'quantity=0')], 'held_back'), ([('normalize_text', 'unit_cost')], 'held_back')]
+synth [['k3', 9, 0, 74.0], ['k1', 6, 13, 97.0], ['k0', 8, 23, None]] held [['k2', 9, 0, 28.67]] qs [] []

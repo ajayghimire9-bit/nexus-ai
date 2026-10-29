@@ -1,0 +1,18 @@
+int_like {'quantity', 'amount', 'seq'} dirty set() used ['order_id', 'seq', 'unit_cost', 'amount', 'quantity']
+legacy 4.7375 ['example_rows'] ['diff:value', 'fail:example_rows']
+try_parse seq 4.737 ['example_rows'] False True
+try_parse unit_cost 4.737 ['example_rows'] False False
+try_parse amount 4.737 ['example_rows'] False True
+try_parse quantity 4.737 ['example_rows'] False True
+quarantine_invalid seq 3.737 ['example_rows', 'schema'] False True
+quarantine_invalid amount 3.737 ['example_rows', 'schema'] False True
+quarantine_invalid quantity 3.737 ['example_rows', 'schema'] False True
+default_fill seq=0 4.737 ['example_rows'] False True
+default_fill amount=0 4.737 ['example_rows'] False True
+default_fill quantity=0 4.737 ['example_rows'] False True
+normalize_text order_id 4.25 ['example_rows'] False False
+normalize_text unit_cost 4.737 ['example_rows'] False True
+exclude_value order_id<>'k0' 3.45 ['example_rows', 'row_count'] False True
+exclude_value order_id<>'k1' 3.438 ['example_rows', 'row_count'] False True
+exclude_value order_id<>'k2' 3.65 ['example_rows', 'row_count'] False True
+exclude_value order_id<>'k3' 3.675 ['example_rows', 'row_count'] False False

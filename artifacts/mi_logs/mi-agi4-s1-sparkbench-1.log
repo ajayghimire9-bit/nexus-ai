@@ -1,0 +1,32 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1]Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/world.py", line 141, in run
+    clean = [r.asDict() for r in res["clean"].collect()]
+                                 ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/sql/classic/dataframe.py", line 443, in collect
+    sock_info = self._jdf.collectToPython()
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/py4j/java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+        answer, self.gateway_client, self.target_id, self.name)
+  File "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.venv/lib/python3.13/site-packages/pyspark/errors/exceptions/captured.py", line 288, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value '' of the type "STRING" cannot be cast to "INT" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+pipeline.py:14
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi4_spark_bench.py", line 34, in <module>
+    res = dict(master=master, session_s=round(start, 2), default=bench())
+                                                                 ~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi4_spark_bench.py", line 29, in bench
+    rt.run(code, header, rows, state)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase4/world.py", line 145, in run
+    raise RunError(str(cls), str(e).split("\n")[0][:200])
+nexus.de_phase4.world.RunError: [CAST_INVALID_INPUT] The value '' of the type "STRING" cannot be cast to "INT" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malfo

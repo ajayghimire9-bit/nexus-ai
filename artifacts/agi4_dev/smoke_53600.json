@@ -1,0 +1,1217 @@
+{
+ "spark_warm_s": 2.58,
+ "rows": [
+  {
+   "pid": "F1.k1.sqlite.53600",
+   "faults": [
+    "F1"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 69,
+   "runs_by": {
+    "engine": 69,
+    "sqlite_screen": 0
+   },
+   "wall": 0.014,
+   "edits": [
+    [
+     "default_fill",
+     "unit_cost=0"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "rejected": "held_back",
+     "fold": 0
+    },
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 20,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F1.k1.sqlite.53600",
+   "faults": [
+    "F1"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 11,
+   "runs_by": {
+    "engine": 11,
+    "sqlite_screen": 0
+   },
+   "wall": 0.003,
+   "edits": [
+    [
+     "default_fill",
+     "unit_cost=0"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F1.k2.sqlite.53601",
+   "faults": [
+    "F1",
+    "F3"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 57,
+   "runs_by": {
+    "engine": 57,
+    "sqlite_screen": 0
+   },
+   "wall": 0.01,
+   "edits": [
+    [
+     "dedup_latest",
+     "order_id by rev"
+    ],
+    [
+     "default_fill",
+     "unit_cost=0"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 12,
+      "visible_consistent": 3,
+      "competitors": 3,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F1.k2.sqlite.53601",
+   "faults": [
+    "F1",
+    "F3"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 21,
+   "runs_by": {
+    "engine": 21,
+    "sqlite_screen": 0
+   },
+   "wall": 0.004,
+   "edits": [
+    [
+     "dedup_latest",
+     "order_id by rev"
+    ],
+    [
+     "default_fill",
+     "unit_cost=0"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F2.k1.sqlite.53602",
+   "faults": [
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 85,
+   "runs_by": {
+    "engine": 85,
+    "sqlite_screen": 0
+   },
+   "wall": 0.015,
+   "edits": [
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 16,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F2.k1.sqlite.53602",
+   "faults": [
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 31,
+   "runs_by": {
+    "engine": 31,
+    "sqlite_screen": 0
+   },
+   "wall": 0.006,
+   "edits": [
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F2.k2.sqlite.53603",
+   "faults": [
+    "F2",
+    "F6"
+   ],
+   "shape": "row",
+   "outcome": "abstain_ambiguous",
+   "status": "ambiguous",
+   "verified": false,
+   "silent": false,
+   "runs": 230,
+   "runs_by": {
+    "engine": 230,
+    "sqlite_screen": 0
+   },
+   "wall": 0.042,
+   "edits": [
+    [
+     "filter_file",
+     "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": null,
+   "gate": [
+    {
+     "closure": "ambiguous",
+     "scope": {
+      "alternatives": 84,
+      "visible_consistent": 8,
+      "competitors": 6,
+      "disagreeing": 1
+     },
+     "classes": [
+      "filter_file:gt:sub",
+      "filter_file:ge:sub"
+     ]
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F2.k2.sqlite.53603",
+   "faults": [
+    "F2",
+    "F6"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": false,
+   "silent": true,
+   "runs": 112,
+   "runs_by": {
+    "engine": 112,
+    "sqlite_screen": 0
+   },
+   "wall": 0.02,
+   "edits": [
+    [
+     "filter_file",
+     "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [
+    "hidden1.csv: output differs"
+   ],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F3.k1.sqlite.53604",
+   "faults": [
+    "F3"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 49,
+   "runs_by": {
+    "engine": 49,
+    "sqlite_screen": 0
+   },
+   "wall": 0.007,
+   "edits": [
+    [
+     "dedup_latest",
+     "account_id by rev"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 11,
+      "visible_consistent": 4,
+      "competitors": 4,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F3.k1.sqlite.53604",
+   "faults": [
+    "F3"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 8,
+   "runs_by": {
+    "engine": 8,
+    "sqlite_screen": 0
+   },
+   "wall": 0.002,
+   "edits": [
+    [
+     "dedup_latest",
+     "account_id by rev"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F3.k2.sqlite.53605",
+   "faults": [
+    "F3",
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 138,
+   "runs_by": {
+    "engine": 138,
+    "sqlite_screen": 0
+   },
+   "wall": 0.024,
+   "edits": [
+    [
+     "dedup_latest",
+     "order_id by rev"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 32,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F3.k2.sqlite.53605",
+   "faults": [
+    "F3",
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 68,
+   "runs_by": {
+    "engine": 68,
+    "sqlite_screen": 0
+   },
+   "wall": 0.012,
+   "edits": [
+    [
+     "dedup_latest",
+     "order_id by rev"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F4.k1.sqlite.53606",
+   "faults": [
+    "F4"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 97,
+   "runs_by": {
+    "engine": 97,
+    "sqlite_screen": 0
+   },
+   "wall": 0.016,
+   "edits": [
+    [
+     "filter_file",
+     "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ],
+    [
+     "dedup_latest",
+     "msg_id by delta"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 21,
+      "visible_consistent": 6,
+      "competitors": 5,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F4.k1.sqlite.53606",
+   "faults": [
+    "F4"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 29,
+   "runs_by": {
+    "engine": 29,
+    "sqlite_screen": 0
+   },
+   "wall": 0.005,
+   "edits": [
+    [
+     "filter_file",
+     "offset gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ],
+    [
+     "dedup_latest",
+     "msg_id by delta"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F4.k2.sqlite.53607",
+   "faults": [
+    "F4",
+    "F1"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 167,
+   "runs_by": {
+    "engine": 167,
+    "sqlite_screen": 0
+   },
+   "wall": 0.029,
+   "edits": [
+    [
+     "try_parse",
+     "delta"
+    ],
+    [
+     "dedup_latest",
+     "event_id by delta"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "rejected": "probe",
+     "violations": [
+      "relabelling"
+     ]
+    },
+    {
+     "rejected": "probe",
+     "violations": [
+      "relabelling"
+     ]
+    },
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 49,
+      "visible_consistent": 10,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F4.k2.sqlite.53607",
+   "faults": [
+    "F4",
+    "F1"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": false,
+   "silent": true,
+   "runs": 57,
+   "runs_by": {
+    "engine": 57,
+    "sqlite_screen": 0
+   },
+   "wall": 0.01,
+   "edits": [
+    [
+     "try_parse",
+     "delta"
+    ],
+    [
+     "dedup_latest",
+     "delta by offset"
+    ]
+   ],
+   "hidden": [
+    "hidden1.csv: output differs",
+    "hidden2.csv: output differs"
+   ],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F5.k1.sqlite.53608",
+   "faults": [
+    "F5"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 58,
+   "runs_by": {
+    "engine": 58,
+    "sqlite_screen": 0
+   },
+   "wall": 0.011,
+   "edits": [
+    [
+     "default_fill",
+     "region='OTHER'"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 23,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F5.k1.sqlite.53608",
+   "faults": [
+    "F5"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 7,
+   "runs_by": {
+    "engine": 7,
+    "sqlite_screen": 0
+   },
+   "wall": 0.003,
+   "edits": [
+    [
+     "default_fill",
+     "region='OTHER'"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F5.k2.sqlite.53609",
+   "faults": [
+    "F5",
+    "F2"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 110,
+   "runs_by": {
+    "engine": 110,
+    "sqlite_screen": 0
+   },
+   "wall": 0.018,
+   "edits": [
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ],
+    [
+     "default_fill",
+     "region='OTHER'"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 27,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F5.k2.sqlite.53609",
+   "faults": [
+    "F5",
+    "F2"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 55,
+   "runs_by": {
+    "engine": 55,
+    "sqlite_screen": 0
+   },
+   "wall": 0.01,
+   "edits": [
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ],
+    [
+     "default_fill",
+     "region='OTHER'"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F6.k1.sqlite.53610",
+   "faults": [
+    "F6"
+   ],
+   "shape": "row",
+   "outcome": "abstain_ambiguous",
+   "status": "ambiguous",
+   "verified": false,
+   "silent": false,
+   "runs": 168,
+   "runs_by": {
+    "engine": 168,
+    "sqlite_screen": 0
+   },
+   "wall": 0.037,
+   "edits": [
+    [
+     "filter_file",
+     "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ]
+   ],
+   "hidden": null,
+   "gate": [
+    {
+     "closure": "ambiguous",
+     "scope": {
+      "alternatives": 106,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 1
+     },
+     "classes": [
+      "filter_file:gt:sub",
+      "filter_file:ge:sub"
+     ]
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F6.k1.sqlite.53610",
+   "faults": [
+    "F6"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 54,
+   "runs_by": {
+    "engine": 54,
+    "sqlite_screen": 0
+   },
+   "wall": 0.013,
+   "edits": [
+    [
+     "filter_file",
+     "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F6.k2.sqlite.53611",
+   "faults": [
+    "F6",
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "abstain_ambiguous",
+   "status": "ambiguous",
+   "verified": false,
+   "silent": false,
+   "runs": 227,
+   "runs_by": {
+    "engine": 227,
+    "sqlite_screen": 0
+   },
+   "wall": 0.046,
+   "edits": [
+    [
+     "filter_file",
+     "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": null,
+   "gate": [
+    {
+     "closure": "ambiguous",
+     "scope": {
+      "alternatives": 96,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 1
+     },
+     "classes": [
+      "filter_file:gt:sub",
+      "filter_file:ge:sub"
+     ]
+    }
+   ],
+   "gate_on": true,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F6.k2.sqlite.53611",
+   "faults": [
+    "F6",
+    "F2"
+   ],
+   "shape": "entity",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 127,
+   "runs_by": {
+    "engine": 127,
+    "sqlite_screen": 0
+   },
+   "wall": 0.025,
+   "edits": [
+    [
+     "filter_file",
+     "ts gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ],
+    [
+     "real_div",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "sqlite"
+  },
+  {
+   "pid": "F1.k2.spark.53612",
+   "faults": [
+    "F1",
+    "F4"
+   ],
+   "shape": "row",
+   "outcome": "abstain_none",
+   "status": null,
+   "verified": false,
+   "silent": false,
+   "runs": 3934,
+   "runs_by": {
+    "engine": 128,
+    "sqlite_screen": 3806
+   },
+   "wall": 10.0,
+   "edits": null,
+   "hidden": null,
+   "gate": [
+    {
+     "rejected": "probe",
+     "violations": [
+      "relabelling"
+     ]
+    },
+    {
+     "rejected": "probe",
+     "violations": [
+      "relabelling"
+     ]
+    },
+    {
+     "rejected": "probe",
+     "violations": [
+      "relabelling"
+     ]
+    }
+   ],
+   "gate_on": true,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F1.k2.spark.53612",
+   "faults": [
+    "F1",
+    "F4"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": false,
+   "silent": true,
+   "runs": 65,
+   "runs_by": {
+    "engine": 2,
+    "sqlite_screen": 63
+   },
+   "wall": 0.109,
+   "edits": [
+    [
+     "dedup_latest",
+     "gross by n_items"
+    ],
+    [
+     "quarantine_invalid",
+     "price"
+    ],
+    [
+     "filter_file",
+     "log_pos gt [\"file\", \"checkpoint.json\", \"last_committed_offset\"]"
+    ]
+   ],
+   "hidden": [
+    "hidden1.csv: output differs",
+    "hidden2.csv: quarantine differs"
+   ],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F2.k1.spark.53613",
+   "faults": [
+    "F2"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 211,
+   "runs_by": {
+    "engine": 84,
+    "sqlite_screen": 127
+   },
+   "wall": 4.25,
+   "edits": [
+    [
+     "zero_guard",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 59,
+      "visible_consistent": 1,
+      "competitors": 1,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F2.k1.spark.53613",
+   "faults": [
+    "F2"
+   ],
+   "shape": "row",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 137,
+   "runs_by": {
+    "engine": 69,
+    "sqlite_screen": 68
+   },
+   "wall": 2.811,
+   "edits": [
+    [
+     "zero_guard",
+     ""
+    ],
+    [
+     "round2",
+     "unit_price"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F4.k2.spark.53614",
+   "faults": [
+    "F4",
+    "F5"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "unique",
+   "verified": true,
+   "silent": false,
+   "runs": 183,
+   "runs_by": {
+    "engine": 81,
+    "sqlite_screen": 102
+   },
+   "wall": 3.672,
+   "edits": [
+    [
+     "default_fill",
+     "market='OTHER'"
+    ],
+    [
+     "dedup_latest",
+     "msg_id by reading"
+    ]
+   ],
+   "hidden": [],
+   "gate": [
+    {
+     "closure": "unique",
+     "scope": {
+      "alternatives": 54,
+      "visible_consistent": 10,
+      "competitors": 6,
+      "disagreeing": 0
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F4.k2.spark.53614",
+   "faults": [
+    "F4",
+    "F5"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 74,
+   "runs_by": {
+    "engine": 2,
+    "sqlite_screen": 72
+   },
+   "wall": 0.085,
+   "edits": [
+    [
+     "default_fill",
+     "market='OTHER'"
+    ],
+    [
+     "dedup_latest",
+     "msg_id by reading"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F6.k1.spark.53615",
+   "faults": [
+    "F6"
+   ],
+   "shape": "agg",
+   "outcome": "abstain_ambiguous",
+   "status": "ambiguous",
+   "verified": false,
+   "silent": false,
+   "runs": 118,
+   "runs_by": {
+    "engine": 57,
+    "sqlite_screen": 61
+   },
+   "wall": 1.474,
+   "edits": [
+    [
+     "filter_file",
+     "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ]
+   ],
+   "hidden": null,
+   "gate": [
+    {
+     "closure": "ambiguous",
+     "scope": {
+      "alternatives": 46,
+      "visible_consistent": 6,
+      "competitors": 6,
+      "disagreeing": 3
+     },
+     "classes": null
+    }
+   ],
+   "gate_on": true,
+   "runtime": "spark"
+  },
+  {
+   "pid": "F6.k1.spark.53615",
+   "faults": [
+    "F6"
+   ],
+   "shape": "agg",
+   "outcome": "submitted",
+   "status": "no_gate",
+   "verified": true,
+   "silent": false,
+   "runs": 26,
+   "runs_by": {
+    "engine": 2,
+    "sqlite_screen": 24
+   },
+   "wall": 0.047,
+   "edits": [
+    [
+     "filter_file",
+     "recorded_at gt [\"sub\", [\"file\", \"watermark.json\", \"watermark\"], [\"file\", \"watermark.json\", \"allowed_lateness\"]]"
+    ]
+   ],
+   "hidden": [],
+   "gate": [],
+   "gate_on": false,
+   "runtime": "spark"
+  }
+ ]
+}
