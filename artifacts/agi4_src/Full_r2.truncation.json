@@ -1,0 +1,22 @@
+{
+ "lineage": "Full_r2",
+ "killed_by": "scripts/mi_exec.py cap 49.5 s (status TIMEOUT) before the final save",
+ "ledger_row": {
+  "cap_s": 49.5,
+  "child_cpu_s": 18.36,
+  "child_maxrss_mb": 55.2,
+  "prev_sha256": "baff86f541dd18e783b3bae60e0445649777e166d33f1346528e99032be89590",
+  "run": "mi-agi4-src-Full-r2",
+  "status": "TIMEOUT",
+  "wall_s": 49.513
+ },
+ "snapshot": {
+  "final": false,
+  "elapsed": 40.22,
+  "rows": 50,
+  "schedule": 50,
+  "meta_edits": 8
+ },
+ "decision": "not rerun (pre-registration 0.5); the last periodic snapshot (saved between steps by Lineage.run every 5 projects) is the Full_r2 endpoint; Fixed-M0_r2 / Random-Proposal_r2 replay its 50-project schedule",
+ "cause": "6 concurrent JVM starts took ~6.5 s each (2-3.5 s alone), leaving < 1 s margin"
+}

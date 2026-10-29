@@ -34,7 +34,7 @@ def main(cohort, rep, budget, *flags):
     schedule = None
     if cohort in ("Fixed-M0", "Random-Proposal"):
         full = json.loads((out / f"Full_r{rep}.json").read_text())
-        if not full.get("final"):
+        if not full.get("final") and not (out / f"Full_r{rep}.truncation.json").exists():   # a recorded cap truncation is accepted
             raise SystemExit("the Full lineage of this repetition has not finished")
         schedule = [tuple(x) for x in full["schedule"]]
     lin = LG.Lineage(name, st, budget, out, blk["learn"], blk["admit"], roll_seeds=blk["roll"] if cohort in ("Full", "SolvedOnly") else None,

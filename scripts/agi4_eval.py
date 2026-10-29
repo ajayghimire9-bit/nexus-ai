@@ -80,9 +80,12 @@ def freeze_source():
         for coh in COH:
             f = f"artifacts/agi4_src/{coh}_r{r}.json"
             doc = json.loads((ROOT / f).read_text())
-            if not doc.get("final"):
+            trunc = ROOT / f.replace(".json", ".truncation.json")
+            if not doc.get("final") and not trunc.exists():
                 raise SystemExit(f"{f} not final")
-            arms[f"{coh}_r{r}"] = dict(state=doc["state"], digest=digest(doc["state"]), source=f)
+            arms[f"{coh}_r{r}"] = dict(state=doc["state"], digest=digest(doc["state"]), source=f, truncated=trunc.exists())
+            if trunc.exists():
+                files.append(str(trunc.relative_to(ROOT)))
             files.append(f)
         pl = placebo(arms[f"Full_r{r}"]["state"], random.Random(f"agi4-placebo|{SD.RANGES[('agi4de', 'placebo')].start + r}"))
         arms[f"Placebo_r{r}"] = dict(state=pl, digest=digest(pl), source=f"placebo of Full_r{r}")
