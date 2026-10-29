@@ -330,3 +330,27 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * not demonstrated: a completion gain, transfer to untouched mechanisms, value of incomplete experience, and an improver
     gain.
 * **Budget:** 2,505 of 3,200 s; carried 2,113 s.
+
+## Phase 4: DE / PySpark scaling, de_accept_v2, multi-fault failure learning (2026-10-29; report `docs/NEXUS_PHASE4_SPARK_AND_DE_SCALING_REPORT.md`)
+
+* **Built:** `src/nexus/de_phase4/`:
+  * real `.sql` / `.py` adapter (sqlglot / ast lifting, patches + PATCH.diff, the evaluator runs the submitted file);
+  * `de_accept_v2`: K-fold held-back split, invariant and relabelling probes, ambiguity closure with learned preferences or
+    abstention;
+  * 8-mechanism multi-fault world (F7 / F8 untouched);
+  * failure archive with verified partial repairs and refuted-submission preferences;
+  * Spark start-up 2–3.5 s (was 33 s) and 17.9 ms per script;
+  * DE-only lineage with a 35-edit improver space.
+* **Commits:** protocol `2701de8`, then the freezes `a9ed328` / `499d6e5` and the results commit.
+* **Results (24 unseen projects, 17 arms):**
+  * **0 silent errors in every arm**: target met, at the cost of about 10 / 24 ambiguity abstentions.
+  * Full − Memory-Reset **+5.6 pp** (CI −4.2, 15.3); Spark half +11.1 pp; untouched F7 / F8 **+16.7 pp** (CI 8.3, 25.0).
+  * Full − Solved-Only **+5.6 pp** (CI 2.8, 8.3): small failure-memory signal.
+  * Cost saving 6 % vs Memory-Reset and 2 % vs Baseline (target 20 %: not met).
+  * Improver: 1 / 0 / 1 edits adopted, one degenerate (`cross_engine = off`); M* ≤ M0 on the panel.
+  * Spark: Init 6 / 12 (Phase 3: 1 / 6).
+* **Capability status:**
+  * demonstrated: real-file repair on SQLite and Spark with zero accepted wrong repairs; Spark scale;
+  * suggestive: value of incomplete experience; untouched-mechanism gain;
+  * not demonstrated: ≥ 10 pp completion, ≥ 20 % cost, improver gain.
+* **Budget:** 1,419 of the 1,800 s Phase 4 cap; carried 694 s.

@@ -255,3 +255,147 @@ Everything not listed is descriptive.
   its ranges are above all others registered in that process.
 
 **Tests:** `tests/test_agi4_de.py` 11 passed; `tests/test_agi3_campaign.py` 9 passed; checker kernels 42 passed.
+
+---
+
+## §1 Results (NOT LOCKED)
+
+**Commits:**
+- protocol `2701de8`;
+- Stage 2 deviation (Full_r2 truncation) `c6755bd`;
+- source freeze `a9ed328`;
+- pre-evaluation freeze (meta clones, plan, budget transfers) `499d6e5`;
+- results: this commit.
+
+**Raw data:** `artifacts/agi4_src/`, `artifacts/agi4_meta/`, `artifacts/agi4_eval/*.jsonl` (408 main + 108 panel rows),
+`artifacts/agi4_eval/result.json`.
+
+### 1.1 Budget (charged wall seconds, `scripts/agi4_budget.py`)
+
+| Stage | Used | Ceiling (after recorded transfers) |
+|---|---|---|
+| s1 dev / adapter / gate / cycle | 340 | 341 (350) |
+| src four-cohort learning | 518 | 518 (600) |
+| meta improver clones | 285 | 286 (350) |
+| eval Stage 4 + panel | 276 | 615 (380 + transfers) |
+| rep score + protection | 1 | 40 (120) |
+| **Phase 4 total** | **1,419** | **1,800** |
+
+- The carried balance is now **694 s**, above the 313 s reserve.
+- The Stage 4 transfers went beyond the pre-registered wording (Stage 1 / 5 only) to include unused src / meta ceiling.
+  They were recorded and pushed before any target was built, and Stage 4 used only 276 s of the 615 s.
+
+**Disclosed execution events:**
+1. **Full_r2 truncated.** Full_r2 was killed by its 49.5 s cap: six concurrent JVM starts took ~6.5 s each. It was not
+   rerun. Its last between-steps snapshot (50 projects, 8 meta-edits) is the endpoint (`Full_r2.truncation.json`).
+2. **Panel Spark chunk launched late.** The Spark half of the improver panel was refused at first launch. The job runner
+   reserves each running job's full cap, and four jobs were running. The chunk had never started and had no rows; it was
+   launched once afterwards (54 rows).
+3. **Stage 3 trajectories shortened.** Stage 3 clones ran 31 s trajectories instead of 33.5 s, recorded before they ran.
+
+### 1.2 Stage 2 — source learning on multi-fault projects
+
+Verified / projects in source learning (exploratory submissions under ambiguity count as silent there, by design):
+
+| Cohort | r0 | r1 | r2 |
+|---|---|---|---|
+| Full | 34/57 | 38/58 | 37/50 (truncated) |
+| Solved-Only | 27/49 | 36/55 | 33/54 |
+| Fixed-M0 | 33/57 | 39/58 | 39/50 |
+| Random-Proposal | 40/57 | 31/49 | 38/50 |
+
+**Training ceiling removed:**
+- Full verified 60–74 % of its source projects; by fault count k1 47/53, k2 39/54, k3 17/38, k4 6/20. Phase 3 Full had
+  100 % in two of three lineages.
+- So P received unsolved multi-fault projects: 80 records per Full lineage (the bound).
+- Admitted full-repair skills: 3, 3, 0.
+
+**No stage skill from P.** P-promoted stage skills were proposed 0 times in Full, because no operator removed the same
+evidence in ≥ 2 unsolved projects within one lineage. P acted only through policy weights and preferences.
+
+**Learning from refuted submissions:**
+- All three Full lineages learned `filter_file:ge:sub` > `gt:sub` (+1.25 / −0.5, +0.75 / −0.75, +4.0 / −1.0). This is
+  the Phase 3 watermark lesson: `>=` is right.
+- The Solved-Only lineages, which cannot learn from refutation, learned the **opposite** (`gt:sub` +1.25, +0.5, +1.75).
+  A `>` submission that happens to pass the hidden batches is weak evidence they can't correct.
+
+**Improver.** Full evaluated **9, 8 and 8** distinct edits, below the target of ≥ 10 (budget-limited). It adopted **1, 0
+and 1**:
+- r0 `admit.speedup = 0.3`;
+- r2 `search.cross_engine = off`.
+
+The r2 adoption is a **degenerate win**. Both clones solved 0 of the 2 Spark rollout projects, and "off" used 75 runs
+against 689 because Spark-native search gives up sooner. The adoption rule (as many solved with ≤ 90 % of the runs) rewards
+giving up when nothing is solved. This flaw is now known; see 1.6.
+
+### 1.3 Stage 4 — 24 unseen projects, 17 arms (2.5 s SQLite / 10 s Spark, `de_accept_v2` for every arm)
+
+| Arm | All 24 | SQLite 12 | Spark 12 | Instances 16 | Untouched F7/F8 8 | Silent | Ambiguous abstain |
+|---|---|---|---|---|---|---|---|
+| Full r0 / r1 / r2 | 13 / 13 / 11 | 5 / 5 / 5 | 8 / 8 / 6 | 9 / 8 / 7 | 4 / 5 / 4 | 0 | 10 / 10 / 10 |
+| Solved-Only | 11 / 11 / 11 | 5 / 5 / 5 | 6 / 6 / 6 | 7 / 8 / 7 | 4 / 3 / 4 | 0 | 10–11 |
+| Fixed-M0 | 14 / 13 / 13 | 5 / 5 / 5 | 9 / 8 / 8 | 9 / 8 / 9 | 5 / 5 / 4 | 0 | 9–10 |
+| Random-Proposal | 10 / 10 / 14 | 4 / 5 / 5 | 6 / 5 / 9 | 7 / 6 / 9 | 3 / 4 / 5 | 0 | 9–12 |
+| Placebo | 11 / 12 / 11 | 5 / 5 / 5 | 6 / 7 / 6 | 8 / 8 / 7 | 3 / 4 / 4 | 0 | 11 |
+| Init (Memory-Reset) | 11 | 5 | 6 | 8 | 3 | 0 | 11 |
+| Baseline | 11 | 5 | 6 | 8 | 3 | 0 | 11 |
+
+**Pre-registered targets:**
+
+| # | Target | Result | Verdict |
+|---|---|---|---|
+| 1 | Completion ≥ +10 pp vs Init, Placebo and Baseline | Full − Init **+5.6 pp** [95 % CI −4.2, 15.3]; Full − Placebo **+4.2** [−2.8, 11.1]; Full − Baseline **+5.6** [−4.2, 15.3]. Spark half: +11.1 / +8.3 / +11.1 pp, CIs include 0. Untouched F7 / F8: Full − Init **+16.7** [8.3, 25.0], Full − Placebo **+8.3** | **Not met** |
+| 2 | Cost ≥ 20 % fewer runs vs Init and Baseline at matched completion | Pooled saving 6.1 % vs Init, 2.2 % vs Baseline. r0 / r1 save 9–14 %; r2 is 42–43 % *more* expensive (its adopted `cross_engine = off`) | **Not met** |
+| 3a | Failure memory: Full − Solved-Only > 0 | **+5.6 pp** [2.8, 8.3] (r0 +8.3, r1 +8.3, r2 0), +11.1 pp on Spark; cost difference ≈ 0 (−0.6 %) | **Positive, small** |
+| 3b | Improver: ≥ 1 adopted edit per Full lineage, and M* > M0 on the panel | Adopted 1 / 0 / 1. Panel solved M* / M0 / M_rand: r0 11 / 11 / 10, r1 11 / 11 / 6, r2 9 / 10 / 9 | **Not met** |
+| 4 | 0 accepted wrong repairs | **0** across all 408 main rows and 108 panel rows. The gate trades completion for safety: about 10 of 24 targets per arm ended in an ambiguity abstention | **Met** |
+
+Notes on the targets:
+- **Target 1:** the untouched-family gain is the one interval that excludes 0.
+- **Target 3a:** this is the first Phase-campaign evidence that incomplete experience adds completion. It is a 1-project
+  difference on 24 per repetition, so it is suggestive, not established.
+- **Target 3b:** in r0 and r1, M* behaves exactly like M0 (r1 M* = M0; r0's admission edit never acts at evaluation). In
+  r2, M* is worse. No improver gain.
+- **Target 4:** compare Phase 3, where every arm accepted the same wrong watermark repair, and Stage 1 dev, where the gate
+  off had 3 / 16 silent.
+
+**Comparison with Fixed-M0.** Full − Fixed-M0 is **−4.2 pp**: the improver's edits hurt slightly. Fixed-M0 shares Full's
+learned project sequence without the edits.
+
+**Spark bottleneck.** Even memory-free Init verifies 6 / 12 Spark projects, against 1 / 6 in Phase 3. The 10 s budget,
+SQLite screening and the 127.0.0.1 start-up fix are what changed. The best arms reach 8–9 / 12.
+
+### 1.4 What the evidence establishes
+
+**Established:**
+- Real `.sql` / `.py` repair at scale on SQLite and Spark 4 ANSI, with zero accepted wrong repairs on 24 unseen projects
+  under an acceptance gate that abstains when the visible evidence under-determines the repair.
+- Spark is no longer the bottleneck.
+
+**Suggestive, not established:**
+- Failure memory: +5.6 pp over Solved-Only, with the interval above 0, but on 24 projects with 1-project differences.
+- An untouched-mechanism gain over memory reset: +16.7 pp.
+
+**Not established:** the ≥ 10 pp completion target, the ≥ 20 % cost target, and any improver gain (M* ≤ M0).
+
+**Unknown:** whether the gain persists with more targets per family; whether a better adoption rule finds useful edits.
+
+### 1.5 Protection
+
+`artifacts/agi4_protected_hashes_after.json`:
+- 0 violations;
+- 1,472 frozen files unchanged (Phase 1–3 included);
+- checkers v1–v5 pinned;
+- `main` = `d7ac8c5`;
+- the 29 additions are this phase's run logs;
+- the one-use claims `agi4de/eval` and `agi4de/panel` were made once (run id `agi4-eval`).
+
+### 1.6 Recommended next experiment
+
+**Ambiguity-resolving acceptance with a better improver criterion.**
+
+About 10 of 24 targets per arm end in a correct-but-unresolved `de_accept_v2` abstention. That is the largest remaining
+completion loss, and it is exactly where failure memory showed its signal. Next:
+- (a) allow a single bounded stakeholder clarification per project (counted), against preference resolution;
+- (b) change the meta-adoption rule so equal-zero-solved rollouts never adopt on run count;
+- (c) use ≥ 6 targets per family so 1-project differences can be resolved.
