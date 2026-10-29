@@ -1,0 +1,25 @@
+{
+ "phase": "Phase 5 (NOT LOCKED): learning to investigate and transfer the procedure",
+ "authority": "owner prompt of 2026-10-29 grants NO additional compute; the standing grant's carried mi ledger (scripts/mi_budget.py) had 694 s remaining at 287069f",
+ "start_revision": "287069f",
+ "carried_balance_at_start_s": 694,
+ "total_cap_s": 600,
+ "ceilings": {
+  "s1": 150,
+  "src": 100,
+  "eval": 320,
+  "rep": 30
+ },
+ "transfers": [
+  {
+   "from": "rep",
+   "to": "s1",
+   "s": 10
+  }
+ ],
+ "notes": [
+  "94 s of the carried balance stay in reserve.",
+  "Unit tests, generator self-checks (pure Python + in-memory SQLite, no learner outcomes) are not charged, as in Phases 3-4.",
+  "Stage 1 reached 154 s against its 150 s ceiling: direct scripts/mi_exec.py development runs do not check stage ceilings (only scripts/agi5_jobs.py does). Recorded after the fact as a 10 s transfer rep -> s1; no further Stage 1 run; every later run goes through agi5_jobs.py."
+ ]
+}
