@@ -1,0 +1,1326 @@
+{
+ "rep0": {
+  "stageA": {
+   "tasks": 60,
+   "verified": 58,
+   "wrong": 0,
+   "submitted": 58,
+   "per_family": {
+    "coalesce": "7/7",
+    "condsum": "8/8",
+    "dedup": "8/8",
+    "filtmap": "7/7",
+    "flag": "7/7",
+    "json": "8/8",
+    "preagg": "7/7",
+    "upsert": "6/8"
+   },
+   "functions": [
+    {
+     "name": "F0",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "scalar",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111005",
+      "T111009",
+      "T111021",
+      "T111024",
+      "T111028"
+     ],
+     "instances": 5,
+     "compression": 5,
+     "acquired_after_task": 30,
+     "support_families": [
+      "coalesce",
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F1",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "scalar",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ],
+      [
+       "col",
+       [
+        "param",
+        2
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111000",
+      "T111005",
+      "T111009",
+      "T111010",
+      "T111021",
+      "T111023",
+      "T111024",
+      "T111028"
+     ],
+     "instances": 8,
+     "compression": 3,
+     "acquired_after_task": 30,
+     "support_families": [
+      "coalesce",
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F2",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "col",
+       [
+        "param",
+        1
+       ]
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111005",
+      "T111009",
+      "T111021",
+      "T111024"
+     ],
+     "instances": 4,
+     "compression": 3,
+     "acquired_after_task": 30,
+     "support_families": [
+      "coalesce"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F3",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "const",
+       0,
+       "int"
+      ],
+      [
+       "col",
+       [
+        "param",
+        1
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111000",
+      "T111010",
+      "T111023",
+      "T111028",
+      "T111034"
+     ],
+     "instances": 5,
+     "compression": 5,
+     "acquired_after_task": 40,
+     "support_families": [
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F4",
+     "cls": "multi",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "union",
+      [
+       "join",
+       "anti",
+       [
+        "param",
+        0
+       ],
+       [
+        "param",
+        1
+       ],
+       [
+        [
+         "param",
+         2
+        ]
+       ],
+       [
+        [
+         "param",
+         2
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ]
+     ],
+     "expanded_size": 7,
+     "ops": 2,
+     "support_projects": [
+      "T111013",
+      "T111020",
+      "T111030"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 40,
+     "support_families": [
+      "upsert"
+     ],
+     "stageA_uses_after": 3
+    },
+    {
+     "name": "F5",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "path"
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "param",
+        1
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111002",
+      "T111008",
+      "T111018",
+      "T111031",
+      "T111032"
+     ],
+     "instances": 5,
+     "compression": 1,
+     "acquired_after_task": 40,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F6",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "const",
+       0,
+       "int"
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111028",
+      "T111034",
+      "T111044"
+     ],
+     "instances": 3,
+     "compression": 4,
+     "acquired_after_task": 50,
+     "support_families": [
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F7",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "b"
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111018",
+      "T111031",
+      "T111048"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 50,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F8",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "d"
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111008",
+      "T111032",
+      "T111046"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 50,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F9",
+     "cls": "multi",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "int"
+      ]
+     ],
+     "body": [
+      "filter",
+      [
+       "param",
+       0
+      ],
+      [
+       "cmp",
+       "gt",
+       [
+        "col",
+        [
+         "param",
+         1
+        ]
+       ],
+       [
+        "const",
+        [
+         "param",
+         2
+        ],
+        "int"
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111001",
+      "T111015",
+      "T111022",
+      "T111026",
+      "T111038",
+      "T111043",
+      "T111050"
+     ],
+     "instances": 7,
+     "compression": 2,
+     "acquired_after_task": 60,
+     "support_families": [
+      "filtmap"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F10",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "str"
+      ],
+      [
+       "scalar",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "cmp",
+       "eq",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "const",
+        [
+         "param",
+         1
+        ],
+        "str"
+       ]
+      ],
+      [
+       "param",
+       2
+      ],
+      [
+       "const",
+       0,
+       "int"
+      ]
+     ],
+     "expanded_size": 6,
+     "ops": 2,
+     "support_projects": [
+      "T111011",
+      "T111016",
+      "T111040",
+      "T111059"
+     ],
+     "instances": 4,
+     "compression": 2,
+     "acquired_after_task": 60,
+     "support_families": [
+      "condsum"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F11",
+     "cls": "wrapper",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "join",
+      "anti",
+      [
+       "param",
+       0
+      ],
+      [
+       "param",
+       1
+      ],
+      [
+       [
+        "param",
+        2
+       ]
+      ],
+      [
+       [
+        "param",
+        2
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 1,
+     "support_projects": [
+      "T111013",
+      "T111020",
+      "T111030",
+      "T111041",
+      "T111053",
+      "T111058"
+     ],
+     "instances": 6,
+     "compression": 1,
+     "acquired_after_task": 60,
+     "support_families": [
+      "upsert"
+     ],
+     "stageA_uses_after": 0
+    }
+   ],
+   "wall_bound": 1
+  },
+  "stageB": {
+   "tasks": 40,
+   "verified": 14,
+   "wrong": 0,
+   "submitted": 14,
+   "wall_bound": 24,
+   "uses": {}
+  }
+ },
+ "rep1": {
+  "stageA": {
+   "tasks": 60,
+   "verified": 54,
+   "wrong": 2,
+   "submitted": 56,
+   "per_family": {
+    "coalesce": "8/8",
+    "condsum": "7/8",
+    "dedup": "7/7",
+    "filtmap": "8/8",
+    "flag": "6/7",
+    "json": "7/7",
+    "preagg": "6/7",
+    "upsert": "5/8"
+   },
+   "functions": [
+    {
+     "name": "F0",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "scalar",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111504",
+      "T111506",
+      "T111510",
+      "T111511",
+      "T111517"
+     ],
+     "instances": 5,
+     "compression": 5,
+     "acquired_after_task": 20,
+     "support_families": [
+      "coalesce",
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F1",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "scalar",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ],
+      [
+       "col",
+       [
+        "param",
+        2
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111504",
+      "T111506",
+      "T111510",
+      "T111511",
+      "T111517",
+      "T111519"
+     ],
+     "instances": 6,
+     "compression": 1,
+     "acquired_after_task": 20,
+     "support_families": [
+      "coalesce",
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F2",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "col",
+       [
+        "param",
+        1
+       ]
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111504",
+      "T111510",
+      "T111517"
+     ],
+     "instances": 3,
+     "compression": 1,
+     "acquired_after_task": 20,
+     "support_families": [
+      "coalesce"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F3",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "const",
+       0,
+       "int"
+      ],
+      [
+       "col",
+       [
+        "param",
+        0
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111506",
+      "T111511",
+      "T111524"
+     ],
+     "instances": 3,
+     "compression": 4,
+     "acquired_after_task": 30,
+     "support_families": [
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F4",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "branch",
+      [
+       "isnull",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ]
+      ],
+      [
+       "const",
+       0,
+       "int"
+      ],
+      [
+       "col",
+       [
+        "param",
+        1
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111506",
+      "T111511",
+      "T111519",
+      "T111524"
+     ],
+     "instances": 4,
+     "compression": 3,
+     "acquired_after_task": 30,
+     "support_families": [
+      "preagg"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F5",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "b"
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111522",
+      "T111530",
+      "T111536"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 40,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F6",
+     "cls": "multi",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "union",
+      [
+       "join",
+       "anti",
+       [
+        "param",
+        0
+       ],
+       [
+        "param",
+        1
+       ],
+       [
+        [
+         "param",
+         2
+        ]
+       ],
+       [
+        [
+         "param",
+         2
+        ]
+       ]
+      ],
+      [
+       "param",
+       1
+      ]
+     ],
+     "expanded_size": 7,
+     "ops": 2,
+     "support_projects": [
+      "T111512",
+      "T111527",
+      "T111533"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 40,
+     "support_families": [
+      "upsert"
+     ],
+     "stageA_uses_after": 2
+    },
+    {
+     "name": "F7",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "path"
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "param",
+        1
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111502",
+      "T111509",
+      "T111522",
+      "T111530",
+      "T111536"
+     ],
+     "instances": 5,
+     "compression": 1,
+     "acquired_after_task": 40,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F8",
+     "cls": "multi",
+     "kind": "scalar",
+     "params": [
+      [
+       "name",
+       null
+      ]
+     ],
+     "body": [
+      "cast",
+      [
+       "json",
+       [
+        "col",
+        [
+         "param",
+         0
+        ]
+       ],
+       [
+        "d"
+       ]
+      ],
+      "int"
+     ],
+     "expanded_size": 4,
+     "ops": 2,
+     "support_projects": [
+      "T111502",
+      "T111509",
+      "T111543"
+     ],
+     "instances": 3,
+     "compression": 2,
+     "acquired_after_task": 50,
+     "support_families": [
+      "json"
+     ],
+     "stageA_uses_after": 0
+    },
+    {
+     "name": "F9",
+     "cls": "multi",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "int"
+      ]
+     ],
+     "body": [
+      "filter",
+      [
+       "param",
+       0
+      ],
+      [
+       "cmp",
+       "gt",
+       [
+        "col",
+        [
+         "param",
+         1
+        ]
+       ],
+       [
+        "const",
+        [
+         "param",
+         2
+        ],
+        "int"
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111507",
+      "T111513",
+      "T111521",
+      "T111526",
+      "T111539",
+      "T111541"
+     ],
+     "instances": 6,
+     "compression": 1,
+     "acquired_after_task": 50,
+     "support_families": [
+      "filtmap"
+     ],
+     "stageA_uses_after": 2
+    },
+    {
+     "name": "F10",
+     "cls": "multi",
+     "kind": "rel",
+     "params": [
+      [
+       "rel",
+       null
+      ],
+      [
+       "name",
+       null
+      ],
+      [
+       "lit",
+       "str"
+      ]
+     ],
+     "body": [
+      "filter",
+      [
+       "param",
+       0
+      ],
+      [
+       "cmp",
+       "eq",
+       [
+        "col",
+        [
+         "param",
+         1
+        ]
+       ],
+       [
+        "const",
+        [
+         "param",
+         2
+        ],
+        "str"
+       ]
+      ]
+     ],
+     "expanded_size": 5,
+     "ops": 2,
+     "support_projects": [
+      "T111508",
+      "T111516",
+      "T111525",
+      "T111534",
+      "T111553",
+      "T111556"
+     ],
+     "instances": 6,
+     "compression": 1,
+     "acquired_after_task": 60,
+     "support_families": [
+      "condsum"
+     ],
+     "stageA_uses_after": 0
+    }
+   ],
+   "wall_bound": 1
+  },
+  "stageB": {
+   "tasks": 42,
+   "verified": 13,
+   "wrong": 0,
+   "submitted": 13,
+   "wall_bound": 24,
+   "uses": {}
+  }
+ }
+}

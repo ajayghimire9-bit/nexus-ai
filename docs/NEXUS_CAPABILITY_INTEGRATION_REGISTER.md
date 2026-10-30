@@ -681,3 +681,18 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Limit:** the gain is entirely the designed CDC-time mechanism (dedup ties needing the late-arrival channel). At B_ev = 2, E2
   equals E3; a relation-aware fixed rule would match it; E3's exploration cost was about 1,875 executions per stream.
 * **Budget:** 685 of 1,300 s; ledger verified; protection 0 violations; `main` untouched.
+
+## Phase 11: autonomous program acquisition and reusable relational abstraction (2026-10-30; report `docs/NEXUS_PHASE11_ATOMIC_RELATIONAL_ENGINE_REPORT.md`) — NOT LOCKED
+
+* **New core (`src/nexus/de_phase11`):** typed relational core with published semantics, a native DuckDB compiler (conformance
+  60 / 60; SQLite 58 / 60), a synthesizer with recoverable observational fingerprints and refinement, and typed anti-unification
+  abstraction (k_min 3).
+* **Learned from NEXUS's own solved source programs:** 12 + 11 functions; distinct mechanisms are coalescing, JSON extract-and-cast,
+  predicate-shaped filters and a **pure next-state upsert** `union(anti_join(p0, p1, k, k), p1)` (both streams).
+* **Suite 1** (24 fresh withheld compositions, library frozen, 168 / 168 rows):
+  * F1 (fixed search + library) 8 / 24 against F0 5 / 24 in both streams, 0 losses; all 3 gains call the learned upsert.
+  * F1 has 5 wrong against F0's 4, so the pre-registered verdict is **mixed**.
+  * L1 − L0 = +1 / +1 (null); the guides (13–14 records) gave nothing.
+* **Not done:** Suite 3 NOT READY (BIRD-Critic references by email only); Stage B reached 40–42 of 80 tasks; Polars / PySpark
+  adapters not implemented; deep compositions (W1–W3, W5, W7) 0 / 3 in every arm.
+* **Budget:** 1,161.6 of 1,800 s (new grant only); ledger verified; protection 0 violations; `main` untouched.
