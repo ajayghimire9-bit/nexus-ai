@@ -31,6 +31,13 @@ def test_three_valued_logic_null_false_error():
     assert C.json_get('{"a": {"b": 1}}', ("a",)) == '{"b":1}' and C.json_get('{"a": true}', ("a",)) == "true"
 
 
+def test_literals_must_match_their_declared_type():
+    import pytest
+    with pytest.raises(C.TypeErr):
+        C.scalar_type(("const", "p", I), {})
+    assert C.scalar_type(("const", None, I), {}) == I and C.scalar_type(("const", 3, N), {}) == N
+
+
 def test_relational_semantics_and_duckdb_conformance():
     R = C.Rel(["k", "v"], [I, I], [(1, 2), (1, 5), (None, 3), (None, 4), (2, None)])
     S2 = C.Rel(["k", "w"], [I, I], [(1, 9), (1, 8), (None, 7)])

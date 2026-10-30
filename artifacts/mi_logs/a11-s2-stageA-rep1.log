@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi11_stageA.py", line 88, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi11_stageA.py", line 51, in main
+    r = S.solve(learner, lib, S.Costs(), S.Budget(REL_A, SC_A, WALL_A), evidence=lambda adm=adm: adm["evidence"])
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 959, in solve
+    prog = s.run()
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 470, in run
+    vals = self._exec(x)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 421, in _exec
+    return [C.run(x, self.envs[k]) for k in VIS]
+            ~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/core11.py", line 556, in run
+    v = f(r)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/core11.py", line 487, in <lambda>
+    return lambda r: v_cmp(o, fa(r), fb(r))
+                     ~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/core11.py", line 410, in v_cmp
+    return _cmp(o, a, b)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/core11.py", line 392, in _cmp
+    return a > b
+           ^^^^^
+TypeError: '>' not supported between instances of 'int' and 'str'

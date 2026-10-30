@@ -188,9 +188,14 @@ def scalar_type(e, schema):
     """schema: dict name -> type. Returns the physical type of e (None for an untyped NULL literal never occurs: consts carry T)."""
     op = e[0]
     if op == "const":
-        if e[2] not in TYPES:
-            raise TypeErr(f"bad const type {e[2]}")
-        return e[2]
+        t, v = e[2], e[1]
+        if t not in TYPES:
+            raise TypeErr(f"bad const type {t}")
+        ok = v is None or (t == BOOL and isinstance(v, bool)) or (t == INT and isinstance(v, int) and not isinstance(v, bool)) or \
+            (t == NUM and isinstance(v, (int, float)) and not isinstance(v, bool)) or (t == STR and isinstance(v, str))
+        if not ok:
+            raise TypeErr(f"const value {v!r} is not of type {t}")      # a literal must match its declared physical type
+        return t
     if op == "col":
         if e[1] not in schema:
             raise TypeErr(f"unknown column {e[1]}")

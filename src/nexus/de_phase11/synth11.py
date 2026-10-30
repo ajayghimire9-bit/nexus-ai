@@ -317,18 +317,27 @@ class Pool:
                 continue
             rest, ar = b - K(f"call:{fname}"), len(f["params"])
             for split in _splits(rest, ar) if rest >= ar else []:
-                for combo in itertools.product(*[[c for c in self._ids(s_) if sz(c, "call")] for s_ in split]):
+                slots = []
+                for (pk, pm), s_ in zip(f["params"], split):
+                    if pk == "lit" and pm == "path":
+                        slots.append([("path", p) for p in self.paths] if s_ == 1 else [])
+                    else:
+                        slots.append([("cls", c) for c in self._ids(s_) if sz(c, "call")])
+                for combo in itertools.product(*slots):
                     if self.budget.out():
                         return False
                     args = []
-                    for (pk, _), cid in zip(f["params"], combo):
-                        r = self.rep(cid)
+                    for (pk, pm), (tag, val) in zip(f["params"], combo):
+                        if tag == "path":
+                            args.append(val)
+                            continue
+                        r = self.rep(val)
                         if pk == "name":
                             if r[0] != "col":
                                 break
                             args.append(r[1])
                         elif pk == "lit":
-                            if r[0] != "const":
+                            if r[0] != "const" or r[2] != pm:
                                 break
                             args.append(r[1])
                         else:
@@ -337,10 +346,11 @@ class Pool:
                         try:
                             ast = C.expand(("call", fname, tuple(args)), self.lib)
                             t = C.scalar_type(ast, self.sch)
-                        except (KeyError, IndexError, C.TypeErr, C.Unsupported):
+                            fn = C.compile_scalar(ast, self.cols)
+                            vec = tuple(fn(r) for r in self.slice)
+                        except (KeyError, IndexError, TypeError, C.TypeErr, C.Unsupported):
                             continue
-                        fn = C.compile_scalar(ast, self.cols)
-                        self._new(ast, t, tuple(fn(r) for r in self.slice), ("leaf", ast), b, C.size(ast))
+                        self._new(ast, t, vec, ("leaf", ast), b, C.size(ast))
         return True
 
 
@@ -420,6 +430,9 @@ class Search:
         try:
             return [C.run(x, self.envs[k]) for k in VIS]
         except C.RelErr:
+            return None
+        except (TypeError, C.TypeErr, C.Unsupported):              # defensive: an ill-typed candidate is invalid, never a crash
+            self.log["runtime_type_error"] += 1
             return None
 
     @staticmethod
@@ -588,8 +601,8 @@ class Search:
                 choices.append([(prog, x, 0)] if i == rel_ps[0] else [(p, xx, c) for p, xx, _, c in popped])
             elif k == "name":
                 choices.append([(n, n, 1) for n in names])
-            elif k == "lit":
-                choices.append([(v, v, 1) for vs in self.consts.values() for v in vs])
+            elif k == "lit":                                       # literals of the parameter's declared type (paths for a json path)
+                choices.append([(p, p, 1) for p in self.paths] if t == "path" else [(v, v, 1) for v in self.consts.get(t, [])])
             else:
                 choices.append([(("col", n), ("col", n), 1) for n in names])
         out = []
