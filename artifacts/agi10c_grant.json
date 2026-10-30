@@ -1,0 +1,21 @@
+{
+ "id": "GRANT-NEXUS-PHASE10C-1500S",
+ "kind": "explicit owner grant (owner Phase 10C instruction: 'I authorize a new compute grant of +1,500.0 s added to the carried balance, with a hard cap of 1,800.0 charged seconds')",
+ "recorded_at_parent": "34c1109",
+ "new_amount_s": 1600.0,
+ "released_balances": {
+  "phase10b_pool_remaining_s": 2250.008
+ },
+ "pool_s": 3850.008,
+ "cap_s": 1800.0,
+ "carried_after_cap_s": 2050.008,
+ "metered_prefix": "a10c-",
+ "note": "Idempotent: written once; a10c- rows are invisible to earlier budget guards; this file is the single authority.",
+ "amendment": {
+  "when": "owner's revised Phase 10C instruction, received mid-Stage 1/2 (275.4 s already charged under a10c-, carried, not reset)",
+  "quote": "I authorize a new compute grant of +1,600.0 s added to the carried balance, with a hard cap of 1,800.0 charged seconds",
+  "interpretation": "The revision REPLACES the original Phase 10C instruction and its +1,500 s grant (one phase, one grant): new_amount_s 1,600 instead of 1,500; same 1,800 s cap; the a10c- rows already charged count against it.",
+  "new_amount_s": 1600.0,
+  "pool_s": 3850.008
+ }
+}

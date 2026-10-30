@@ -1,0 +1,8 @@
+{"pid": "P6.X2.P7_duckdb-P6_sqlite.88021", "faults": ["pit", "normalize"], "outcome": {"decision": "abstain", "reason": "requirement not testable on the candidate: options indistinguishable end-to-end at ['0:1']", "verified": false, "wrong": false}, "path": [[0, "normalize_text", "region"], [0, "col_compare", "obs_ts le label_ts"]], "visible": null, "search_path_specs_equal_chosen": false}
+P7 ['pit'] equal_truth False
+  SUB  null
+  TRUE {"outputs": [["id", ["col", "id"]], ["sku", ["col", "sku"]], ["version", ["col", "version"]], ["op", ["col", "op"]], ["ts", ["col", "ts"]], ["log_pos", ["col", "log_pos"]], ["event_id", ["col", "event_id"]], ["amount", ["col", "amount"]], ["qty", ["col", "qty"]], ["region", ["col", "region"]], ["obs_ts", ["col", "obs_ts"]], ["label_ts", ["col", "label_ts"]]], "filter": ["lt", ["cast_int", ["col", "obs_ts"]], ["cast_int", ["col", "label_ts"]]]}
+P6 ['normalize'] equal_truth False
+  SUB  null
+  TRUE {"outputs": [["id", ["col", "id"]], ["region", ["norm_text", ["col", "region"]]], ["amount", ["cast_int", ["col", "amount"]]]], "quarantine": ["not", ["nonempty", ["col", "region"]]]}
+dp {'stage': 0, 'pos': 1, 'kind': None, 'options': ['obs_ts le label_ts', 'obs_ts lt label_ts'], 'effects': ['excluded', 'excluded'], 'resolved': 'obs_ts le label_ts', 'via': 'claim', 'conflict': False, 'legacy_effect': None, 'undecided': False}

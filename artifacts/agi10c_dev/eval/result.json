@@ -1,0 +1,433 @@
+{
+ "n_rows": 8,
+ "build_failures": [],
+ "draws": {
+  "A": {
+   "stream": "rep0",
+   "arms": {
+    "A1": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "1/1",
+     "ordinary": "0/0",
+     "work_withheld": 1884,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.4
+    },
+    "A2_rep0": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "1/1",
+     "ordinary": "0/0",
+     "work_withheld": 1888,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.4
+    },
+    "A3_rep0": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "1/1",
+     "ordinary": "0/0",
+     "work_withheld": 1882,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 1,
+     "eval_wall": 0.4
+    },
+    "A4_rep0": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "1/1",
+     "ordinary": "0/0",
+     "work_withheld": 1882,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 1,
+     "eval_wall": 0.4
+    }
+   },
+   "contrasts": {
+    "heldout": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    },
+    "ordinary": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    }
+   },
+   "attribution": {
+    "heldout": {
+     "n": 1,
+     "fixed_L0": 1,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [],
+     "A4_lost_vs_any": []
+    },
+    "ordinary": {
+     "n": 0,
+     "fixed_L0": 0,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [],
+     "A4_lost_vs_any": []
+    }
+   },
+   "targets": {
+    "91906": {
+     "family": "H1",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "latest",
+       "window"
+      ],
+      [
+       "tombstone",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "latest",
+       "tombstone"
+      ],
+      [
+       "window"
+      ]
+     ]
+    }
+   },
+   "curve_withheld": {
+    "N0": {
+     "verified": 1,
+     "wrong": 0,
+     "eval_work": 1884
+    },
+    "N15": null,
+    "N30": null,
+    "N3": {
+     "verified": 1,
+     "wrong": 0,
+     "eval_work": 1882
+    }
+   },
+   "forgetting_withheld": [],
+   "training": {
+    "tasks": 11,
+    "verified": 10,
+    "wrong": 0,
+    "wrong_projects": [],
+    "cost_at_checkpoints": {
+     "3": {
+      "wake": 2.7,
+      "abstraction": 0.0,
+      "dreams": 4.2,
+      "ranker": 0.0
+     },
+     "6": {
+      "wake": 4.3,
+      "abstraction": 3.7,
+      "dreams": 6.5,
+      "ranker": 0.0
+     },
+     "11": {
+      "wake": 10.7,
+      "abstraction": 15.4,
+      "dreams": 6.5,
+      "ranker": 0.0
+     }
+    },
+    "final_cost": {
+     "wake": 10.697289228439331,
+     "abstraction": 15.407327890396118,
+     "dreams": 6.545217275619507,
+     "ranker": 0.010775566101074219
+    }
+   }
+  },
+  "B": {
+   "stream": "rep1",
+   "arms": {
+    "A1": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "0/0",
+     "ordinary": "1/1",
+     "work_withheld": 0,
+     "work_ordinary": 594,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.1
+    },
+    "A2_rep1": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "0/0",
+     "ordinary": "1/1",
+     "work_withheld": 0,
+     "work_ordinary": 590,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.1
+    },
+    "A3_rep1": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "0/0",
+     "ordinary": "1/1",
+     "work_withheld": 0,
+     "work_ordinary": 594,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.1
+    },
+    "A4_rep1": {
+     "n": 1,
+     "verified": 1,
+     "wrong": 0,
+     "withheld": "0/0",
+     "ordinary": "1/1",
+     "work_withheld": 0,
+     "work_ordinary": 590,
+     "macro_on_verified_path": 0,
+     "eval_wall": 0.1
+    }
+   },
+   "contrasts": {
+    "heldout": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 0,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    },
+    "ordinary": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 1,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    }
+   },
+   "attribution": {
+    "heldout": {
+     "n": 0,
+     "fixed_L0": 0,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [],
+     "A4_lost_vs_any": []
+    },
+    "ordinary": {
+     "n": 1,
+     "fixed_L0": 1,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [],
+     "A4_lost_vs_any": []
+    }
+   },
+   "targets": {
+    "91950": {
+     "family": "P1",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "window"
+      ]
+     ]
+    }
+   },
+   "curve_withheld": {
+    "N0": {
+     "verified": 0,
+     "wrong": 0,
+     "eval_work": 0
+    },
+    "N15": null,
+    "N30": null,
+    "N3": {
+     "verified": 0,
+     "wrong": 0,
+     "eval_work": 0
+    }
+   },
+   "forgetting_withheld": [],
+   "training": {
+    "tasks": 12,
+    "verified": 10,
+    "wrong": 0,
+    "wrong_projects": [],
+    "cost_at_checkpoints": {
+     "3": {
+      "wake": 1.6,
+      "abstraction": 0.0,
+      "dreams": 2.3,
+      "ranker": 0.0
+     },
+     "6": {
+      "wake": 3.3,
+      "abstraction": 0.0,
+      "dreams": 3.8,
+      "ranker": 0.0
+     },
+     "12": {
+      "wake": 8.5,
+      "abstraction": 1.1,
+      "dreams": 7.9,
+      "ranker": 0.0
+     }
+    },
+    "final_cost": {
+     "wake": 8.530556440353394,
+     "abstraction": 1.0511503219604492,
+     "dreams": 7.909156799316406,
+     "ranker": 0.017032861709594727
+    }
+   }
+  }
+ },
+ "eval_wrong_total": 0,
+ "training_wrong_total": 0
+}

@@ -1,0 +1,515 @@
+{
+ "pid": "P6.X2.P7_duckdb-P6_sqlite.88021",
+ "faults": [
+  "pit",
+  "normalize"
+ ],
+ "decision": {
+  "kind": "submit",
+  "choices": {
+   "0:1": "obs_ts le label_ts"
+  }
+ },
+ "outcome": {
+  "decision": "submit",
+  "verified": false,
+  "wrong": true,
+  "hidden": [
+   "hidden1.csv: output differs",
+   "hidden1.csv: quarantine differs",
+   "hidden2.csv: output differs",
+   "hidden2.csv: quarantine differs"
+  ]
+ },
+ "path": [
+  [
+   0,
+   "normalize_text",
+   "region"
+  ],
+  [
+   0,
+   "col_compare",
+   "obs_ts le label_ts"
+  ]
+ ],
+ "search_path_specs_equal_chosen": true,
+ "visible": {
+  "ok": true,
+  "failed": [],
+  "held_ok": true
+ },
+ "dps": [
+  {
+   "stage": 0,
+   "pos": 1,
+   "kind": null,
+   "options": [
+    "obs_ts le label_ts",
+    "obs_ts lt label_ts"
+   ],
+   "effects": [
+    "excluded",
+    "excluded"
+   ],
+   "resolved": "obs_ts le label_ts",
+   "via": "claim",
+   "conflict": false,
+   "legacy_effect": null,
+   "undecided": false
+  }
+ ],
+ "choices": {
+  "0:1": "obs_ts le label_ts"
+ },
+ "obligation_status": [],
+ "stages": [
+  {
+   "paradigm": "P7",
+   "mechs": [
+    "pit",
+    "ratio"
+   ],
+   "faults": [
+    "pit"
+   ],
+   "engine": "duckdb",
+   "equal_truth": false,
+   "submitted": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "sku",
+      [
+       "col",
+       "sku"
+      ]
+     ],
+     [
+      "version",
+      [
+       "col",
+       "version"
+      ]
+     ],
+     [
+      "op",
+      [
+       "col",
+       "op"
+      ]
+     ],
+     [
+      "ts",
+      [
+       "col",
+       "ts"
+      ]
+     ],
+     [
+      "log_pos",
+      [
+       "col",
+       "log_pos"
+      ]
+     ],
+     [
+      "event_id",
+      [
+       "col",
+       "event_id"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "col",
+       "amount"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "col",
+       "qty"
+      ]
+     ],
+     [
+      "region",
+      [
+       "norm_text",
+       [
+        "col",
+        "region"
+       ]
+      ]
+     ],
+     [
+      "obs_ts",
+      [
+       "col",
+       "obs_ts"
+      ]
+     ],
+     [
+      "label_ts",
+      [
+       "col",
+       "label_ts"
+      ]
+     ]
+    ],
+    "filter": [
+     "le",
+     [
+      "cast_int",
+      [
+       "col",
+       "obs_ts"
+      ]
+     ],
+     [
+      "cast_int",
+      [
+       "col",
+       "label_ts"
+      ]
+     ]
+    ]
+   },
+   "truth": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "sku",
+      [
+       "col",
+       "sku"
+      ]
+     ],
+     [
+      "version",
+      [
+       "col",
+       "version"
+      ]
+     ],
+     [
+      "op",
+      [
+       "col",
+       "op"
+      ]
+     ],
+     [
+      "ts",
+      [
+       "col",
+       "ts"
+      ]
+     ],
+     [
+      "log_pos",
+      [
+       "col",
+       "log_pos"
+      ]
+     ],
+     [
+      "event_id",
+      [
+       "col",
+       "event_id"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "col",
+       "amount"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "col",
+       "qty"
+      ]
+     ],
+     [
+      "region",
+      [
+       "col",
+       "region"
+      ]
+     ],
+     [
+      "obs_ts",
+      [
+       "col",
+       "obs_ts"
+      ]
+     ],
+     [
+      "label_ts",
+      [
+       "col",
+       "label_ts"
+      ]
+     ]
+    ],
+    "filter": [
+     "lt",
+     [
+      "cast_int",
+      [
+       "col",
+       "obs_ts"
+      ]
+     ],
+     [
+      "cast_int",
+      [
+       "col",
+       "label_ts"
+      ]
+     ]
+    ]
+   },
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "sku",
+      [
+       "col",
+       "sku"
+      ]
+     ],
+     [
+      "version",
+      [
+       "col",
+       "version"
+      ]
+     ],
+     [
+      "op",
+      [
+       "col",
+       "op"
+      ]
+     ],
+     [
+      "ts",
+      [
+       "col",
+       "ts"
+      ]
+     ],
+     [
+      "log_pos",
+      [
+       "col",
+       "log_pos"
+      ]
+     ],
+     [
+      "event_id",
+      [
+       "col",
+       "event_id"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "col",
+       "amount"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "col",
+       "qty"
+      ]
+     ],
+     [
+      "region",
+      [
+       "col",
+       "region"
+      ]
+     ],
+     [
+      "obs_ts",
+      [
+       "col",
+       "obs_ts"
+      ]
+     ],
+     [
+      "label_ts",
+      [
+       "col",
+       "label_ts"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "paradigm": "P6",
+   "mechs": [
+    "require",
+    "normalize"
+   ],
+   "faults": [
+    "normalize"
+   ],
+   "engine": "sqlite",
+   "equal_truth": false,
+   "submitted": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "region",
+      [
+       "col",
+       "region"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount"
+       ]
+      ]
+     ]
+    ],
+    "quarantine": [
+     "not",
+     [
+      "nonempty",
+      [
+       "col",
+       "region"
+      ]
+     ]
+    ]
+   },
+   "truth": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "region",
+      [
+       "norm_text",
+       [
+        "col",
+        "region"
+       ]
+      ]
+     ],
+     [
+      "amount",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount"
+       ]
+      ]
+     ]
+    ],
+    "quarantine": [
+     "not",
+     [
+      "nonempty",
+      [
+       "col",
+       "region"
+      ]
+     ]
+    ]
+   },
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "region",
+      [
+       "col",
+       "region"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount"
+       ]
+      ]
+     ]
+    ],
+    "quarantine": [
+     "not",
+     [
+      "nonempty",
+      [
+       "col",
+       "region"
+      ]
+     ]
+    ]
+   }
+  }
+ ],
+ "dp_modes": null,
+ "state_hidden": {
+  "hidden1.csv": {},
+  "hidden2.csv": {}
+ }
+}

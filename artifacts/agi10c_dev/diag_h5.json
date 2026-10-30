@@ -1,0 +1,894 @@
+{
+ "pid": "P6.H5.P1_sqlite-P3_duckdb-P6_sqlite.91940",
+ "faults": [
+  "window",
+  "parse",
+  "require"
+ ],
+ "decision": {
+  "kind": "submit",
+  "choices": {
+   "0:5": "evt_time le [\"file\", \"batch.json\", \"end\"]"
+  }
+ },
+ "outcome": {
+  "decision": "submit",
+  "verified": false,
+  "wrong": true,
+  "hidden": [
+   "hidden1.csv: output differs",
+   "hidden2.csv: output differs"
+  ]
+ },
+ "path": [
+  [
+   1,
+   "default_fill",
+   "amount_cents=0"
+  ],
+  [
+   0,
+   "filter_file",
+   "evt_time ge [\"file\", \"batch.json\", \"start\"]"
+  ],
+  [
+   0,
+   "require_nonempty",
+   "territory"
+  ],
+  [
+   0,
+   "normalize_text",
+   "territory"
+  ],
+  [
+   2,
+   "filter_cmp",
+   "evt_time lt [\"file\", \"batch.json\", \"end\"]"
+  ],
+  [
+   0,
+   "filter_cmp",
+   "evt_time lt [\"file\", \"batch.json\", \"end\"]"
+  ]
+ ],
+ "search_path_specs_equal_chosen": false,
+ "visible": {
+  "ok": true,
+  "failed": [],
+  "held_ok": true
+ },
+ "dps": [
+  {
+   "stage": 0,
+   "pos": 5,
+   "kind": null,
+   "options": [
+    "evt_time lt [\"file\", \"batch.json\", \"end\"]",
+    "evt_time le [\"file\", \"batch.json\", \"end\"]"
+   ],
+   "effects": [
+    "excluded",
+    "excluded"
+   ],
+   "resolved": "evt_time le [\"file\", \"batch.json\", \"end\"]",
+   "via": "clarification",
+   "conflict": false,
+   "legacy_effect": null,
+   "undecided": false
+  }
+ ],
+ "choices": {
+  "0:5": "evt_time le [\"file\", \"batch.json\", \"end\"]"
+ },
+ "obligation_status": [],
+ "stages": [
+  {
+   "paradigm": "P1",
+   "mechs": [
+    "window",
+    "dup_id"
+   ],
+   "faults": [
+    "window"
+   ],
+   "engine": "sqlite",
+   "equal_truth": false,
+   "submitted": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "col",
+       "amount_cents"
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "norm_text",
+       [
+        "col",
+        "territory"
+       ]
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ],
+    "dedup": {
+     "key": "id"
+    },
+    "filter": [
+     "and",
+     [
+      "ge",
+      [
+       "cast_int",
+       [
+        "col",
+        "evt_time"
+       ]
+      ],
+      [
+       "file",
+       "batch.json",
+       "start"
+      ]
+     ],
+     [
+      "le",
+      [
+       "cast_int",
+       [
+        "col",
+        "evt_time"
+       ]
+      ],
+      [
+       "file",
+       "batch.json",
+       "end"
+      ]
+     ]
+    ],
+    "quarantine": [
+     "not",
+     [
+      "nonempty",
+      [
+       "col",
+       "territory"
+      ]
+     ]
+    ]
+   },
+   "truth": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "col",
+       "amount_cents"
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "col",
+       "territory"
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ],
+    "dedup": {
+     "key": "id"
+    },
+    "filter": [
+     "and",
+     [
+      "ge",
+      [
+       "cast_int",
+       [
+        "col",
+        "evt_time"
+       ]
+      ],
+      [
+       "file",
+       "batch.json",
+       "start"
+      ]
+     ],
+     [
+      "le",
+      [
+       "cast_int",
+       [
+        "col",
+        "evt_time"
+       ]
+      ],
+      [
+       "file",
+       "batch.json",
+       "end"
+      ]
+     ]
+    ]
+   },
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "col",
+       "amount_cents"
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "col",
+       "territory"
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ],
+    "dedup": {
+     "key": "id"
+    }
+   }
+  },
+  {
+   "paradigm": "P3",
+   "mechs": [
+    "parse"
+   ],
+   "faults": [
+    "parse"
+   ],
+   "engine": "duckdb",
+   "equal_truth": true,
+   "submitted": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "coalesce",
+       [
+        "try_int",
+        [
+         "col",
+         "amount_cents"
+        ]
+       ],
+       [
+        "lit",
+        0
+       ]
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "col",
+       "territory"
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ]
+   },
+   "truth": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "coalesce",
+       [
+        "try_int",
+        [
+         "col",
+         "amount_cents"
+        ]
+       ],
+       [
+        "lit",
+        0
+       ]
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "col",
+       "territory"
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ]
+   },
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "tenant_id",
+      [
+       "col",
+       "tenant_id"
+      ]
+     ],
+     [
+      "lsn",
+      [
+       "col",
+       "lsn"
+      ]
+     ],
+     [
+      "dml_type",
+      [
+       "col",
+       "dml_type"
+      ]
+     ],
+     [
+      "evt_time",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "kafka_offset",
+      [
+       "col",
+       "kafka_offset"
+      ]
+     ],
+     [
+      "record_uid",
+      [
+       "col",
+       "record_uid"
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount_cents"
+       ]
+      ]
+     ],
+     [
+      "pieces",
+      [
+       "col",
+       "pieces"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "col",
+       "territory"
+      ]
+     ],
+     [
+      "snapshot_ts",
+      [
+       "col",
+       "snapshot_ts"
+      ]
+     ],
+     [
+      "target_ts",
+      [
+       "col",
+       "target_ts"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "paradigm": "P6",
+   "mechs": [
+    "require",
+    "normalize"
+   ],
+   "faults": [
+    "require"
+   ],
+   "engine": "sqlite",
+   "equal_truth": false,
+   "submitted": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "norm_text",
+       [
+        "col",
+        "territory"
+       ]
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount_cents"
+       ]
+      ]
+     ]
+    ],
+    "filter": [
+     "lt",
+     [
+      "cast_int",
+      [
+       "col",
+       "evt_time"
+      ]
+     ],
+     [
+      "file",
+      "batch.json",
+      "end"
+     ]
+    ]
+   },
+   "truth": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "norm_text",
+       [
+        "col",
+        "territory"
+       ]
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount_cents"
+       ]
+      ]
+     ]
+    ],
+    "quarantine": [
+     "not",
+     [
+      "nonempty",
+      [
+       "col",
+       "territory"
+      ]
+     ]
+    ]
+   },
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "territory",
+      [
+       "norm_text",
+       [
+        "col",
+        "territory"
+       ]
+      ]
+     ],
+     [
+      "amount_cents",
+      [
+       "cast_int",
+       [
+        "col",
+        "amount_cents"
+       ]
+      ]
+     ]
+    ]
+   }
+  }
+ ],
+ "dp_modes": null,
+ "state_hidden": {
+  "hidden1.csv": {
+   "batch.json": {
+    "start": 144,
+    "end": 253
+   }
+  },
+  "hidden2.csv": {
+   "batch.json": {
+    "start": 148,
+    "end": 272
+   }
+  }
+ }
+}

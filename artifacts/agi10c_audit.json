@@ -1,0 +1,4479 @@
+{
+ "summary": {
+  "n_unsolved": 13,
+  "primary": {
+   "depth_exhaustion": 7,
+   "other": 1,
+   "monolithic_macro": 5
+  },
+  "flags": {
+   "undecided_abstention": 0,
+   "out_of_language": 0,
+   "depth_exhaustion": 7,
+   "monolithic_macro": 10,
+   "ranker_zeroing": 0,
+   "work_exhausted": 13,
+   "wall_capped": 2
+  },
+  "witness_depth_unsolved": [
+   2,
+   2,
+   3,
+   3,
+   3,
+   3,
+   4,
+   4,
+   4,
+   4,
+   4,
+   4,
+   5
+  ],
+  "witness_depth_solved": [
+   1,
+   2,
+   2,
+   2,
+   3,
+   3,
+   3
+  ],
+  "wall": 75.1
+ },
+ "targets": [
+  {
+   "seed": 85024,
+   "pid": "P6.P8.scala.P1_duckdb.85024",
+   "solved_by_any": true,
+   "faults": [
+    "window",
+    "dup_id"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1398,
+     "wall": 0.914,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1167,
+     "wall": 0.886,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1228,
+     "wall": 0.885,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1306,
+     "wall": 0.956,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1306,
+     "wall": 0.902,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1162,
+     "wall": 0.88,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1223,
+     "wall": 0.887,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1403,
+     "wall": 0.947,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1403,
+     "wall": 0.895,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1167,
+     "wall": 0.886,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 1228,
+     "wall": 0.885,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "dedup_first",
+     "filter_file",
+     "filter_cmp"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 172,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85025,
+   "pid": "P6.P8.hive.P2_duckdb.85025",
+   "solved_by_any": true,
+   "faults": [
+    "latest",
+    "tombstone",
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 261,
+     "wall": 0.347,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 265,
+     "wall": 0.356,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 271,
+     "wall": 0.356,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 263,
+     "wall": 0.358,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 265,
+     "wall": 0.349,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 260,
+     "wall": 0.355,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 266,
+     "wall": 0.355,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 266,
+     "wall": 0.344,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 266,
+     "wall": 0.349,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 265,
+     "wall": 0.356,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 271,
+     "wall": 0.356,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "default_fill",
+     "dedup_latest",
+     "exclude_value"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 139,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 3,
+     "progress_stages": {
+      "0": 3
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 2,
+     "progress_stages": {
+      "0": 2
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85026,
+   "pid": "P6.P8.scala.P1_spark.85026",
+   "solved_by_any": false,
+   "faults": [
+    "window",
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.002,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.139,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.132,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.099,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.096,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.136,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.102,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.034,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.001,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.139,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.132,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 1,
+    "kinds": [
+     "improvement",
+     "neutral",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "try_parse",
+     "quarantine_invalid",
+     "filter_file",
+     "filter_cmp"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 91,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 1,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 2,
+     "progress_stages": {
+      "0": 2
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85027,
+   "pid": "P6.P8.hive.P2_spark.85027",
+   "solved_by_any": true,
+   "faults": [
+    "tombstone"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 81,
+     "wall": 0.393,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 25,
+     "wall": 1.833,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 1,
+      "accepted": true,
+      "work": 25,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 84,
+     "wall": 0.568,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 25,
+     "wall": 0.43,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 1,
+      "accepted": true,
+      "work": 25,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 84,
+     "wall": 0.465,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 83,
+     "wall": 0.434,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 83,
+     "wall": 0.482,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 25,
+     "wall": 0.397,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 1,
+      "accepted": true,
+      "work": 25,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 82,
+     "wall": 0.387,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 25,
+     "wall": 1.833,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 1,
+      "accepted": true,
+      "work": 25,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 84,
+     "wall": 0.568,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 1,
+    "flat": 0,
+    "kinds": [
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "exclude_value"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 72,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 1,
+     "pass_all_checks": 1,
+     "modular_progress": 1,
+     "progress_stages": {
+      "0": 1
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 0,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85028,
+   "pid": "P6.P8.scala.P2_duckdb.85028",
+   "solved_by_any": true,
+   "faults": [
+    "tombstone",
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 140,
+     "wall": 0.435,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 148,
+     "wall": 0.366,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 147,
+     "wall": 0.362,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 148,
+     "wall": 0.466,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 147,
+     "wall": 0.477,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 146,
+     "wall": 0.443,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 146,
+     "wall": 0.45,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 142,
+     "wall": 0.417,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 141,
+     "wall": 0.375,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 148,
+     "wall": 0.366,
+     "mq": {
+      "tried": 1,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 2,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 147,
+     "wall": 0.362,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "try_parse",
+     "quarantine_invalid",
+     "exclude_value"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 73,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 1,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 0,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85029,
+   "pid": "P6.P8.hive.P2_spark.85029",
+   "solved_by_any": true,
+   "faults": [
+    "latest",
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 252,
+     "wall": 0.551,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 251,
+     "wall": 0.497,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 243,
+     "wall": 0.648,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 246,
+     "wall": 0.442,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 241,
+     "wall": 1.902,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 246,
+     "wall": 0.64,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 242,
+     "wall": 0.601,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 257,
+     "wall": 0.503,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 253,
+     "wall": 0.423,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 251,
+     "wall": 0.497,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 243,
+     "wall": 0.648,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "default_fill",
+     "dedup_latest"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 139,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 4,
+     "pass_all_checks": 3,
+     "modular_progress": 3,
+     "progress_stages": {
+      "0": 3
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 0,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85030,
+   "pid": "P6.P8.hive.P3_duckdb.85030",
+   "solved_by_any": true,
+   "faults": [
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 131,
+     "wall": 0.345,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 141,
+     "wall": 0.342,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 137,
+     "wall": 0.343,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 142,
+     "wall": 0.343,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 138,
+     "wall": 0.335,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 136,
+     "wall": 0.34,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 136,
+     "wall": 0.325,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 136,
+     "wall": 0.324,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 132,
+     "wall": 0.33,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 141,
+     "wall": 0.342,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 137,
+     "wall": 0.343,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "try_parse",
+     "quarantine_invalid"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 133,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 0,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85031,
+   "pid": "P6.P8.hive.P3_duckdb.85031",
+   "solved_by_any": true,
+   "faults": [
+    "parse"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 131,
+     "wall": 0.309,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 142,
+     "wall": 0.312,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 137,
+     "wall": 0.333,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 142,
+     "wall": 0.316,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 138,
+     "wall": 0.314,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 137,
+     "wall": 0.315,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 136,
+     "wall": 0.32,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 136,
+     "wall": 0.315,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 132,
+     "wall": 0.314,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 142,
+     "wall": 0.312,
+     "mq": {
+      "tried": 4,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 5,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "submit",
+     "reason": null,
+     "reachable": true,
+     "work": 137,
+     "wall": 0.333,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 1,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement"
+    ],
+    "stages": [
+     0
+    ],
+    "ops": [
+     "try_parse",
+     "quarantine_invalid"
+    ],
+    "n_stages": 1
+   },
+   "root_candidates": 133,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 4,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 0,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": false,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85032,
+   "pid": "P6.P9.A.P5_spark-P1_duckdb.85032",
+   "solved_by_any": false,
+   "faults": [
+    "watermark",
+    "window"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.116,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.415,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.426,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.223,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.369,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.489,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.463,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.178,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.145,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.415,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.426,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1
+    ],
+    "ops": [
+     "filter_file",
+     "filter_cmp"
+    ],
+    "n_stages": 2
+   },
+   "root_candidates": 415,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "other"
+  },
+  {
+   "seed": 85033,
+   "pid": "P6.P9.A.P5_spark-P1_duckdb.85033",
+   "solved_by_any": false,
+   "faults": [
+    "replay",
+    "window"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.995,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.448,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.51,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.146,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.303,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.349,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.555,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.94,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.062,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.448,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.51,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 2,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1
+    ],
+    "ops": [
+     "dedup_first",
+     "filter_cmp"
+    ],
+    "n_stages": 2
+   },
+   "root_candidates": 501,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 7,
+     "progress_stages": {
+      "0": 3,
+      "1": 5
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85034,
+   "pid": "P6.P9.A.P5_spark-P1_duckdb.85034",
+   "solved_by_any": false,
+   "faults": [
+    "watermark",
+    "checkpoint",
+    "replay",
+    "window"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.996,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.26,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.3,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.123,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.13,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.244,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.244,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.003,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.095,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.26,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.3,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 1,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "neutral",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1
+    ],
+    "ops": [
+     "dedup_first",
+     "filter_file",
+     "filter_file",
+     "filter_cmp"
+    ],
+    "n_stages": 2
+   },
+   "root_candidates": 513,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85035,
+   "pid": "P6.P9.A.P5_spark-P1_duckdb.85035",
+   "solved_by_any": false,
+   "faults": [
+    "watermark",
+    "checkpoint",
+    "replay",
+    "window"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.935,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.304,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.29,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.159,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.162,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.319,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.32,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.935,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.003,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.304,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3002,
+     "wall": 1.29,
+     "mq": {
+      "tried": 9,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 24,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 1,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "neutral",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1
+    ],
+    "ops": [
+     "dedup_first",
+     "filter_file",
+     "filter_file",
+     "filter_cmp"
+    ],
+    "n_stages": 2
+   },
+   "root_candidates": 513,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 9,
+     "pass_all_checks": 0,
+     "modular_progress": 0,
+     "progress_stages": {}
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": false,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85036,
+   "pid": "P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.85036",
+   "solved_by_any": false,
+   "faults": [
+    "tombstone",
+    "parse",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.84,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 5.667,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.986,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.983,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.21,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.925,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.852,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.601,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.431,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 5.667,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.986,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "default_fill",
+     "exclude_value",
+     "normalize_text"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 329,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 5,
+     "progress_stages": {
+      "0": 3,
+      "1": 2,
+      "2": 2
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 3,
+      "2": 3
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": true
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85037,
+   "pid": "P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.85037",
+   "solved_by_any": false,
+   "faults": [
+    "latest",
+    "tombstone",
+    "parse",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.025,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.251,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.18,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 2.07,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.769,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 4.418,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.345,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.192,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.136,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.251,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.18,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 5,
+    "flat": 1,
+    "kinds": [
+     "worse",
+     "improvement",
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "try_parse",
+     "dedup_latest",
+     "exclude_value",
+     "quarantine_invalid",
+     "normalize_text"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 439,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85038,
+   "pid": "P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.85038",
+   "solved_by_any": false,
+   "faults": [
+    "latest",
+    "parse",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.164,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 2619,
+     "wall": 6.114,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 4.615,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.246,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.188,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3015,
+     "wall": 3.248,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 4.719,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3018,
+     "wall": 3.166,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3018,
+     "wall": 3.053,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.589,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.206,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "default_fill",
+     "dedup_latest",
+     "normalize_text"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 437,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": true
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85039,
+   "pid": "P6.P9.B.P2_sqlite-P3_duckdb-P4_spark.85039",
+   "solved_by_any": false,
+   "faults": [
+    "latest",
+    "tombstone",
+    "parse",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3213,
+     "wall": 4.77,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3210,
+     "wall": 3.823,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3033,
+     "wall": 2.932,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.734,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 3.254,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3168,
+     "wall": 3.059,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 2.77,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3258,
+     "wall": 2.641,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3258,
+     "wall": 3.649,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3210,
+     "wall": 3.486,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3033,
+     "wall": 2.799,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 1,
+    "kinds": [
+     "neutral",
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "default_fill",
+     "dedup_latest",
+     "exclude_value",
+     "normalize_text"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 439,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.0
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 3,
+      "1": 3,
+      "2": 2
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85040,
+   "pid": "P6.P9.C.P4_duckdb-P7_spark-P6_sqlite.85040",
+   "solved_by_any": false,
+   "faults": [
+    "fanout",
+    "pit",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.936,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.126,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.137,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.063,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.109,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.124,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.111,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.922,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.992,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.126,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.137,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "normalize_text",
+     "dedup_first",
+     "col_compare"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 527,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.006
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85041,
+   "pid": "P6.P9.C.P4_duckdb-P7_spark-P6_sqlite.85041",
+   "solved_by_any": false,
+   "faults": [
+    "fanout",
+    "pit",
+    "require",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.108,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.254,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.258,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.147,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.209,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.257,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.246,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.012,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.055,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.254,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.258,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "normalize_text",
+     "dedup_first",
+     "col_compare",
+     "require_nonempty"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 527,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.006
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  },
+  {
+   "seed": 85042,
+   "pid": "P6.P9.C.P4_duckdb-P7_spark-P6_sqlite.85042",
+   "solved_by_any": false,
+   "faults": [
+    "fanout",
+    "pit",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.931,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.124,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.087,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.033,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 0.979,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.139,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.09,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 0.979,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 0.933,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.124,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.087,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 3,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "normalize_text",
+     "dedup_first",
+     "col_compare"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 527,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.006
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 4,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 2
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 5,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 3
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": false,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "monolithic_macro"
+  },
+  {
+   "seed": 85043,
+   "pid": "P6.P9.C.P4_duckdb-P7_spark-P6_sqlite.85043",
+   "solved_by_any": false,
+   "faults": [
+    "fanout",
+    "pit",
+    "require",
+    "normalize"
+   ],
+   "undecided": false,
+   "arms": {
+    "A1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.125,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "Full_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.31,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "Full_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.286,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.31,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noBridge_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.379,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.376,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noLib_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3003,
+     "wall": 1.282,
+     "mq": {
+      "tried": 0,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 0,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.055,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noRanker_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.034,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep0": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.31,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    },
+    "noTrust_rep1": {
+     "decision": "abstain",
+     "reason": "no repair candidate",
+     "reachable": false,
+     "work": 3000,
+     "wall": 1.286,
+     "mq": {
+      "tried": 12,
+      "passed_checks": 0,
+      "accepted": false,
+      "work": 51,
+      "slice": 600.0
+     }
+    }
+   },
+   "witness": {
+    "found": true,
+    "depth": 4,
+    "flat": 0,
+    "kinds": [
+     "improvement",
+     "improvement",
+     "improvement",
+     "improvement"
+    ],
+    "stages": [
+     0,
+     1,
+     2
+    ],
+    "ops": [
+     "normalize_text",
+     "dedup_first",
+     "col_compare",
+     "require_nonempty"
+    ],
+    "n_stages": 3
+   },
+   "root_candidates": 527,
+   "ranker_zero_share": {
+    "rep0": 0.0,
+    "rep1": 0.006
+   },
+   "macros": {
+    "rep0": {
+     "library": 5,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    },
+    "rep1": {
+     "library": 3,
+     "bound_paths": 12,
+     "pass_all_checks": 0,
+     "modular_progress": 6,
+     "progress_stages": {
+      "0": 2,
+      "1": 2,
+      "2": 4
+     }
+    }
+   },
+   "flags": {
+    "undecided_abstention": false,
+    "out_of_language": false,
+    "depth_exhaustion": true,
+    "monolithic_macro": true,
+    "ranker_zeroing": false,
+    "work_exhausted": true,
+    "wall_capped": false
+   },
+   "primary": "depth_exhaustion"
+  }
+ ]
+}
