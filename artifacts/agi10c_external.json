@@ -2,6 +2,14 @@
  "summary": {
   "n": 16,
   "by_class": {
+   "1": 10,
+   "2": 2,
+   "3": 4,
+   "4": 0,
+   "5": 0,
+   "solved": 0
+  },
+  "as_run_by_class": {
    "1": 1,
    "2": 2,
    "3": 13,
@@ -9,10 +17,19 @@
    "5": 0,
    "solved": 0
   },
+  "level2_by_class": {
+   "1": 4,
+   "2": 2,
+   "3": 7,
+   "4": 0,
+   "5": 1,
+   "solved": 2
+  },
+  "level2_lifted": 6,
   "native_lifted": 0,
   "adapted_lifted": 0,
-  "matches_expected": 9,
-  "wall": 0.0
+  "matches_expected": 10,
+  "wall": 3.8
  },
  "tasks": [
   {
@@ -31,7 +48,19 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: unnamed output",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "{{ config(materialized='table') }}\nCREATE TABLE clean AS SELECT id AS payment_id, order_id AS order_id, payment_method AS payment_method, amount / 100 AS amount FROM {{ ref('raw') }};",
+   "level2_search": {
+    "outcome": "none",
+    "path": null,
+    "work": 1500
+   },
+   "level2_hidden_ok": null,
+   "level2_class": 3,
+   "class": 1,
    "why": "Unsupported: unnamed output"
   },
   {
@@ -49,6 +78,12 @@
    "adapted_lift_err": "Unsupported: unknown relation customers",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 2,
+   "as_run_why": "3 input tables; the IR is single-input (Unsupported: unknown relation customers)",
+   "level2_lift_err": "Unsupported: unknown relation customers",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS WITH o AS (SELECT user_id, MIN(order_date) AS first_order, COUNT(*) AS n FROM orders GROUP BY 1), p AS (SELECT o2.user_id, SUM(amount) AS ltv FROM payments JOIN orders AS o2 ON payments.order_id = o2.id GROUP BY 1) SELECT c.id AS id, o.first_order AS first_order, o.n AS n, p.lt",
+   "level2_class": 2,
    "class": 2,
    "why": "3 input tables; the IR is single-input (Unsupported: unknown relation customers)"
   },
@@ -68,6 +103,12 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: unnamed output",
    "reference_expressible": false,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": "Unsupported: CASE",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS SELECT order_id AS order_id, SUM(CASE WHEN payment_method = 'credit_card' THEN amount ELSE 0 END) AS credit_card_amount, SUM(amount) AS total FROM raw GROUP BY order_id;",
+   "level2_class": 3,
    "class": 3,
    "why": "Unsupported: unnamed output"
   },
@@ -86,6 +127,12 @@
    "adapted_lift_err": "Unsupported: unknown relation orders",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 2,
+   "as_run_why": "2 input tables; the IR is single-input (Unsupported: unknown relation orders)",
+   "level2_lift_err": "Unsupported: unknown relation orders",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS SELECT o.user_id AS user_id, COUNT(o.id) AS orders FROM orders AS o JOIN order_items AS i ON o.id = i.order_id GROUP BY o.user_id;",
+   "level2_class": 2,
    "class": 2,
    "why": "2 input tables; the IR is single-input (Unsupported: unknown relation orders)"
   },
@@ -105,7 +152,13 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: derived table",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: derived table",
+   "level2_lift_err": "Unsupported: derived table",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS SELECT customer_id AS customer_id, status AS status FROM raw QUALIFY ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at ASC) = 1;",
+   "level2_class": 1,
+   "class": 1,
    "why": "Unsupported: derived table"
   },
   {
@@ -123,6 +176,12 @@
    "adapted_lift_err": "Unsupported: statement Command",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: statement Command",
+   "level2_lift_err": "Unsupported: statement Command",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when matched then update set status = s.status when not matched then insert (customer_id, status) values (s.customer_id, s.status);",
+   "level2_class": 3,
    "class": 3,
    "why": "Unsupported: statement Command"
   },
@@ -141,6 +200,12 @@
    "adapted_lift_err": "Unsupported: SQL node JSONExtractScalar",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: SQL node JSONExtractScalar",
+   "level2_lift_err": "Unsupported: SQL node JSONExtractScalar",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS SELECT CAST(payload AS JSON) -> 'after' ->> 'id' AS id FROM raw;",
+   "level2_class": 3,
    "class": 3,
    "why": "Unsupported: SQL node JSONExtractScalar"
   },
@@ -160,7 +225,19 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: unnamed output",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "CREATE TABLE clean AS SELECT id AS id, amount / qty AS unit_price FROM raw;",
+   "level2_search": {
+    "outcome": "none",
+    "path": null,
+    "work": 1500
+   },
+   "level2_hidden_ok": null,
+   "level2_class": 3,
+   "class": 1,
    "why": "Unsupported: unnamed output"
   },
   {
@@ -179,7 +256,25 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: unnamed output",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "CREATE TABLE clean AS SELECT id AS id, CAST(amount AS INT) AS amount FROM raw;",
+   "level2_search": {
+    "outcome": "submitted",
+    "path": [
+     [
+      0,
+      "default_fill",
+      "amount=0"
+     ]
+    ],
+    "work": 19
+   },
+   "level2_hidden_ok": true,
+   "level2_class": "solved",
+   "class": 1,
    "why": "Unsupported: unnamed output"
   },
   {
@@ -198,7 +293,13 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: derived table",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: derived table",
+   "level2_lift_err": "Unsupported: derived table",
+   "level2_lift": false,
+   "level2_text": "CREATE TABLE clean AS SELECT DISTINCT ON (customer_id) customer_id AS customer_id, status AS status FROM raw ORDER BY customer_id, event_ts ASC;",
+   "level2_class": 1,
+   "class": 1,
    "why": "Unsupported: derived table"
   },
   {
@@ -217,7 +318,19 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: SQL node Or",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "CREATE TABLE clean AS SELECT id AS id, status AS status FROM raw WHERE status <> 'cancelled';",
+   "level2_search": {
+    "outcome": "submitted",
+    "path": [],
+    "work": 14
+   },
+   "level2_hidden_ok": true,
+   "level2_class": "solved",
+   "class": 1,
    "why": "Unsupported: unnamed output"
   },
   {
@@ -236,7 +349,13 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: derived table",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: DataFrame chain ['dropDuplicates', 'select']",
+   "level2_lift_err": "Unsupported: DataFrame chain ['dropDuplicates', 'select']",
+   "level2_lift": false,
+   "level2_text": "from pyspark.sql import functions as F\n\n\ndef run(spark, raw, state):\n    clean = raw.dropDuplicates(['customer_id']).select('customer_id', 'status')\n    return {\"clean\": clean, \"rejects\": None}\n",
+   "level2_class": 1,
+   "class": 1,
    "why": "Unsupported: DataFrame chain ['dropDuplicates', 'select']"
   },
   {
@@ -254,6 +373,12 @@
    "adapted_lift_err": "no Polars lifter in NEXUS (ir6 languages: sql, hive, postgres, snowflake, duckdb, py, j2, scala)",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 1,
+   "as_run_why": "no Polars lifter in NEXUS (ir6 languages: sql, hive, postgres, snowflake, duckdb, py, j2, scala)",
+   "level2_lift_err": "no Polars lifter",
+   "level2_lift": false,
+   "level2_text": "out = events.filter(pl.col('status') != 'c').unique(subset=['customer_id'], keep='last')",
+   "level2_class": 1,
    "class": 1,
    "why": "no Polars lifter in NEXUS (ir6 languages: sql, hive, postgres, snowflake, duckdb, py, j2, scala)"
   },
@@ -272,6 +397,12 @@
    "adapted_lift_err": "Unsupported: relation base",
    "adapted_lift": false,
    "reference_expressible": false,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: relation base",
+   "level2_lift_err": "Unsupported: relation base",
+   "level2_lift": false,
+   "level2_text": "val clean = sales.withColumn(\"tier\", when(col(\"amount\") > 200, \"gold\").otherwise(\"std\")).select(col(\"id\"), col(\"tier\"))",
+   "level2_class": 3,
    "class": 3,
    "why": "Unsupported: relation base"
   },
@@ -291,7 +422,19 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: unnamed output",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "CREATE TABLE clean AS SELECT id AS id, amount AS amount FROM raw WHERE event_ts >= '2024-01-01' AND event_ts <= '2024-01-31';",
+   "level2_search": {
+    "outcome": "none",
+    "path": null,
+    "work": 2
+   },
+   "level2_hidden_ok": null,
+   "level2_class": 3,
+   "class": 1,
    "why": "Unsupported: unnamed output"
   },
   {
@@ -310,7 +453,19 @@
    "adapted_lift": false,
    "reference_lift_err": "Unsupported: derived table",
    "reference_expressible": false,
-   "class": 3,
+   "as_run_class": 3,
+   "as_run_why": "Unsupported: unnamed output",
+   "level2_lift_err": null,
+   "level2_lift": true,
+   "level2_text": "CREATE TABLE clean AS SELECT id AS id, customer_id AS customer_id, amount AS amount FROM raw;",
+   "level2_search": {
+    "outcome": "submitted",
+    "path": [],
+    "work": 16
+   },
+   "level2_hidden_ok": false,
+   "level2_class": 5,
+   "class": 1,
    "why": "Unsupported: unnamed output"
   }
  ]

@@ -1,0 +1,130 @@
+{
+ "results": {
+  "T01": {
+   "programs_checked": 1659,
+   "reachable": false,
+   "path": null,
+   "legacy": {
+    "outputs": [
+     [
+      "payment_id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "order_id",
+      [
+       "col",
+       "order_id"
+      ]
+     ],
+     [
+      "payment_method",
+      [
+       "col",
+       "payment_method"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "div",
+       [
+        "col",
+        "amount"
+       ],
+       [
+        "lit",
+        100
+       ]
+      ]
+     ]
+    ]
+   },
+   "cls": 3
+  },
+  "T08": {
+   "programs_checked": 331,
+   "reachable": false,
+   "path": null,
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "unit_price",
+      [
+       "div_real",
+       [
+        "col",
+        "amount"
+       ],
+       [
+        "col",
+        "qty"
+       ]
+      ]
+     ]
+    ]
+   },
+   "cls": 3
+  },
+  "T15": {
+   "programs_checked": 3,
+   "reachable": false,
+   "path": null,
+   "legacy": {
+    "outputs": [
+     [
+      "id",
+      [
+       "col",
+       "id"
+      ]
+     ],
+     [
+      "amount",
+      [
+       "col",
+       "amount"
+      ]
+     ]
+    ],
+    "filter": [
+     "and",
+     [
+      "ge",
+      [
+       "col",
+       "event_ts"
+      ],
+      [
+       "lit",
+       "2024-01-01"
+      ]
+     ],
+     [
+      "le",
+      [
+       "col",
+       "event_ts"
+      ],
+      [
+       "lit",
+       "2024-01-31"
+      ]
+     ]
+    ]
+   },
+   "cls": 3
+  }
+ },
+ "wall": 19.9
+}

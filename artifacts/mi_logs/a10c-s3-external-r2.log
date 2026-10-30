@@ -1,0 +1,23 @@
+T01 j2 native False adapted False as_run 3 -> 1 | L2 lift True 3  {'outcome': 'none', 'path': None, 'work': 1500}
+T02 postgres native False adapted False as_run 2 -> 2 | L2 lift False 2 Unsupported: unknown relation customers None
+T03 postgres native False adapted False as_run 3 -> 3 | L2 lift False 3 Unsupported: CASE None
+T04 postgres native False adapted False as_run 2 -> 2 | L2 lift False 2 Unsupported: unknown relation orders None
+T05 snowflake native False adapted False as_run 3 -> 1 | L2 lift False 1 Unsupported: derived table None
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+T06 snowflake native False adapted False as_run 3 -> 3 | L2 lift False 3 Unsupported: statement Command None
+T07 postgres native False adapted False as_run 3 -> 3 | L2 lift False 3 Unsupported: SQL node JSONExtractScalar None
+T08 hive native False adapted False as_run 3 -> 1 | L2 lift True 3  {'outcome': 'none', 'path': None, 'work': 1500}
+T09 snowflake native False adapted False as_run 3 -> 1 | L2 lift True solved  {'outcome': 'submitted', 'path': [(0, 'default_fill', 'amount=0')], 'work': 19}
+T10 postgres native False adapted False as_run 3 -> 1 | L2 lift False 1 Unsupported: derived table None
+T11 postgres native False adapted False as_run 3 -> 1 | L2 lift True solved  {'outcome': 'submitted', 'path': [], 'work': 14}
+T12 py native False adapted False as_run 3 -> 1 | L2 lift False 1 Unsupported: DataFrame chain ['dropDuplicates', 'select'] None
+T13 polars native False adapted False as_run 1 -> 1 | L2 lift False 1 no Polars lifter None
+T14 scala native False adapted False as_run 3 -> 3 | L2 lift False 3 Unsupported: relation base None
+T15 postgres native False adapted False as_run 3 -> 1 | L2 lift True 3  {'outcome': 'none', 'path': None, 'work': 2}
+T16 sql native False adapted False as_run 3 -> 1 | L2 lift True 5  {'outcome': 'submitted', 'path': [], 'work': 16}
+{"n": 16, "by_class": {"1": 10, "2": 2, "3": 4, "4": 0, "5": 0, "solved": 0}, "as_run_by_class": {"1": 1, "2": 2, "3": 13, "4": 0, "5": 0, "solved": 0}, "level2_by_class": {"1": 4, "2": 2, "3": 7, "4": 0, "5": 1, "solved": 2}, "level2_lifted": 6, "native_lifted": 0, "adapted_lifted": 0, "matches_expected": 10, "wall": 3.8}
