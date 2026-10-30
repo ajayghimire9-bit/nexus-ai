@@ -1,0 +1,590 @@
+{
+ "project": "P10F.S_dirty.duckdb.postgres.104529",
+ "truth_stg_orders": {
+  "src": "orders",
+  "cols": [
+   [
+    "campaign_id_1",
+    [
+     "col",
+     "campaign_id_1"
+    ]
+   ],
+   [
+    "order_total",
+    [
+     "try_int",
+     [
+      "col",
+      "order_total"
+     ]
+    ]
+   ],
+   [
+    "version_no",
+    [
+     "col",
+     "version_no"
+    ]
+   ],
+   [
+    "created_at",
+    [
+     "col",
+     "created_at"
+    ]
+   ],
+   [
+    "etl_run_id",
+    [
+     "col",
+     "etl_run_id"
+    ]
+   ],
+   [
+    "risk_score",
+    [
+     "col",
+     "risk_score"
+    ]
+   ],
+   [
+    "channel_1",
+    [
+     "col",
+     "channel_1"
+    ]
+   ],
+   [
+    "tax_amount",
+    [
+     "col",
+     "tax_amount"
+    ]
+   ],
+   [
+    "sales_rep",
+    [
+     "col",
+     "sales_rep"
+    ]
+   ],
+   [
+    "status",
+    [
+     "col",
+     "status"
+    ]
+   ],
+   [
+    "notes",
+    [
+     "col",
+     "notes"
+    ]
+   ],
+   [
+    "locale",
+    [
+     "col",
+     "locale"
+    ]
+   ],
+   [
+    "order_id",
+    [
+     "col",
+     "order_id"
+    ]
+   ],
+   [
+    "_batch_id_1",
+    [
+     "col",
+     "_batch_id_1"
+    ]
+   ],
+   [
+    "is_test",
+    [
+     "col",
+     "is_test"
+    ]
+   ],
+   [
+    "utm_source_1",
+    [
+     "col",
+     "utm_source_1"
+    ]
+   ],
+   [
+    "priority",
+    [
+     "col",
+     "priority"
+    ]
+   ],
+   [
+    "coupon_id",
+    [
+     "col",
+     "coupon_id"
+    ]
+   ],
+   [
+    "discount_pct_1",
+    [
+     "col",
+     "discount_pct_1"
+    ]
+   ],
+   [
+    "customer_ref",
+    [
+     "col",
+     "customer_ref"
+    ]
+   ],
+   [
+    "order_ts",
+    [
+     "col",
+     "order_ts"
+    ]
+   ],
+   [
+    "approval_cd",
+    [
+     "col",
+     "approval_cd"
+    ]
+   ],
+   [
+    "currency",
+    [
+     "col",
+     "currency"
+    ]
+   ],
+   [
+    "updated_at",
+    [
+     "col",
+     "updated_at"
+    ]
+   ],
+   [
+    "shipping_cents_1",
+    [
+     "col",
+     "shipping_cents_1"
+    ]
+   ],
+   [
+    "warehouse_id",
+    [
+     "col",
+     "warehouse_id"
+    ]
+   ],
+   [
+    "device",
+    [
+     "col",
+     "device"
+    ]
+   ],
+   [
+    "region_code",
+    [
+     "col",
+     "region_code"
+    ]
+   ],
+   [
+    "cost_center",
+    [
+     "col",
+     "cost_center"
+    ]
+   ],
+   [
+    "pos_terminal",
+    [
+     "col",
+     "pos_terminal"
+    ]
+   ],
+   [
+    "gl_account",
+    [
+     "col",
+     "gl_account"
+    ]
+   ]
+  ],
+  "pre": [
+   [
+    "notnull",
+    [
+     "col",
+     "order_total"
+    ]
+   ]
+  ],
+  "dedup": null,
+  "post": []
+ },
+ "accepted": 25,
+ "wrong": 20,
+ "wrong_paths": [
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|created_at|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|risk_score|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|coupon_id|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|customer_ref|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|priority|asc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|updated_at|asc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|tax_amount",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|tax_amount|warehouse_id|asc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 1,
+     "dropped_examples": [
+      {
+       "order_id": "164",
+       "customer_ref": "13",
+       "order_total": 1675,
+       "tax_amount": "870"
+      }
+     ]
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|coupon_id",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|coupon_id|order_total|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|coupon_id",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|coupon_id|risk_score|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  },
+  {
+   "path": [
+    "stg_orders|coupon_id",
+    "stg_orders|post|notnull|order_total|",
+    "stg_orders|coupon_id|order_id|desc"
+   ],
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2: output differs"
+    ]
+   },
+   "visible": [
+    {
+     "batch": 0,
+     "nonnull_dup_keys": 0,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    },
+    {
+     "batch": 1,
+     "nonnull_dup_keys": 1,
+     "clean_rows_dropped_by_dedup": 0,
+     "dropped_examples": []
+    }
+   ]
+  }
+ ],
+ "correct_paths": [
+  [
+   "stg_orders|tax_amount",
+   "stg_orders|post|notnull|order_total|",
+   "stg_orders|tax_amount|order_total|desc"
+  ],
+  [
+   "stg_orders|tax_amount",
+   "stg_orders|post|notnull|order_total|",
+   "stg_orders|tax_amount|order_ts|desc"
+  ],
+  [
+   "stg_orders|tax_amount",
+   "stg_orders|post|notnull|order_total|",
+   "stg_orders|tax_amount|version_no|asc"
+  ],
+  [
+   "stg_orders|tax_amount",
+   "stg_orders|post|notnull|order_total|",
+   "stg_orders|tax_amount|etl_run_id|asc"
+  ],
+  [
+   "stg_orders|tax_amount",
+   "stg_orders|post|notnull|order_total|",
+   "stg_orders|tax_amount|order_id|asc"
+  ]
+ ],
+ "wall": 18.1
+}

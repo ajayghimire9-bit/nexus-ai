@@ -1,10 +1,10 @@
 {
- "what": "Phase 10C-10F charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi10f_ledger.py verify`",
+ "what": "Phase 10C-10G charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi10f_ledger.py verify`",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 1979,
+ "source_total_lines": 1990,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "e76a2f8f034b156153ef3a7fe003162173f11020dbac301ab6e634854c7fa49e",
+ "head_sha256": "0755f98e76f4eb27869abe9bfb4106ce9ca342e242c69c448a42f10606a0a5c8",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -121,6 +121,29 @@
     "TIMEOUT": 5
    },
    "unused_of_cap_s": 250.483
+  },
+  "10G": {
+   "prefix": "a10g-",
+   "grant_file": "artifacts/agi10g_grant.json",
+   "allocation_file": "artifacts/agi10g_allocation.json",
+   "cap_s": 1300.0,
+   "ceilings": {
+    "s1": 200,
+    "s2": 420,
+    "s3": 540,
+    "s4": 140
+   },
+   "pool_s": 1611.112,
+   "rows": 11,
+   "used_s": 160.79,
+   "child_cpu_s": 129.595,
+   "stage_used_s": {
+    "s1": 160.79
+   },
+   "status": {
+    "COMPLETE": 11
+   },
+   "unused_of_cap_s": 1139.21
   }
  },
  "reconciliation": {
@@ -130,9 +153,13 @@
   "phase10f_pool": "Phase 10E surplus + owner-authorised 300 s buffer (hard cap 950 s)",
   "phase10f_pool_s": 1210.629,
   "phase10f_remaining_of_cap_s": 250.483,
+  "phase10g_pool": "Phase 10F pool - Phase 10F used + owner's new 1,100 s grant (hard cap 1,300 s)",
+  "phase10g_pool_s": 1611.112,
+  "phase10g_remaining_of_cap_s": 1139.21,
   "checks": {
    "phase10e_pool_matches_grant": true,
    "phase10f_pool_matches_grant": true,
+   "phase10g_pool_matches_grant": true,
    "every_phase_within_cap": true,
    "every_stage_within_ceiling": true
   }
@@ -280,6 +307,17 @@
   "{\"cap_s\": 60.0, \"child_cpu_s\": 60.402, \"child_maxrss_mb\": 590.2, \"prev_sha256\": \"cbcc62e80cbd2ca2d8bd5414ad818998fbfdb3a3cc09813c38cc9c45442f63fe\", \"run\": \"a10f-s3-eval-c2\", \"status\": \"TIMEOUT\", \"wall_s\": 60.048}",
   "{\"cap_s\": 20.0, \"child_cpu_s\": 0.401, \"child_maxrss_mb\": 63.9, \"prev_sha256\": \"066f5d8887ddfb71e4e76329e7edfcc9584c7f43c79c2078e8e90d92a578fb06\", \"run\": \"a10f-s4-score\", \"status\": \"COMPLETE\", \"wall_s\": 0.496}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.251, \"child_maxrss_mb\": 38.0, \"prev_sha256\": \"74b205c681a258ca70fe938d7c9b3841282149a53f51a6a4572a245891320250\", \"run\": \"a10f-s4-protect\", \"status\": \"COMPLETE\", \"wall_s\": 0.778}",
-  "{\"cap_s\": 30.0, \"child_cpu_s\": 6.317, \"child_maxrss_mb\": 160.5, \"prev_sha256\": \"8905684d10bf225f9ffaa959fc80e85406d2444b0842ea9ee02c4ce7ecbbf87b\", \"run\": \"a10f-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 6.349}"
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 6.317, \"child_maxrss_mb\": 160.5, \"prev_sha256\": \"8905684d10bf225f9ffaa959fc80e85406d2444b0842ea9ee02c4ce7ecbbf87b\", \"run\": \"a10f-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 6.349}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.269, \"child_maxrss_mb\": 37.9, \"prev_sha256\": \"e76a2f8f034b156153ef3a7fe003162173f11020dbac301ab6e634854c7fa49e\", \"run\": \"a10g-s1-protect-before\", \"status\": \"COMPLETE\", \"wall_s\": 0.833}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.143, \"child_maxrss_mb\": 61.2, \"prev_sha256\": \"38ea6216684bf72c3ad9427d33a28e3791e791c162b3cd268942028175462355\", \"run\": \"a10g-s1-counts\", \"status\": \"COMPLETE\", \"wall_s\": 0.289}",
+  "{\"cap_s\": 45.0, \"child_cpu_s\": 18.707, \"child_maxrss_mb\": 419.9, \"prev_sha256\": \"42bcf4785a20ea41cacd13166412d3c65f6a4b2fbfe95095cec33746dd52fe35\", \"run\": \"a10g-s1-attrib-c2\", \"status\": \"COMPLETE\", \"wall_s\": 29.856}",
+  "{\"cap_s\": 45.0, \"child_cpu_s\": 19.284, \"child_maxrss_mb\": 396.1, \"prev_sha256\": \"4f2e08177953f11bb4ccfa0fc03b232bc50e19f2911d78262b6c98fac4fce49c\", \"run\": \"a10g-s1-attrib-c1\", \"status\": \"COMPLETE\", \"wall_s\": 30.073}",
+  "{\"cap_s\": 45.0, \"child_cpu_s\": 23.256, \"child_maxrss_mb\": 470.2, \"prev_sha256\": \"c264775f67330503ae2b2b479509d5ae73f1e3e2d8352e3eb5447b587612062e\", \"run\": \"a10g-s1-attrib-c0\", \"status\": \"COMPLETE\", \"wall_s\": 34.803}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.127, \"child_maxrss_mb\": 59.6, \"prev_sha256\": \"a233deb39b5fb2e00ba861924baf0b3da0710deb704619bdb3844d99d792ee32\", \"run\": \"a10g-s1-attrib-score\", \"status\": \"COMPLETE\", \"wall_s\": 0.185}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 19.652, \"child_maxrss_mb\": 219.7, \"prev_sha256\": \"ecfd005cfd331777f9a66ea0ad4be2c47f4beb61241f20fa1c8db8e936245747\", \"run\": \"a10g-s1-diag104529\", \"status\": \"COMPLETE\", \"wall_s\": 18.292}",
+  "{\"cap_s\": 45.0, \"child_cpu_s\": 9.464, \"child_maxrss_mb\": 259.4, \"prev_sha256\": \"30dd5aa456e1b3196be9139fe4a4b7e7ff77a05cff435ea0beba64ac4db7b9ba\", \"run\": \"a10g-s1-devcheck\", \"status\": \"COMPLETE\", \"wall_s\": 9.338}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 7.548, \"child_maxrss_mb\": 205.3, \"prev_sha256\": \"a63fd7b82ef12709f457bf14e04a1361cd0d136baf7d1a0179440e11647ec8dd\", \"run\": \"a10g-s1-tests\", \"status\": \"COMPLETE\", \"wall_s\": 7.389}",
+  "{\"cap_s\": 28.0, \"child_cpu_s\": 23.176, \"child_maxrss_mb\": 482.3, \"prev_sha256\": \"8e69b1586b92b3c4d66b5a6e5f56acd98cabd54733bdf9b2127bcd64faf35c13\", \"run\": \"a10g-s1-devtrain\", \"status\": \"COMPLETE\", \"wall_s\": 22.197}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 7.969, \"child_maxrss_mb\": 193.6, \"prev_sha256\": \"094545ba3612f72e90fd0e6a29db86dc98ec2441f14215142c826762812cfdfa\", \"run\": \"a10g-s1-deveval\", \"status\": \"COMPLETE\", \"wall_s\": 7.535}"
  ]
 }

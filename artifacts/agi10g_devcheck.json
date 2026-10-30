@@ -1,0 +1,553 @@
+{
+ "summary": {
+  "cases": 10,
+  "truth_false_rejects": 0,
+  "designed_ties": 7,
+  "designed": 7,
+  "incidental_ties": 0,
+  "controls": 3,
+  "relevant_channel_resolves_and_verifies": 7,
+  "irrelevant_channel_resolutions": 0,
+  "closure_104529": {
+   "rechecked": 15,
+   "wrong_in_recheck": 10,
+   "accepted_under_10g": 0,
+   "wrong_accepted_under_10g": 0,
+   "truth_ok_under_10g": true
+  },
+  "wall": 9.2
+ },
+ "rows": [
+  {
+   "project": "P10G.S_replay.seq.duckdb.snowflake.106000",
+   "amb": "seq",
+   "attempt": 0,
+   "build_s": 0.09,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "set_dedup",
+     "stg_order_items|item_id|ingest_seq|desc"
+    ]
+   ],
+   "tie": 3,
+   "tie_ops": [
+    "set_dedup"
+   ],
+   "features": [
+    "k:0",
+    "n:3",
+    "op:set_dedup",
+    "rel:nodedup",
+    "rel:plain",
+    "slot:order",
+    "val:order:arrival",
+    "val:order:dupes",
+    "val:order:int"
+   ],
+   "E2": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "resolved",
+     "eliminated": 2,
+     "verified": true
+    },
+    "2": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "3": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.S_qualify_order.time.sqlite.postgres.106001",
+   "amb": "time",
+   "attempt": 0,
+   "build_s": 0.07,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "set_dedup",
+     "stg_customers|account_id|ts_ms|desc"
+    ]
+   ],
+   "tie": 3,
+   "tie_ops": [
+    "set_dedup"
+   ],
+   "features": [
+    "k:0",
+    "n:3",
+    "op:set_dedup",
+    "rel:cdc",
+    "rel:dedup",
+    "slot:order",
+    "val:order:int",
+    "val:order:unique"
+   ],
+   "E2": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "2": {
+     "outcome": "resolved",
+     "eliminated": 2,
+     "verified": true
+    },
+    "3": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.S_fanout.grain.polars.hive.106002",
+   "amb": "grain",
+   "attempt": 0,
+   "build_s": 0.06,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     1,
+     "pre_aggregate",
+     "0|qty|sum"
+    ]
+   ],
+   "tie": 2,
+   "tie_ops": [
+    "pre_aggregate"
+   ],
+   "features": [
+    "k:1",
+    "lit:f:max",
+    "lit:f:sum",
+    "n:2",
+    "op:pre_aggregate",
+    "rel:node",
+    "slot:f"
+   ],
+   "E2": [
+    3,
+    1,
+    2,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "2": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "3": {
+     "outcome": "resolved",
+     "eliminated": 1,
+     "verified": true
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.S_replay.none.duckdb.dbt.106003",
+   "amb": null,
+   "attempt": 0,
+   "build_s": 0.06,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "set_dedup",
+     "stg_order_items|line_id|load_seq|desc"
+    ]
+   ],
+   "tie": 1,
+   "tie_ops": [],
+   "features": [],
+   "E2": null,
+   "channels": {}
+  },
+  {
+   "project": "P10G.S_qualify_order.none.sqlite.scala.106004",
+   "amb": null,
+   "attempt": 0,
+   "build_s": 0.05,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "set_dedup",
+     "stg_customers|customer_id|ts_ms|desc"
+    ]
+   ],
+   "tie": 1,
+   "tie_ops": [],
+   "features": [],
+   "E2": null,
+   "channels": {}
+  },
+  {
+   "project": "P10G.S_fanout.none.polars.snowflake.106005",
+   "amb": null,
+   "attempt": 0,
+   "build_s": 0.06,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     1,
+     "pre_aggregate",
+     "0|units|sum"
+    ]
+   ],
+   "tie": 1,
+   "tie_ops": [],
+   "features": [],
+   "E2": null,
+   "channels": {}
+  },
+  {
+   "project": "P10G.W3.time.duckdb.postgres.106006",
+   "amb": "time",
+   "attempt": 0,
+   "build_s": 0.1,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     1,
+     "pre_aggregate",
+     "0|qty|sum"
+    ],
+    [
+     0,
+     "set_dedup",
+     "stg_customers|customer_id|ts_ms|desc"
+    ]
+   ],
+   "tie": 3,
+   "tie_ops": [
+    "set_dedup"
+   ],
+   "features": [
+    "k:0",
+    "n:3",
+    "op:set_dedup",
+    "rel:cdc",
+    "rel:dedup",
+    "slot:order",
+    "val:order:int",
+    "val:order:unique"
+   ],
+   "E2": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "2": {
+     "outcome": "resolved",
+     "eliminated": 2,
+     "verified": true
+    },
+    "3": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.W5.grain.sqlite.hive.106007",
+   "amb": "grain",
+   "attempt": 0,
+   "build_s": 0.07,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     1,
+     "pre_aggregate",
+     "0|units|sum"
+    ],
+    [
+     2,
+     "merge_add_delete",
+     ""
+    ]
+   ],
+   "tie": 2,
+   "tie_ops": [
+    "pre_aggregate"
+   ],
+   "features": [
+    "k:1",
+    "lit:f:max",
+    "lit:f:sum",
+    "n:2",
+    "op:pre_aggregate",
+    "rel:node",
+    "slot:f"
+   ],
+   "E2": [
+    3,
+    1,
+    2,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "2": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "3": {
+     "outcome": "resolved",
+     "eliminated": 1,
+     "verified": true
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.T_tombstone+qualify_order.time.polars.dbt.106008",
+   "amb": "time",
+   "attempt": 0,
+   "build_s": 0.1,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "add_filter",
+     "stg_customers|post|ne|op|d"
+    ],
+    [
+     0,
+     "set_dedup",
+     "stg_customers|customer_id|ts_ms|desc"
+    ]
+   ],
+   "tie": 3,
+   "tie_ops": [
+    "set_dedup"
+   ],
+   "features": [
+    "k:0",
+    "n:3",
+    "op:set_dedup",
+    "rel:cdc",
+    "rel:dedup",
+    "slot:order",
+    "val:order:int",
+    "val:order:unique"
+   ],
+   "E2": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "2": {
+     "outcome": "resolved",
+     "eliminated": 2,
+     "verified": true
+    },
+    "3": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  },
+  {
+   "project": "P10G.W1.seq.duckdb.scala.106009",
+   "amb": "seq",
+   "attempt": 0,
+   "build_s": 0.09,
+   "truth_ok": true,
+   "truth_failed": [],
+   "witness_found": true,
+   "path": [
+    [
+     0,
+     "set_dedup",
+     "stg_order_items|line_id|load_seq|desc"
+    ],
+    [
+     1,
+     "pre_aggregate",
+     "0|units|sum"
+    ]
+   ],
+   "tie": 3,
+   "tie_ops": [
+    "set_dedup"
+   ],
+   "features": [
+    "k:0",
+    "n:3",
+    "op:set_dedup",
+    "rel:nodedup",
+    "rel:plain",
+    "slot:order",
+    "val:order:arrival",
+    "val:order:dupes",
+    "val:order:int"
+   ],
+   "E2": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "channels": {
+    "1": {
+     "outcome": "resolved",
+     "eliminated": 2,
+     "verified": true
+    },
+    "2": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "3": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "4": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    },
+    "5": {
+     "outcome": "abstain_unresolved",
+     "eliminated": 0,
+     "verified": null
+    }
+   }
+  }
+ ]
+}

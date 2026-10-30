@@ -1,4 +1,5 @@
-"""Tracked, independently verifiable Phase 10C-10F compute ledger (NOT LOCKED; Phase 10F audit finding 5).
+"""Tracked, independently verifiable Phase 10C-10G compute ledger (NOT LOCKED; Phase 10F audit finding 5; Phase 10G entry added at
+10G Stage 1: phase table + 10G pool reconciliation; the copied lines stay append-only and verbatim).
   python scripts/agi10f_ledger.py export     runs/experimental/wave24-agi/ledger.jsonl (untracked) -> docs/NEXUS_COMPUTE_LEDGER.json
   python scripts/agi10f_ledger.py verify     re-checks docs/NEXUS_COMPUTE_LEDGER.json ALONE (no untracked file needed)
 The export copies every ledger line from the first Phase 10C row onward VERBATIM (the ledger is hash-chained: each row's
@@ -10,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "runs/experimental/wave24-agi/ledger.jsonl"
 OUT = ROOT / "docs/NEXUS_COMPUTE_LEDGER.json"
-PHASES = {"10C": "a10c-", "10D": "a10d-", "10E": "a10e-", "10F": "a10f-"}
+PHASES = {"10C": "a10c-", "10D": "a10d-", "10E": "a10e-", "10F": "a10f-", "10G": "a10g-"}
 
 
 def h(line):
@@ -46,9 +47,13 @@ def summarise(lines):
         phase10e_surplus_after_s=round(info["10E"]["pool_s"] - info["10E"]["used_s"], 3),
         phase10f_pool="Phase 10E surplus + owner-authorised 300 s buffer (hard cap 950 s)",
         phase10f_pool_s=round(info["10E"]["pool_s"] - info["10E"]["used_s"] + 300.0, 3),
-        phase10f_remaining_of_cap_s=round(info["10F"]["cap_s"] - info["10F"]["used_s"], 3))
+        phase10f_remaining_of_cap_s=round(info["10F"]["cap_s"] - info["10F"]["used_s"], 3),
+        phase10g_pool="Phase 10F pool - Phase 10F used + owner's new 1,100 s grant (hard cap 1,300 s)",
+        phase10g_pool_s=round(info["10F"]["pool_s"] - info["10F"]["used_s"] + 1100.0, 3),
+        phase10g_remaining_of_cap_s=round(info["10G"]["cap_s"] - info["10G"]["used_s"], 3))
     rec["checks"] = dict(phase10e_pool_matches_grant=abs(rec["phase10e_pool_s"] - info["10E"]["pool_s"]) < 1e-6,
                          phase10f_pool_matches_grant=abs(rec["phase10f_pool_s"] - info["10F"]["pool_s"]) < 1e-3,
+                         phase10g_pool_matches_grant=abs(rec["phase10g_pool_s"] - info["10G"]["pool_s"]) < 1e-3,
                          every_phase_within_cap=all(d["used_s"] <= d["cap_s"] + 1e-6 for d in info.values()),
                          every_stage_within_ceiling=all(v <= info[ph]["ceilings"].get(s, 0) + 1e-6 for ph in info for s, v in info[ph]["stage_used_s"].items()))
     return info, rec
@@ -69,7 +74,7 @@ def export():
     seg = L[i0:]
     assert all(any(json.loads(l)["run"].startswith(p) for p in PHASES.values()) for l in seg), "a foreign row inside the segment"
     info, rec = summarise(seg)
-    doc = dict(what="Phase 10C-10F charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi10f_ledger.py verify`",
+    doc = dict(what="Phase 10C-10G charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi10f_ledger.py verify`",
                source=str(SRC.relative_to(ROOT)), source_first_line_index=i0, source_total_lines=len(L), prev_sha256_of_first_line=json.loads(seg[0])["prev_sha256"],
                head_sha256=h(seg[-1]), chain_ok=chain_ok(json.loads(seg[0])["prev_sha256"], seg), phases=info, reconciliation=rec, lines=seg)
     OUT.write_text(json.dumps(doc, indent=1) + "\n")
