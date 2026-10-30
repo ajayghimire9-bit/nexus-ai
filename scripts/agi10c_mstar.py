@@ -99,7 +99,11 @@ def round_():
     print(json.dumps({x: out[x] for x in ("edit", "identity", "results", "adopted", "discovery_cost_s")}, default=list)[:3000])
 
 
-def downstream():
+def downstream(resume=None):
+    """resume=TAG (added after the first downstream run hit its 195 s cap with the alternative learner trained but only 4 of
+    its Draw C rows written; disclosed): TAG's learner is RE-TRAINED on the same shared streams (the identity check showed
+    byte-identical memories for identical M), its memory is saved, and only its never-run Draw C rows are evaluated; the
+    other learner's written rows are read back, never rerun."""
     T0 = time.time()
     rd = json.loads((OUT / "round.json").read_text())
     if (OUT / "downstream.json").exists():
@@ -109,6 +113,13 @@ def downstream():
     res = {}
     for tag in ("selected", "alternative"):
         M = rd[f"M_{tag}"]
+        done = {json.loads(l)["seed"]: json.loads(l) for l in (OUT / f"drawC_{tag}.jsonl").read_text().splitlines()} if (OUT / f"drawC_{tag}.jsonl").exists() else {}
+        if resume and tag != resume:
+            ok = list(done.values())
+            res[tag] = dict(M=M, read_back=True, verified=sum(r["verified"] for r in ok), wrong=sum(r["wrong"] for r in ok), n=len(ok),
+                            withheld=f"{sum(r['verified'] for r in ok if r['group'] == 'heldout')}/{sum(r['group'] == 'heldout' for r in ok)}",
+                            ordinary=f"{sum(r['verified'] for r in ok if r['group'] == 'ordinary')}/{sum(r['group'] == 'ordinary' for r in ok)}")
+            continue
         L = LC.Learner(0, f"down_{tag}", TRN.fixed_trust()[0], ROOT / "var/agi10c_ws/mstar" / f"down_{tag}", T0 + 1e9, OUT,
                        dict(wake=range(93400, 93500), dream=range(93500, 93550), admit=range(93550, 93700)), stream=lambda i: MC.train_spec(0, 600 + i), M=M)
         t = time.time()
@@ -120,10 +131,14 @@ def downstream():
             if (i + 1) % L.M["batch"] == 0:
                 L.sleep()
         train_s = time.time() - t
+        (OUT / f"down_{tag}.memory.json").write_text(json.dumps(L.mem, default=list))
         mem = arm(L.mem)
         rows = []
         with open(OUT / f"drawC_{tag}.jsonl", "a") as fh:
             for tt in DRAW_C:
+                if tt["seed"] in done:
+                    rows.append(done[tt["seed"]])
+                    continue
                 try:
                     p = LC.build(tt, tt["seed"], ROOT / "var/agi10c_ws/mstar/drawC")
                 except RuntimeError as e:
@@ -149,4 +164,4 @@ def downstream():
 
 
 if __name__ == "__main__":
-    {"round": round_, "downstream": downstream}[sys.argv[1]]()
+    {"round": round_, "downstream": downstream, "resume": lambda: downstream(resume=sys.argv[2])}[sys.argv[1]]()
