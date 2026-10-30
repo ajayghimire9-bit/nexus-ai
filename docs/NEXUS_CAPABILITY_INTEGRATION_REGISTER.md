@@ -587,3 +587,30 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * Draw B / Draw C rows left unrun at the stage ceilings.
   * L\* transfer with a mechanism-matched admission rule.
 * **Budget:** 1,426 of 1,800 s; protection 0 violations; `main` untouched.
+
+## Phase 10D: out-of-sandbox multi-table DAGs (2026-10-30; report `docs/NEXUS_PHASE10D_OUT_OF_SANDBOX_DAG_REPORT.md`)
+
+* **Human infrastructure built** (`src/nexus/de_phase10d/`):
+  * a 3-node stg_ → int_ → fct_ DAG IR;
+  * Debezium CDC envelopes, QUALIFY latest-per-key, pre-aggregated / typed / as-of joins, MERGE INTO with soft-delete
+    detection;
+  * DuckDB, SQLite, Polars 2.1 and PySpark 4.0.1 lowerings;
+  * Snowflake / Postgres / Hive / dbt / Scala legacy lifters;
+  * 3–5-table, 60–120-column workspaces;
+  * 13 fault mechanisms and generic column-parameterised L0 operators.
+* **Gate 0:** passed 100 % (twice).
+* **Shared verifier amendments,** before any target: minimal-change dedup ordering, Occam pruning, two visible batches,
+  about 2× rows.
+* **Demonstrated** (48 one-use targets, 2 repetitions):
+  * learned search guidance adds **+4 held-out multi-node completions in both repetitions** (14 → 18 of 24; from 3-fault
+    compositions C5 and C6), with no ordinary regression;
+  * learning curve 14 → 17/18 → 18 → 18, with search work 9,891 → about 5,700 executions;
+  * **0 wrong repairs** in 528 evaluation rows and 240 v2 training tasks;
+  * mechanism-matched admission promoted 4 / 6 macros (the Phase 10C admission flaw is fixed).
+* **Not demonstrated:**
+  * net completions from learned macros on wide schemas (A4 − A2 = 0; A3 − A1 = 0);
+  * guidance × macro synergy (0);
+  * a DAG-localisation gain (0 / −1).
+* **Open:** the `replay` mechanism is unsolved by every arm (9 targets). Training v1 had 3 wrong training submissions,
+  superseded before evaluation and disclosed.
+* **Budget:** 936 of 2,400 s; protection 0 violations; `main` untouched.
