@@ -2,9 +2,9 @@
  "what": "Phase 10C-12B charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12b_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2083,
+ "source_total_lines": 2097,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "bef079ec7ba7518fcad9d2ecfc2da783003eef7446dbb43fa6dc179763575c32",
+ "head_sha256": "670f216a3d334a98ad142b1748eff9386f1b21ff247b1511dce341a42704319f",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -254,17 +254,20 @@
    "s3": 350,
    "s4": 120
   },
-  "rows": 6,
-  "used_s": 4.811,
-  "child_cpu_s": 3.875,
+  "rows": 20,
+  "used_s": 185.084,
+  "child_cpu_s": 182.661,
   "stage_used_s": {
-   "s1": 4.811
+   "s1": 4.811,
+   "s2": 179.505,
+   "s4": 0.768
   },
   "status": {
-   "COMPLETE": 4,
-   "FAILED": 2
+   "COMPLETE": 12,
+   "FAILED": 2,
+   "TIMEOUT": 6
   },
-  "remaining_of_cap_s": 795.189,
+  "remaining_of_cap_s": 614.916,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -518,6 +521,20 @@
   "{\"cap_s\": 60.0, \"child_cpu_s\": 1.084, \"child_maxrss_mb\": 113.3, \"prev_sha256\": \"0493511b44097aaaeb2e141640744e6df7c05342733ebb11214622e44c485d3c\", \"run\": \"a12b-s1-tests2\", \"status\": \"FAILED\", \"wall_s\": 1.094}",
   "{\"cap_s\": 20.0, \"child_cpu_s\": 0.142, \"child_maxrss_mb\": 59.2, \"prev_sha256\": \"73cffc51fb43d7dad7a99ffddc9400a60443d4acf2f0d83d30957743f4ec340b\", \"run\": \"a12b-s1-dbg\", \"status\": \"COMPLETE\", \"wall_s\": 0.183}",
   "{\"cap_s\": 60.0, \"child_cpu_s\": 1.046, \"child_maxrss_mb\": 113.5, \"prev_sha256\": \"adceaebabd978b111b5ee4ca941213ae9d3f07064a5647e66c1ddfc7fa1b7db7\", \"run\": \"a12b-s1-tests3\", \"status\": \"COMPLETE\", \"wall_s\": 1.097}",
-  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.157, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"09d2c506a8509a0cc457ac16a87736da6b5aead4ebdab13f48e6d29ba2d5f07b\", \"run\": \"a12b-s1-freeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.184}"
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.157, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"09d2c506a8509a0cc457ac16a87736da6b5aead4ebdab13f48e6d29ba2d5f07b\", \"run\": \"a12b-s1-freeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.184}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 11.784, \"child_maxrss_mb\": 160.6, \"prev_sha256\": \"bef079ec7ba7518fcad9d2ecfc2da783003eef7446dbb43fa6dc179763575c32\", \"run\": \"a12b-s2-p12-c3\", \"status\": \"COMPLETE\", \"wall_s\": 11.93}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 19.561, \"child_maxrss_mb\": 214.8, \"prev_sha256\": \"cd5fcfd610ff8cfc2005f4ed2f33d192a55720cd0186ebc31359f71453e1c331\", \"run\": \"a12b-s2-p12-c2\", \"status\": \"COMPLETE\", \"wall_s\": 19.734}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 6.297, \"child_maxrss_mb\": 139.9, \"prev_sha256\": \"eb415edaec759879b6c6543b8d4c18a195903d04ba5f82ad1876c736de233ced\", \"run\": \"a12b-s2-p12-c4\", \"status\": \"COMPLETE\", \"wall_s\": 6.411}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 21.209, \"child_maxrss_mb\": 184.9, \"prev_sha256\": \"78a655954addf9a57a5bf226c8d48dd90407b595c82fde70d97c44bc89e9f699\", \"run\": \"a12b-s2-p12-c1\", \"status\": \"COMPLETE\", \"wall_s\": 21.377}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 24.77, \"child_maxrss_mb\": 257.6, \"prev_sha256\": \"c62b8fcda4666d7489bffa1758c4c69cd42343e1d0ee785d1a63112ebc18e399\", \"run\": \"a12b-s2-p12-c0\", \"status\": \"TIMEOUT\", \"wall_s\": 25.007}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 24.915, \"child_maxrss_mb\": 272.5, \"prev_sha256\": \"5297cb4c5e74ba4f1f3341f37bbbd9044ecab8ff1949ab4b5963982745f06a02\", \"run\": \"a12b-s2-p12-c5\", \"status\": \"TIMEOUT\", \"wall_s\": 25.005}",
+  "{\"cap_s\": 25.0, \"child_cpu_s\": 24.948, \"child_maxrss_mb\": 324.2, \"prev_sha256\": \"59dfb4a4154e639db5fab82b1b8584fdc337d68ed096e70f7b1b124687f785b8\", \"run\": \"a12b-s2-p11-c0\", \"status\": \"TIMEOUT\", \"wall_s\": 25.009}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 14.902, \"child_maxrss_mb\": 245.0, \"prev_sha256\": \"f69c0ed920bd8b1ae76d5ff8cd7b2a254e6417d77cebfe44e13e25efc097d81c\", \"run\": \"a12b-s2-p12r-c0\", \"status\": \"TIMEOUT\", \"wall_s\": 15.01}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 14.913, \"child_maxrss_mb\": 236.5, \"prev_sha256\": \"69c94ffe5c0bf76783594d71ac9d1d6f6f98a4285d52ce314b5565efa5931255\", \"run\": \"a12b-s2-p12r-c5\", \"status\": \"TIMEOUT\", \"wall_s\": 15.011}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 14.927, \"child_maxrss_mb\": 303.2, \"prev_sha256\": \"a27498a005583c53a4ee9c12c8c4388024da87ba9480f3573efa54d314d35883\", \"run\": \"a12b-s2-p11r-c0\", \"status\": \"TIMEOUT\", \"wall_s\": 15.011}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.154, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"4ab82eb373d265726a1a97a174dcd52588f756ecb69df8bb69bb759438263a45\", \"run\": \"a12b-s4-score-p12\", \"status\": \"COMPLETE\", \"wall_s\": 0.233}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.14, \"child_maxrss_mb\": 59.9, \"prev_sha256\": \"958b2b1cd552842a18e594cee7ff0e6bfddad064390ad45e416159de258e3431\", \"run\": \"a12b-s4-score-p11\", \"status\": \"COMPLETE\", \"wall_s\": 0.175}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.13, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"9b57aeff631844d8c700d4573f4cc50af88ff8e9f372b2b4b685060c44563960\", \"run\": \"a12b-s4-refreeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.181}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.136, \"child_maxrss_mb\": 60.0, \"prev_sha256\": \"58ef2d69c0a602bd2de58689f52b765757eb7717c1ab0ce08511a18448a82387\", \"run\": \"a12b-s4-rescore\", \"status\": \"COMPLETE\", \"wall_s\": 0.179}"
  ]
 }

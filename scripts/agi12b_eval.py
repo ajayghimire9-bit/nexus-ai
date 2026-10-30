@@ -21,8 +21,8 @@ from nexus.de_phase12b import disamb12b as D, manifest12b as M, synth12b as S, t
 OUT = ROOT / "artifacts/agi12b_eval"
 FZ = ROOT / "artifacts/agi12b_freeze.json"
 CAPS = dict(rel_cap=1000, sc_cap=150000, fc_cap=5000, ast_cap=400000, wall=6.0)
-ARMS = [("F2_base", "fixed", 2, False, False), ("N2_base", "nexus", 2, False, False), ("N2_challenge", "nexus", 2, False, True),
-        ("F2_reopen", "fixed", 2, True, False), ("N2_both", "nexus", 2, True, True), ("R2_reopen", "random", 2, True, False),
+ARMS = [("F2_base", "fixed", 2, False, False), ("N2_both", "nexus", 2, True, True), ("N2_base", "nexus", 2, False, False),
+        ("N2_challenge", "nexus", 2, False, True), ("F2_reopen", "fixed", 2, True, False), ("R2_reopen", "random", 2, True, False),
         ("F1_reopen", "fixed", 1, True, False), ("N1_both", "nexus", 1, True, True)]
 DIAG_ARMS = ("F2_base", "N2_base", "N2_challenge", "F2_reopen", "N2_both")
 P11_DIAG = ("T113003", "T113006", "T113014", "T113018", "T113022")
@@ -165,7 +165,10 @@ def score(suite):
             V2 = {t for t in tl if by.get((t, r, a2), {}).get("verified")}
             W1 = sum(by.get((t, r, a1), {}).get("wrong", False) for t in tl)
             W2 = sum(by.get((t, r, a2), {}).get("wrong", False) for t in tl)
-            return dict(diff=len(V1) - len(V2), gains=sorted(V1 - V2), losses=sorted(V2 - V1), wrong=(W1, W2))
+            P = [t for t in tl if (t, r, a1) in by and (t, r, a2) in by]     # amendment: tasks where both arms have a row
+            pd = sum(by[(t, r, a1)]["verified"] for t in P) - sum(by[(t, r, a2)]["verified"] for t in P)
+            pw = (sum(by[(t, r, a1)]["wrong"] for t in P), sum(by[(t, r, a2)]["wrong"] for t in P))
+            return dict(diff=len(V1) - len(V2), gains=sorted(V1 - V2), losses=sorted(V2 - V1), wrong=(W1, W2), paired_n=len(P), paired_diff=pd, paired_wrong=pw)
         pairs = [("N2_challenge", "N2_base"), ("N2_challenge", "F2_base"), ("F2_reopen", "F2_base"), ("N2_both", "F2_base")]
         if suite == "fresh":
             pairs += [("N2_both", "F2_reopen"), ("N2_both", "R2_reopen"), ("N1_both", "F1_reopen")]

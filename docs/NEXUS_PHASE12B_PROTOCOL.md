@@ -105,3 +105,48 @@ For each contrast:
 
 Two streams sharing targets are not independent replications. No retro-adoption, no rerun of a written row, no reuse of the one-use
 range.
+
+## Stage 2 diagnostic record and pre-opening resource amendment (commit 2; Fresh_Phase12B_24 not yet opened)
+
+**Stage 2 diagnostic run** (owner-requested; opened suites; `a12b-s2-*`): it used the whole s2 ceiling (180.0 / 180 s) and is
+**incomplete**.
+- **Phase 12 suite:** chunks c0 and c5 hit their per-job time limit twice. 180 of 240 rows were written. Six tasks have no rows:
+  Q121006, Q121011, Q121012, Q121017, Q121018, Q121023.
+- **Phase 11 subset:** 47 of 50 rows; T113022 rep1 is missing 3 arms.
+- No rerun; the s2 ceiling is spent. 0 rows over any cap.
+
+**Phase 12's 11 single-candidate wrong (task, stream) pairs.** Q121011 (2 pairs) has no rows, so 9 pairs were evaluated:
+
+| Arm | Verified | Pairs resolved |
+|---|---|---|
+| N2_base | 0 / 9 | — |
+| N2_challenge (B alone) | 2 / 9 | Q121002 rep1, Q121005 rep1 |
+| F2_reopen (A alone, Fixed selector) | 4 / 9 | Q121008 ×2, Q121014 ×2 (F2_base also verifies these) |
+| N2_both (A + B) | 7 / 9 | Q121002 ×2, Q121005, Q121008 ×2, Q121014 ×2 |
+
+- **Q121014:** verified by F2_base, F2_reopen and N2_both in both streams; still wrong under N2_base and N2_challenge.
+- **Q121020:** unresolved.
+- **T113018:** not resolved by any arm (N2_both: abstain rep0, wrong rep1).
+- **Totals, Phase12_Diagnostic** (rows present; per stream rep0 | rep1):
+
+| Arm | Verified | Wrong |
+|---|---|---|
+| F2_base | 7 \| 7 | 1 \| 1 |
+| N2_base | 4 \| 4 | 7 \| 6 |
+| N2_challenge | 3 \| 5 | 7 \| 3 |
+| F2_reopen | 7 \| 6 | 0 \| 0 |
+| N2_both | 6 \| 4 | 4 \| 4 |
+
+**No code change to search, disambiguation, caps or arms follows from these diagnostics.**
+
+**Resource amendment** (written before Fresh_Phase12B_24 opens; based only on Stage 2 timings):
+- **The problem:** the Stage 2 cost (about 1 s per row; slow task-streams up to about 25 s) puts the full 384-row fresh grid near or
+  over the 350 s s3 ceiling.
+- **One job per task:** `run fresh i 24`, one task per job, each capped at **14 s** (24 × 14 = 336 s ≤ 350), so a slow task cannot
+  starve later ones.
+- **Arm order within a task:** the primary pair F2_base and N2_both comes first. Results do not depend on order: every arm has its own
+  budget, clock and seeds.
+- **Missing rows:** they count as not verified and not wrong (equivalent to abstaining). Every contrast is **also** reported on the
+  tasks where both arms have a row (`paired_n`, `paired_diff`). The verdict uses the all-task numbers. If any primary-pair row is
+  missing, the verdict is reported both ways.
+- The freeze is refreshed (`artifacts/agi12b_freeze.json`) to hash the amended runner.
