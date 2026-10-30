@@ -1,10 +1,10 @@
 {
- "what": "Phase 10C-12 charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
+ "what": "Phase 10C-12B charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12b_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2077,
+ "source_total_lines": 2083,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "d4d47aa800e42af85ef5a7d04d0b0c7c45c6485bb2f3b344fdd1c3eefd44845d",
+ "head_sha256": "bef079ec7ba7518fcad9d2ecfc2da783003eef7446dbb43fa6dc179763575c32",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -234,6 +234,37 @@
    "COMPLETE": 22
   },
   "remaining_of_cap_s": 1284.82,
+  "checks": {
+   "pool_is_new_grant_only": true,
+   "within_cap": true,
+   "every_stage_within_ceiling": true
+  }
+ },
+ "phase12b": {
+  "prefix": "a12b-",
+  "pool_s": 800.0,
+  "cap_s": 800.0,
+  "new_grant_s": 800.0,
+  "older_surplus_not_consumed_s": {
+   "phase12_remaining_s": 1284.82
+  },
+  "ceilings": {
+   "s1": 150,
+   "s2": 180,
+   "s3": 350,
+   "s4": 120
+  },
+  "rows": 6,
+  "used_s": 4.811,
+  "child_cpu_s": 3.875,
+  "stage_used_s": {
+   "s1": 4.811
+  },
+  "status": {
+   "COMPLETE": 4,
+   "FAILED": 2
+  },
+  "remaining_of_cap_s": 795.189,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -481,6 +512,12 @@
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.144, \"child_maxrss_mb\": 59.7, \"prev_sha256\": \"aa0f091727902410247680a9477424c7f7d41b37382915137a31c62759e7c7b0\", \"run\": \"a12-s4-score-suite1\", \"status\": \"COMPLETE\", \"wall_s\": 0.187}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.152, \"child_maxrss_mb\": 59.7, \"prev_sha256\": \"59620b7ddd75871cb99017f384bf1558d5aafb93bde780832bcdaa2a24e1a68b\", \"run\": \"a12-s4-score-suite2\", \"status\": \"COMPLETE\", \"wall_s\": 0.179}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.282, \"child_maxrss_mb\": 38.4, \"prev_sha256\": \"1e09f3c2e4509edaaedd18e78243dd83de6ee2df252f5a872334bd709f049f1a\", \"run\": \"a12-s4-protect\", \"status\": \"COMPLETE\", \"wall_s\": 0.92}",
-  "{\"cap_s\": 90.0, \"child_cpu_s\": 5.648, \"child_maxrss_mb\": 114.0, \"prev_sha256\": \"6d8e4d9270b0e155879c4d7faaf7c71ab6599bb89d9c4db74e5102e9930e6369\", \"run\": \"a12-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 5.786}"
+  "{\"cap_s\": 90.0, \"child_cpu_s\": 5.648, \"child_maxrss_mb\": 114.0, \"prev_sha256\": \"6d8e4d9270b0e155879c4d7faaf7c71ab6599bb89d9c4db74e5102e9930e6369\", \"run\": \"a12-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 5.786}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.328, \"child_maxrss_mb\": 38.1, \"prev_sha256\": \"d4d47aa800e42af85ef5a7d04d0b0c7c45c6485bb2f3b344fdd1c3eefd44845d\", \"run\": \"a12b-s1-protect-before\", \"status\": \"COMPLETE\", \"wall_s\": 0.991}",
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 1.118, \"child_maxrss_mb\": 113.1, \"prev_sha256\": \"135b5524ea79ab7c613ecfc095cdf7df8612ba4068e156ce658004a1cd504e63\", \"run\": \"a12b-s1-tests\", \"status\": \"FAILED\", \"wall_s\": 1.262}",
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 1.084, \"child_maxrss_mb\": 113.3, \"prev_sha256\": \"0493511b44097aaaeb2e141640744e6df7c05342733ebb11214622e44c485d3c\", \"run\": \"a12b-s1-tests2\", \"status\": \"FAILED\", \"wall_s\": 1.094}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.142, \"child_maxrss_mb\": 59.2, \"prev_sha256\": \"73cffc51fb43d7dad7a99ffddc9400a60443d4acf2f0d83d30957743f4ec340b\", \"run\": \"a12b-s1-dbg\", \"status\": \"COMPLETE\", \"wall_s\": 0.183}",
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 1.046, \"child_maxrss_mb\": 113.5, \"prev_sha256\": \"adceaebabd978b111b5ee4ca941213ae9d3f07064a5647e66c1ddfc7fa1b7db7\", \"run\": \"a12b-s1-tests3\", \"status\": \"COMPLETE\", \"wall_s\": 1.097}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.157, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"09d2c506a8509a0cc457ac16a87736da6b5aead4ebdab13f48e6d29ba2d5f07b\", \"run\": \"a12b-s1-freeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.184}"
  ]
 }

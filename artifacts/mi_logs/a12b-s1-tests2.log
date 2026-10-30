@@ -1,0 +1,17 @@
+.F.....                                                                  [100%]
+=================================== FAILURES ===================================
+________ test_reopened_projection_keeps_a_null_replacement_alternative _________
+
+    def test_reopened_projection_keeps_a_null_replacement_alternative():
+        task, _ = _null_default_task()
+        closed = S.collect(task, {}, S.Costs(), _budget(), reopen=False)
+        opened = S.collect(task, {}, S.Costs(), _budget(), reopen=True)
+        has_isnull = lambda res: any("isnull" in json.dumps(c["expanded"]) for c in res["candidates"])    # noqa: E731
+>       assert not has_isnull(closed) and has_isnull(opened)
+E       AssertionError: assert (not False and False)
+E        +  where False = <function test_reopened_projection_keeps_a_null_replacement_alternative.<locals>.<lambda> at 0x10de20ea0>({'candidates': [{'program': ('map', ('rel', 'r'), (('k', (...)), ('o', (...)))), 'expanded': ('map', ('rel', 'r'), (('...: 94, 'full_checks': 12, 'constructed_asts': 2466, 'micro_evals': 64}, 'log': {'rel_suppressed_alternatives': 44}, ...})
+E        +  and   False = <function test_reopened_projection_keeps_a_null_replacement_alternative.<locals>.<lambda> at 0x10de20ea0>({'candidates': [{'program': ('map', ('rel', 'r'), (('k', (...)), ('o', (...)))), 'expanded': ('map', ('rel', 'r'), (('...ternatives': 769, 'completeness_loss_alt_cap': 960, 'retained_new_shape_over_cap': 11, 'reopened_passthrough': 2}, ...})
+
+tests/test_agi12b.py:42: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agi12b.py::test_reopened_projection_keeps_a_null_replacement_alternative
