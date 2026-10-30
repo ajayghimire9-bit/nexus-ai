@@ -1,0 +1,6 @@
+{"project": "P10D.T_cdc_key+dirty.sqlite.postgres.101524", "n_ok_paths": 12, "n_wrong_ok_paths": 5, "wrong_partition_relations": ["stg_orders"], "wall": 1.7}
+WRONG {'path': ['stg_customers|customer_id', 'stg_orders|legacy_id', 'stg_orders|pre|notnull|order_total|'], 'hidden_ok': False, 'fails': ['hidden1: output differs']}
+WRONG {'path': ['stg_customers|customer_id', 'stg_orders|legacy_id', 'stg_orders|post|notnull|order_total|'], 'hidden_ok': False, 'fails': ['hidden1: output differs']}
+WRONG {'path': ['stg_customers|customer_id', 'stg_orders|shipping_cents', 'stg_orders|pre|notnull|order_total|'], 'hidden_ok': False, 'fails': ['hidden1: output differs']}
+WRONG {'path': ['stg_customers|customer_id', 'stg_orders|shipping_cents', 'stg_orders|post|notnull|order_total|'], 'hidden_ok': False, 'fails': ['hidden1: output differs', 'hidden2: output differs']}
+WRONG {'path': ['stg_customers|customer_id', 'stg_orders|margin_bp', 'stg_orders|post|notnull|order_total|'], 'hidden_ok': False, 'fails': ['hidden2: output differs']}

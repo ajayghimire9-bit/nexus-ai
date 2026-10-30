@@ -1,0 +1,14 @@
+{
+ "id": "GRANT-NEXUS-PHASE10F-950S-FROM-SURPLUS-PLUS-300S-BUFFER",
+ "kind": "explicit owner authorisation (owner Phase 10F instruction: 'Use at most 950.0 charged seconds (drawn from the 910.0 s surplus plus an owner-authorized +300.0 s buffer if needed)')",
+ "recorded_at_parent": "343778e",
+ "released_balances": {
+  "phase10e_unused_s": 910.629,
+  "owner_authorised_buffer_s": 300.0
+ },
+ "pool_s": 1210.629,
+ "cap_s": 950.0,
+ "buffer_drawn_only_if_needed": "charged seconds above 910.629 come from the 300 s buffer; the hard cap is 950 s either way",
+ "metered_prefix": "a10f-",
+ "note": "Idempotent: written once; this file is the single authority. Phase 10E surplus computed from the ledger by scripts/agi10e_budget.py (927.771 of the 1,838.4 s pool used). Reconciled Phase 10C-10F ledger: docs/NEXUS_COMPUTE_LEDGER.json."
+}

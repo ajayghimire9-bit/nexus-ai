@@ -1,0 +1,19 @@
+.......F...                                                              [100%]
+=================================== FAILURES ===================================
+________________ test_atomic_rewrite_merges_the_two_dedup_steps ________________
+
+    def test_atomic_rewrite_merges_the_two_dedup_steps():
+        ctx = ["pos:first", "fail:unique"]
+        ap = dict(stage=0, ctx=ctx, sym=[], pos=["op:add_partition"], negs=[["op:add_partition", "x"], ["op:add_filter", "y"]],
+                  abs=["add_partition", ["rel", ["nodedup", "plain"]], ["key", ["ckey", "int"]]])
+        sd = dict(stage=0, ctx=["pos:first"], sym=[], pos=["op:set_dedup"], negs=[["op:set_dedup", "z"]],
+                  abs=["set_dedup", ["rel", ["dedup", "plain"]], ["key", ["ckey", "int"]], ["order", ["arrival", "int"]], ["dir", "desc"]])
+        other = dict(stage=1, ctx=ctx, sym=[], pos=["op:cast_keys"], negs=[["op:pre_aggregate"]], abs=["cast_keys"])
+        pairs, merged = AT.rewrite_atomic([("P", [ap, sd, other]), ("Q", [ap])])
+>       assert merged == 1 and len(pairs) == 3 + 1
+E       AssertionError: assert (1 == 1 and 3 == (3 + 1))
+E        +  where 3 = len([('P', ['op:set_dedup', 'op:set_dedup|pos:first', 'op:set_dedup|ev:fail:unique', 'op:set_dedup|rel:nodedup', 'op:set_d...dedup|rel:plain', 'op:set_dedup|key:ckey', ...], ['op:set_dedup', 'z']), ('P', ['op:cast_keys'], ['op:pre_aggregate'])])
+
+tests/test_agi10f.py:119: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agi10f.py::test_atomic_rewrite_merges_the_two_dedup_steps

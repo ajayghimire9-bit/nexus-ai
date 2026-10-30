@@ -1,0 +1,507 @@
+{
+ "summary": {
+  "projects": 26,
+  "truth_false_rejects": 0,
+  "replay_projects": 9,
+  "replay_corrections_visible": 871,
+  "decreasing_share_visible": 0.388,
+  "replay_projects_alias_visible_fails": 9,
+  "replay_projects_alias_hidden_wrong": 9,
+  "qty_arrival_role": 0,
+  "seq_arrival_role_replay": 9,
+  "closure_101524": {
+   "ok_10e": 12,
+   "ok_10f": 1,
+   "wrong_ok_10e": 5,
+   "wrong_ok_10f": 0
+  },
+  "atomic_truth_reachable": 9,
+  "atomic_truth_position_median": 453,
+  "wall": 8.3
+ },
+ "generator": [
+  {
+   "project": "P10F.S_asof_dir.duckdb.snowflake.103000",
+   "family": "S_asof_dir",
+   "replay": false,
+   "corrections_visible": 46,
+   "decreasing_visible": 13,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_cdc_key.sqlite.postgres.103001",
+   "family": "S_cdc_key",
+   "replay": false,
+   "corrections_visible": 25,
+   "decreasing_visible": 7,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_dirty.polars.hive.103002",
+   "family": "S_dirty",
+   "replay": false,
+   "corrections_visible": 27,
+   "decreasing_visible": 9,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_fanout.duckdb.dbt.103003",
+   "family": "S_fanout",
+   "replay": false,
+   "corrections_visible": 24,
+   "decreasing_visible": 11,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_inner.sqlite.scala.103004",
+   "family": "S_inner",
+   "replay": false,
+   "corrections_visible": 33,
+   "decreasing_visible": 15,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_keycast.polars.snowflake.103005",
+   "family": "S_keycast",
+   "replay": false,
+   "corrections_visible": 29,
+   "decreasing_visible": 11,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_merge_delete.duckdb.postgres.103006",
+   "family": "S_merge_delete",
+   "replay": false,
+   "corrections_visible": 29,
+   "decreasing_visible": 10,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_merge_update.sqlite.hive.103007",
+   "family": "S_merge_update",
+   "replay": false,
+   "corrections_visible": 26,
+   "decreasing_visible": 8,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_overwrite.polars.dbt.103008",
+   "family": "S_overwrite",
+   "replay": false,
+   "corrections_visible": 25,
+   "decreasing_visible": 10,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_qualify_order.duckdb.scala.103009",
+   "family": "S_qualify_order",
+   "replay": false,
+   "corrections_visible": 26,
+   "decreasing_visible": 6,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_replay.sqlite.snowflake.103010",
+   "family": "S_replay",
+   "replay": true,
+   "corrections_visible": 35,
+   "decreasing_visible": 16,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_tomb_early.polars.postgres.103011",
+   "family": "S_tomb_early",
+   "replay": false,
+   "corrections_visible": 32,
+   "decreasing_visible": 15,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.S_tombstone.duckdb.hive.103012",
+   "family": "S_tombstone",
+   "replay": false,
+   "corrections_visible": 35,
+   "decreasing_visible": 10,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.T_cdc_key+dirty.sqlite.dbt.103013",
+   "family": "T_cdc_key+dirty",
+   "replay": false,
+   "corrections_visible": 40,
+   "decreasing_visible": 17,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.T_fanout+inner.polars.scala.103014",
+   "family": "T_fanout+inner",
+   "replay": false,
+   "corrections_visible": 41,
+   "decreasing_visible": 17,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.T_keycast+fanout.duckdb.snowflake.103015",
+   "family": "T_keycast+fanout",
+   "replay": false,
+   "corrections_visible": 44,
+   "decreasing_visible": 20,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.T_merge_delete+merge_update.sqlite.postgres.103016",
+   "family": "T_merge_delete+merge_update",
+   "replay": false,
+   "corrections_visible": 30,
+   "decreasing_visible": 12,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.T_tombstone+qualify_order.polars.hive.103017",
+   "family": "T_tombstone+qualify_order",
+   "replay": false,
+   "corrections_visible": 45,
+   "decreasing_visible": 14,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R1.duckdb.dbt.103018",
+   "family": "R1",
+   "replay": true,
+   "corrections_visible": 28,
+   "decreasing_visible": 13,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R2.sqlite.scala.103019",
+   "family": "R2",
+   "replay": true,
+   "corrections_visible": 36,
+   "decreasing_visible": 14,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R3.polars.snowflake.103020",
+   "family": "R3",
+   "replay": true,
+   "corrections_visible": 35,
+   "decreasing_visible": 11,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R4.duckdb.postgres.103021",
+   "family": "R4",
+   "replay": true,
+   "corrections_visible": 34,
+   "decreasing_visible": 17,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R5.sqlite.hive.103022",
+   "family": "R5",
+   "replay": true,
+   "corrections_visible": 41,
+   "decreasing_visible": 22,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R6.polars.dbt.103023",
+   "family": "R6",
+   "replay": true,
+   "corrections_visible": 34,
+   "decreasing_visible": 12,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R7.duckdb.scala.103024",
+   "family": "R7",
+   "replay": true,
+   "corrections_visible": 41,
+   "decreasing_visible": 16,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  },
+  {
+   "project": "P10F.R8.sqlite.snowflake.103025",
+   "family": "R8",
+   "replay": true,
+   "corrections_visible": 30,
+   "decreasing_visible": 12,
+   "alias_visible_fails": true,
+   "alias_hidden_ok": false,
+   "qty_has_arrival_role": false,
+   "seq_has_arrival_role": true
+  }
+ ],
+ "rules": [
+  {
+   "project": "P10F.S_asof_dir.duckdb.snowflake.103000",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_cdc_key.sqlite.postgres.103001",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_dirty.polars.hive.103002",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_fanout.duckdb.dbt.103003",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_inner.sqlite.scala.103004",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_keycast.polars.snowflake.103005",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_merge_delete.duckdb.postgres.103006",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_merge_update.sqlite.hive.103007",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_overwrite.polars.dbt.103008",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_qualify_order.duckdb.scala.103009",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_replay.sqlite.snowflake.103010",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_tomb_early.polars.postgres.103011",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.S_tombstone.duckdb.hive.103012",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.T_cdc_key+dirty.sqlite.dbt.103013",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.T_fanout+inner.polars.scala.103014",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.T_keycast+fanout.duckdb.snowflake.103015",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.T_merge_delete+merge_update.sqlite.postgres.103016",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.T_tombstone+qualify_order.polars.hive.103017",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R1.duckdb.dbt.103018",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R2.sqlite.scala.103019",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R3.polars.snowflake.103020",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R4.duckdb.postgres.103021",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R5.sqlite.hive.103022",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R6.polars.dbt.103023",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R7.duckdb.scala.103024",
+   "truth_ok": true,
+   "failed": []
+  },
+  {
+   "project": "P10F.R8.sqlite.snowflake.103025",
+   "truth_ok": true,
+   "failed": []
+  }
+ ],
+ "atomic": [
+  {
+   "project": "P10F.S_replay.sqlite.snowflake.103010",
+   "atomic_truth_root_position": 893,
+   "atomic_root_candidates": 1049,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 14
+  },
+  {
+   "project": "P10F.R1.duckdb.dbt.103018",
+   "atomic_truth_root_position": 359,
+   "atomic_root_candidates": 903,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 28
+  },
+  {
+   "project": "P10F.R2.sqlite.scala.103019",
+   "atomic_truth_root_position": 453,
+   "atomic_root_candidates": 789,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 24
+  },
+  {
+   "project": "P10F.R3.polars.snowflake.103020",
+   "atomic_truth_root_position": 409,
+   "atomic_root_candidates": 817,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 30
+  },
+  {
+   "project": "P10F.R4.duckdb.postgres.103021",
+   "atomic_truth_root_position": 469,
+   "atomic_root_candidates": 781,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 29
+  },
+  {
+   "project": "P10F.R5.sqlite.hive.103022",
+   "atomic_truth_root_position": 324,
+   "atomic_root_candidates": 988,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 28
+  },
+  {
+   "project": "P10F.R6.polars.dbt.103023",
+   "atomic_truth_root_position": 269,
+   "atomic_root_candidates": 707,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 31
+  },
+  {
+   "project": "P10F.R7.duckdb.scala.103024",
+   "atomic_truth_root_position": 661,
+   "atomic_root_candidates": 969,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 20
+  },
+  {
+   "project": "P10F.R8.sqlite.snowflake.103025",
+   "atomic_truth_root_position": 981,
+   "atomic_root_candidates": 1099,
+   "add_partition_offered_in_atomic": 0,
+   "split_partition_offered": 13
+  }
+ ]
+}
