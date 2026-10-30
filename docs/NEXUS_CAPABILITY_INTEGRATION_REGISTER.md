@@ -646,3 +646,20 @@ came from a declared event kind (ADD) that was absent from training and therefor
   * the dream-witness key / order tie;
   * T16's visible-sample gap.
 * **Budget:** 928 of 1,400 s (surplus remaining 910 s); protection 0 violations; `main` untouched.
+
+## Phase 10F: subgroup abstraction, decoupled evaluation, frozen-guidance and atomic-dedup controls (2026-10-30; report `docs/NEXUS_PHASE10F_SUBGROUP_ABSTRACTION_AND_DECOUPLED_EVAL_REPORT.md`) — NOT LOCKED
+
+* **Abstraction (`de_phase10f.abstract10f`):** Abs_subgroup (role-consistent subgroups alongside the whole-group candidate) admitted
+  the `(ckey, arrival)` replay macro in **both** streams, at step 90 (rep0) and step 100 (rep1), with the dream teacher unchanged.
+  * Abs_current (whole-group intersection) never admitted a valid one.
+  * Neither rule had one at step 50 (support threshold 3), so the pre-registered verdict is **subgroup insufficient**.
+* **Shortcut removed (`world10f`):** 0 of 340 evaluation rows order the replay dedup by quantity (Phase 10E: 16 / 24).
+* **Fresh one-use draw:** 340 of 576 rows; 22 complete held-out targets; **0 wrong**.
+  * A2 = A4 = Bl = 22 / 22 in both streams, so learned guidance saturates the held-out set.
+  * A4 − A2 = 0 and A4 − Bl = 0 (atomic dedup is as good, and cheaper).
+  * A3 − A1 = A3 − Bf = +17 (the macro helps only under fixed guidance).
+  * A4 − A4f (frozen G_L\*): 0 / +18, mixed.
+* **Phase 10E training wrong closed:** new `justified_dedup` rule (5 wrong accepted paths → 0). A residual dirty-partition gap
+  remains: 1 rep1 training wrong (104529), mechanism unconfirmed.
+* **Tracked ledger:** `docs/NEXUS_COMPUTE_LEDGER.json` (verifiable with `scripts/agi10f_ledger.py verify`).
+* **Budget:** ≈ 700 of 950 s; the 300 s buffer was not drawn. Protection 0 violations; `main` untouched.

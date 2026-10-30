@@ -12,6 +12,8 @@ work 600 executions, wall 4 s per search; r = rep0 / rep1; L*_r, G_L0_r, G_Lstar
             only the replay macro(s) removed from the executable action set
   Bf        fixed guide   + ATOMIC dedup substrate (atomic10f)        = B_atomic_fixed, shared by both streams
   Bl_r      G_atomic_r    + ATOMIC dedup substrate                    = B_atomic_learned
+SCORING (post-run, analysis only): every contrast and table uses the targets on which ALL arms have a row (a row a budget
+cap prevented is MISSING, never counted as a failure); coverage is reported.
 Every submission is verified on the project's DECLARED engine (DuckDB / SQLite / Polars / PySpark 4.0.1) on 2 hidden batches.
 Shared pure caches (lineage10f change 5) across the arms of one target: parsed workspace, interpreter / domain memos, declared-engine
 and hidden results; every execution is still charged to the arm's work counter. Rows appended + flushed; a restarted chunk skips
@@ -183,7 +185,9 @@ def score():
                               eval_wall=round(sum(x["row_wall"] for x in vv), 1))
     V = lambda a, ss: {s for s in ss if by.get(a, {}).get(s, {}).get("verified")}             # noqa: E731
     for grp in ("heldout", "ordinary"):
-        ss = sorted(s for s, x in by.get("A1", {}).items() if x["group"] == grp)
+        ss = sorted(s for s, x in by.get("A1", {}).items() if x["group"] == grp and all(s in by.get(a, {}) for a in by))   # complete targets only
+        res.setdefault("coverage", {})[grp] = dict(complete_targets=len(ss), targets_with_any_row=len({x["seed"] for x in ok if x["group"] == grp}),
+                                                   missing_rows=sum(1 for m in manifest() if m["group"] == grp for a in by if m["seed"] not in by[a]))
         for r in REPS:
             def diff(a, b):
                 d = [float(s in V(a, ss)) - float(s in V(b, ss)) for s in ss]
