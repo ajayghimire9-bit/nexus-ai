@@ -556,3 +556,34 @@ came from a declared event kind (ADD) that was absent from training and therefor
   macros 3 / 3; macros + fixed guide 0 / 3).
 * **Untested:** unfamiliar-composition transfer; a matched bridge-for-all 2 × 2; multi-table / MERGE / CDC.
 * **Budget:** ~1,560 of 1,800 s.
+
+## Phase 10C (revised): audit, withheld compositions, external audit, shared-stream M* (2026-10-30; report `docs/NEXUS_PHASE10C_AUDIT_AND_COMPOSITIONAL_REPORT.md`)
+
+* **Human infrastructure** (all arms; not NEXUS learning):
+  * `fixes10c` — no submission while a resolved decision point has indistinguishable end-to-end effects. Closes the
+    Phase 10B X2 training slip and the dev H5 case.
+  * Numeric (rep, step, task) random streams.
+  * search10c — macros as atomic children at every node, with stage-local residual-symptom preconditions.
+  * Residual-symptom ranker tokens and trace rewriting over L0 ∪ L\*.
+  * One bridge machinery for fixed and learned guidance.
+* **Corrections to earlier reports:**
+  * Phase 10: 7 (not 9) of 16 promoted methods have partial support.
+  * "197 → 85 runs" covers 2 P6 projects, not 4.
+* **Demonstrated:**
+  * Shared-stream determinism: renamed clones give identical trajectories and memories.
+  * Errors: 0 training wrong in 120 tasks; 0 Stage 2 evaluation wrong in 154 rows.
+  * A 16-task external failure taxonomy: 0 of 16 ingested as written; first failures 10 loader / dialect, 2 multi-table,
+    4 expressiveness.
+  * 1 external repair, behind an adapter.
+* **Not demonstrated:**
+  * Macro transfer to withheld compositions. A3 − A1 and A4 − A2 = 0 on both draws, but the libraries were nearly empty
+    (rep0: 0, rep1: 1): leave-one-paradigm-out admission cannot validate mechanism-specific macros.
+  * A learned-guidance gain beyond +1 (+0 / +1 withheld).
+  * Synergy (0 targets needed both).
+  * A useful M\* edit: `dream_ratio` 0.6 tied 6 vs 6, not adopted; the downstream check was inconclusive (3 vs 2 on 7
+    common Draw C targets; rows incomplete).
+* **Open:**
+  * A predicate-placement verifier gap: 1 wrong Draw C submission (96088; a filter moved before dedup-latest).
+  * Draw B / Draw C rows left unrun at the stage ceilings.
+  * L\* transfer with a mechanism-matched admission rule.
+* **Budget:** 1,426 of 1,800 s; protection 0 violations; `main` untouched.

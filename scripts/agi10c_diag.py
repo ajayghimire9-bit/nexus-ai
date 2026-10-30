@@ -2,6 +2,8 @@
 CASE x2_10b  : Phase 10B rep1 training task 22 (P6.X2 seed 88021, manifest10.train_spec(21, 88021)) with the rep1 N25.preM memory
                (the nearest saved memory; the exact N21 memory was not checkpointed) under the Phase 10B configuration
 --fix        : with the Phase 10C shared verifier fix (fixes10c)
+CASE c96088  : Phase 10C Draw C target 96088 (H1) with the Stage 4 downstream SELECTED (M0) learner, re-trained on the same shared
+               stream (its memory was not saved by the first downstream run; training is shared-stream deterministic)
 CASE h5_dev  : Phase 10C dev target 91940 (H5) with the dev A4_rep0 arm memory
 Rebuilds the project, re-runs the investigation, and on a submission reports the hidden verdict per batch, the submitted vs
 true stage specifications, the visible checks, the decision points / coverage obligations and how each was resolved."""
@@ -44,6 +46,22 @@ def main(case, out, *flags):
         mem = json.loads((ROOT / "artifacts/agi10b_train/rep1.N25.preM.json").read_text())["memory"]
         p = LN.build(MF.train_spec(21, 88021), 88021, ROOT / "var/agi10c_ws/diag", require=False)
         live = PR10.Live(LN.W_SRC, LN.WALL)
+    elif case == "c96088":
+        from nexus.de_phase10c import lineage10c as LC, manifest10c as MC
+        import agi10c_train as TRN, agi10c_mstar as MS
+        L = LC.Learner(0, "diag_selected", TRN.fixed_trust()[0], ROOT / "var/agi10c_ws/diag/sel", 1e18, ROOT / "artifacts/agi10c_dev/diag_sel",
+                       dict(wake=range(93400, 93500), dream=range(93500, 93550), admit=range(93550, 93700)), stream=lambda i: MC.train_spec(0, 600 + i), M=LC.M0)
+        for i in range(20):
+            try:
+                L.wake(i, 93400 + i)
+            except RuntimeError:
+                L.n += 1
+            if (i + 1) % L.M["batch"] == 0:
+                L.sleep()
+        mem = MS.arm(L.mem)
+        t = next(x for x in MS.DRAW_C if x["seed"] == 96088)
+        p = LC.build(t, t["seed"], ROOT / "var/agi10c_ws/diag")
+        live = LC.Live(LC.WORK, LC.WALL)
     else:
         from nexus.de_phase10c import lineage10c as LC, manifest10c as MC
         import agi10c_train as TRN

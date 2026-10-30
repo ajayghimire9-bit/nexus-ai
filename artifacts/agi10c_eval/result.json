@@ -1,0 +1,980 @@
+{
+ "n_rows": 128,
+ "build_failures": [
+  {
+   "seed": 96006,
+   "draw": "A",
+   "arm": "-",
+   "error": "could not build a phase-6 project {'paradigm': 'H1', 'names': 'heldout', 'dp_mode': 'explicit', 'fam"
+  },
+  {
+   "seed": 96015,
+   "draw": "A",
+   "arm": "-",
+   "error": "could not build a phase-6 project {'paradigm': 'H6', 'names': 'heldout', 'dp_mode': 'explicit', 'fam"
+  },
+  {
+   "seed": 96065,
+   "draw": "B",
+   "arm": "-",
+   "error": "could not build a phase-6 project {'paradigm': 'H6', 'names': 'heldout', 'dp_mode': 'explicit', 'fam"
+  }
+ ],
+ "draws": {
+  "A": {
+   "stream": "rep0",
+   "arms": {
+    "A1": {
+     "n": 14,
+     "verified": 6,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "3/6",
+     "work_withheld": 16250,
+     "work_ordinary": 7369,
+     "macro_on_verified_path": 0,
+     "eval_wall": 8.2
+    },
+    "A2_rep0": {
+     "n": 14,
+     "verified": 7,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "4/6",
+     "work_withheld": 24450,
+     "work_ordinary": 7043,
+     "macro_on_verified_path": 0,
+     "eval_wall": 10.6
+    },
+    "A3_rep0": {
+     "n": 14,
+     "verified": 6,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "3/6",
+     "work_withheld": 16250,
+     "work_ordinary": 7369,
+     "macro_on_verified_path": 0,
+     "eval_wall": 8.2
+    },
+    "A4_rep0": {
+     "n": 14,
+     "verified": 7,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "4/6",
+     "work_withheld": 24450,
+     "work_ordinary": 7043,
+     "macro_on_verified_path": 0,
+     "eval_wall": 10.6
+    },
+    "A4_rep0@N15": {
+     "n": 8,
+     "verified": 3,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "0/0",
+     "work_withheld": 16322,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 0,
+     "eval_wall": 5.2
+    },
+    "A4_rep0@N30": {
+     "n": 8,
+     "verified": 3,
+     "wrong": 0,
+     "withheld": "3/8",
+     "ordinary": "0/0",
+     "work_withheld": 30504,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 0,
+     "eval_wall": 8.7
+    }
+   },
+   "contrasts": {
+    "heldout": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 8,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 8,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 8,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 8,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 8,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    },
+    "ordinary": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96004
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96004
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 6,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 6,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96004
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    }
+   },
+   "attribution": {
+    "heldout": {
+     "n": 8,
+     "fixed_L0": 3,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [
+      96008,
+      96009,
+      96012,
+      96013,
+      96014
+     ],
+     "A4_lost_vs_any": []
+    },
+    "ordinary": {
+     "n": 6,
+     "fixed_L0": 3,
+     "not_A1_but_guidance_alone": [
+      96004
+     ],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [
+      96000,
+      96005
+     ],
+     "A4_lost_vs_any": []
+    }
+   },
+   "targets": {
+    "96000": {
+     "family": "P1",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "window"
+      ]
+     ]
+    },
+    "96008": {
+     "family": "H3",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "checkpoint",
+       "normalize"
+      ],
+      [
+       "checkpoint",
+       "require"
+      ],
+      [
+       "normalize",
+       "replay"
+      ],
+      [
+       "normalize",
+       "watermark"
+      ],
+      [
+       "replay",
+       "require"
+      ],
+      [
+       "require",
+       "watermark"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "watermark",
+       "checkpoint",
+       "replay"
+      ],
+      [
+       "require",
+       "normalize"
+      ]
+     ]
+    },
+    "96001": {
+     "family": "P2",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "latest",
+       "tombstone"
+      ]
+     ]
+    },
+    "96009": {
+     "family": "H4",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "dup_id",
+       "normalize"
+      ],
+      [
+       "normalize",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "window",
+       "dup_id"
+      ],
+      [
+       "normalize"
+      ]
+     ]
+    },
+    "96002": {
+     "family": "P5",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "checkpoint",
+       "replay"
+      ]
+     ]
+    },
+    "96010": {
+     "family": "H1",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "latest",
+       "window"
+      ],
+      [
+       "tombstone",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "latest",
+       "tombstone"
+      ],
+      [
+       "window"
+      ]
+     ]
+    },
+    "96003": {
+     "family": "P7",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "pit",
+       "ratio"
+      ]
+     ]
+    },
+    "96011": {
+     "family": "H2",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "parse",
+       "ratio"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "parse"
+      ],
+      [
+       "ratio"
+      ]
+     ]
+    },
+    "96004": {
+     "family": "X1",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "parse"
+      ],
+      [
+       "latest",
+       "tombstone"
+      ]
+     ]
+    },
+    "96012": {
+     "family": "H3",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "checkpoint",
+       "normalize"
+      ],
+      [
+       "normalize",
+       "replay"
+      ],
+      [
+       "normalize",
+       "watermark"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "watermark",
+       "checkpoint",
+       "replay"
+      ],
+      [
+       "normalize"
+      ]
+     ]
+    },
+    "96005": {
+     "family": "X2",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "pit"
+      ],
+      [
+       "require",
+       "normalize"
+      ]
+     ]
+    },
+    "96013": {
+     "family": "H4",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "dup_id",
+       "normalize"
+      ],
+      [
+       "normalize",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "window",
+       "dup_id"
+      ],
+      [
+       "normalize"
+      ]
+     ]
+    },
+    "96014": {
+     "family": "H5",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "dup_id",
+       "normalize"
+      ],
+      [
+       "dup_id",
+       "parse"
+      ],
+      [
+       "dup_id",
+       "require"
+      ],
+      [
+       "normalize",
+       "parse"
+      ],
+      [
+       "normalize",
+       "window"
+      ],
+      [
+       "parse",
+       "require"
+      ],
+      [
+       "parse",
+       "window"
+      ],
+      [
+       "require",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "window",
+       "dup_id"
+      ],
+      [
+       "parse"
+      ],
+      [
+       "require",
+       "normalize"
+      ]
+     ]
+    },
+    "96007": {
+     "family": "H2",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "parse",
+       "ratio"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "parse"
+      ],
+      [
+       "ratio"
+      ]
+     ]
+    }
+   },
+   "curve_withheld": {
+    "N0": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 16250
+    },
+    "N15": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 16322
+    },
+    "N30": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 30504
+    },
+    "N3": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 24450
+    }
+   },
+   "forgetting_withheld": [],
+   "training": {
+    "tasks": 60,
+    "verified": 44,
+    "wrong": 0,
+    "wrong_projects": [],
+    "cost_at_checkpoints": {
+     "15": {
+      "wake": 21.6,
+      "abstraction": 0.0,
+      "dreams": 5.9,
+      "ranker": 0.0
+     },
+     "30": {
+      "wake": 31.3,
+      "abstraction": 15.4,
+      "dreams": 14.7,
+      "ranker": 0.0
+     },
+     "60": {
+      "wake": 68.3,
+      "abstraction": 41.3,
+      "dreams": 22.1,
+      "ranker": 0.1
+     }
+    },
+    "final_cost": {
+     "wake": 68.27623200416565,
+     "abstraction": 41.34351825714111,
+     "dreams": 22.059228897094727,
+     "ranker": 0.06376934051513672
+    }
+   }
+  },
+  "B": {
+   "stream": "rep1",
+   "arms": {
+    "A1": {
+     "n": 11,
+     "verified": 6,
+     "wrong": 0,
+     "withheld": "2/6",
+     "ordinary": "4/5",
+     "work_withheld": 15012,
+     "work_ordinary": 4350,
+     "macro_on_verified_path": 0,
+     "eval_wall": 6.3
+    },
+    "A2_rep1": {
+     "n": 11,
+     "verified": 7,
+     "wrong": 0,
+     "withheld": "3/6",
+     "ordinary": "4/5",
+     "work_withheld": 17344,
+     "work_ordinary": 5082,
+     "macro_on_verified_path": 0,
+     "eval_wall": 7.2
+    },
+    "A3_rep1": {
+     "n": 11,
+     "verified": 6,
+     "wrong": 0,
+     "withheld": "2/6",
+     "ordinary": "4/5",
+     "work_withheld": 16218,
+     "work_ordinary": 4348,
+     "macro_on_verified_path": 1,
+     "eval_wall": 6.5
+    },
+    "A4_rep1": {
+     "n": 11,
+     "verified": 7,
+     "wrong": 0,
+     "withheld": "3/6",
+     "ordinary": "4/5",
+     "work_withheld": 18020,
+     "work_ordinary": 4242,
+     "macro_on_verified_path": 1,
+     "eval_wall": 7.2
+    },
+    "A4_rep1@N15": {
+     "n": 6,
+     "verified": 3,
+     "wrong": 0,
+     "withheld": "3/6",
+     "ordinary": "0/0",
+     "work_withheld": 16924,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 0,
+     "eval_wall": 5.1
+    },
+    "A4_rep1@N30": {
+     "n": 6,
+     "verified": 3,
+     "wrong": 0,
+     "withheld": "3/6",
+     "ordinary": "0/0",
+     "work_withheld": 17256,
+     "work_ordinary": 0,
+     "macro_on_verified_path": 1,
+     "eval_wall": 4.8
+    }
+   },
+   "contrasts": {
+    "heldout": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96061
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96061
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 6,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 6,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 6,
+      "diff": 1,
+      "gained": [
+       96061
+      ],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    },
+    "ordinary": {
+     "G_learned | L0 (A2 - A1)": {
+      "n": 5,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "G_learned | L* (A4 - A3)": {
+      "n": 5,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_fixed (A3 - A1)": {
+      "n": 5,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "L* | G_learned (A4 - A2)": {
+      "n": 5,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "combined (A4 - A1)": {
+      "n": 5,
+      "diff": 0,
+      "gained": [],
+      "lost": [],
+      "p_signflip": 1.0
+     },
+     "interaction (A4 - A3 - A2 + A1)": 0
+    }
+   },
+   "attribution": {
+    "heldout": {
+     "n": 6,
+     "fixed_L0": 2,
+     "not_A1_but_guidance_alone": [
+      96061
+     ],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [
+      96057,
+      96059,
+      96063
+     ],
+     "A4_lost_vs_any": []
+    },
+    "ordinary": {
+     "n": 5,
+     "fixed_L0": 4,
+     "not_A1_but_guidance_alone": [],
+     "not_A1_but_macros_alone": [],
+     "only_with_both": [],
+     "solved_by_none": [
+      96055
+     ],
+     "A4_lost_vs_any": []
+    }
+   },
+   "targets": {
+    "96050": {
+     "family": "P1",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "dup_id"
+      ]
+     ]
+    },
+    "96058": {
+     "family": "H3",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "replay",
+       "require"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "replay"
+      ],
+      [
+       "require"
+      ]
+     ]
+    },
+    "96051": {
+     "family": "P2",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "latest",
+       "tombstone"
+      ]
+     ]
+    },
+    "96059": {
+     "family": "H4",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "normalize",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "window"
+      ],
+      [
+       "normalize"
+      ]
+     ]
+    },
+    "96052": {
+     "family": "P5",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "checkpoint"
+      ]
+     ]
+    },
+    "96060": {
+     "family": "H1",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "latest",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "latest"
+      ],
+      [
+       "window"
+      ]
+     ]
+    },
+    "96053": {
+     "family": "P7",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "pit",
+       "ratio"
+      ]
+     ]
+    },
+    "96061": {
+     "family": "H2",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "parse",
+       "pit"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "parse"
+      ],
+      [
+       "pit"
+      ]
+     ]
+    },
+    "96055": {
+     "family": "X2",
+     "group": "ordinary",
+     "withheld_pairs": [],
+     "stage_faults": [
+      [
+       "pit"
+      ],
+      [
+       "require",
+       "normalize"
+      ]
+     ]
+    },
+    "96063": {
+     "family": "H4",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "dup_id",
+       "normalize"
+      ],
+      [
+       "normalize",
+       "window"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "window",
+       "dup_id"
+      ],
+      [
+       "normalize"
+      ]
+     ]
+    },
+    "96057": {
+     "family": "H2",
+     "group": "heldout",
+     "withheld_pairs": [
+      [
+       "parse",
+       "pit"
+      ],
+      [
+       "parse",
+       "ratio"
+      ]
+     ],
+     "stage_faults": [
+      [
+       "parse"
+      ],
+      [
+       "pit",
+       "ratio"
+      ]
+     ]
+    }
+   },
+   "curve_withheld": {
+    "N0": {
+     "verified": 2,
+     "wrong": 0,
+     "eval_work": 15012
+    },
+    "N15": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 16924
+    },
+    "N30": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 17256
+    },
+    "N3": {
+     "verified": 3,
+     "wrong": 0,
+     "eval_work": 18020
+    }
+   },
+   "forgetting_withheld": [],
+   "training": {
+    "tasks": 60,
+    "verified": 47,
+    "wrong": 0,
+    "wrong_projects": [],
+    "cost_at_checkpoints": {
+     "15": {
+      "wake": 9.8,
+      "abstraction": 2.8,
+      "dreams": 4.3,
+      "ranker": 0.0
+     },
+     "30": {
+      "wake": 34.3,
+      "abstraction": 24.0,
+      "dreams": 8.5,
+      "ranker": 0.0
+     },
+     "60": {
+      "wake": 62.9,
+      "abstraction": 45.7,
+      "dreams": 24.2,
+      "ranker": 0.1
+     }
+    },
+    "final_cost": {
+     "wake": 62.881548166275024,
+     "abstraction": 45.667067527770996,
+     "dreams": 24.174666166305542,
+     "ranker": 0.0691671371459961
+    }
+   }
+  }
+ },
+ "eval_wrong_total": 0,
+ "training_wrong_total": 0
+}
