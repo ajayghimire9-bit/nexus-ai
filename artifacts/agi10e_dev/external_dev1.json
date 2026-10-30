@@ -1,0 +1,436 @@
+{
+ "summary": {
+  "total": 16,
+  "ingested": 16,
+  "expressible": 10,
+  "expressible_with_reference": 9,
+  "reached": 4,
+  "verified": 3,
+  "wrong": 1,
+  "phase10c": {
+   "native_lifted": 0,
+   "solved_behind_adapter": 2
+  },
+  "wall": 4.2
+ },
+ "tasks": [
+  {
+   "id": "T01",
+   "pattern": "dbt jaffle_shop stg_payments (cents -> dollars)",
+   "lang": "j2",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R1 dbt",
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "search": {
+    "outcome": "none",
+    "path": null,
+    "work": 1500
+   },
+   "first_stop": "search (no candidate)"
+  },
+  {
+   "id": "T02",
+   "pattern": "dbt jaffle_shop customers (3-table CTE join + aggregates)",
+   "lang": "postgres",
+   "tables": 3,
+   "phase10c_class": 2,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "joins over derived (aggregated) inputs: a linear stage pipeline holds one input per stage",
+   "loader_notes": [
+    "R3 cte",
+    "R2 model statement"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: joins over derived (aggregated) inputs: a linear stage pipeline holds one input per stage"
+  },
+  {
+   "id": "T03",
+   "pattern": "dbt jaffle_shop orders (payment-method pivot)",
+   "lang": "postgres",
+   "tables": 1,
+   "phase10c_class": 3,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "CASE",
+   "loader_notes": [
+    "R5 alias",
+    "R4 single input",
+    "R2 model statement"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: CASE"
+  },
+  {
+   "id": "T04",
+   "pattern": "1-to-many join fan-out (orders x order_items)",
+   "lang": "postgres",
+   "tables": 2,
+   "phase10c_class": 2,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "aggregate COUNT (the IR aggregates SUM only)",
+   "loader_notes": [
+    "R5 alias",
+    "R4 multi-table binder",
+    "R2 model statement"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: aggregate COUNT (the IR aggregates SUM only)"
+  },
+  {
+   "id": "T05",
+   "pattern": "Snowflake QUALIFY latest-per-key (ordering bug)",
+   "lang": "snowflake",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias",
+    "R6 asc->desc(0-int)",
+    "R6 qualify"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": true,
+   "verified": true,
+   "wrong": false,
+   "search": {
+    "outcome": "submitted",
+    "path": [],
+    "work": 14
+   },
+   "first_stop": "verified"
+  },
+  {
+   "id": "T06",
+   "pattern": "MERGE INTO upsert (SCD1 dimension)",
+   "lang": "snowflake",
+   "tables": 1,
+   "phase10c_class": 3,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "MERGE (no IR construct for an upsert into a target state)",
+   "loader_notes": [
+    "R2 merge source bound"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: MERGE (no IR construct for an upsert into a target state)"
+  },
+  {
+   "id": "T07",
+   "pattern": "Debezium change envelope (JSON payload, delete tombstones)",
+   "lang": "postgres",
+   "tables": 1,
+   "phase10c_class": 3,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "SQL node JSONExtractScalar",
+   "loader_notes": [
+    "R4 single input",
+    "R2 model statement"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: SQL node JSONExtractScalar"
+  },
+  {
+   "id": "T08",
+   "pattern": "Hive -> DuckDB migration: '/' is real division, divide-by-zero",
+   "lang": "hive",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "search": {
+    "outcome": "none",
+    "path": null,
+    "work": 1500
+   },
+   "first_stop": "search (no candidate)"
+  },
+  {
+   "id": "T09",
+   "pattern": "Snowflake dirty numeric cast (TRY_TO_NUMBER)",
+   "lang": "snowflake",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": true,
+   "verified": true,
+   "wrong": false,
+   "search": {
+    "outcome": "submitted",
+    "path": [
+     [
+      0,
+      "default_fill",
+      "amount=0"
+     ]
+    ],
+    "work": 19
+   },
+   "first_stop": "verified"
+  },
+  {
+   "id": "T10",
+   "pattern": "Postgres DISTINCT ON latest event (ascending-order bug)",
+   "lang": "postgres",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias",
+    "R6 asc->desc(0-int)",
+    "R6 distinct on"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "search": {
+    "outcome": "none",
+    "path": null,
+    "work": 33
+   },
+   "first_stop": "search (no candidate)"
+  },
+  {
+   "id": "T11",
+   "pattern": "NULL-unsafe <> filter drops unknown-status rows (issue text: keep them)",
+   "lang": "postgres",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": true,
+   "verified": true,
+   "wrong": false,
+   "search": {
+    "outcome": "submitted",
+    "path": [],
+    "work": 14
+   },
+   "first_stop": "verified"
+  },
+  {
+   "id": "T12",
+   "pattern": "PySpark dropDuplicates keeps an arbitrary row (needs latest)",
+   "lang": "py",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "PY bind free DataFrame",
+    "PY dropDuplicates -> first per key",
+    "PY select(str) -> aliased"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "search": {
+    "outcome": "none",
+    "path": null,
+    "work": 33
+   },
+   "first_stop": "search (no candidate)"
+  },
+  {
+   "id": "T13",
+   "pattern": "Polars pipeline (filter + unique keep='last')",
+   "lang": "polars",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "PL bind free DataFrame",
+    "PL unique keep=last",
+    "R7 filter-then-dedup -> 2 stages"
+   ],
+   "n_stages": 2,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "no reference repair"
+  },
+  {
+   "id": "T14",
+   "pattern": "Scala Spark when/otherwise tiering",
+   "lang": "scala",
+   "tables": 1,
+   "phase10c_class": 3,
+   "phase10c_native_lift": false,
+   "loader_stage": "express",
+   "loader_error": "withColumn",
+   "loader_notes": [
+    "SC bind free DataFrame"
+   ],
+   "n_stages": 0,
+   "ingested": true,
+   "expressible": false,
+   "has_reference": false,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "first_stop": "not expressible: withColumn"
+  },
+  {
+   "id": "T15",
+   "pattern": "ISO-8601 string timestamp month window (<= last day drops its times)",
+   "lang": "postgres",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": false,
+   "verified": false,
+   "wrong": false,
+   "search": {
+    "outcome": "none",
+    "path": null,
+    "work": 2
+   },
+   "first_stop": "search (no candidate)"
+  },
+  {
+   "id": "T16",
+   "pattern": "Replayed batch duplicates in an ELT load (dedup by id)",
+   "lang": "sql",
+   "tables": 1,
+   "phase10c_class": 1,
+   "phase10c_native_lift": false,
+   "loader_stage": "ok",
+   "loader_error": null,
+   "loader_notes": [
+    "R2 model statement",
+    "R4 single input",
+    "R5 alias"
+   ],
+   "n_stages": 1,
+   "ingested": true,
+   "expressible": true,
+   "has_reference": true,
+   "reached": true,
+   "verified": false,
+   "wrong": true,
+   "search": {
+    "outcome": "submitted",
+    "path": [],
+    "work": 16
+   },
+   "first_stop": "wrong repair"
+  }
+ ]
+}

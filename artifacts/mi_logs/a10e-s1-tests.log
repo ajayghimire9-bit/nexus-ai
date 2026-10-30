@@ -1,0 +1,48 @@
+F
+=================================== FAILURES ===================================
+___________ test_shadow_sequence_witness_rejects_filter_before_dedup ___________
+
+    def test_shadow_sequence_witness_rejects_filter_before_dedup():
+        for cond in (TOMB, WINDOW_END):
+>           assert D.stale_witness(_rel(pre=[cond]), ROWS) == [cond]          # r_old resurrected -> rejected
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_agi10e.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/nexus/de_phase10e/dag10e.py:149: in stale_witness
+    new_v, old_v = _assign(cond, names, pool, False), _assign(cond, names, pool, True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nexus/de_phase10e/dag10e.py:129: in _assign
+    if (IR.ev(cond, r) is True) == want:
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+e = ['lt', ['try_int', ['col', 'evt']], ['lit', 207]], row = {'evt': '100'}
+
+    def ev(e, row):
+        op = e[0]
+        if op == "col":
+            return row.get(e[1])
+        if op == "lit":
+            return e[1]
+        if op == "try_int":
+            return try_int(ev(e[1], row))
+        if op == "json":
+            return json_get(row.get(e[1]), e[2])
+        if op == "coalesce":
+            v = ev(e[1], row)
+            return v if v is not None else ev(e[2], row)
+        if op in ("ne", "eq"):
+            a, b = ev(e[1], row), ev(e[2], row)
+            if a is None or b is None:
+                return None
+            return (a != b) if op == "ne" else (a == b)
+        if op == "notnull":
+            return ev(e[1], row) is not None
+>       raise ValueError(f"unknown expression {op}")
+E       ValueError: unknown expression lt
+
+src/nexus/de_phase10d/ir10d.py:76: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_agi10e.py::test_shadow_sequence_witness_rejects_filter_before_dedup
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!

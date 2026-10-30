@@ -1,0 +1,462 @@
+{
+ "summary": {
+  "projects": 26,
+  "truth_ok": 26,
+  "truth_rule_violations": 0,
+  "replay_projects": 9,
+  "ckey_on_truth_key": 9,
+  "arrival_on_truth_order": 9,
+  "interim_rejected": 9,
+  "two_step_visible": 1,
+  "two_step_hidden": 1,
+  "A1_verified": {
+   "R1": 0,
+   "R2": 0,
+   "R3": 0,
+   "R4": 0,
+   "R5": 0,
+   "R6": 0,
+   "R7": 0,
+   "R8": 0,
+   "S_replay": 0
+  },
+  "A1_wrong": 0
+ },
+ "rows": [
+  {
+   "family": "S_asof_dir",
+   "seed": 100000,
+   "n_cols": 109,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_cdc_key",
+   "seed": 100001,
+   "n_cols": 80,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_dirty",
+   "seed": 100002,
+   "n_cols": 63,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_fanout",
+   "seed": 100003,
+   "n_cols": 72,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_inner",
+   "seed": 100004,
+   "n_cols": 109,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_keycast",
+   "seed": 100005,
+   "n_cols": 109,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_merge_delete",
+   "seed": 100006,
+   "n_cols": 113,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_merge_update",
+   "seed": 100007,
+   "n_cols": 117,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_overwrite",
+   "seed": 100008,
+   "n_cols": 66,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_qualify_order",
+   "seed": 100009,
+   "n_cols": 111,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "S_replay",
+   "seed": 100010,
+   "n_cols": 78,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 5,
+   "two_step_visible": true,
+   "two_step_hidden": true,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "S_tomb_early",
+   "seed": 100011,
+   "n_cols": 96,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [
+    "latest_state_witness:stg_customers"
+   ]
+  },
+  {
+   "family": "S_tombstone",
+   "seed": 100012,
+   "n_cols": 99,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "T_cdc_key+dirty",
+   "seed": 100013,
+   "n_cols": 71,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "T_fanout+inner",
+   "seed": 100014,
+   "n_cols": 81,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "T_keycast+fanout",
+   "seed": 100015,
+   "n_cols": 71,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "T_merge_delete+merge_update",
+   "seed": 100016,
+   "n_cols": 75,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "T_tombstone+qualify_order",
+   "seed": 100017,
+   "n_cols": 88,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": []
+  },
+  {
+   "family": "R1",
+   "seed": 100018,
+   "n_cols": 74,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 9,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R2",
+   "seed": 100019,
+   "n_cols": 110,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 0,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R3",
+   "seed": 100020,
+   "n_cols": 89,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 5,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R4",
+   "seed": 100021,
+   "n_cols": 63,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 10,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R5",
+   "seed": 100022,
+   "n_cols": 73,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 3,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R6",
+   "seed": 100023,
+   "n_cols": 88,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 8,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R7",
+   "seed": 100024,
+   "n_cols": 92,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 3,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  },
+  {
+   "family": "R8",
+   "seed": 100025,
+   "n_cols": 61,
+   "truth_ok": true,
+   "truth_rules": [],
+   "legacy_rules": [],
+   "key_roles": [
+    "ckey",
+    "dupes",
+    "int"
+   ],
+   "order_roles": [
+    "arrival",
+    "dupes",
+    "int"
+   ],
+   "key_twins": 0,
+   "interim_rule": [
+    "deterministic_dedup:stg_order_items"
+   ],
+   "order_twins": 1,
+   "set_dedup_pos": 8,
+   "two_step_visible": false,
+   "two_step_hidden": false,
+   "A1": {
+    "outcome": "none",
+    "work": 600,
+    "verified": false,
+    "wrong": false,
+    "path": []
+   }
+  }
+ ]
+}

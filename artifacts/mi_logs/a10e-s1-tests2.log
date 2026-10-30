@@ -1,0 +1,26 @@
+...F.....                                                                [100%]
+=================================== FAILURES ===================================
+_______________ test_target_96088_state_guard_and_stage_witness ________________
+
+    def test_target_96088_state_guard_and_stage_witness():
+        d = json.loads((ROOT / "artifacts/agi10c_dev/diag_96088.json").read_text())
+        sub, truth = [s["submitted"] for s in d["stages"]], [s["truth"] for s in d["stages"]]
+        state = {"batch.json": {"start": 126, "end": 207}}
+        assert FX.unreferenced_state(state, sub) == [("batch.json", "start")]           # the wrong submission is blocked
+        plus = copy.deepcopy(sub)
+        plus[1]["filter"] = truth[1]["filter"][1]
+        assert FX.unreferenced_state(state, plus) == [] and FX.unreferenced_state(state, truth) == []
+        hdr = [n for n, _ in sub[0]["outputs"]]
+        assert FX.stale_witness(sub, hdr, state) == []          # P4 IR: the stage's dedup runs BEFORE its filter (V0 = V1)
+        ident = [[c, ["col", c]] for c in hdr]
+        chain = [dict(outputs=ident, filter=sub[0]["filter"]), dict(outputs=ident, dedup=sub[0]["dedup"])]
+>       assert FX.stale_witness(chain, hdr, state) == [(0, 1)]  # a filter in an EARLIER stage than the dedup resurrects r_old
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert [] == [(0, 1)]
+E         
+E         Right contains one more item: (0, 1)
+E         Use -v to get more diff
+
+tests/test_agi10e.py:58: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agi10e.py::test_target_96088_state_guard_and_stage_witness

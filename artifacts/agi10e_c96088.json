@@ -1,0 +1,124 @@
+{
+ "pid": "P6.H1.P2_sqlite-P1_duckdb.96088",
+ "window_end": [
+  "lt",
+  [
+   "cast_int",
+   [
+    "col",
+    "evt_time"
+   ]
+  ],
+  [
+   "file",
+   "batch.json",
+   "end"
+  ]
+ ],
+ "window_start": [
+  "ge",
+  [
+   "cast_int",
+   [
+    "col",
+    "evt_time"
+   ]
+  ],
+  [
+   "file",
+   "batch.json",
+   "start"
+  ]
+ ],
+ "variants": {
+  "V0_submitted": {
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2.csv: output differs"
+    ]
+   },
+   "ref_outputs": {
+    "hidden1.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"12\"}",
+     "{\"tenant_id\": \"k2\", \"total\": \"13\"}",
+     "{\"tenant_id\": \"k6\", \"total\": \"44\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"11\"}"
+    ],
+    "hidden2.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"46\"}",
+     "{\"tenant_id\": \"k3\", \"total\": \"9\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"6\"}",
+     "{\"tenant_id\": \"k9\", \"total\": \"18\"}"
+    ]
+   }
+  },
+  "V1_end_moved_downstream": {
+   "hidden": {
+    "ok": false,
+    "fails": [
+     "hidden2.csv: output differs"
+    ]
+   },
+   "ref_outputs": {
+    "hidden1.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"12\"}",
+     "{\"tenant_id\": \"k2\", \"total\": \"13\"}",
+     "{\"tenant_id\": \"k6\", \"total\": \"44\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"11\"}"
+    ],
+    "hidden2.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"46\"}",
+     "{\"tenant_id\": \"k3\", \"total\": \"9\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"6\"}",
+     "{\"tenant_id\": \"k9\", \"total\": \"18\"}"
+    ]
+   }
+  },
+  "V2_submitted_plus_start": {
+   "hidden": {
+    "ok": true,
+    "fails": []
+   },
+   "ref_outputs": {
+    "hidden1.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"12\"}",
+     "{\"tenant_id\": \"k2\", \"total\": \"13\"}",
+     "{\"tenant_id\": \"k6\", \"total\": \"44\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"11\"}"
+    ],
+    "hidden2.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"46\"}",
+     "{\"tenant_id\": \"k3\", \"total\": \"9\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"6\"}"
+    ]
+   }
+  },
+  "V3_truth": {
+   "hidden": {
+    "ok": true,
+    "fails": []
+   },
+   "ref_outputs": {
+    "hidden1.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"12\"}",
+     "{\"tenant_id\": \"k2\", \"total\": \"13\"}",
+     "{\"tenant_id\": \"k6\", \"total\": \"44\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"11\"}"
+    ],
+    "hidden2.csv": [
+     "{\"tenant_id\": \"k0\", \"total\": \"46\"}",
+     "{\"tenant_id\": \"k3\", \"total\": \"9\"}",
+     "{\"tenant_id\": \"k8\", \"total\": \"6\"}"
+    ]
+   }
+  }
+ },
+ "V0_equals_V1_on_hidden_reference": true,
+ "verdicts": {
+  "V0_submitted": false,
+  "V1_end_moved_downstream": false,
+  "V2_submitted_plus_start": true,
+  "V3_truth": true
+ }
+}
