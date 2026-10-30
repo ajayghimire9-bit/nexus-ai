@@ -696,3 +696,21 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Not done:** Suite 3 NOT READY (BIRD-Critic references by email only); Stage B reached 40–42 of 80 tasks; Polars / PySpark
   adapters not implemented; deep compositions (W1–W3, W5, W7) 0 / 3 in every arm.
 * **Budget:** 1,161.6 of 1,800 s (new grant only); ledger verified; protection 0 violations; `main` untouched.
+
+## Phase 12: autonomous distinguishing-input construction and active hypothesis falsification (2026-10-30; report `docs/NEXUS_PHASE12_ACTIVE_DISAMBIGUATION_REPORT.md`) — NOT LOCKED
+
+* **Fixes:**
+  * strict inner-loop work caps (0 of 672 evaluation rows over cap; Phase 11: 69 / 168);
+  * exact scalar / relational provenance recorded before inlining;
+  * candidate-set retention;
+  * Suite 1 frozen before tuning, with 6 new ambiguity mechanisms.
+* **Constructor:** a generic distinguishing-input constructor plus a budgeted reference (generator-supervised interaction). **Every
+  NEXUS query split and falsified** (Suite 1: 8 / 8 and 9 / 9; Fixed about 25 %, Random about 20 %).
+* **Primary Suite 1, B_q = 1:** NEXUS 4 / 24 per stream vs Fixed 5 vs Random 2–4.
+  * NEXUS − Fixed = −1 / −1 and NEXUS − Random = +2 / 0: pre-registered verdict **mixed**.
+  * NEXUS wrong 9 per stream (Fixed 6–7).
+  * Cause: candidate-set incompleteness. 11 of 18 NEXUS wrongs had a single retained candidate and no query.
+* **Strongest arm:** Fixed with 2 static queries, plus retention and abstention — 8 / 24 with 2 wrong (First-Match: 3 with 7 wrong).
+* **Suite 2** (Phase 11 regression): NEXUS 6–8 / 24 vs Fixed 5. T113018 is still wrong under NEXUS (its correct program is never
+  generated).
+* **Budget:** about 215 of 1,500 s (new grant only); ledger verified; protection 0 violations; `main` untouched.
