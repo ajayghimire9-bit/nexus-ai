@@ -1,0 +1,21 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 2) / 2]                                                                                P10D.T_fanout+inner.spark.dbt.97903
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi10d_eval.py", line 205, in <module>
+    {"run": lambda: run(*a[1:]), "score": score, "freeze": freeze}[a[0]]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi10d_eval.py", line 205, in <lambda>
+    {"run": lambda: run(*a[1:]), "score": score, "freeze": freeze}[a[0]]()
+                    ~~~^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi10d_eval.py", line 119, in run
+    p = W.make_project10d(t, t["seed"], ROOT / "var/agi10d_ws" / ("deveval" if DEV else "eval"))
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase10d/world10d.py", line 267, in make_project10d
+    p = _make(spec, seed, root, attempt)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase10d/world10d.py", line 290, in _make
+    legacy = inject(truth, spec["faults"], nm)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase10d/world10d.py", line 206, in inject
+    next(j for j in s["int"]["joins"] if j["how"] == "asof")["strategy"] = "forward"
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

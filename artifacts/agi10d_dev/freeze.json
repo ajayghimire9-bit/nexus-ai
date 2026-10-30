@@ -1,0 +1,594 @@
+{
+ "files": {
+  "artifacts/agi10d_dev/train/rep0.final.json": "dd386d20c0046e640569a6986372ea7323da99b620b00c16e35837ae9ddb8a1c",
+  "artifacts/agi10d_dev/train/rep1.final.json": "dd386d20c0046e640569a6986372ea7323da99b620b00c16e35837ae9ddb8a1c"
+ },
+ "code": {
+  "src/nexus/de_phase10d/ir10d.py": "5a8089ab71defe52f509f28f4c591e8a5aef717226df644288e855fc2f1b597f",
+  "src/nexus/de_phase10d/engines10d.py": "a90d4001d96789dfa0150d9fc63d20cc8b1592597cd761021312805430387a3e",
+  "src/nexus/de_phase10d/legacy10d.py": "fc4b49848251cb79ffc3d3f44aca2f416f0413c8734745c941da2415ba38ecf7",
+  "src/nexus/de_phase10d/world10d.py": "9d8e3fe3ca4732c2393ec0a4340affa34c399347ba374c08f8c9f8a201d6319e",
+  "src/nexus/de_phase10d/dag10d.py": "3e1ec5bc43e4bdf4a44c08df961976d286618f15985166a25503910a5e01c627",
+  "src/nexus/de_phase10d/search10d.py": "f52f981cf668e4ada9adf9b1d768ec24243c1997148fcc3b0f5708716a14695a",
+  "src/nexus/de_phase10d/lineage10d.py": "73b9e4beb221b06472df11f9a243b34646396db51c3cd55b5c9b779fceaaf7fd",
+  "src/nexus/de_phase10d/manifest10d.py": "3b490c20988aef25e7511a44a45cb9760d86dae8fa93637e3d1c01e8b45bd9f7",
+  "src/nexus/de_phase10c/search10c.py": "dabe4327caca67deaa2c5cb0a2b46af6ed76058112f4bfb81c7ee9394320992b",
+  "src/nexus/de_phase10c/lineage10c.py": "7ee56125f9eed90290894d36e2d191b289d5c531ca074c23d4fac40c398bd8cf",
+  "scripts/agi10d_eval.py": "cb7b76874be966d13d3c24a585e669d1d7ebc6b890ab7f9bd73b870c8c9c295e",
+  "scripts/agi10d_train.py": "7d6d632106f612cee8e40e4d31c55e7d6d82e82717c7e3b393e3918c3db1b62a"
+ },
+ "manifest": [
+  {
+   "family": "S_asof_dir",
+   "faults": [
+    "asof_dir"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97900
+  },
+  {
+   "family": "S_keycast",
+   "faults": [
+    "keycast"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97901
+  },
+  {
+   "family": "S_replay",
+   "faults": [
+    "replay"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97902
+  },
+  {
+   "family": "T_fanout+inner",
+   "faults": [
+    "fanout",
+    "inner"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97903
+  },
+  {
+   "family": "S_cdc_key",
+   "faults": [
+    "cdc_key"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97904
+  },
+  {
+   "family": "S_merge_delete",
+   "faults": [
+    "merge_delete"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97905
+  },
+  {
+   "family": "S_tomb_early",
+   "faults": [
+    "tomb_early"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97906
+  },
+  {
+   "family": "T_keycast+fanout",
+   "faults": [
+    "keycast",
+    "fanout"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97907
+  },
+  {
+   "family": "S_dirty",
+   "faults": [
+    "dirty"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97908
+  },
+  {
+   "family": "S_merge_update",
+   "faults": [
+    "merge_update"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97909
+  },
+  {
+   "family": "S_tombstone",
+   "faults": [
+    "tombstone"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97910
+  },
+  {
+   "family": "T_merge_delete+merge_update",
+   "faults": [
+    "merge_delete",
+    "merge_update"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97911
+  },
+  {
+   "family": "S_fanout",
+   "faults": [
+    "fanout"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97912
+  },
+  {
+   "family": "S_overwrite",
+   "faults": [
+    "overwrite"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97913
+  },
+  {
+   "family": "T_cdc_key+dirty",
+   "faults": [
+    "cdc_key",
+    "dirty"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97914
+  },
+  {
+   "family": "T_tombstone+qualify_order",
+   "faults": [
+    "tombstone",
+    "qualify_order"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97915
+  },
+  {
+   "family": "S_inner",
+   "faults": [
+    "inner"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97916
+  },
+  {
+   "family": "S_qualify_order",
+   "faults": [
+    "qualify_order"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97917
+  },
+  {
+   "family": "T_dirty+replay",
+   "faults": [
+    "dirty",
+    "replay"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97918
+  },
+  {
+   "family": "S_asof_dir",
+   "faults": [
+    "asof_dir"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97919
+  },
+  {
+   "family": "S_keycast",
+   "faults": [
+    "keycast"
+   ],
+   "group": "ordinary",
+   "engine": "duckdb",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97920
+  },
+  {
+   "family": "S_replay",
+   "faults": [
+    "replay"
+   ],
+   "group": "ordinary",
+   "engine": "sqlite",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97921
+  },
+  {
+   "family": "T_fanout+inner",
+   "faults": [
+    "fanout",
+    "inner"
+   ],
+   "group": "ordinary",
+   "engine": "polars",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97922
+  },
+  {
+   "family": "S_cdc_key",
+   "faults": [
+    "cdc_key"
+   ],
+   "group": "ordinary",
+   "engine": "spark",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97923
+  },
+  {
+   "family": "C1",
+   "faults": [
+    "tombstone",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97924
+  },
+  {
+   "family": "C1",
+   "faults": [
+    "tombstone",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97925
+  },
+  {
+   "family": "C1",
+   "faults": [
+    "tombstone",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97926
+  },
+  {
+   "family": "C2",
+   "faults": [
+    "replay",
+    "keycast"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97927
+  },
+  {
+   "family": "C2",
+   "faults": [
+    "replay",
+    "keycast"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97928
+  },
+  {
+   "family": "C2",
+   "faults": [
+    "replay",
+    "keycast"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97929
+  },
+  {
+   "family": "C3",
+   "faults": [
+    "cdc_key",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97930
+  },
+  {
+   "family": "C3",
+   "faults": [
+    "cdc_key",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97931
+  },
+  {
+   "family": "C3",
+   "faults": [
+    "cdc_key",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97932
+  },
+  {
+   "family": "C4",
+   "faults": [
+    "fanout",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97933
+  },
+  {
+   "family": "C4",
+   "faults": [
+    "fanout",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97934
+  },
+  {
+   "family": "C4",
+   "faults": [
+    "fanout",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97935
+  },
+  {
+   "family": "C5",
+   "faults": [
+    "qualify_order",
+    "inner",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97936
+  },
+  {
+   "family": "C5",
+   "faults": [
+    "qualify_order",
+    "inner",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97937
+  },
+  {
+   "family": "C5",
+   "faults": [
+    "qualify_order",
+    "inner",
+    "merge_delete"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97938
+  },
+  {
+   "family": "C6",
+   "faults": [
+    "dirty",
+    "keycast",
+    "overwrite"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97939
+  },
+  {
+   "family": "C6",
+   "faults": [
+    "dirty",
+    "keycast",
+    "overwrite"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97940
+  },
+  {
+   "family": "C6",
+   "faults": [
+    "dirty",
+    "keycast",
+    "overwrite"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97941
+  },
+  {
+   "family": "C7",
+   "faults": [
+    "tomb_early",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97942
+  },
+  {
+   "family": "C7",
+   "faults": [
+    "tomb_early",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "dbt",
+   "names": "heldout",
+   "seed": 97943
+  },
+  {
+   "family": "C7",
+   "faults": [
+    "tomb_early",
+    "fanout"
+   ],
+   "group": "heldout",
+   "engine": "duckdb",
+   "legacy": "scala",
+   "names": "heldout",
+   "seed": 97944
+  },
+  {
+   "family": "C8",
+   "faults": [
+    "replay",
+    "inner",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "sqlite",
+   "legacy": "snowflake",
+   "names": "heldout",
+   "seed": 97945
+  },
+  {
+   "family": "C8",
+   "faults": [
+    "replay",
+    "inner",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "polars",
+   "legacy": "postgres",
+   "names": "heldout",
+   "seed": 97946
+  },
+  {
+   "family": "C8",
+   "faults": [
+    "replay",
+    "inner",
+    "merge_update"
+   ],
+   "group": "heldout",
+   "engine": "spark",
+   "legacy": "hive",
+   "names": "heldout",
+   "seed": 97947
+  }
+ ],
+ "N3": {
+  "rep0": 20,
+  "rep1": 20
+ }
+}
