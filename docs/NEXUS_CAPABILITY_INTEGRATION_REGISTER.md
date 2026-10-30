@@ -714,3 +714,18 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Suite 2** (Phase 11 regression): NEXUS 6–8 / 24 vs Fixed 5. T113018 is still wrong under NEXUS (its correct program is never
   generated).
 * **Budget:** about 215 of 1,500 s (new grant only); ledger verified; protection 0 violations; `main` untouched.
+
+## Phase 12B: reopenable projection / aggregation commitments and singleton / unanimous challenge queries (2026-10-30; report `docs/NEXUS_PHASE12B_REOPENABLE_SEARCH_AND_CHALLENGE_REPORT.md`) — NOT LOCKED
+
+* **Changes** (toggleable; the defaults reproduce Phase 12):
+  * **A, `reopen`:** passthrough / `COUNT(*)` are tried first but not closed; shape-diverse retention.
+  * **B, `challenge`:** NEXUS queries singleton or unanimous sets using the existing generic mutation generator.
+* **Fresh_Phase12B_24, B_q = 2** (368 / 384 rows; 0 over cap):
+  * **primary** N2_both − F2_base = 0 / −1, verdict **null**, with wrong 12 / 11 vs 6 / 5;
+  * A alone (F2_reopen − F2_base) +1 / +1, null;
+  * B alone (N2_challenge − N2_base) 0 / 0, null; N2_challenge − F2_base −3 / −3, negative.
+* **Cause:** only 15 % of challenge queries contradicted anything (Fixed static queries: 43 %). The generic generator rarely reaches
+  the hidden deciding case. N4 (upsert) and N6 (dedup) were 0 / 8 in every arm.
+* **Diagnostic** (opened Phase 12 suite, incomplete coverage): A + B resolved 7 / 9 former single-candidate wrong pairs, against 0 for
+  N2_base. T113018 is still unresolved.
+* **Budget:** about 340 of 800 s (new grant only); ledger verified; protection 0 violations; `main` untouched.

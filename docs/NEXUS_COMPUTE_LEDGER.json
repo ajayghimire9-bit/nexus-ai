@@ -2,9 +2,9 @@
  "what": "Phase 10C-12B charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12b_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2097,
+ "source_total_lines": 2124,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "670f216a3d334a98ad142b1748eff9386f1b21ff247b1511dce341a42704319f",
+ "head_sha256": "545691557edec7b03923dbb711cf2ee5d57f3a3b18464d43b143a3bd2ba6d77f",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -254,20 +254,21 @@
    "s3": 350,
    "s4": 120
   },
-  "rows": 20,
-  "used_s": 185.084,
-  "child_cpu_s": 182.661,
+  "rows": 47,
+  "used_s": 339.012,
+  "child_cpu_s": 335.716,
   "stage_used_s": {
    "s1": 4.811,
    "s2": 179.505,
-   "s4": 0.768
+   "s4": 8.51,
+   "s3": 146.186
   },
   "status": {
-   "COMPLETE": 12,
+   "COMPLETE": 36,
    "FAILED": 2,
-   "TIMEOUT": 6
+   "TIMEOUT": 9
   },
-  "remaining_of_cap_s": 614.916,
+  "remaining_of_cap_s": 460.988,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -535,6 +536,33 @@
   "{\"cap_s\": 20.0, \"child_cpu_s\": 0.154, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"4ab82eb373d265726a1a97a174dcd52588f756ecb69df8bb69bb759438263a45\", \"run\": \"a12b-s4-score-p12\", \"status\": \"COMPLETE\", \"wall_s\": 0.233}",
   "{\"cap_s\": 20.0, \"child_cpu_s\": 0.14, \"child_maxrss_mb\": 59.9, \"prev_sha256\": \"958b2b1cd552842a18e594cee7ff0e6bfddad064390ad45e416159de258e3431\", \"run\": \"a12b-s4-score-p11\", \"status\": \"COMPLETE\", \"wall_s\": 0.175}",
   "{\"cap_s\": 15.0, \"child_cpu_s\": 0.13, \"child_maxrss_mb\": 60.1, \"prev_sha256\": \"9b57aeff631844d8c700d4573f4cc50af88ff8e9f372b2b4b685060c44563960\", \"run\": \"a12b-s4-refreeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.181}",
-  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.136, \"child_maxrss_mb\": 60.0, \"prev_sha256\": \"58ef2d69c0a602bd2de58689f52b765757eb7717c1ab0ce08511a18448a82387\", \"run\": \"a12b-s4-rescore\", \"status\": \"COMPLETE\", \"wall_s\": 0.179}"
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.136, \"child_maxrss_mb\": 60.0, \"prev_sha256\": \"58ef2d69c0a602bd2de58689f52b765757eb7717c1ab0ce08511a18448a82387\", \"run\": \"a12b-s4-rescore\", \"status\": \"COMPLETE\", \"wall_s\": 0.179}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 3.285, \"child_maxrss_mb\": 128.8, \"prev_sha256\": \"670f216a3d334a98ad142b1748eff9386f1b21ff247b1511dce341a42704319f\", \"run\": \"a12b-s3-fresh-t00\", \"status\": \"COMPLETE\", \"wall_s\": 3.291}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 4.243, \"child_maxrss_mb\": 125.3, \"prev_sha256\": \"b10bd8de2c8c1dc10171285db2f850b6e1378b2356112bd18590b98f07041364\", \"run\": \"a12b-s3-fresh-t03\", \"status\": \"COMPLETE\", \"wall_s\": 4.216}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 1.577, \"child_maxrss_mb\": 97.4, \"prev_sha256\": \"a058bef02539f34ffaac837af03206cecbe40c4b5fa32e25cb658afea7748d45\", \"run\": \"a12b-s3-fresh-t04\", \"status\": \"COMPLETE\", \"wall_s\": 1.584}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 11.071, \"child_maxrss_mb\": 215.5, \"prev_sha256\": \"b5aaaf6e15f3b73ebb86ef82fa0a5fd7af430273e726ea049b22c2ddb2dffddc\", \"run\": \"a12b-s3-fresh-t02\", \"status\": \"COMPLETE\", \"wall_s\": 11.088}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 2.72, \"child_maxrss_mb\": 145.4, \"prev_sha256\": \"b5f277136ce6eb4622464f8727312613cb3d78eaecbbafd049769f103dec60b3\", \"run\": \"a12b-s3-fresh-t06\", \"status\": \"COMPLETE\", \"wall_s\": 2.728}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 13.404, \"child_maxrss_mb\": 170.7, \"prev_sha256\": \"584993b4ea82d9f209cb8d1f9f8d39ad98dc894b61a87f4628e6fdd7a84fc238\", \"run\": \"a12b-s3-fresh-t01\", \"status\": \"COMPLETE\", \"wall_s\": 13.405}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 6.358, \"child_maxrss_mb\": 163.2, \"prev_sha256\": \"be5e371ca054e8993c36e7c7ec1aa00a213a850b9b1c05d974c51af1b567abd9\", \"run\": \"a12b-s3-fresh-t05\", \"status\": \"COMPLETE\", \"wall_s\": 6.369}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 4.118, \"child_maxrss_mb\": 129.5, \"prev_sha256\": \"46e82f38ece2fa9a5f72e44fcdd4b3f6aedaa50c83fe7547ac403e641d9e3fd9\", \"run\": \"a12b-s3-fresh-t09\", \"status\": \"COMPLETE\", \"wall_s\": 4.113}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 6.781, \"child_maxrss_mb\": 149.3, \"prev_sha256\": \"2d95a1b042004bcd21822626543275b72156d2cf1261d0d8542ff1c0714e8f8f\", \"run\": \"a12b-s3-fresh-t07\", \"status\": \"COMPLETE\", \"wall_s\": 6.733}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 5.107, \"child_maxrss_mb\": 125.2, \"prev_sha256\": \"2a6694540ceff906e7ae58f06f7ed0fbe0be692bd6d51ec5931450f596a6dfbc\", \"run\": \"a12b-s3-fresh-t08\", \"status\": \"COMPLETE\", \"wall_s\": 5.069}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 4.279, \"child_maxrss_mb\": 198.3, \"prev_sha256\": \"a0830c803d1686180ad0a7752cd6b666c19fc536b61e1cdddcaf95837da48976\", \"run\": \"a12b-s3-fresh-t10\", \"status\": \"COMPLETE\", \"wall_s\": 4.255}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 2.62, \"child_maxrss_mb\": 125.4, \"prev_sha256\": \"fa08cef40fa54942d97de339d0b2a12d66e6f7678c23ec3c8dfb16dc753621db\", \"run\": \"a12b-s3-fresh-t12\", \"status\": \"COMPLETE\", \"wall_s\": 2.646}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 6.217, \"child_maxrss_mb\": 137.1, \"prev_sha256\": \"caf1d46527eb5d0f3eb463a9950181fa5f0e0b97bbbfcabf6d9fdfcf395cf184\", \"run\": \"a12b-s3-fresh-t11\", \"status\": \"COMPLETE\", \"wall_s\": 6.176}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 1.541, \"child_maxrss_mb\": 96.4, \"prev_sha256\": \"9e94e9b9b29838f2aaa0f996478ab268ebbe879a9a894df7e6b3cc2efcdcf193\", \"run\": \"a12b-s3-fresh-t16\", \"status\": \"COMPLETE\", \"wall_s\": 1.562}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 9.803, \"child_maxrss_mb\": 221.3, \"prev_sha256\": \"8667028676b7355060fd0428232754f39dd852baac20118c2fef099cb9aa97a1\", \"run\": \"a12b-s3-fresh-t14\", \"status\": \"COMPLETE\", \"wall_s\": 9.834}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 13.986, \"child_maxrss_mb\": 174.5, \"prev_sha256\": \"f3f33b2a93c1362fa279f15e10171dcd8efa257a3b26c7043d4a168680550a44\", \"run\": \"a12b-s3-fresh-t13\", \"status\": \"TIMEOUT\", \"wall_s\": 14.009}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 1.013, \"child_maxrss_mb\": 86.4, \"prev_sha256\": \"856cec12ace74b38fbfed355daea32a4b9dcafe95317cd5bdcd7f6e4c9994acb\", \"run\": \"a12b-s3-fresh-t18\", \"status\": \"COMPLETE\", \"wall_s\": 1.035}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 9.581, \"child_maxrss_mb\": 162.6, \"prev_sha256\": \"7c9a42a9c424f1587c66c8c64f8dff2b91930b93227c81c9fdce10de825d99d7\", \"run\": \"a12b-s3-fresh-t15\", \"status\": \"COMPLETE\", \"wall_s\": 9.618}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 0.619, \"child_maxrss_mb\": 73.8, \"prev_sha256\": \"0424ab2248c6a8929b1e9124351b4d3a683e62af29491937b4d0b8fcbd06ff38\", \"run\": \"a12b-s3-fresh-t19\", \"status\": \"COMPLETE\", \"wall_s\": 0.654}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 2.012, \"child_maxrss_mb\": 106.0, \"prev_sha256\": \"007fd07c5655460af4488175e10542d1076a1aa64180de71ddf42879c353e331\", \"run\": \"a12b-s3-fresh-t20\", \"status\": \"COMPLETE\", \"wall_s\": 1.963}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 1.586, \"child_maxrss_mb\": 117.8, \"prev_sha256\": \"82b08064cef754c77dcaa690a719fb197ed4575de4056693dbb7e29e73ea8b53\", \"run\": \"a12b-s3-fresh-t22\", \"status\": \"COMPLETE\", \"wall_s\": 1.627}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 6.121, \"child_maxrss_mb\": 214.4, \"prev_sha256\": \"40602995d8bc17efeaba1226e496357b24ae01e9da7c8500a2b22bbcf80e013f\", \"run\": \"a12b-s3-fresh-t21\", \"status\": \"COMPLETE\", \"wall_s\": 6.198}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 13.972, \"child_maxrss_mb\": 229.6, \"prev_sha256\": \"3b375a548f5a39fc19bdf4c410915285143c5dc9eb255493725509058de0bb9c\", \"run\": \"a12b-s3-fresh-t17\", \"status\": \"TIMEOUT\", \"wall_s\": 14.005}",
+  "{\"cap_s\": 14.0, \"child_cpu_s\": 14.02, \"child_maxrss_mb\": 209.6, \"prev_sha256\": \"931458a27823b395fb044a103f8b455d8d8c891e1e2774f34816c7d717e2c544\", \"run\": \"a12b-s3-fresh-t23\", \"status\": \"TIMEOUT\", \"wall_s\": 14.008}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.147, \"child_maxrss_mb\": 60.3, \"prev_sha256\": \"db8cd4bd1b6a785bff9f010f2a7a8ccf0e8662c630f9469b1799ddb376d35304\", \"run\": \"a12b-s4-score-fresh\", \"status\": \"COMPLETE\", \"wall_s\": 0.185}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.286, \"child_maxrss_mb\": 38.2, \"prev_sha256\": \"2c22e6c2a8e9d9f8956a0ba4d38465d9972a3ba016156259bc484b5ea343e9c7\", \"run\": \"a12b-s4-protect-after\", \"status\": \"COMPLETE\", \"wall_s\": 0.925}",
+  "{\"cap_s\": 90.0, \"child_cpu_s\": 6.588, \"child_maxrss_mb\": 110.5, \"prev_sha256\": \"a60ba8cfa1bd7c6b0c34aa19299043296a7ad8c442c2854ab2098157a28fae11\", \"run\": \"a12b-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 6.632}"
  ]
 }
