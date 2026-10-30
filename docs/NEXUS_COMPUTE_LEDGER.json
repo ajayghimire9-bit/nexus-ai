@@ -2,9 +2,9 @@
  "what": "Phase 10C-12 charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2057,
+ "source_total_lines": 2065,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "d4927b8cee7a942a20b991c3c6a68244f5840e86f87a78e1ead46369da3771f3",
+ "head_sha256": "2008f6362b70b6bc19f22d0fd3139e70a8d7fd7df7348c60c71cfe1e7e19e841",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -221,16 +221,17 @@
    "s3": 750,
    "s4": 200
   },
-  "rows": 2,
-  "used_s": 1.928,
-  "child_cpu_s": 1.132,
+  "rows": 10,
+  "used_s": 30.035,
+  "child_cpu_s": 29.08,
   "stage_used_s": {
-   "s1": 1.928
+   "s1": 1.928,
+   "s2": 28.107
   },
   "status": {
-   "COMPLETE": 2
+   "COMPLETE": 10
   },
-  "remaining_of_cap_s": 1498.072,
+  "remaining_of_cap_s": 1469.965,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -458,6 +459,14 @@
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.281, \"child_maxrss_mb\": 38.4, \"prev_sha256\": \"67c574528193291a6ded63e8285e8ba6b8919d00fd8806e4e11e7126dd2fde81\", \"run\": \"a11-s5-protect\", \"status\": \"COMPLETE\", \"wall_s\": 0.962}",
   "{\"cap_s\": 60.0, \"child_cpu_s\": 13.277, \"child_maxrss_mb\": 223.0, \"prev_sha256\": \"c75ebf932ed81c99010dbd0817e983f81577eb97183d62d5696803c3b3f61d00\", \"run\": \"a11-s5-tests\", \"status\": \"COMPLETE\", \"wall_s\": 13.1}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.279, \"child_maxrss_mb\": 38.1, \"prev_sha256\": \"f48250158d965ff4f37339d8366e83abff80777b5e4ee36f5b655ed1b0d4441d\", \"run\": \"a12-s1-protect-before\", \"status\": \"COMPLETE\", \"wall_s\": 0.928}",
-  "{\"cap_s\": 60.0, \"child_cpu_s\": 0.853, \"child_maxrss_mb\": 108.9, \"prev_sha256\": \"4d56bfbf577917286be314723ea678cdb69b857eebe88fbeb35c6cdd183188d2\", \"run\": \"a12-s1-tests\", \"status\": \"COMPLETE\", \"wall_s\": 1.0}"
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 0.853, \"child_maxrss_mb\": 108.9, \"prev_sha256\": \"4d56bfbf577917286be314723ea678cdb69b857eebe88fbeb35c6cdd183188d2\", \"run\": \"a12-s1-tests\", \"status\": \"COMPLETE\", \"wall_s\": 1.0}",
+  "{\"cap_s\": 100.0, \"child_cpu_s\": 4.477, \"child_maxrss_mb\": 145.5, \"prev_sha256\": \"d4927b8cee7a942a20b991c3c6a68244f5840e86f87a78e1ead46369da3771f3\", \"run\": \"a12-s2-dev-c0\", \"status\": \"COMPLETE\", \"wall_s\": 4.52}",
+  "{\"cap_s\": 100.0, \"child_cpu_s\": 8.395, \"child_maxrss_mb\": 217.7, \"prev_sha256\": \"d3422d7249717a6f6525369d982ee689e61ac21d70d275d6ffc3b909d1f351f0\", \"run\": \"a12-s2-dev-c1\", \"status\": \"COMPLETE\", \"wall_s\": 8.388}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.132, \"child_maxrss_mb\": 59.7, \"prev_sha256\": \"7d79cdc318b0a84c3a6fe0e1aedcce17796cc54586e5b36a9d59da89a3d4d2e0\", \"run\": \"a12-s2-devscore\", \"status\": \"COMPLETE\", \"wall_s\": 0.182}",
+  "{\"cap_s\": 100.0, \"child_cpu_s\": 4.523, \"child_maxrss_mb\": 145.9, \"prev_sha256\": \"c783b4b614126d9954841364d7494773ff285b3115a836f4bd071601a22f33b4\", \"run\": \"a12-s2-dev2-c0\", \"status\": \"COMPLETE\", \"wall_s\": 4.503}",
+  "{\"cap_s\": 100.0, \"child_cpu_s\": 9.328, \"child_maxrss_mb\": 216.7, \"prev_sha256\": \"750806274793e56d04bf477d1357de62aea641192624676f2242b71f138c21e7\", \"run\": \"a12-s2-dev-c1\", \"status\": \"COMPLETE\", \"wall_s\": 9.282}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.132, \"child_maxrss_mb\": 59.7, \"prev_sha256\": \"a0403a8fb15ed27233da2b3b144d662ffd594e68d0b5fa6e85c4fdf4c0a5b752\", \"run\": \"a12-s2-devscore2\", \"status\": \"COMPLETE\", \"wall_s\": 0.182}",
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 0.835, \"child_maxrss_mb\": 104.4, \"prev_sha256\": \"8236fca17f270343eadecd672348a72d565d4807b084e5e2c8c614d9639cdb15\", \"run\": \"a12-s2-tests\", \"status\": \"COMPLETE\", \"wall_s\": 0.873}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.126, \"child_maxrss_mb\": 59.5, \"prev_sha256\": \"5a7719586b0f8a5d2ebb5e75f19fb647ef25e63854b168da6d48e2b224edc1ad\", \"run\": \"a12-s2-freeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.177}"
  ]
 }

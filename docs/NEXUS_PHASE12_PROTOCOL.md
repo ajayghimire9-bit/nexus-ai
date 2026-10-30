@@ -136,3 +136,28 @@ from its counters with the full caps, and every row is charged the shared work i
 
 Two streams that share targets are not independent task-set replications. No retro-adoption, no rerun of a written row, no reuse of
 the one-use range.
+
+## Development record and readiness gate (Stage 2; development fixtures only, before Suite 1 opens)
+
+**Run 1** (`a12-s2-dev-*`, 112 rows) exposed three generic issues, fixed in `disamb12` before the freeze:
+
+| Issue | Fix |
+|---|---|
+| NEXUS gave up a query when its 40 construction probes found no disagreement, although the final probe then did | NEXUS also searches the final-probe stream before giving up a query |
+| Draw streams shared a counter, so the B_q = 2 run's final probe saw different inputs than the B_q = 1 run's | per-stream draw counters, and one final-probe stream used identically by every arm |
+| Mutations picked columns uniformly | with probability 0.7 the mutated column is one the candidate programs reference (read from their own ASTs; generic) |
+
+**Run 2** (`a12-s2-dev2-*`, 112 rows, 0 cap violations):
+
+| Arm | B_q = 1, verified (wrong) per stream | B_q = 2, verified (wrong) per stream |
+|---|---|---|
+| NEXUS | 4 (0) / 4 (0) | 6 (0) / 4 (1) |
+| Fixed | 2 / 1 (0 wrong) | — |
+| Random | 2 / 2 (0 wrong) | — |
+| First-Match | 5 (1) / 4 (1) | — |
+
+- **Remaining failure mode, reported not patched:** when the correct program is not among the retained candidates, NEXUS can
+  falsify the others down to a single wrong survivor and submit it (dev W7).
+
+**Readiness gate:** 0 cap overruns, exact provenance (unit-tested), and disambiguation behaving on development fixtures. **Met.**
+Code, libraries, Suite 1 / 2 manifests, caps and constructor parameters are frozen in `artifacts/agi12_freeze.json`.

@@ -2,7 +2,8 @@
 input on which they disagree, query the budgeted reference, falsify, and continue or abstain.
 
 ADMISSIBLE INPUTS (generic; no mechanism-specific detector): every relation of the task's schema gets 1..ROWS_MAX rows sampled from the
-rows observed so far, then MUT_MAX random mutations from a fixed generic menu: duplicate a row; set a cell to NULL; copy a value from
+rows observed so far, then MUT_MAX random mutations (the mutated column is, with probability FOCUS, one the candidate programs reference,
+read from their own ASTs) from a fixed generic menu: duplicate a row; set a cell to NULL; copy a value from
 another row of the same column (creates duplicate keys / order ties); give a cell a FRESH value (creates unmatched keys); a boundary
 value (each constant appearing in any candidate program, -1 / 0 / +1, and the column's observed min / max); copy a value from a column
 of another relation with the same type (creates matches across relations); drop a row. An input is ADMISSIBLE iff every declared
@@ -29,7 +30,7 @@ from nexus.de_phase10c.rng10c import rng as rng10c
 from nexus.de_phase11 import core11 as C
 from nexus.de_phase12 import synth12 as S
 
-ROWS_MAX, MUT_MAX, PROBES, FINAL_PROBES = 4, 3, 40, 40
+ROWS_MAX, MUT_MAX, PROBES, FINAL_PROBES, FOCUS = 4, 3, 40, 40, 0.7
 COLLECT_SHARE = 0.7
 
 
@@ -64,6 +65,25 @@ def constants(cands):
     return out
 
 
+def referenced_columns(cands):
+    """Column names referenced by any candidate program (generic: read from the candidates' own ASTs)."""
+    out = set()
+
+    def walk(x):
+        if isinstance(x, tuple) and x:
+            if x[0] == "col" and len(x) == 2 and isinstance(x[1], str):
+                out.add(x[1])
+            elif x[0] in ("fold", "rank") and len(x) > 2 and isinstance(x[2], tuple):
+                out.update(k for k in x[2] if isinstance(k, str))
+            elif x[0] == "join" and len(x) == 6:
+                out.update(k for k in x[4] + x[5] if isinstance(k, str))
+            for y in x:
+                walk(y)
+    for c in cands:
+        walk(c["expanded"])
+    return out
+
+
 class Inputs:
     """Generic admissible-input generator over the task schema, contracts and observed rows."""
 
@@ -77,7 +97,8 @@ class Inputs:
                     self.pool[k] += [r for r in R.rows]
         self.consts = constants(cands)
         self.seed = seed
-        self.n = 0
+        self.n = {}                                              # one draw counter per tag (independent random streams)
+        self.focus = referenced_columns(cands)
 
     def admissible(self, env):
         for k, R in env.items():
@@ -105,8 +126,8 @@ class Inputs:
     def draw(self, tag):
         """One admissible input (or None after 20 failed attempts); `tag` separates the random streams of the arms."""
         for _ in range(20):
-            self.n += 1
-            r = rng10c(self.seed, tag, self.n)
+            self.n[tag] = self.n.get(tag, 0) + 1
+            r = rng10c(self.seed, tag, self.n[tag])
             env = {}
             for k, sch in self.schema.items():
                 src = self.pool[k] or [tuple(None for _ in sch)]
@@ -116,7 +137,8 @@ class Inputs:
                 rows, sch = env[k], self.schema[k]
                 if not rows:
                     continue
-                j = r.randrange(len(sch))
+                foc = [jj for jj, (cn, _) in enumerate(sch) if cn in self.focus]
+                j = r.choice(foc) if foc and r.random() < FOCUS else r.randrange(len(sch))   # columns the candidates read
                 t = sch[j][1]
                 op = r.choice(("dup", "null", "copy", "fresh", "boundary", "cross", "drop"))
                 i = r.randrange(len(rows))
@@ -199,6 +221,8 @@ def resolve(task, admin, lib, costs, collected, arm, b_q, budget, seed):
                 if len(cands) < 2:
                     break
                 env, _, ncls = construct(cands, gen, lib, budget, PROBES, 3)
+                if env is None:                                    # also search the final-probe stream before giving up a query
+                    env, _, ncls = construct(cands, gen, lib, budget, FINAL_PROBES, 4)
                 if env is None:
                     break
             if env is None:
@@ -227,8 +251,8 @@ def resolve(task, admin, lib, costs, collected, arm, b_q, budget, seed):
             gen = Inputs(task, observed, cands, seed)
         if not cands:
             return dict(outcome="abstain_no_consistent_candidate", submission=None, queries=queries)
-        if len(cands) >= 2:
-            env, _, ncls = construct(cands, gen, lib, budget, FINAL_PROBES, 4)
+        if len(cands) >= 2:                                      # the SAME final probe for every arm (its own stream, tag 5)
+            env, _, ncls = construct(cands, gen, lib, budget, FINAL_PROBES, 5)
             if env is not None:
                 return dict(outcome="abstain_unresolved_disagreement", submission=None, queries=queries, survivors=len(cands))
         best = min(cands, key=lambda c: (c["size"], repr(c["expanded"])))
