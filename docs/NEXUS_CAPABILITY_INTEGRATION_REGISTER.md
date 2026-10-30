@@ -663,3 +663,21 @@ came from a declared event kind (ADD) that was absent from training and therefor
   remains: 1 rep1 training wrong (104529), mechanism unconfirmed.
 * **Tracked ledger:** `docs/NEXUS_COMPUTE_LEDGER.json` (verifiable with `scripts/agi10f_ledger.py verify`).
 * **Budget:** ≈ 700 of 950 s; the 300 s buffer was not drawn. Protection 0 violations; `main` untouched.
+
+## Phase 10G: learning what evidence to obtain next (2026-10-30; report `docs/NEXUS_PHASE10G_EVIDENCE_ACQUISITION_REPORT.md`) — NOT LOCKED
+
+* **10F closure:**
+  * the step-50 `ckey` support was 1 verified project per stream (< k_min 3);
+  * rep1 A4 with only L10 removed 22 / 22 (via L6), with only L6 removed 22 / 22 (via L10), so 10F's A4f drop needed both removed;
+  * the Abs_current solver scores 21 / 22 (rep0) and 22 / 22 (rep1).
+* **104529 closed:** confirmed distractor-collision dedup; new `dag10g.necessary_dedup` (a non-documented dedup must be visibly
+  necessary). Training wrong **0 / 240**.
+* **Evidence acquisition** (shared atomic-guided solver; designed seq / time / grain ties; 5 typed channels; ambiguity guard
+  abstains):
+  * fresh one-use draw, **768 / 768 rows, 0 wrong**;
+  * B_ev = 1 withheld compositions: learned `pi_ev` (E3) **24 / 24** in both streams, fixed operator-type rule (E2) 18, random
+    11 / 9, none 4;
+  * E3 − E2 = +6 in both streams (pre-registered *learned beats fixed*), with a 100 % disambiguation hit rate against 74 %.
+* **Limit:** the gain is entirely the designed CDC-time mechanism (dedup ties needing the late-arrival channel). At B_ev = 2, E2
+  equals E3; a relation-aware fixed rule would match it; E3's exploration cost was about 1,875 executions per stream.
+* **Budget:** 685 of 1,300 s; ledger verified; protection 0 violations; `main` untouched.
