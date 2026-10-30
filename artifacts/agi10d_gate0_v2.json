@@ -1,0 +1,781 @@
+{
+ "summary": {
+  "passed": true,
+  "projects": 10,
+  "built": 10,
+  "tables": [
+   5,
+   5,
+   5,
+   5,
+   4,
+   4,
+   3,
+   5,
+   5,
+   4
+  ],
+  "columns": [
+   112,
+   80,
+   86,
+   103,
+   70,
+   107,
+   110,
+   117,
+   74,
+   63
+  ],
+  "dag_nodes": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3
+  ],
+  "legacy_languages": [
+   "dbt",
+   "hive",
+   "postgres",
+   "scala",
+   "snowflake"
+  ],
+  "engine_executions": {
+   "duckdb": 40,
+   "sqlite": 40,
+   "polars": 40,
+   "spark": 16
+  },
+  "engine_agreement": {
+   "duckdb": "10/10",
+   "sqlite": "10/10",
+   "polars": "10/10",
+   "spark": "4/4"
+  },
+  "lift_equal": "10/10",
+  "join_bug_projects": 9,
+  "merge_legacy_text": "9/10",
+  "merge_executed_truth": "10/10",
+  "qualify_or_rownumber": "10/10",
+  "cdc_envelopes": "10/10",
+  "propagation": "10/10",
+  "versions": {
+   "polars": "2.1.0",
+   "pyspark": "4.0.1",
+   "duckdb": "1.1.3",
+   "sqlite": "3.50.4",
+   "sqlglot": "26.16.4"
+  },
+  "wall": 32.9
+ },
+ "projects": [
+  {
+   "i": 0,
+   "spec": {
+    "family": "G0",
+    "faults": [
+     "fanout",
+     "merge_delete"
+    ],
+    "engine": "duckdb",
+    "legacy": "snowflake",
+    "names": "heldout"
+   },
+   "pid": "P10D.G0.duckdb.snowflake.97000",
+   "tables": 5,
+   "columns": 112,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    },
+    "spark": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "fanout": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 1,
+   "spec": {
+    "family": "G1",
+    "faults": [
+     "inner",
+     "tombstone"
+    ],
+    "engine": "sqlite",
+    "legacy": "postgres",
+    "names": "base"
+   },
+   "pid": "P10D.G1.sqlite.postgres.97001",
+   "tables": 5,
+   "columns": 80,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    },
+    "spark": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "inner": true,
+    "tombstone": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 2,
+   "spec": {
+    "family": "G2",
+    "faults": [
+     "keycast",
+     "replay"
+    ],
+    "engine": "polars",
+    "legacy": "hive",
+    "names": "heldout"
+   },
+   "pid": "P10D.G2.polars.hive.97002",
+   "tables": 5,
+   "columns": 86,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    },
+    "spark": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "keycast": true,
+    "replay": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 3,
+   "spec": {
+    "family": "G3",
+    "faults": [
+     "qualify_order",
+     "merge_update"
+    ],
+    "engine": "spark",
+    "legacy": "dbt",
+    "names": "base"
+   },
+   "pid": "P10D.G3.spark.dbt.97003",
+   "tables": 5,
+   "columns": 103,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    },
+    "spark": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "qualify_order": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 4,
+   "spec": {
+    "family": "G4",
+    "faults": [
+     "fanout",
+     "cdc_key"
+    ],
+    "engine": "duckdb",
+    "legacy": "scala",
+    "names": "heldout"
+   },
+   "pid": "P10D.G4.duckdb.scala.97004",
+   "tables": 4,
+   "columns": 70,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": false,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "fanout": true,
+    "cdc_key": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 5,
+   "spec": {
+    "family": "G5",
+    "faults": [
+     "inner",
+     "dirty"
+    ],
+    "engine": "sqlite",
+    "legacy": "snowflake",
+    "names": "base"
+   },
+   "pid": "P10D.G5.sqlite.snowflake.97005",
+   "tables": 4,
+   "columns": 107,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": false,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "inner": true,
+    "dirty": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 6,
+   "spec": {
+    "family": "G6",
+    "faults": [
+     "keycast",
+     "overwrite"
+    ],
+    "engine": "polars",
+    "legacy": "postgres",
+    "names": "heldout"
+   },
+   "pid": "P10D.G6.polars.postgres.97006",
+   "tables": 3,
+   "columns": 110,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": false,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": false,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "keycast": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 7,
+   "spec": {
+    "family": "G7",
+    "faults": [
+     "tomb_early",
+     "fanout"
+    ],
+    "engine": "spark",
+    "legacy": "hive",
+    "names": "base"
+   },
+   "pid": "P10D.G7.spark.hive.97007",
+   "tables": 5,
+   "columns": 117,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "tomb_early": true,
+    "fanout": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 8,
+   "spec": {
+    "family": "G8",
+    "faults": [
+     "asof_dir",
+     "inner"
+    ],
+    "engine": "duckdb",
+    "legacy": "dbt",
+    "names": "heldout"
+   },
+   "pid": "P10D.G8.duckdb.dbt.97008",
+   "tables": 5,
+   "columns": 74,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": true,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "asof_dir": true,
+    "inner": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  },
+  {
+   "i": 9,
+   "spec": {
+    "family": "G9",
+    "faults": [
+     "keycast",
+     "merge_delete"
+    ],
+    "engine": "sqlite",
+    "legacy": "scala",
+    "names": "base"
+   },
+   "pid": "P10D.G9.sqlite.scala.97009",
+   "tables": 4,
+   "columns": 63,
+   "dag_nodes": 3,
+   "node_files": [
+    "fct",
+    "int",
+    "stg"
+   ],
+   "lift_equal": true,
+   "merge_text": true,
+   "dedup_text": true,
+   "cdc_envelope": true,
+   "engines": {
+    "duckdb": {
+     "agree": true,
+     "executions": 4
+    },
+    "sqlite": {
+     "agree": true,
+     "executions": 4
+    },
+    "polars": {
+     "agree": true,
+     "executions": 4
+    }
+   },
+   "polars_methods": {
+    ".filter(": true,
+    ".with_columns(": true,
+    ".group_by(": true,
+    ".agg(": true,
+    ".join(": true,
+    ".join_asof(": false,
+    ".over(": true,
+    ".unique(": true,
+    "strict=False": true
+   },
+   "propagates_to_fct": {
+    "keycast": true
+   },
+   "merge_in_truth": true,
+   "checks": {
+    "tables": true,
+    "columns": true,
+    "dag": true,
+    "lift": true,
+    "merge": true,
+    "dedup": true,
+    "cdc": true,
+    "engines": true,
+    "polars_methods": true,
+    "propagation": true
+   },
+   "pass": true
+  }
+ ]
+}

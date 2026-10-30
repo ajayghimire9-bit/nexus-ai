@@ -114,3 +114,30 @@ training, dream or admission spec (`manifest10d.leakage()`: 1,000 specs, 0 viola
   evaluation wrong counts reported separately.
 - **Sign-flip p-values:** descriptive only.
 - **No retro-adoption, and no rerun of written rows.**
+
+## Amendments (recorded after training v1, BEFORE any evaluation target is opened)
+
+Training v1 (`artifacts/agi10d_train_v1/`, kept as a record) produced **3 wrong training submissions**, all on tombstone
+families. Diagnosis (`scripts/agi10d_diag.py`): a macro-bound or search-chosen edit coincided with the truth on the single
+visible batch but not on hidden data. The cause was a dedup ordered by a correlated or distractor column, or a spurious
+filter.
+
+The fixes are shared by **every arm and by training**. They were checked on the 3 wrong projects (now 3 / 3 correct under
+both fixed L0 and the v1 A4 memory) and on 12 dev projects (0 wrong):
+
+1. **Minimal-change ordering.** `set_dedup` candidates are ordered by the number of changed fields, so a direction flip
+   comes before column swaps.
+2. **Occam pruning at acceptance.** Every edit of an accepted path whose removal keeps all visible checks and contracts
+   passing is dropped (each trial is one charged execution).
+3. **Two visible batches.** `data/` and `data/b/` each have their own target state and golden `fct` rows. Public checks
+   and node contracts must pass on both. One charged execution = one candidate evaluated on all visible batches.
+4. **About twice the rows per batch** (the generator's size parameter), so coincidental matches on aggregated outputs
+   become rare.
+
+Also:
+
+- **Output-identical speed-ups:** a hash-indexed join and a node-memoised prescreen interpreter (tested to be identical).
+- **Gate 0 re-run on the amended substrate:** `artifacts/agi10d_gate0_v2.json`, PASSED 100 %. Spark 4 / 4; 40 / 40 / 40 / 16
+  executions over 4 batches.
+- **Retraining:** both repetitions are retrained once with the amended code into `artifacts/agi10d_train/` (v2). Training
+  v1 is never evaluated. Everything else in this protocol is unchanged.

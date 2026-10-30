@@ -1,0 +1,12 @@
+['fanout'] 91 submitted hidden True work 124 wall 1.32 build 0.03 path ['pre_aggregate'] 3
+['tombstone'] 63 submitted hidden True work 127 wall 0.49 build 0.02 path ['add_filter', 'move_filter'] 4
+['merge_delete'] 97 submitted hidden True work 42 wall 0.26 build 0.03 path ['merge_add_delete'] 1
+['keycast'] 64 submitted hidden True work 42 wall 0.87 build 0.02 path ['cast_keys'] 1
+['replay'] 103 none hidden None work 600 wall 2.35 build 0.03 path [] 15
+['dirty'] 113 submitted hidden True work 402 wall 1.7 build 0.03 path ['add_filter'] 10
+['inner'] 72 submitted hidden True work 42 wall 0.9 build 0.02 path ['set_join_type'] 1
+['qualify_order'] 104 submitted hidden True work 42 wall 0.2 build 0.03 path ['set_dedup'] 1
+['fanout', 'inner'] 71 submitted hidden True work 84 wall 0.36 build 0.03 path ['set_join_type', 'pre_aggregate'] 2
+['tombstone', 'fanout'] 93 submitted hidden True work 168 wall 1.66 build 0.03 path ['pre_aggregate', 'add_filter', 'move_filter'] 5
+['replay', 'keycast'] 116 none hidden None work 600 wall 2.19 build 0.04 path [] 15
+['qualify_order', 'inner', 'merge_delete'] 116 none hidden None work 600 wall 2.7 build 0.04 path [] 18

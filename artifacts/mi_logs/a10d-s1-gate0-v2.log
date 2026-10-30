@@ -1,0 +1,14 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 2) / 2]                                                                                0 P10D.G0.duckdb.snowflake.97000 tables 5 cols 112 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4), 'spark': (True, 4)} prop {'fanout': True} PASS
+1 P10D.G1.sqlite.postgres.97001 tables 5 cols 80 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4), 'spark': (True, 4)} prop {'inner': True, 'tombstone': True} PASS
+2 P10D.G2.polars.hive.97002 tables 5 cols 86 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4), 'spark': (True, 4)} prop {'keycast': True, 'replay': True} PASS
+3 P10D.G3.spark.dbt.97003 tables 5 cols 103 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4), 'spark': (True, 4)} prop {'qualify_order': True} PASS
+4 P10D.G4.duckdb.scala.97004 tables 4 cols 70 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'fanout': True, 'cdc_key': True} PASS
+5 P10D.G5.sqlite.snowflake.97005 tables 4 cols 107 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'inner': True, 'dirty': True} PASS
+6 P10D.G6.polars.postgres.97006 tables 3 cols 110 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'keycast': True} PASS
+7 P10D.G7.spark.hive.97007 tables 5 cols 117 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'tomb_early': True, 'fanout': True} PASS
+8 P10D.G8.duckdb.dbt.97008 tables 5 cols 74 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'asof_dir': True, 'inner': True} PASS
+9 P10D.G9.sqlite.scala.97009 tables 4 cols 63 lift True  {'duckdb': (True, 4), 'sqlite': (True, 4), 'polars': (True, 4)} prop {'keycast': True} PASS
+{"passed": true, "projects": 10, "built": 10, "tables": [5, 5, 5, 5, 4, 4, 3, 5, 5, 4], "columns": [112, 80, 86, 103, 70, 107, 110, 117, 74, 63], "dag_nodes": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3], "legacy_languages": ["dbt", "hive", "postgres", "scala", "snowflake"], "engine_executions": {"duckdb": 40, "sqlite": 40, "polars": 40, "spark": 16}, "engine_agreement": {"duckdb": "10/10", "sqlite": "10/10", "polars": "10/10", "spark": "4/4"}, "lift_equal": "10/10", "join_bug_projects": 9, "merge_legacy_text": "9/10", "merge_executed_truth": "10/10", "qualify_or_rownumber": "10/10", "cdc_envelopes": "10/10", "propagation": "10/10", "versions": {"polars": "2.1.0", "pyspark": "4.0.1", "duckdb": "1.1.3", "sqlite": "3.50.4", "sqlglot": "26.16.4"}, "wall": 32.9}

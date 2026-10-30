@@ -2,7 +2,8 @@
 
 Inv10d(project)  reads ONLY the workspace: contract.json, the legacy node files (lifted by legacy10d), data/*.csv (visible batch),
                  state/fct_target.json, models/schema.yml. specs = [stg node spec, int node spec, fct node spec] (search 'stages').
-  run(specs, prescreen=True)  executes the DAG (reference interpreter = prescreen; the declared engine when prescreen=False) and
+  run(specs, prescreen=True)  executes the DAG on BOTH visible batches (reference interpreter = prescreen; the declared engine when
+                 prescreen=False; amendment 3) and
                  returns the evidence: public checks (example rows of fct_out, row count, unique key), per-node contract failures
                  (stage_fail), residual-symptom features (fail:*, diff:*, err:*, stage_fail:*), a graded score. ok = every public
                  check AND every node contract passes.
@@ -81,11 +82,15 @@ class Inv10d:
         self.nm = self.contract["names"]
         ex = next(c for c in self.contract["public_checks"] if c["kind"] == "example_rows")
         self.cols, self.golden = ex["cols"], ex["rows"]
-        self.want = IR.table_key([dict(zip(self.cols, r)) for r in self.golden], self.cols)
         self.n_rows = next(c["n"] for c in self.contract["public_checks"] if c["kind"] == "row_count")
+        exb = next(c for c in self.contract["public_checks_b"] if c["kind"] == "example_rows")
+        self.batches = [(self.tables, self.state, self.golden, self.n_rows),
+                        ({t: W.read_csv(ws / "data" / "b" / f"{t}.csv") for t in self.contract["tables"]}, dict(fct_target=json.loads((ws / "state/fct_target_b.json").read_text())),
+                         exb["rows"], next(c["n"] for c in self.contract["public_checks_b"] if c["kind"] == "row_count"))]
         self.runs = {"ref": 0, "duckdb": 0, "sqlite": 0, "polars": 0, "spark": 0}
         self.folds = [0]
         self._dom = {}
+        self._memo = {}
         self.header = []
         self.rows = []
 
@@ -108,43 +113,60 @@ class Inv10d:
         return out
 
     def run(self, specs, prescreen=True):
-        try:
-            R = self.execute(specs, prescreen)
-        except Exception as e:                                       # noqa: BLE001
-            cls = type(e).__name__[:24]
-            return dict(ok=False, held_ok=False, error=cls, passed=[], failed=["no_error"], stage_fail=[["error"]] * 3,
-                        features={f"err:{cls}", "fail:no_error"}, score=0.0)
-        out = R["fct_out"]
-        have = IR.table_key(out, self.cols)
-        hs = set(have)
-        passed, failed = ["no_error"], []
-        frac = sum(1 for x in self.want if x in hs) / max(1, len(self.want))
-        (passed if frac == 1.0 else failed).append("example_rows")
-        (passed if len(out) == self.n_rows else failed).append("row_count")
-        keys = [IR.canon(r.get("cust_key")) for r in out]
-        (passed if len(keys) == len(set(keys)) else failed).append("unique")
-        cf = W.run_contracts(R, self.nm)
-        stage_fail = [cf[n] for n in NODES]
-        feats = {f"fail:{c}" for c in failed} | {f"stage_fail:{t.split(':')[0]}" for fs in stage_fail for t in fs} | self.diff(out)
+        """Evidence on BOTH visible batches (amendment 3); one charged execution = one candidate on all visible batches."""
+        self.runs["ref" if prescreen else self.engine] += 1
+        passed, failed, feats = ["no_error"], [], set()
+        stage_fail = [[], [], []]
+        fr, cl, stp = [], [], []
         n_tests = sum(len(v) for v in W.contracts(self.nm).values())
-        st_pass = 1 - sum(len(f) for f in stage_fail) / n_tests
-        close = max(0.0, 1 - abs(len(out) - self.n_rows) / max(1, self.n_rows))
+        for bid, (T, S, golden, n_rows) in enumerate(self.batches):
+            try:
+                spec = self.spec_of(specs)
+                if prescreen:
+                    R = IR.interpret_cached(spec, T, S, self._memo, bid)
+                else:
+                    rels = sorted(spec["stg"]) + [t["latest_as"] for t in spec["stg"].values() if t.get("latest_as")] + ["int_orders", "fct_out"]
+                    R = EN.run(spec, T, S, self.engine, rels)
+            except Exception as e:                                   # noqa: BLE001
+                cls = type(e).__name__[:24]
+                return dict(ok=False, held_ok=False, error=cls, passed=[], failed=["no_error"], stage_fail=[["error"]] * 3,
+                            features={f"err:{cls}", "fail:no_error"}, score=0.0)
+            out = R["fct_out"]
+            want = IR.table_key([dict(zip(self.cols, r)) for r in golden], self.cols)
+            hs = set(IR.table_key(out, self.cols))
+            fr.append(sum(1 for x in want if x in hs) / max(1, len(want)))
+            cl.append(max(0.0, 1 - abs(len(out) - n_rows) / max(1, n_rows)))
+            if fr[-1] < 1.0:
+                failed.append("example_rows")
+            if len(out) != n_rows:
+                failed.append("row_count")
+            keys = [IR.canon(r.get("cust_key")) for r in out]
+            if len(keys) != len(set(keys)):
+                failed.append("unique")
+            cf = W.run_contracts(R, self.nm)
+            for i, n in enumerate(NODES):
+                stage_fail[i] = sorted(set(stage_fail[i]) | set(cf[n]))
+            stp.append(1 - sum(len(cf[n]) for n in NODES) / n_tests)
+            feats |= self.diff(out, golden, n_rows)
+        failed = sorted(set(failed))
+        passed += [c for c in ("example_rows", "row_count", "unique") if c not in failed]
+        feats |= {f"fail:{c}" for c in failed} | {f"stage_fail:{t.split(':')[0]}" for fs in stage_fail for t in fs}
         ok = not failed and not any(stage_fail)
         return dict(ok=ok, held_ok=True, error=None, passed=passed, failed=failed + [f"contract:{t}" for fs in stage_fail for t in fs], stage_fail=stage_fail,
-                    features=feats, score=1 + len(passed) + 0.6 * frac + 0.3 * close + 0.5 * st_pass)
+                    features=feats, score=1 + len(passed) + 0.6 * sum(fr) / len(fr) + 0.3 * sum(cl) / len(cl) + 0.5 * sum(stp) / len(stp))
 
-    def diff(self, out):
+    def diff(self, out, golden, n_rows):
         f = set()
         got = {}
         for r in out:
             got.setdefault(IR.canon(r.get("cust_key")), []).append(r)
         if any(len(v) > 1 for v in got.values()):
             f.add("diff:dup_keys")
-        if len(out) > self.n_rows:
+        if len(out) > n_rows:
             f.add("diff:extra_rows")
-        if len(out) < self.n_rows:
+        if len(out) < n_rows:
             f.add("diff:too_few_rows")
-        for row in self.golden:
+        for row in golden:
             g = got.get(IR.canon(row[0]))
             if not g:
                 f.add("diff:missing_rows")
@@ -158,7 +180,8 @@ class Inv10d:
     def okey(self, specs):
         try:
             R = IR.interpret(self.spec_of(specs), self.tables, self.state)
-            return json.dumps([IR.table_key(R["fct_out"], self.cols), IR.table_key(R["int_orders"], [self.nm["oid"]])])
+            Rb = IR.interpret(self.spec_of(specs), *self.batches[1][:2])
+            return json.dumps([IR.table_key(R["fct_out"], self.cols), IR.table_key(R["int_orders"], [self.nm["oid"]]), IR.table_key(Rb["fct_out"], self.cols)])
         except Exception:                                           # noqa: BLE001
             return "error"
 
@@ -208,6 +231,7 @@ def candidates(op, spec_k, dom):
             if op == "set_dedup":                                  # latest / oldest per key: every int key x int order x direction
                 ints = [c for c in cols if "int" in dom.roles(rel, c)]
                 cur = t.get("dedup")
+                cands = []
                 for kc in ints:
                     for oc in ints:
                         if oc == kc:
@@ -215,7 +239,9 @@ def candidates(op, spec_k, dom):
                         for desc in (True, False):
                             d = dict(key=["try_int", ["col", kc]], order=["try_int", ["col", oc]], desc=desc)
                             if d != cur:
-                                out.append((_with(spec_k, rel, dedup=d), f"{rel}|{kc}|{oc}|{'desc' if desc else 'asc'}"))
+                                changed = 3 if not cur else sum(d[f] != cur.get(f, True if f == "desc" else None) for f in ("key", "order", "desc"))
+                                cands.append((changed, len(cands), (_with(spec_k, rel, dedup=d), f"{rel}|{kc}|{oc}|{'desc' if desc else 'asc'}")))
+                out += [c for _, _, c in sorted(cands, key=lambda x: x[:2])]   # MINIMAL CHANGE first (amendment 1, before any target)
             elif op == "add_filter":                               # every low-cardinality value (<>) and every nullable column, pre / post
                 conds = [(["ne", ["col", c], ["lit", v]], f"ne|{c}|{v}") for c in cols if "lowcard" in dom.roles(rel, c) for v in dom.values(rel, c)]
                 conds += [(["notnull", ["col", c]], f"notnull|{c}|") for c in cols if "nulls" in dom.roles(rel, c)]

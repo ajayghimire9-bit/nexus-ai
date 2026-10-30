@@ -1,0 +1,3 @@
+[(0, 'add_filter', 'stg_customers|post|ne|segment|gold'), (0, 'set_dedup', 'stg_customers|customer_id|legacy_id|asc')]
+{'dedup': ({'key': ['try_int', ['col', 'customer_id']], 'order': ['try_int', ['col', 'legacy_id']], 'desc': False}, {'key': ['try_int', ['col', 'customer_id']], 'order': ['try_int', ['col', 'ts_ms']], 'desc': True}), 'post': ([['ne', ['col', 'segment'], ['lit', 'gold']]], [['ne', ['col', 'op'], ['lit', 'd']]])}
+{'ok': False, 'fails': ['hidden1: output differs', 'hidden2: output differs']}

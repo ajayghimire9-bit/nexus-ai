@@ -59,7 +59,8 @@ def verify_out_of_sandbox_gate0(n=10, n_spark=4, out=None):
         allt = "\n".join(texts.values())
         r["merge_text"] = ("MERGE INTO" in allt) or (".merge(" in allt)
         r["dedup_text"] = ("QUALIFY" in allt) or ("ROW_NUMBER()" in allt) or ("row_number()" in allt)
-        batches = {"visible": (W.load_tables(ws, p_tabs := contract["tables"]), json.loads((ws / "state/fct_target.json").read_text()))}
+        batches = {"visible": (W.load_tables(ws, p_tabs := contract["tables"]), json.loads((ws / "state/fct_target.json").read_text())),
+                   "visible_b": ({t: W.read_csv(ws / "data" / "b" / f"{t}.csv") for t in p_tabs}, json.loads((ws / "state/fct_target_b.json").read_text()))}
         for b in ("hidden1", "hidden2"):
             batches[b] = (W.load_tables(hid, p_tabs, prefix=f"{b}_"), json.loads((hid / f"{b}_state.json").read_text())["fct_target"])
         env = batches["visible"][0]["cdc_customers"][0][nm["payload"]]

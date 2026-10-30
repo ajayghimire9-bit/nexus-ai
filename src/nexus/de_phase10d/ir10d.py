@@ -121,6 +121,12 @@ def run_int(s, R):
                 groups.setdefault(r.get(j["agg"]["by"]), []).append(r)
             rel = [dict({j["agg"]["by"]: k}, **{m: agg(a, [ev(x, r) for r in rs]) for m, a, x in j["agg"]["measures"]}) for k, rs in groups.items()]
         out = []
+        index = {}
+        if j["how"] != "asof":                                         # hash join on the evaluated right key (NULL never matches)
+            for r in rel:
+                rk = ev(j["rkey"], r)
+                if rk is not None:
+                    index.setdefault(rk, []).append(r)
         for b in base:
             if j["how"] == "asof":
                 cands = [r for r in rel if r.get(j["by"][1]) == b.get(j["by"][0]) and ev(j["rkey"], r) is not None and ev(j["lkey"], b) is not None and
@@ -128,7 +134,7 @@ def run_int(s, R):
                 m = sorted(cands, key=lambda r: ev(j["rkey"], r), reverse=j.get("strategy", "backward") == "backward")[:1]
             else:
                 lk = ev(j["lkey"], b)
-                m = [r for r in rel if lk is not None and ev(j["rkey"], r) == lk]
+                m = index.get(lk, []) if lk is not None else []
             if not m and j["how"] == "inner":
                 continue
             for r in (m or [None]):
@@ -179,6 +185,33 @@ def interpret(spec, tables, state):
         R[name] = run_stg(t, tables, R)
     R["int_orders"] = run_int(spec["int"], R)
     R["fct_out"] = run_fct(spec["fct"], R, state.get("fct_target", []))
+    return R
+
+
+def interpret_cached(spec, tables, state, cache, bid):
+    """interpret() with node-level memoisation (identical output): each stg relation is cached by (batch, its own spec), int_orders by
+    (batch, int spec, the stg specs); fct is recomputed. A candidate that changes one node recomputes only that node downstream."""
+    import json as _j
+    R = dict(tables)
+    keys = []
+    for name, t in spec["stg"].items():
+        k = (bid, "stg", name, _j.dumps(t, sort_keys=True))
+        if k not in cache:
+            R0 = {}
+            rows = run_stg(t, tables, R0)
+            cache[k] = (rows, R0.get(t.get("latest_as")) if t.get("latest_as") else None)
+        rows, latest = cache[k]
+        R[name] = rows
+        if t.get("latest_as"):
+            R[t["latest_as"]] = latest
+        keys.append(k[3])
+    ki = (bid, "int", _j.dumps(spec["int"], sort_keys=True), tuple(keys))
+    if ki not in cache:
+        cache[ki] = run_int(spec["int"], R)
+    R["int_orders"] = cache[ki]
+    R["fct_out"] = run_fct(spec["fct"], R, state.get("fct_target", []))
+    if len(cache) > 4000:
+        cache.clear()
     return R
 
 

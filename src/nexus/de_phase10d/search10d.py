@@ -3,7 +3,8 @@ children bound at every node with stage-local residual-symptom preconditions; re
 for fixed and learned guidance; no root method queue) on dag10d.Inv10d:
   candidates   macros first (capped) then the L0 operators interleaved round-robin in a fixed operator order (G_fixed); a
                learned guide ranks the same candidates (4:3 with the fixed order)
-  acceptance   a candidate whose visible evidence is ok (public checks + every node contract) is re-run on the DECLARED engine
+  acceptance   a candidate whose visible evidence is ok (public checks + every node contract) is Occam-pruned (edits visible data
+               cannot justify are dropped; amendment 2) and re-run on the DECLARED engine
                (DuckDB / SQLite / Polars / PySpark) and submitted if still ok (no requirement decision points in Phase 10D)
   localize     (Arm 5 only) expand only the FIRST DAG node (stg_ -> int_ -> fct_) whose contract fails; all nodes when none fails"""
 from __future__ import annotations
@@ -71,6 +72,23 @@ def candidates(inv, mem, node, mode):
     return out
 
 
+def prune(inv, n, events):
+    """OCCAM PRUNING (amendment 2, before any target): drop every edit of an accepted path whose removal keeps every visible
+    check and node contract passing (last edit first); a macro-bound or spurious edit that visible data cannot justify is not
+    submitted. Each trial is one charged reference execution."""
+    path = [tuple(e) for e in n["path"]]
+    i = len(path) - 1
+    while i >= 0 and len(path) > 1:
+        trial = path[:i] + path[i + 1:]
+        sp = D.replay(inv, trial)
+        ev = inv.run(sp, True)
+        if ev["ok"]:
+            path = trial
+            n.update(path=path, specs=sp, ev=ev, macros=[m for m in n.get("macros", []) if m[0] + m[1] <= len(path)])
+            events["pruned_edits"] = events.get("pruned_edits", 0) + 1
+        i -= 1
+
+
 def search(inv, mem, work_budget=600, wall_cap=4.0, mode="whole", cfg=None):
     cfg = dict(ARCHIVE, **(cfg or {}))
     w = S7.FIXED_W
@@ -93,6 +111,7 @@ def search(inv, mem, work_budget=600, wall_cap=4.0, mode="whole", cfg=None):
         res = None
         for n in sorted(ready, key=lambda n: -n["ev"]["score"]):
             n["tried"] = True
+            prune(inv, n, events)
             if not n.get("native"):
                 ev_n = inv.run(n["specs"], prescreen=False)
                 if not ev_n["ok"]:

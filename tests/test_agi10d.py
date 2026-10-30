@@ -89,3 +89,12 @@ def test_renamed_learners_train_identical_rankers(tmp_path):
         L.train_rankers()
         outs.append(json.dumps(L.mem["guides"], sort_keys=True))
     assert outs[0] == outs[1]
+
+
+def test_memoised_interpreter_is_output_identical():
+    T, S = _tables()
+    cache = {}
+    for _ in range(2):
+        a, b = IR.interpret(_spec(), T, S), IR.interpret_cached(_spec(), T, S, cache, 0)
+        for rel in ("stg_c", "stg_c_latest", "int_orders", "fct_out"):
+            assert IR.table_key(a[rel], list(a[rel][0].keys())) == IR.table_key(b[rel], list(a[rel][0].keys()))

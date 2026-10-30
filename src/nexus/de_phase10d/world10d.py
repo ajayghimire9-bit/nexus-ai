@@ -19,7 +19,8 @@ FAULT MECHANISMS (legacy = truth with faults; node):
 Every injected fault is checked to be INDIVIDUALLY effective (it alone fails a visible check and changes a hidden batch).
 CONTRACTS (schema.yml, per node): stg_customers unique + not_null key, accepted_values op in (c, u, r); stg_orders not_null
 total; stg_order_items unique item id; int_orders unique order id + grain (row count = stg_orders); fct_out unique key.
-Public end-to-end checks: example rows of the visible fct_out + row count. Hidden: two further batches (different data / state)."""
+Public end-to-end checks on TWO visible batches (data/, data/b/; amendment 3): example rows of fct_out + row count each. Hidden: two
+further batches (different data / state)."""
 from __future__ import annotations
 
 import copy
@@ -69,8 +70,8 @@ def widths(rng, n_tables, target):
 
 
 def gen_batch(rng, nm, tabs, dcols, size=1.0):
-    n_c = rng.randint(8, 11)
-    ids = rng.sample(range(1, 60), n_c)
+    n_c = round(rng.randint(8, 11) * size)
+    ids = rng.sample(range(1, 90), n_c)
     cdc, ts, ev, deleted, alive = [], 1000, 1, set(), {}
     for c in ids:
         row = {nm["cust"]: c, nm["seg"]: rng.choice(["gold", "silver", "bronze"]), nm["ctry"]: rng.choice(["us", "de", "fr"]), nm["email"]: f"u{c}@x.io"}
@@ -95,8 +96,8 @@ def gen_batch(rng, nm, tabs, dcols, size=1.0):
     rng.shuffle(cdc)
     orders, items, pays = [], [], []
     oid, iid, pid = rng.randint(100, 200), 1, 1
-    custs = ids + [rng.randint(70, 90) for _ in range(2)]                  # 2 orphan customer references
-    for _ in range(rng.randint(18, 24)):
+    custs = ids + [rng.randint(91, 110) for _ in range(2)]                 # 2 orphan customer references
+    for _ in range(round(rng.randint(18, 24) * size)):
         oid += rng.randint(1, 3)
         c = rng.choice(custs)
         dirty = rng.random() < 0.12
@@ -124,7 +125,7 @@ def gen_batch(rng, nm, tabs, dcols, size=1.0):
         out[t] = rows
     known = [c for c in ids if c not in deleted]
     target = []
-    for c in rng.sample(known, max(1, len(known) // 2)) + rng.sample(sorted(deleted), len(deleted)) + [rng.randint(91, 99) for _ in range(2)]:
+    for c in rng.sample(known, max(1, len(known) // 2)) + rng.sample(sorted(deleted), len(deleted)) + [rng.randint(111, 119) for _ in range(2)]:
         target.append(c)
     return out, sorted(set(target))
 
@@ -289,7 +290,7 @@ def _make(spec, seed, root, attempt):
     truth = truth_spec(nm, tabs, dcols, rng)
     legacy = inject(truth, spec["faults"], nm)
     batches, states = {}, {}
-    for b, sz in (("visible", 1.0), ("hidden1", 1.2), ("hidden2", 1.4)):
+    for b, sz in (("visible", 2.0), ("visible_b", 2.0), ("hidden1", 2.0), ("hidden2", 2.5)):     # amendment 4: ~2x rows per batch
         T, keys = gen_batch(rng, nm, tabs, dcols, sz)
         batches[b] = T
         states[b] = dict(fct_target=target_rows(rng, keys, truth))
@@ -298,30 +299,33 @@ def _make(spec, seed, root, attempt):
         return None
     for f in spec["faults"]:                                   # every fault individually effective (visible fail + hidden change)
         one = inject(truth, [f], nm)
-        if not visible_fail(one, truth, batches["visible"], states["visible"], nm):
+        if not any(visible_fail(one, truth, batches[v], states[v], nm) for v in ("visible", "visible_b")):
             return None
         if not any(visible_fail(one, truth, batches[b], states[b], nm) for b in ("hidden1", "hidden2")):
             return None
-    if not visible_fail(legacy, truth, batches["visible"], states["visible"], nm):
+    if not any(visible_fail(legacy, truth, batches[v], states[v], nm) for v in ("visible", "visible_b")):
         return None
     pid = f"P10D.{spec['family']}.{spec['engine']}.{spec['legacy']}.{seed}"
     ws, hid = Path(root) / pid / "workspace", Path(root) / pid / "hidden"
     if ws.parent.exists():
         shutil.rmtree(ws.parent)
-    for d in (ws / "data", ws / "models", ws / "state", hid):
+    for d in (ws / "data", ws / "data" / "b", ws / "models", ws / "state", hid):
         d.mkdir(parents=True, exist_ok=True)
     from nexus.de_phase10d import legacy10d as LG
     for t in tabs:
         write_csv(ws / "data" / f"{t}.csv", batches["visible"][t])
+        write_csv(ws / "data" / "b" / f"{t}.csv", batches["visible_b"][t])
         for b in ("hidden1", "hidden2"):
             write_csv(hid / f"{b}_{t}.csv", batches[b][t])
     (ws / "state" / "fct_target.json").write_text(json.dumps(states["visible"]["fct_target"]))
+    (ws / "state" / "fct_target_b.json").write_text(json.dumps(states["visible_b"]["fct_target"]))
     for b in ("hidden1", "hidden2"):
         (hid / f"{b}_state.json").write_text(json.dumps(states[b]))
         R = IR.interpret(truth, batches[b], states[b])
         (hid / f"{b}_expected.json").write_text(json.dumps(dict(cols=fct_cols(truth), rows=[[r.get(c) for c in fct_cols(truth)] for r in R["fct_out"]])))
     files = LG.write_legacy(legacy, spec["legacy"], ws)
     Rv = IR.interpret(truth, batches["visible"], states["visible"])
+    Rb = IR.interpret(truth, batches["visible_b"], states["visible_b"])
     cols = fct_cols(truth)
     schema = dict(version=2, models=[dict(name=rel, columns=[dict(name=col, tests=[test if test != "accepted_values" else {"accepted_values": {"values": ["c", "u", "r"]}}])])
                                      for node, ts in contracts(nm).items() for rel, test, col in ts if test != "grain"]
@@ -329,7 +333,9 @@ def _make(spec, seed, root, attempt):
     (ws / "models" / "schema.yml").write_text(yaml.safe_dump(schema, sort_keys=False))
     contract = dict(nodes=["stg", "int", "fct"], files=files, legacy_language=spec["legacy"], engine=spec["engine"], tables=tabs,
                     public_checks=[dict(kind="example_rows", cols=cols, rows=[[r.get(c) for c in cols] for r in Rv["fct_out"]]), dict(kind="row_count", n=len(Rv["fct_out"])),
-                                   dict(kind="unique", col="cust_key")], names=nm)
+                                   dict(kind="unique", col="cust_key")],
+                    public_checks_b=[dict(kind="example_rows", cols=cols, rows=[[r.get(c) for c in cols] for r in Rb["fct_out"]]), dict(kind="row_count", n=len(Rb["fct_out"]))],
+                    names=nm)
     (ws / "contract.json").write_text(json.dumps(contract, indent=1))
     (hid / "truth.json").write_text(json.dumps(truth))
     return dict(pid=pid, family=spec["family"], faults=list(spec["faults"]), nodes_faulted=sorted({MECH_NODE[f] for f in spec["faults"]}), engine=spec["engine"],
