@@ -614,3 +614,35 @@ came from a declared event kind (ADD) that was absent from training and therefor
 * **Open:** the `replay` mechanism is unsolved by every arm (9 targets). Training v1 had 3 wrong training submissions,
   superseded before evaluation and disclosed.
 * **Budget:** 936 of 2,400 s; protection 0 violations; `main` untouched.
+
+## Phase 10E: replay macros on wide DAGs, the 96088 gap, external ingestion (2026-10-30; report `docs/NEXUS_PHASE10E_REPLAY_MACROS_AND_EXTERNAL_INGESTION_REPORT.md`) — NOT LOCKED
+
+* **Corrected:** the Phase 10C account of 96088 (a filter before dedup) was wrong. The cause was a missing window-start
+  predicate.
+  * New guard (`de_phase10e.fixes10e`): 0 false accepts on 96088; 0 false abstains on 342 Phase 10C truths.
+  * The shadow-sequence witness is implemented and unit-tested in both substrates.
+* **Diagnosed:** Phase 10D verified 0 replay repairs because of reachability, not verification. Truth was visible-ok and
+  hidden-ok 25 / 25, but sat at fixed-order position 294–961 with a median of 29 role twins.
+* **Human infrastructure (shared by every arm):**
+  * `ckey` / `arrival` schema roles;
+  * a two-step `add_partition → set_dedup` dedup;
+  * `deterministic_dedup` and `latest_state_witness` acceptance rules;
+  * admission with 30 draws plus no-bind retries;
+  * a general external loader with a multi-table binder (`extload10e`).
+* **Demonstrated** (fresh one-use draw, 48 targets, 336 rows, **0 wrong**):
+  * learned guidance +21 held-out replay compositions in **both** repetitions (A1 0 → A2 21 of 24);
+  * in rep1, the admitted replay macro L5 (`add_partition → set_dedup`) added **+3 completions beyond learned guidance**
+    (A4 24 versus A2 21). These are the three hardest 3-fault compositions (R5 102036 / 102038, R8 102045), each solved only
+    with L5 as an atomic step. A3 − A1 = +18;
+  * A4_rep1 held-out search work was 2,618 executions, against 5,653 for A2_rep1;
+  * replay repairs were verified in training (6 / 7 and 5 / 7 S_replay).
+* **Not demonstrated:** replication of the L\* gain. In rep0 the replay macro candidate lost its `ckey` key role through a
+  dream-witness tie and was rejected, so L\* was untestable there by the pre-registered precondition.
+* **External audit:** 16 / 16 ingested natively (Phase 10C: 0); 10 expressible; 4 reached; 3 verified, of which **1** is a
+  genuine repair (T09); 1 wrong (T16, a visible-sample gap). The 6 inexpressible tasks need CASE, MIN, COUNT(col), MERGE, JSON
+  paths, or joins of aggregated inputs. Development measurement (the loader was developed on these 16 texts).
+* **Open:**
+  * 1 rep1 training wrong (a partition on orders that the visible batches cannot distinguish);
+  * the dream-witness key / order tie;
+  * T16's visible-sample gap.
+* **Budget:** 928 of 1,400 s (surplus remaining 910 s); protection 0 violations; `main` untouched.

@@ -1,0 +1,749 @@
+{
+ "n_rows": 336,
+ "build_failures": [],
+ "arms": {
+  "A1": {
+   "n": 48,
+   "verified": 19,
+   "wrong": 0,
+   "heldout": "0/24",
+   "ordinary": "19/24",
+   "by_engine": {
+    "duckdb": "4/12",
+    "sqlite": "5/12",
+    "polars": "4/12",
+    "spark": "6/12"
+   },
+   "by_legacy": {
+    "snowflake": "4/10",
+    "postgres": "5/10",
+    "hive": "2/10",
+    "dbt": "5/9",
+    "scala": "3/9"
+   },
+   "work_heldout": 14400,
+   "work_ordinary": 4926,
+   "macro_on_verified_path": 0,
+   "eval_wall": 104.1
+  },
+  "A2_rep0": {
+   "n": 48,
+   "verified": 44,
+   "wrong": 0,
+   "heldout": "21/24",
+   "ordinary": "23/24",
+   "by_engine": {
+    "duckdb": "12/12",
+    "sqlite": "10/12",
+    "polars": "11/12",
+    "spark": "11/12"
+   },
+   "by_legacy": {
+    "snowflake": "9/10",
+    "postgres": "10/10",
+    "hive": "8/10",
+    "dbt": "8/9",
+    "scala": "9/9"
+   },
+   "work_heldout": 6262,
+   "work_ordinary": 1860,
+   "macro_on_verified_path": 0,
+   "eval_wall": 53.7
+  },
+  "A2_rep1": {
+   "n": 48,
+   "verified": 44,
+   "wrong": 0,
+   "heldout": "21/24",
+   "ordinary": "23/24",
+   "by_engine": {
+    "duckdb": "11/12",
+    "sqlite": "11/12",
+    "polars": "11/12",
+    "spark": "11/12"
+   },
+   "by_legacy": {
+    "snowflake": "9/10",
+    "postgres": "9/10",
+    "hive": "9/10",
+    "dbt": "8/9",
+    "scala": "9/9"
+   },
+   "work_heldout": 5653,
+   "work_ordinary": 1860,
+   "macro_on_verified_path": 0,
+   "eval_wall": 26.0
+  },
+  "A3_rep0": {
+   "n": 48,
+   "verified": 20,
+   "wrong": 0,
+   "heldout": "0/24",
+   "ordinary": "20/24",
+   "by_engine": {
+    "duckdb": "4/12",
+    "sqlite": "6/12",
+    "polars": "4/12",
+    "spark": "6/12"
+   },
+   "by_legacy": {
+    "snowflake": "4/10",
+    "postgres": "5/10",
+    "hive": "3/10",
+    "dbt": "5/9",
+    "scala": "3/9"
+   },
+   "work_heldout": 14400,
+   "work_ordinary": 4001,
+   "macro_on_verified_path": 4,
+   "eval_wall": 60.8
+  },
+  "A3_rep1": {
+   "n": 48,
+   "verified": 40,
+   "wrong": 0,
+   "heldout": "18/24",
+   "ordinary": "22/24",
+   "by_engine": {
+    "duckdb": "9/12",
+    "sqlite": "11/12",
+    "polars": "9/12",
+    "spark": "11/12"
+   },
+   "by_legacy": {
+    "snowflake": "9/10",
+    "postgres": "8/10",
+    "hive": "8/10",
+    "dbt": "8/9",
+    "scala": "7/9"
+   },
+   "work_heldout": 6488,
+   "work_ordinary": 2889,
+   "macro_on_verified_path": 24,
+   "eval_wall": 34.0
+  },
+  "A4_rep0": {
+   "n": 48,
+   "verified": 46,
+   "wrong": 0,
+   "heldout": "22/24",
+   "ordinary": "24/24",
+   "by_engine": {
+    "duckdb": "12/12",
+    "sqlite": "11/12",
+    "polars": "11/12",
+    "spark": "12/12"
+   },
+   "by_legacy": {
+    "snowflake": "9/10",
+    "postgres": "10/10",
+    "hive": "10/10",
+    "dbt": "8/9",
+    "scala": "9/9"
+   },
+   "work_heldout": 5997,
+   "work_ordinary": 1226,
+   "macro_on_verified_path": 4,
+   "eval_wall": 27.5
+  },
+  "A4_rep1": {
+   "n": 48,
+   "verified": 48,
+   "wrong": 0,
+   "heldout": "24/24",
+   "ordinary": "24/24",
+   "by_engine": {
+    "duckdb": "12/12",
+    "sqlite": "12/12",
+    "polars": "12/12",
+    "spark": "12/12"
+   },
+   "by_legacy": {
+    "snowflake": "10/10",
+    "postgres": "10/10",
+    "hive": "10/10",
+    "dbt": "9/9",
+    "scala": "9/9"
+   },
+   "work_heldout": 2618,
+   "work_ordinary": 1146,
+   "macro_on_verified_path": 30,
+   "eval_wall": 12.3
+  }
+ },
+ "contrasts": {
+  "heldout rep0": {
+   "G_learned | L0 (A2 - A1)": {
+    "n": 24,
+    "diff": 21,
+    "gained": [
+     102024,
+     102025,
+     102026,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102036,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102046,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "G_learned | L* (A4 - A3)": {
+    "n": 24,
+    "diff": 22,
+    "gained": [
+     102024,
+     102025,
+     102026,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102036,
+     102037,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102046,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "L* | G_fixed (A3 - A1)": {
+    "n": 24,
+    "diff": 0,
+    "gained": [],
+    "lost": [],
+    "p_signflip": 1.0
+   },
+   "L* | G_learned (A4 - A2)": {
+    "n": 24,
+    "diff": 1,
+    "gained": [
+     102037
+    ],
+    "lost": [],
+    "p_signflip": 1.0
+   },
+   "combined (A4 - A1)": {
+    "n": 24,
+    "diff": 22,
+    "gained": [
+     102024,
+     102025,
+     102026,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102036,
+     102037,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102046,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "interaction": 1
+  },
+  "ordinary rep0": {
+   "G_learned | L0 (A2 - A1)": {
+    "n": 24,
+    "diff": 4,
+    "gained": [
+     102002,
+     102004,
+     102017,
+     102020,
+     102022
+    ],
+    "lost": [
+     102007
+    ],
+    "p_signflip": 0.2191
+   },
+   "G_learned | L* (A4 - A3)": {
+    "n": 24,
+    "diff": 4,
+    "gained": [
+     102002,
+     102004,
+     102020,
+     102022
+    ],
+    "lost": [],
+    "p_signflip": 0.127
+   },
+   "L* | G_fixed (A3 - A1)": {
+    "n": 24,
+    "diff": 1,
+    "gained": [
+     102017
+    ],
+    "lost": [],
+    "p_signflip": 1.0
+   },
+   "L* | G_learned (A4 - A2)": {
+    "n": 24,
+    "diff": 1,
+    "gained": [
+     102007
+    ],
+    "lost": [],
+    "p_signflip": 1.0
+   },
+   "combined (A4 - A1)": {
+    "n": 24,
+    "diff": 5,
+    "gained": [
+     102002,
+     102004,
+     102017,
+     102020,
+     102022
+    ],
+    "lost": [],
+    "p_signflip": 0.0611
+   },
+   "interaction": 0
+  },
+  "heldout rep1": {
+   "G_learned | L0 (A2 - A1)": {
+    "n": 24,
+    "diff": 21,
+    "gained": [
+     102024,
+     102025,
+     102026,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102037,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102046,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "G_learned | L* (A4 - A3)": {
+    "n": 24,
+    "diff": 6,
+    "gained": [
+     102024,
+     102026,
+     102036,
+     102038,
+     102045,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0308
+   },
+   "L* | G_fixed (A3 - A1)": {
+    "n": 24,
+    "diff": 18,
+    "gained": [
+     102025,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102037,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102046
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "L* | G_learned (A4 - A2)": {
+    "n": 24,
+    "diff": 3,
+    "gained": [
+     102036,
+     102038,
+     102045
+    ],
+    "lost": [],
+    "p_signflip": 0.2468
+   },
+   "combined (A4 - A1)": {
+    "n": 24,
+    "diff": 24,
+    "gained": [
+     102024,
+     102025,
+     102026,
+     102027,
+     102028,
+     102029,
+     102030,
+     102031,
+     102032,
+     102033,
+     102034,
+     102035,
+     102036,
+     102037,
+     102038,
+     102039,
+     102040,
+     102041,
+     102042,
+     102043,
+     102044,
+     102045,
+     102046,
+     102047
+    ],
+    "lost": [],
+    "p_signflip": 0.0
+   },
+   "interaction": -15
+  },
+  "ordinary rep1": {
+   "G_learned | L0 (A2 - A1)": {
+    "n": 24,
+    "diff": 4,
+    "gained": [
+     102002,
+     102004,
+     102017,
+     102020,
+     102022
+    ],
+    "lost": [
+     102007
+    ],
+    "p_signflip": 0.2185
+   },
+   "G_learned | L* (A4 - A3)": {
+    "n": 24,
+    "diff": 2,
+    "gained": [
+     102004,
+     102022
+    ],
+    "lost": [],
+    "p_signflip": 0.5024
+   },
+   "L* | G_fixed (A3 - A1)": {
+    "n": 24,
+    "diff": 3,
+    "gained": [
+     102002,
+     102017,
+     102020
+    ],
+    "lost": [],
+    "p_signflip": 0.2491
+   },
+   "L* | G_learned (A4 - A2)": {
+    "n": 24,
+    "diff": 1,
+    "gained": [
+     102007
+    ],
+    "lost": [],
+    "p_signflip": 1.0
+   },
+   "combined (A4 - A1)": {
+    "n": 24,
+    "diff": 5,
+    "gained": [
+     102002,
+     102004,
+     102017,
+     102020,
+     102022
+    ],
+    "lost": [],
+    "p_signflip": 0.0616
+   },
+   "interaction": -2
+  }
+ },
+ "attribution": {
+  "heldout rep0": {
+   "n": 24,
+   "fixed_L0": 0,
+   "guidance_alone": [
+    102024,
+    102025,
+    102026,
+    102027,
+    102028,
+    102029,
+    102030,
+    102031,
+    102032,
+    102033,
+    102034,
+    102035,
+    102036,
+    102039,
+    102040,
+    102041,
+    102042,
+    102043,
+    102044,
+    102046,
+    102047
+   ],
+   "macros_alone": [],
+   "only_with_both": [
+    102037
+   ],
+   "none": [
+    102038,
+    102045
+   ],
+   "A4_lost": []
+  },
+  "ordinary rep0": {
+   "n": 24,
+   "fixed_L0": 19,
+   "guidance_alone": [
+    102002,
+    102004,
+    102017,
+    102020,
+    102022
+   ],
+   "macros_alone": [
+    102017
+   ],
+   "only_with_both": [],
+   "none": [],
+   "A4_lost": []
+  },
+  "heldout rep1": {
+   "n": 24,
+   "fixed_L0": 0,
+   "guidance_alone": [
+    102024,
+    102025,
+    102026,
+    102027,
+    102028,
+    102029,
+    102030,
+    102031,
+    102032,
+    102033,
+    102034,
+    102035,
+    102037,
+    102039,
+    102040,
+    102041,
+    102042,
+    102043,
+    102044,
+    102046,
+    102047
+   ],
+   "macros_alone": [
+    102025,
+    102027,
+    102028,
+    102029,
+    102030,
+    102031,
+    102032,
+    102033,
+    102034,
+    102035,
+    102037,
+    102039,
+    102040,
+    102041,
+    102042,
+    102043,
+    102044,
+    102046
+   ],
+   "only_with_both": [
+    102036,
+    102038,
+    102045
+   ],
+   "none": [],
+   "A4_lost": []
+  },
+  "ordinary rep1": {
+   "n": 24,
+   "fixed_L0": 19,
+   "guidance_alone": [
+    102002,
+    102004,
+    102017,
+    102020,
+    102022
+   ],
+   "macros_alone": [
+    102002,
+    102017,
+    102020
+   ],
+   "only_with_both": [],
+   "none": [],
+   "A4_lost": []
+  }
+ },
+ "replay_macros": {
+  "rep0": {},
+  "rep1": {
+   "L5": [
+    "add_partition",
+    "set_dedup"
+   ]
+  }
+ },
+ "replay_macro_paths": {
+  "A3_rep0": {
+   "verified_with_replay_macro": [],
+   "heldout_verified_with_replay_macro": 0
+  },
+  "A4_rep0": {
+   "verified_with_replay_macro": [],
+   "heldout_verified_with_replay_macro": 0
+  },
+  "A3_rep1": {
+   "verified_with_replay_macro": [
+    102002,
+    102020,
+    102025,
+    102027,
+    102028,
+    102029,
+    102030,
+    102031,
+    102032,
+    102033,
+    102034,
+    102035,
+    102037,
+    102039,
+    102040,
+    102041,
+    102042,
+    102043,
+    102044,
+    102046
+   ],
+   "heldout_verified_with_replay_macro": 18
+  },
+  "A4_rep1": {
+   "verified_with_replay_macro": [
+    102002,
+    102020,
+    102024,
+    102025,
+    102026,
+    102027,
+    102028,
+    102029,
+    102030,
+    102031,
+    102032,
+    102033,
+    102034,
+    102035,
+    102036,
+    102037,
+    102038,
+    102039,
+    102040,
+    102041,
+    102042,
+    102043,
+    102044,
+    102045,
+    102046,
+    102047
+   ],
+   "heldout_verified_with_replay_macro": 24
+  }
+ },
+ "training": {
+  "rep0": {
+   "tasks": 118,
+   "verified": 113,
+   "wrong": 0,
+   "cost": {
+    "wake": 86.05332779884338,
+    "abstraction": 36.63341522216797,
+    "dreams": 32.12259101867676,
+    "ranker": 0.17861008644104004
+   }
+  },
+  "rep1": {
+   "tasks": 120,
+   "verified": 114,
+   "wrong": 1,
+   "cost": {
+    "wake": 83.19159126281738,
+    "abstraction": 40.49900460243225,
+    "dreams": 30.47953724861145,
+    "ranker": 0.20787906646728516
+   }
+  }
+ },
+ "eval_wrong_total": 0
+}

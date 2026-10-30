@@ -1,0 +1,17 @@
+T01 j2 ok | expressible True | reached False | verified False | search (no candidate)
+T02 postgres express | expressible False | reached False | verified False | not expressible: joins over derived (aggregated) inputs: a linear stage pipeline holds one
+T03 postgres express | expressible False | reached False | verified False | not expressible: CASE
+T04 postgres express | expressible False | reached False | verified False | not expressible: aggregate COUNT (the IR aggregates SUM only)
+T05 snowflake ok | expressible True | reached True | verified True | verified
+T06 snowflake express | expressible False | reached False | verified False | not expressible: MERGE (no IR construct for an upsert into a target state)
+T07 postgres express | expressible False | reached False | verified False | not expressible: SQL node JSONExtractScalar
+T08 hive ok | expressible True | reached False | verified False | search (no candidate)
+T09 snowflake ok | expressible True | reached True | verified True | verified
+T10 postgres ok | expressible True | reached False | verified False | search (no candidate)
+T11 postgres ok | expressible True | reached True | verified True | verified
+T12 py ok | expressible True | reached False | verified False | search (no candidate)
+T13 polars ok | expressible True | reached False | verified False | no reference repair
+T14 scala express | expressible False | reached False | verified False | not expressible: withColumn
+T15 postgres ok | expressible True | reached False | verified False | search (no candidate)
+T16 sql ok | expressible True | reached True | verified False | wrong repair
+{"total": 16, "ingested": 16, "expressible": 10, "expressible_with_reference": 9, "reached": 4, "verified": 3, "wrong": 1, "phase10c": {"native_lifted": 0, "solved_behind_adapter": 2}, "wall": 4.3}
