@@ -2,9 +2,9 @@
  "what": "Phase 10C-11 charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi11_ledger.py verify` (the frozen 10C-10G verifier `python scripts/agi10f_ledger.py verify` also passes)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2036,
+ "source_total_lines": 2044,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "381fad839cbd64995fef35afa3488d53a242d15ed0b56eaa62027e20913d0009",
+ "head_sha256": "4ea712f583dc7fa71892041e57c3811564b2bc46e2c79e9a3cc294e105b66440",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -184,19 +184,21 @@
    "s4": 450,
    "s5": 150
   },
-  "rows": 34,
-  "used_s": 417.138,
-  "child_cpu_s": 414.854,
+  "rows": 42,
+  "used_s": 1025.096,
+  "child_cpu_s": 1022.629,
   "stage_used_s": {
    "s1": 282.478,
-   "s2": 134.66
+   "s2": 305.957,
+   "s3": 402.115,
+   "s4": 34.546
   },
   "status": {
-   "COMPLETE": 28,
+   "COMPLETE": 36,
    "FAILED": 5,
    "TIMEOUT": 1
   },
-  "remaining_of_cap_s": 1382.862,
+  "remaining_of_cap_s": 774.904,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -403,6 +405,14 @@
   "{\"cap_s\": 12.0, \"child_cpu_s\": 0.164, \"child_maxrss_mb\": 66.6, \"prev_sha256\": \"14c8408260d2ee26d994e46337d0f638685fb50e1d4541cf1cc892c9a9813b04\", \"run\": \"a11-s1-tests5\", \"status\": \"COMPLETE\", \"wall_s\": 0.209}",
   "{\"cap_s\": 220.0, \"child_cpu_s\": 63.04, \"child_maxrss_mb\": 676.6, \"prev_sha256\": \"f8248e307259511c3153daa2bf5302073f099e6af3f28a63debd5a69a3441a25\", \"run\": \"a11-s2-stageA-rep1\", \"status\": \"FAILED\", \"wall_s\": 63.027}",
   "{\"cap_s\": 220.0, \"child_cpu_s\": 71.358, \"child_maxrss_mb\": 584.3, \"prev_sha256\": \"fb27f28efb2d54bfe63543e89c60874c7e6600d4ceb09095124b7a7c02f7eaeb\", \"run\": \"a11-s2-stageA-rep0\", \"status\": \"COMPLETE\", \"wall_s\": 71.291}",
-  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.208, \"child_maxrss_mb\": 67.8, \"prev_sha256\": \"5c2366c59c6fc8ee4e339a63e22464e2bbb063f41c547c8f9ab4b0d17ae533a8\", \"run\": \"a11-s2-tests-fix\", \"status\": \"COMPLETE\", \"wall_s\": 0.342}"
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.208, \"child_maxrss_mb\": 67.8, \"prev_sha256\": \"5c2366c59c6fc8ee4e339a63e22464e2bbb063f41c547c8f9ab4b0d17ae533a8\", \"run\": \"a11-s2-tests-fix\", \"status\": \"COMPLETE\", \"wall_s\": 0.342}",
+  "{\"cap_s\": 155.0, \"child_cpu_s\": 72.597, \"child_maxrss_mb\": 583.7, \"prev_sha256\": \"381fad839cbd64995fef35afa3488d53a242d15ed0b56eaa62027e20913d0009\", \"run\": \"a11-s2-stageA2-rep0\", \"status\": \"COMPLETE\", \"wall_s\": 72.508}",
+  "{\"cap_s\": 155.0, \"child_cpu_s\": 98.831, \"child_maxrss_mb\": 1198.5, \"prev_sha256\": \"9447f369e85b5faa4425dc5f8b063a4e316ba1b89fd451f1621d259d787224d2\", \"run\": \"a11-s2-stageA2-rep1\", \"status\": \"COMPLETE\", \"wall_s\": 98.789}",
+  "{\"cap_s\": 220.0, \"child_cpu_s\": 200.468, \"child_maxrss_mb\": 811.8, \"prev_sha256\": \"5e5e492e4586cf4e9a459f3ff0c33bcb867d2090c7fb03e721b13a66ed6f1e24\", \"run\": \"a11-s3-stageB-rep0\", \"status\": \"COMPLETE\", \"wall_s\": 200.605}",
+  "{\"cap_s\": 220.0, \"child_cpu_s\": 201.379, \"child_maxrss_mb\": 871.3, \"prev_sha256\": \"d8d4f44bbd3b612cd1cb935d2d5ce8a2617892fc3644ed148116d54be784f8fb\", \"run\": \"a11-s3-stageB-rep1\", \"status\": \"COMPLETE\", \"wall_s\": 201.51}",
+  "{\"cap_s\": 120.0, \"child_cpu_s\": 25.177, \"child_maxrss_mb\": 509.0, \"prev_sha256\": \"8bf75f83dcde3b0afd3b038fbcc4318ecce21c1fe30b527410243de592122ac7\", \"run\": \"a11-s4-devtiming\", \"status\": \"COMPLETE\", \"wall_s\": 25.195}",
+  "{\"cap_s\": 120.0, \"child_cpu_s\": 9.034, \"child_maxrss_mb\": 228.1, \"prev_sha256\": \"a91ec7fffbf881e12aaec3afe657978256a86a66143c8d4f3669472625b1d1f1\", \"run\": \"a11-s4-devtiming2\", \"status\": \"COMPLETE\", \"wall_s\": 9.015}",
+  "{\"cap_s\": 20.0, \"child_cpu_s\": 0.165, \"child_maxrss_mb\": 62.0, \"prev_sha256\": \"229b2d7c55aaf6680698e1f6a5275e5cc5f50b95b320fa53da290d8f7c78293b\", \"run\": \"a11-s4-tests\", \"status\": \"COMPLETE\", \"wall_s\": 0.197}",
+  "{\"cap_s\": 15.0, \"child_cpu_s\": 0.124, \"child_maxrss_mb\": 59.0, \"prev_sha256\": \"c88b4066f273223311328a00be5bc903238177bd7f128c63ae45619434df445b\", \"run\": \"a11-s4-freeze\", \"status\": \"COMPLETE\", \"wall_s\": 0.139}"
  ]
 }

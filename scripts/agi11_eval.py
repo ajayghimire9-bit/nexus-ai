@@ -24,7 +24,7 @@ OUT = ROOT / ("artifacts/agi11_dev/eval" if DEV else "artifacts/agi11_eval")
 SA = ROOT / ("artifacts/agi11_dev/stageA" if DEV else "artifacts/agi11_stageA")
 SB = ROOT / ("artifacts/agi11_dev/stageB" if DEV else "artifacts/agi11_stageB")
 FZ = ROOT / ("artifacts/agi11_dev/freeze.json" if DEV else "artifacts/agi11_freeze.json")
-REL_E, SC_E, WALL_E = 1500, 250000, 5.0
+REL_E, SC_E, FC_E, WALL_E = 1000, 150000, 5000, 4.0      # AMENDMENT before any target opened: full checks are a work cap; caps lowered
 REPS = ("rep0", "rep1")
 CODE = ["src/nexus/de_phase11/" + f for f in ("core11.py", "sql11.py", "synth11.py", "abstr11.py", "guide11.py", "tasks11.py", "manifest11.py", "verify11.py", "ext11.py")] + \
        ["scripts/agi11_eval.py", "scripts/agi11_stageA.py", "scripts/agi11_stageB.py"]
@@ -41,7 +41,7 @@ def jdump(x):
 def suite1_targets():
     if DEV:
         b = M.RANGES[("agi11", "dev")].start + 900
-        return [dict(kind=w, seed=b + i, pool="heldout") for i, w in enumerate(T.WITHHELD[:2])]
+        return [dict(kind=w, seed=b + i, pool="heldout") for i, w in enumerate(T.WITHHELD[2:6])]
     return M.suite1()
 
 
@@ -53,7 +53,7 @@ def freeze():
             if f.exists():
                 files[str(f.relative_to(ROOT))] = sha(f)
     FZ.write_text(json.dumps(dict(files=files, code={f: sha(ROOT / f) for f in CODE}, suite1=suite1_targets(),
-                                  caps=dict(REL_E=REL_E, SC_E=SC_E, WALL_E=WALL_E, SIZE_LIMIT=S.SIZE_LIMIT, SC_SIZE=S.SC_SIZE, SLICE=S.SLICE)), indent=1))
+                                  caps=dict(REL_E=REL_E, SC_E=SC_E, FC_E=FC_E, WALL_E=WALL_E, SIZE_LIMIT=S.SIZE_LIMIT, SC_SIZE=S.SC_SIZE, SLICE=S.SLICE)), indent=1))
     print("frozen", files)
 
 
@@ -94,7 +94,7 @@ def claim_once(key):
 
 def run_row(suite, tid, kind, learner, admin, hidden, name, arm, caps, fh, rot):
     t0 = time.time()
-    r = S.solve(learner, arm["lib"], arm["costs"], S.Budget(*caps), evidence=lambda: admin["evidence"])
+    r = S.solve(learner, arm["lib"], arm["costs"], S.Budget(caps[0], caps[1], caps[2], caps[3]), evidence=lambda: admin["evidence"])
     v = V.verify(r["program"], arm["lib"], hidden) if r["program"] is not None else None
     sq = None
     if r["program"] is not None:
@@ -127,7 +127,7 @@ def suite1(chunk, n):
             for name in names[rot:] + names[:rot]:
                 if (learner["id"], name) in done:
                     continue
-                run_row("suite1", learner["id"], t["kind"], learner, admin, hidden, name, AR[name], (REL_E, SC_E, WALL_E), fh, rot)
+                run_row("suite1", learner["id"], t["kind"], learner, admin, hidden, name, AR[name], (REL_E, SC_E, WALL_E, FC_E), fh, rot)
             print(learner["id"], flush=True)
     print("peak_rss_mb", round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2 ** 20, 1))
 
@@ -156,7 +156,7 @@ def suite2():
             for name in names[rot:] + names[:rot]:
                 if (t["id"], name) in done:
                     continue
-                run_row("suite2", t["id"], t["id"], learner, admin, hidden, name, AR[name], (REL_E // 2, SC_E // 2, WALL_E / 2), fh, rot)
+                run_row("suite2", t["id"], t["id"], learner, admin, hidden, name, AR[name], (REL_E // 2, SC_E // 2, WALL_E / 2, FC_E // 2), fh, rot)
             print(t["id"], flush=True)
 
 

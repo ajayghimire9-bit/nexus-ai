@@ -42,7 +42,7 @@ from collections import Counter
 from nexus.de_phase11 import core11 as C
 
 SIZE_LIMIT, SC_SIZE, SLICE, ALT_CAP, REAL_CAP, PASS_ALTS = 40, 8, 10, 48, 400, 6
-POOL_CAP, REFINE_CAP, DEDUCE_ARM_SIZE, DEDUCE_FREE, JOIN_OVERLAP = 25000, 300, 3, 3, 0.2
+POOL_CAP, REFINE_CAP, DEDUCE_ARM_SIZE, DEDUCE_FREE, JOIN_OVERLAP, LIB_ARGS_CAP = 25000, 300, 3, 3, 0.2, 60
 TIER_CAPS, ESC_STEP = (1500, 6000, 15000, POOL_CAP), 2                    # scalar-pool micro caps per escalation tier; tier cost step
 REL_CAP, SC_CAP, WALL_S = 4000, 400000, 3.0
 VIS = ("vis_a", "vis_b")
@@ -50,14 +50,15 @@ MAX_COST = 4
 
 
 class Budget:
-    def __init__(self, rel_cap=REL_CAP, sc_cap=SC_CAP, wall=WALL_S):
-        self.rel_cap, self.sc_cap, self.wall = rel_cap, sc_cap, wall
+    def __init__(self, rel_cap=REL_CAP, sc_cap=SC_CAP, wall=WALL_S, fc_cap=None):
+        self.rel_cap, self.sc_cap, self.wall, self.fc_cap = rel_cap, sc_cap, wall, fc_cap   # fc_cap: full checks (evaluation amendment)
         self.t0 = time.time()
         self.c = Counter()
         self._n, self._timed_out = 0, False
 
     def out(self):
-        if self.c["rel_evals"] >= self.rel_cap or self.c["micro_evals"] >= self.sc_cap or self._timed_out:
+        if self.c["rel_evals"] >= self.rel_cap or self.c["micro_evals"] >= self.sc_cap or self._timed_out or \
+                (self.fc_cap is not None and self.c["full_checks"] >= self.fc_cap):
             return True
         self._n += 1
         if self._n & 511 == 0 and time.time() - self.t0 > self.wall:      # the clock is read every 512 checks
@@ -591,26 +592,32 @@ class Search:
         return out
 
     def rel_args(self, f, prog, x, vals, popped):
+        """Argument tuples for a relational library function (AMENDMENT before any target opened: name parameters range over the
+        columns of the relations BOUND to this call, not of every popped relation; at most LIB_ARGS_CAP combinations per popped node,
+        logged). The popped relation fills the first relation parameter; other relation parameters range over popped relations;
+        literals over mined constants of the parameter's declared type (paths for a json path)."""
         rel_ps = [i for i, (k, _) in enumerate(f["params"]) if k == "rel"]
         if not rel_ps:
             return []
-        names = sorted({c for _, _, v, _ in popped for c in v[0].cols} | set(vals[0].cols))
-        choices = []
-        for i, (k, t) in enumerate(f["params"]):
-            if k == "rel":
-                choices.append([(prog, x, 0)] if i == rel_ps[0] else [(p, xx, c) for p, xx, _, c in popped])
-            elif k == "name":
-                choices.append([(n, n, 1) for n in names])
-            elif k == "lit":                                       # literals of the parameter's declared type (paths for a json path)
-                choices.append([(p, p, 1) for p in self.paths] if t == "path" else [(v, v, 1) for v in self.consts.get(t, [])])
-            else:
-                choices.append([(("col", n), ("col", n), 1) for n in names])
+        others = [[(p, xx, c, v[0].cols)] for p, xx, v, c in popped] if len(rel_ps) > 1 else [[]]
         out = []
-        for combo in itertools.product(*choices):
-            out.append(combo)
-            if len(out) >= 400:
-                self.log["rel_call_args_capped"] += 1
-                break
+        for other in (others if len(rel_ps) > 1 else [[]]):
+            bound_cols = sorted(set(vals[0].cols) | {c for o in other for c in o[3]})
+            choices = []
+            for i, (k, t) in enumerate(f["params"]):
+                if k == "rel":
+                    choices.append([(prog, x, 0)] if i == rel_ps[0] else [(o[0], o[1], o[2]) for o in other])
+                elif k == "name":
+                    choices.append([(n, n, 1) for n in bound_cols])
+                elif k == "lit":
+                    choices.append([(p, p, 1) for p in self.paths] if t == "path" else [(v, v, 1) for v in self.consts.get(t, [])])
+                else:
+                    choices.append([(("col", n), ("col", n), 1) for n in bound_cols])
+            for combo in itertools.product(*choices):
+                out.append(combo)
+                if len(out) >= LIB_ARGS_CAP:
+                    self.log["lib_args_capped"] += 1
+                    return out
         return out
 
     def preds(self, cols, types, rows):

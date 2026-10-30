@@ -203,3 +203,27 @@ admission evidence. Distinctness is alpha-canonical; semantic equivalence is not
 
 Two streams sharing targets are not two independent task-set replications. No retro-adoption, no rerun of a written row, no reuse
 of the one-use range.
+
+## Amendments recorded BEFORE any Suite 1 target opened (after Stage A / B training)
+
+**1. Generic bug fix during Stage A (commit `7751696`).**
+- The bug: a library `lit` parameter could bind a mined constant of the wrong type, putting a str into an int const. Stage A run 1
+  crashed on rep1 at task 50.
+- The fix: the type checker verifies every literal against its declared type; lit arguments are type-filtered (JSON paths come from
+  mined paths); ill-typed execution is caught.
+- Run 1 is preserved in `artifacts/agi11_stageA_superseded_run1/`, and both streams were rerun under the same seeds (charged).
+
+**2. Stage B outcome.** Stage B reached only **40 and 42 of 80** tasks per stream within its 200 s budget (14 and 13 verified
+records); 24 searches per stream ended on the 6 s wall safety. The guides are fitted on these records.
+
+**3. Evaluation configuration amendment** (development timing with the real arms on dev seeds only: `a11-s4-devtiming*`).
+- **Work caps:** full checks become a work cap. Suite 1 caps are 1,000 pops / 150,000 micro-evaluations / 5,000 full checks, with a
+  4 s wall safety; Suite 2 uses half of each. These replace 1,500 / 250,000 and a 5 s wall, which had left searches wall-bound and
+  therefore hardware-dependent.
+- **Library argument enumeration:** name parameters of relational library functions range over the columns of the relations bound
+  to the call, at most 60 combinations per popped node (capping logged). This replaces columns of every popped relation and 400
+  combinations, which had made the library arms wall-bound.
+- **Re-timed result:** 28 dev searches, mean 0.32 s, max 1.6 s, 0 wall-bound. The complete 7-arm Suite 1 plus Suite 2 projects to
+  well under 450 s.
+- **Scope:** both changes apply identically to every arm; F0 and L0 are unaffected by the second.
+- **Not changed:** no library function, guide or task.
