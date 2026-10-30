@@ -1,10 +1,10 @@
 {
- "what": "Phase 10C-11 charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi11_ledger.py verify` (the frozen 10C-10G verifier `python scripts/agi10f_ledger.py verify` also passes)",
+ "what": "Phase 10C-12 charged compute, copied verbatim from the hash-chained ledger; verify with `python scripts/agi12_ledger.py verify` (the frozen `scripts/agi11_ledger.py verify` and `scripts/agi10f_ledger.py verify` also pass)",
  "source": "runs/experimental/wave24-agi/ledger.jsonl",
  "source_first_line_index": 1836,
- "source_total_lines": 2055,
+ "source_total_lines": 2057,
  "prev_sha256_of_first_line": "7d94bc60e28852755d5fa1c28b6bc1cfde3c794e28e7fb8e1a921f924b123761",
- "head_sha256": "f48250158d965ff4f37339d8366e83abff80777b5e4ee36f5b655ed1b0d4441d",
+ "head_sha256": "d4927b8cee7a942a20b991c3c6a68244f5840e86f87a78e1ead46369da3771f3",
  "chain_ok": true,
  "phases": {
   "10C": {
@@ -200,6 +200,37 @@
    "TIMEOUT": 1
   },
   "remaining_of_cap_s": 638.431,
+  "checks": {
+   "pool_is_new_grant_only": true,
+   "within_cap": true,
+   "every_stage_within_ceiling": true
+  }
+ },
+ "phase12": {
+  "prefix": "a12-",
+  "pool_s": 1500.0,
+  "cap_s": 1500.0,
+  "new_grant_s": 1500.0,
+  "older_surplus_not_consumed_s": {
+   "phase11_remaining_s": 638.431,
+   "phase10g_pool_remaining_s": 925.931
+  },
+  "ceilings": {
+   "s1": 300,
+   "s2": 250,
+   "s3": 750,
+   "s4": 200
+  },
+  "rows": 2,
+  "used_s": 1.928,
+  "child_cpu_s": 1.132,
+  "stage_used_s": {
+   "s1": 1.928
+  },
+  "status": {
+   "COMPLETE": 2
+  },
+  "remaining_of_cap_s": 1498.072,
   "checks": {
    "pool_is_new_grant_only": true,
    "within_cap": true,
@@ -425,6 +456,8 @@
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.144, \"child_maxrss_mb\": 59.0, \"prev_sha256\": \"e9673fe7252a96a402bb931f1e76a416969ca4e72bfaaff4f5efe06d547b385f\", \"run\": \"a11-s5-score\", \"status\": \"COMPLETE\", \"wall_s\": 0.203}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.02, \"child_maxrss_mb\": 17.3, \"prev_sha256\": \"683e0af141bfe699116f5c5aedc0a3dff4183350c0f2486479fe21352fcf15e8\", \"run\": \"a11-s5-reportdata\", \"status\": \"COMPLETE\", \"wall_s\": 0.048}",
   "{\"cap_s\": 30.0, \"child_cpu_s\": 0.281, \"child_maxrss_mb\": 38.4, \"prev_sha256\": \"67c574528193291a6ded63e8285e8ba6b8919d00fd8806e4e11e7126dd2fde81\", \"run\": \"a11-s5-protect\", \"status\": \"COMPLETE\", \"wall_s\": 0.962}",
-  "{\"cap_s\": 60.0, \"child_cpu_s\": 13.277, \"child_maxrss_mb\": 223.0, \"prev_sha256\": \"c75ebf932ed81c99010dbd0817e983f81577eb97183d62d5696803c3b3f61d00\", \"run\": \"a11-s5-tests\", \"status\": \"COMPLETE\", \"wall_s\": 13.1}"
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 13.277, \"child_maxrss_mb\": 223.0, \"prev_sha256\": \"c75ebf932ed81c99010dbd0817e983f81577eb97183d62d5696803c3b3f61d00\", \"run\": \"a11-s5-tests\", \"status\": \"COMPLETE\", \"wall_s\": 13.1}",
+  "{\"cap_s\": 30.0, \"child_cpu_s\": 0.279, \"child_maxrss_mb\": 38.1, \"prev_sha256\": \"f48250158d965ff4f37339d8366e83abff80777b5e4ee36f5b655ed1b0d4441d\", \"run\": \"a12-s1-protect-before\", \"status\": \"COMPLETE\", \"wall_s\": 0.928}",
+  "{\"cap_s\": 60.0, \"child_cpu_s\": 0.853, \"child_maxrss_mb\": 108.9, \"prev_sha256\": \"4d56bfbf577917286be314723ea678cdb69b857eebe88fbeb35c6cdd183188d2\", \"run\": \"a12-s1-tests\", \"status\": \"COMPLETE\", \"wall_s\": 1.0}"
  ]
 }
