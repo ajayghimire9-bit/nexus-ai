@@ -1,0 +1,11 @@
+{
+ "suite": "External_Holdout_24",
+ "status": "NOT READY",
+ "candidate_source": {"benchmark": "BIRD-Critic 1.0 SQLite", "url": "https://huggingface.co/datasets/birdsql/bird-critic-1.0-sqlite",
+                      "revision": "af2b1c3e2f8b3480e5569212198761c770df06d0", "license": "cc-by-sa-4.0", "tasks_available": 500,
+                      "schema_file": "https://github.com/bird-bench/BIRD-CRITIC-1/blob/main/baseline/data/sqlite_schema.jsonl"},
+ "inspected": "dataset card and file listing only (public metadata, read-only, 2026-10-30); NO task content (issue SQL, queries, test cases) was downloaded or read",
+ "blocker": "the evaluation references are withheld: per the dataset card, sol_sql and test_cases are excluded from the public release and are sent only on EMAIL request ('please email bird.bench25@gmail.com'); emailing / creating accounts is not authorised for Phase 11. Without independently held reference tests and solutions an evaluator process cannot verify repairs, so the suite cannot be READY. No in-house synthetic tasks are substituted.",
+ "selection_rule_if_obtained": "would have been: the first 24 instance ids in ascending order among category 'Query' instances whose db_id is not previously used, fixed BEFORE reading task SQL",
+ "further_note": "BIRD-Critic instances are natural-language user issues over real databases; the Phase 11 core has no natural-language front end and supports only the declared SQL subset, so even with references most instances would be expected to stop at 'represent' (an outcome to be measured, not assumed)."
+}

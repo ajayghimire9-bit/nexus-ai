@@ -1,0 +1,22 @@
+..F.....                                                                 [100%]
+=================================== FAILURES ===================================
+___________ test_observational_refinement_recovers_split_alternative ___________
+
+    def test_observational_refinement_recovers_split_alternative():
+        rows = [(v,) for v in (-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11)]                   # the 10-row slice never reaches x >= 10
+        consts = S._Consts({I: [0, 10]})
+        pool = S.Pool(("x",), (I,), rows, consts, [], {}, S.Costs(), S.Budget(), Counter())
+        for _ in range(7):
+            pool.grow()
+        want = ("branch", ("cmp", "lt", col("x"), const(10, I)), col("x"), const(0, I))
+        f = C.compile_scalar(want, ("x",))
+        cid = pool.index[(I, tuple(C.enc(r[0]) for r in rows[:S.SLICE]))]
+        assert pool.rep(cid) == col("x") and len(pool.classes[cid]["members"]) > 1     # x and the branch collapse on the slice
+        s = _search_stub()
+        got = s._passing(pool, cid, [[r] for r in rows], [[C.enc(f(r))] for r in rows], lambda v: sorted(C.enc(z) for z in v))
+>       assert got and all(C.compile_scalar(g, ("x",))((10,)) == 0 for g in got) and s.log["refinement_recovered"] == 1
+E       assert ([])
+
+tests/test_agi11.py:71: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_agi11.py::test_observational_refinement_recovers_split_alternative

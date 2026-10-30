@@ -1,0 +1,392 @@
+{
+ "summary": {
+  "n": 8,
+  "verified": 4,
+  "wrong": 0,
+  "wall": 12.8,
+  "peak_rss_mb": 662.4,
+  "by_kind": {
+   "coalesce": "1/1",
+   "condsum": "0/1",
+   "dedup": "0/1",
+   "preagg": "0/1",
+   "upsert": "0/1",
+   "json": "1/1",
+   "flag": "1/1",
+   "filtmap": "1/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "coalesce",
+   "seed": 110000,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 11,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 3275,
+    "deduction_candidates": 1,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 1248,
+    "completeness_loss_alt_cap": 844,
+    "deduced_branch": 1
+   },
+   "wall": 0.014,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "rel",
+     "flag"
+    ],
+    [
+     [
+      "pos",
+      [
+       "col",
+       "mark"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "not",
+        [
+         "isnull",
+         [
+          "col",
+          "ref"
+         ]
+        ]
+       ],
+       [
+        "col",
+        "ref"
+       ],
+       [
+        "col",
+        "rate"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 40,
+    "micro_evals": 104946,
+    "full_checks": 33888
+   },
+   "log": {
+    "suppressed_alternatives": 33367,
+    "completeness_loss_alt_cap": 46432,
+    "refinement_split": 721,
+    "completeness_loss_refine_cap": 103,
+    "rel_suppressed_alternatives": 14,
+    "round1_resumed": 6
+   },
+   "wall": 3.01,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 9,
+    "micro_evals": 31134,
+    "full_checks": 6580
+   },
+   "log": {
+    "suppressed_alternatives": 8692,
+    "completeness_loss_alt_cap": 11872,
+    "refinement_split": 140,
+    "completeness_loss_refine_cap": 20
+   },
+   "wall": 3.047,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "preagg",
+   "seed": 110030,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 165,
+    "micro_evals": 75471,
+    "full_checks": 14487
+   },
+   "log": {
+    "suppressed_alternatives": 35390,
+    "completeness_loss_alt_cap": 14631,
+    "refinement_split": 308,
+    "completeness_loss_refine_cap": 44,
+    "rel_suppressed_alternatives": 44,
+    "round1_resumed": 1,
+    "round2_resumed": 5
+   },
+   "wall": 3.015,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "upsert",
+   "seed": 110040,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 451,
+    "micro_evals": 21131,
+    "full_checks": 15902
+   },
+   "log": {
+    "suppressed_alternatives": 10500,
+    "completeness_loss_alt_cap": 3912,
+    "refinement_split": 336,
+    "completeness_loss_refine_cap": 48,
+    "rel_suppressed_alternatives": 148,
+    "round1_resumed": 1,
+    "round2_resumed": 1,
+    "round3_resumed": 1
+   },
+   "wall": 3.287,
+   "wall_bound": true,
+   "gen_s": 0.001,
+   "width": 16,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "json",
+   "seed": 110050,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2198,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 828,
+    "completeness_loss_alt_cap": 568
+   },
+   "wall": 0.009,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 5,
+   "program": [
+    "map",
+    [
+     "rel",
+     "unit"
+    ],
+    [
+     [
+      "grp",
+      [
+       "col",
+       "tag"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "cnt"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "flag",
+   "seed": 110060,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 11,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2312,
+    "deduction_candidates": 1,
+    "full_checks": 7,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 882,
+    "completeness_loss_alt_cap": 621,
+    "deduced_branch": 1
+   },
+   "wall": 0.01,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 7,
+   "program": [
+    "map",
+    [
+     "rel",
+     "acct"
+    ],
+    [
+     [
+      "seq",
+      [
+       "col",
+       "slot"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "branch",
+       [
+        "cmp",
+        "lt",
+        [
+         "col",
+         "amt"
+        ],
+        [
+         "const",
+         47,
+         "int"
+        ]
+       ],
+       [
+        "const",
+        "off",
+        "str"
+       ],
+       [
+        "const",
+        "on",
+        "str"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "filtmap",
+   "seed": 110070,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 12,
+   "counters": {
+    "rel_evals": 140,
+    "micro_evals": 3328,
+    "full_checks": 7,
+    "evidence_requests": 1
+   },
+   "log": {
+    "rel_suppressed_alternatives": 27,
+    "suppressed_alternatives": 976,
+    "completeness_loss_alt_cap": 1192
+   },
+   "wall": 0.26,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "filter",
+     [
+      "rel",
+      "pos"
+     ],
+     [
+      "cmp",
+      "gt",
+      [
+       "col",
+       "qty"
+      ],
+      [
+       "const",
+       42,
+       "int"
+      ]
+     ]
+    ],
+    [
+     [
+      "num",
+      [
+       "col",
+       "flag"
+      ]
+     ],
+     [
+      "mark",
+      [
+       "arith",
+       "mul",
+       [
+        "col",
+        "ref"
+       ],
+       [
+        "col",
+        "kind"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+coalesce 110000 submitted V rel 1 micro 3275 wall 0.011 size 11
+condsum 110010 submitted V rel 1 micro 19724 wall 0.144 size 15
+dedup 110020 none - rel 6 micro 60000 wall 1.701 size None
+json 110050 submitted V rel 1 micro 2198 wall 0.008 size 9
+Traceback (most recent call last):
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi11_dev.py", line 41, in <module>
+    main(*sys.argv[1:])
+    ~~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/agi11_dev.py", line 25, in main
+    r = S.solve(learner, budget=S.Budget(int(rel_cap), int(sc_cap), float(wall)), evidence=lambda: admin["evidence"])
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 813, in solve
+    prog = s.run()
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 411, in run
+    sol = self.final(prog, x, vals, classes[fp])
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 516, in final
+    for finals in gen(prog, x, vals):
+                  ~~~^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 725, in solve_aggregation
+    r = self._agg_with_keys(prog, x, vals, exp, ko, kc, cols, types)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 779, in _agg_with_keys
+    p = self._refine_pass(pool, None, groups, targets[o], lambda v, af=af: C.enc(af(v)))
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 591, in _refine_pass
+    p = self._passing(pool, cid, groups, target, agg, real=reals)
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 573, in _passing
+    if all(agg([f(r) for r in g]) == tg for g, tg in zip(groups, target)):
+       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 573, in <genexpr>
+    if all(agg([f(r) for r in g]) == tg for g, tg in zip(groups, target)):
+           ~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 779, in <lambda>
+    p = self._refine_pass(pool, None, groups, targets[o], lambda v, af=af: C.enc(af(v)))
+                                                                                 ~~^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 353, in <lambda>
+    AGG_FN = {"sum": lambda v: (lambda nn: None if not nn else (sum(nn) if all(isinstance(z, int) for z in nn) else float(sum(float(z) for z in nn))))([z for z in v if z is not None]),
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 353, in <lambda>
+    AGG_FN = {"sum": lambda v: (lambda nn: None if not nn else (sum(nn) if all(isinstance(z, int) for z in nn) else float(sum(float(z) for z in nn))))([z for z in v if z is not None]),
+                                                                                                                          ~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/de_phase11/synth11.py", line 353, in <genexpr>
+    AGG_FN = {"sum": lambda v: (lambda nn: None if not nn else (sum(nn) if all(isinstance(z, int) for z in nn) else float(sum(float(z) for z in nn))))([z for z in v if z is not None]),
+                                                                                                                              ~~~~~^^^
+ValueError: could not convert string to float: 'c2'

@@ -1,0 +1,276 @@
+{
+ "summary": {
+  "n": 5,
+  "verified": 3,
+  "wrong": 0,
+  "wall": 4.5,
+  "peak_rss_mb": 242.7,
+  "by_kind": {
+   "coalesce": "1/1",
+   "condsum": "1/1",
+   "dedup": "0/1",
+   "json": "1/1",
+   "flag": "0/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "coalesce",
+   "seed": 110000,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 11,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 3275,
+    "deduction_candidates": 1,
+    "full_checks": 5,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 618,
+    "completeness_loss_alt_cap": 1533,
+    "deduced_branch": 1
+   },
+   "wall": 0.011,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "rel",
+     "flag"
+    ],
+    [
+     [
+      "pos",
+      [
+       "col",
+       "mark"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "not",
+        [
+         "isnull",
+         [
+          "col",
+          "ref"
+         ]
+        ]
+       ],
+       [
+        "col",
+        "ref"
+       ],
+       [
+        "col",
+        "rate"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 15,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 19724,
+    "full_checks": 8885,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 7580,
+    "completeness_loss_alt_cap": 5145
+   },
+   "wall": 0.143,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "fold",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "seq"
+     ],
+     [
+      [
+       "rate",
+       "sum",
+       [
+        "branch",
+        [
+         "cmp",
+         "eq",
+         [
+          "col",
+          "zone"
+         ],
+         [
+          "const",
+          "q",
+          "str"
+         ]
+        ],
+        [
+         "col",
+         "ref"
+        ],
+        [
+         "const",
+         0,
+         "int"
+        ]
+       ]
+      ]
+     ]
+    ],
+    [
+     [
+      "acct",
+      [
+       "col",
+       "seq"
+      ]
+     ],
+     [
+      "rate",
+      [
+       "col",
+       "rate"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 6,
+    "micro_evals": 60000,
+    "full_checks": 39851
+   },
+   "log": {
+    "suppressed_alternatives": 16682,
+    "completeness_loss_alt_cap": 21366,
+    "completeness_loss_pool_cap": 1,
+    "refinement_split": 72,
+    "completeness_loss_refine_cap": 8
+   },
+   "wall": 1.698,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "json",
+   "seed": 110050,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2198,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 430,
+    "completeness_loss_alt_cap": 1014
+   },
+   "wall": 0.008,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 5,
+   "program": [
+    "map",
+    [
+     "rel",
+     "unit"
+    ],
+    [
+     [
+      "grp",
+      [
+       "col",
+       "tag"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "cnt"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "flag",
+   "seed": 110060,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 231,
+    "micro_evals": 60000,
+    "deduction_candidates": 2,
+    "full_checks": 6932
+   },
+   "log": {
+    "suppressed_alternatives": 14392,
+    "completeness_loss_alt_cap": 30041,
+    "refinement_split": 93,
+    "completeness_loss_refine_cap": 6,
+    "rel_suppressed_alternatives": 54,
+    "completeness_loss_rel_alt_cap": 17
+   },
+   "wall": 2.526,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 7,
+   "program": null,
+   "conformance_mismatch": null
+  }
+ ]
+}

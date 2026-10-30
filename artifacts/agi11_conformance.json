@@ -1,0 +1,1351 @@
+{
+ "summary": {
+  "duckdb": {
+   "conform": 60,
+   "total": 60,
+   "mismatches": []
+  },
+  "sqlite": {
+   "conform": 58,
+   "total": 60,
+   "mismatches": [
+    "map_json_a/full",
+    "map_json_cast/full"
+   ]
+  },
+  "polars": {
+   "conform": 0,
+   "total": 60,
+   "mismatches": [
+    "filter_null_pred/empty",
+    "filter_null_pred/full",
+    "fold_condsum/empty",
+    "fold_condsum/full",
+    "fold_keys_null/empty",
+    "fold_keys_null/full",
+    "fold_nokey/empty",
+    "fold_nokey/full",
+    "join_anti/empty",
+    "join_anti/full",
+    "join_inner_dup_null/empty",
+    "join_inner_dup_null/full",
+    "join_left/empty",
+    "join_left/full",
+    "join_semi/empty",
+    "join_semi/full",
+    "map_and3vl/empty",
+    "map_and3vl/full",
+    "map_arith/empty",
+    "map_arith/full",
+    "map_branch/empty",
+    "map_branch/full",
+    "map_cast_int_num/empty",
+    "map_cast_int_num/full",
+    "map_cast_int_str/empty",
+    "map_cast_int_str/full",
+    "map_cast_str_int/empty",
+    "map_cast_str_int/full",
+    "map_cmp3vl/empty",
+    "map_cmp3vl/full",
+    "map_coalesce_shape/empty",
+    "map_coalesce_shape/full",
+    "map_div0/empty",
+    "map_div0/full",
+    "map_isnull/empty",
+    "map_isnull/full",
+    "map_json_a/empty",
+    "map_json_a/full",
+    "map_json_b/empty",
+    "map_json_b/full",
+    "map_json_cast/empty",
+    "map_json_cast/full",
+    "map_mod_neg/empty",
+    "map_mod_neg/full",
+    "map_mul_num/empty",
+    "map_mul_num/full",
+    "map_not3vl/empty",
+    "map_not3vl/full",
+    "map_or3vl/empty",
+    "map_or3vl/full",
+    "rank_asc_k2/empty",
+    "rank_asc_k2/full",
+    "rank_desc_ties/empty",
+    "rank_desc_ties/full",
+    "rank_nokey/empty",
+    "rank_nokey/full",
+    "union_all/empty",
+    "union_all/full",
+    "upsert_shape/empty",
+    "upsert_shape/full"
+   ]
+  },
+  "pyspark": {
+   "conform": 0,
+   "total": 60,
+   "mismatches": [
+    "filter_null_pred/empty",
+    "filter_null_pred/full",
+    "fold_condsum/empty",
+    "fold_condsum/full",
+    "fold_keys_null/empty",
+    "fold_keys_null/full",
+    "fold_nokey/empty",
+    "fold_nokey/full",
+    "join_anti/empty",
+    "join_anti/full",
+    "join_inner_dup_null/empty",
+    "join_inner_dup_null/full",
+    "join_left/empty",
+    "join_left/full",
+    "join_semi/empty",
+    "join_semi/full",
+    "map_and3vl/empty",
+    "map_and3vl/full",
+    "map_arith/empty",
+    "map_arith/full",
+    "map_branch/empty",
+    "map_branch/full",
+    "map_cast_int_num/empty",
+    "map_cast_int_num/full",
+    "map_cast_int_str/empty",
+    "map_cast_int_str/full",
+    "map_cast_str_int/empty",
+    "map_cast_str_int/full",
+    "map_cmp3vl/empty",
+    "map_cmp3vl/full",
+    "map_coalesce_shape/empty",
+    "map_coalesce_shape/full",
+    "map_div0/empty",
+    "map_div0/full",
+    "map_isnull/empty",
+    "map_isnull/full",
+    "map_json_a/empty",
+    "map_json_a/full",
+    "map_json_b/empty",
+    "map_json_b/full",
+    "map_json_cast/empty",
+    "map_json_cast/full",
+    "map_mod_neg/empty",
+    "map_mod_neg/full",
+    "map_mul_num/empty",
+    "map_mul_num/full",
+    "map_not3vl/empty",
+    "map_not3vl/full",
+    "map_or3vl/empty",
+    "map_or3vl/full",
+    "rank_asc_k2/empty",
+    "rank_asc_k2/full",
+    "rank_desc_ties/empty",
+    "rank_desc_ties/full",
+    "rank_nokey/empty",
+    "rank_nokey/full",
+    "union_all/empty",
+    "union_all/full",
+    "upsert_shape/empty",
+    "upsert_shape/full"
+   ]
+  }
+ },
+ "fixtures": {
+  "map_arith/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_arith/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_div0/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_div0/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_mod_neg/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_mod_neg/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_mul_num/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_mul_num/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cmp3vl/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cmp3vl/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_and3vl/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_and3vl/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_or3vl/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_or3vl/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_not3vl/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_not3vl/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_isnull/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_isnull/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_branch/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_branch/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_coalesce_shape/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_coalesce_shape/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_str_int/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_str_int/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_int_str/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_int_str/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_int_num/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_cast_int_num/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_a/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": false
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_a/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_b/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_b/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_cast/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": false
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "map_json_cast/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "filter_null_pred/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "filter_null_pred/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_keys_null/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_keys_null/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_nokey/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_nokey/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_condsum/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "fold_condsum/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_desc_ties/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_desc_ties/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_asc_k2/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_asc_k2/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_nokey/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "rank_nokey/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_inner_dup_null/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_inner_dup_null/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_left/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_left/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_semi/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_semi/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_anti/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "join_anti/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "union_all/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "union_all/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "upsert_shape/full": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  },
+  "upsert_shape/empty": {
+   "duckdb": {
+    "native": true,
+    "conform": true
+   },
+   "sqlite": {
+    "native": true,
+    "conform": true
+   },
+   "polars": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   },
+   "pyspark": {
+    "native": false,
+    "conform": false,
+    "unsupported": "adapter not implemented in Phase 11"
+   }
+  }
+ }
+}

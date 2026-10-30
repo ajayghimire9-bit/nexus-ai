@@ -1,0 +1,229 @@
+{
+ "summary": {
+  "n": 4,
+  "verified": 2,
+  "wrong": 0,
+  "wall": 17.8,
+  "peak_rss_mb": 251.9,
+  "by_kind": {
+   "condsum": "1/1",
+   "dedup": "1/1",
+   "preagg": "0/1",
+   "upsert": "0/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 15,
+   "counters": {
+    "rel_evals": 80,
+    "micro_evals": 223963,
+    "full_checks": 20400,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 67922,
+    "completeness_loss_alt_cap": 104121,
+    "refinement_split": 434,
+    "completeness_loss_refine_cap": 62,
+    "round1_resumed": 16,
+    "rel_suppressed_alternatives": 44,
+    "round2_resumed": 1
+   },
+   "wall": 1.274,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "fold",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "seq"
+     ],
+     [
+      [
+       "rate",
+       "sum",
+       [
+        "branch",
+        [
+         "cmp",
+         "eq",
+         [
+          "col",
+          "zone"
+         ],
+         [
+          "const",
+          "q",
+          "str"
+         ]
+        ],
+        [
+         "col",
+         "ref"
+        ],
+        [
+         "const",
+         0,
+         "int"
+        ]
+       ]
+      ]
+     ]
+    ],
+    [
+     [
+      "acct",
+      [
+       "col",
+       "seq"
+      ]
+     ],
+     [
+      "rate",
+      [
+       "col",
+       "rate"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 12,
+    "micro_evals": 28463,
+    "full_checks": 1317,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 7920,
+    "completeness_loss_alt_cap": 11086,
+    "refinement_split": 28,
+    "completeness_loss_refine_cap": 4
+   },
+   "wall": 0.141,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "step"
+     ],
+     [
+      [
+       [
+        "col",
+        "val"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "ref",
+      [
+       "col",
+       "step"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "col",
+       "amt"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "preagg",
+   "seed": 110030,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 409,
+    "micro_evals": 197820,
+    "full_checks": 13921
+   },
+   "log": {
+    "suppressed_alternatives": 90011,
+    "completeness_loss_alt_cap": 40804,
+    "rel_suppressed_alternatives": 154,
+    "round1_resumed": 1,
+    "round2_resumed": 1,
+    "refinement_split": 302,
+    "completeness_loss_refine_cap": 42,
+    "round3_resumed": 1
+   },
+   "wall": 8.125,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "upsert",
+   "seed": 110040,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 626,
+    "micro_evals": 184838,
+    "full_checks": 50948,
+    "deduction_candidates": 105
+   },
+   "log": {
+    "suppressed_alternatives": 88487,
+    "completeness_loss_alt_cap": 40649,
+    "refinement_split": 1071,
+    "completeness_loss_refine_cap": 90,
+    "rel_suppressed_alternatives": 174,
+    "round1_resumed": 1,
+    "round2_resumed": 1,
+    "round3_resumed": 1,
+    "deduced_branch": 1
+   },
+   "wall": 8.131,
+   "wall_bound": true,
+   "gen_s": 0.001,
+   "width": 16,
+   "program": null,
+   "conformance_mismatch": null
+  }
+ ]
+}

@@ -1,0 +1,430 @@
+{
+ "summary": {
+  "n": 8,
+  "verified": 5,
+  "wrong": 0,
+  "wall": 9.5,
+  "peak_rss_mb": 685.4,
+  "by_kind": {
+   "coalesce": "1/1",
+   "condsum": "0/1",
+   "dedup": "1/1",
+   "preagg": "0/1",
+   "upsert": "0/1",
+   "json": "1/1",
+   "flag": "1/1",
+   "filtmap": "1/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "coalesce",
+   "seed": 110000,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 10,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 3275,
+    "deduction_candidates": 1,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 1248,
+    "completeness_loss_alt_cap": 844,
+    "deduced_branch": 1
+   },
+   "wall": 0.014,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "rel",
+     "flag"
+    ],
+    [
+     [
+      "pos",
+      [
+       "col",
+       "mark"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "isnull",
+        [
+         "col",
+         "ref"
+        ]
+       ],
+       [
+        "col",
+        "rate"
+       ],
+       [
+        "col",
+        "ref"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 94,
+    "micro_evals": 400000,
+    "full_checks": 74685
+   },
+   "log": {
+    "suppressed_alternatives": 114778,
+    "completeness_loss_alt_cap": 199964,
+    "refinement_split": 1589,
+    "completeness_loss_refine_cap": 227,
+    "rel_suppressed_alternatives": 45,
+    "round1_resumed": 22
+   },
+   "wall": 2.408,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 12,
+    "micro_evals": 48884,
+    "full_checks": 10529,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 13563,
+    "completeness_loss_alt_cap": 18740,
+    "refinement_split": 224,
+    "completeness_loss_refine_cap": 32
+   },
+   "wall": 0.286,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "step"
+     ],
+     [
+      [
+       [
+        "col",
+        "val"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "ref",
+      [
+       "col",
+       "step"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "col",
+       "amt"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "preagg",
+   "seed": 110030,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 165,
+    "micro_evals": 75471,
+    "full_checks": 14487
+   },
+   "log": {
+    "suppressed_alternatives": 35390,
+    "completeness_loss_alt_cap": 14631,
+    "refinement_split": 308,
+    "completeness_loss_refine_cap": 44,
+    "rel_suppressed_alternatives": 44,
+    "round1_resumed": 1,
+    "round2_resumed": 5
+   },
+   "wall": 3.018,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "upsert",
+   "seed": 110040,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 455,
+    "micro_evals": 21131,
+    "full_checks": 15902
+   },
+   "log": {
+    "suppressed_alternatives": 10500,
+    "completeness_loss_alt_cap": 3912,
+    "refinement_split": 336,
+    "completeness_loss_refine_cap": 48,
+    "rel_suppressed_alternatives": 150,
+    "round1_resumed": 1,
+    "round2_resumed": 1,
+    "round3_resumed": 1
+   },
+   "wall": 3.32,
+   "wall_bound": true,
+   "gen_s": 0.001,
+   "width": 16,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "json",
+   "seed": 110050,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2198,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 828,
+    "completeness_loss_alt_cap": 568
+   },
+   "wall": 0.009,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 5,
+   "program": [
+    "map",
+    [
+     "rel",
+     "unit"
+    ],
+    [
+     [
+      "grp",
+      [
+       "col",
+       "tag"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "cnt"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "flag",
+   "seed": 110060,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 11,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2312,
+    "deduction_candidates": 1,
+    "full_checks": 31,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 882,
+    "completeness_loss_alt_cap": 621,
+    "refinement_split": 1,
+    "refinement_recovered": 1,
+    "deduced_branch": 1
+   },
+   "wall": 0.011,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 7,
+   "program": [
+    "map",
+    [
+     "rel",
+     "acct"
+    ],
+    [
+     [
+      "seq",
+      [
+       "col",
+       "slot"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "branch",
+       [
+        "cmp",
+        "le",
+        [
+         "const",
+         47,
+         "int"
+        ],
+        [
+         "col",
+         "amt"
+        ]
+       ],
+       [
+        "const",
+        "on",
+        "str"
+       ],
+       [
+        "const",
+        "off",
+        "str"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "filtmap",
+   "seed": 110070,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 12,
+   "counters": {
+    "rel_evals": 140,
+    "micro_evals": 3328,
+    "full_checks": 7,
+    "evidence_requests": 1
+   },
+   "log": {
+    "rel_suppressed_alternatives": 27,
+    "suppressed_alternatives": 976,
+    "completeness_loss_alt_cap": 1192
+   },
+   "wall": 0.26,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "filter",
+     [
+      "rel",
+      "pos"
+     ],
+     [
+      "cmp",
+      "gt",
+      [
+       "col",
+       "qty"
+      ],
+      [
+       "const",
+       42,
+       "int"
+      ]
+     ]
+    ],
+    [
+     [
+      "num",
+      [
+       "col",
+       "flag"
+      ]
+     ],
+     [
+      "mark",
+      [
+       "arith",
+       "mul",
+       [
+        "col",
+        "ref"
+       ],
+       [
+        "col",
+        "kind"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  }
+ ]
+}

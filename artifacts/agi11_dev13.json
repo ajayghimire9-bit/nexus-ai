@@ -1,0 +1,827 @@
+{
+ "summary": {
+  "n": 16,
+  "verified": 4,
+  "wrong": 2,
+  "wall": 22.7,
+  "peak_rss_mb": 460.0,
+  "by_kind": {
+   "preagg": "0/1",
+   "upsert": "0/1",
+   "B1": "0/1",
+   "B2": "0/1",
+   "B3": "0/1",
+   "B4": "1/1",
+   "B5": "0/1",
+   "B6": "1/1",
+   "W1": "0/1",
+   "W2": "0/1",
+   "W3": "0/1",
+   "W4": "0/1",
+   "W5": "1/1",
+   "W6": "1/1",
+   "W7": "0/1",
+   "W8": "0/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "preagg",
+   "seed": 110030,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 146886,
+    "full_checks": 46752
+   },
+   "log": {
+    "suppressed_alternatives": 40259,
+    "completeness_loss_alt_cap": 74720,
+    "escalated_tier1": 2,
+    "rel_suppressed_alternatives": 855,
+    "escalated_tier2": 1,
+    "refinement_split": 994,
+    "completeness_loss_refine_cap": 142,
+    "completeness_loss_rel_alt_cap": 64
+   },
+   "wall": 1.385,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "upsert",
+   "seed": 110040,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 86319,
+    "full_checks": 46185,
+    "deduction_candidates": 243
+   },
+   "log": {
+    "suppressed_alternatives": 33519,
+    "completeness_loss_alt_cap": 28280,
+    "refinement_split": 925,
+    "completeness_loss_refine_cap": 97,
+    "rel_suppressed_alternatives": 495,
+    "escalated_tier1": 1,
+    "deduced_branch": 3
+   },
+   "wall": 1.58,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 16,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "B1",
+   "seed": 110080,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 121980,
+    "full_checks": 15803
+   },
+   "log": {
+    "suppressed_alternatives": 41578,
+    "completeness_loss_alt_cap": 38514,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 409,
+    "escalated_tier2": 1,
+    "refinement_split": 336,
+    "completeness_loss_refine_cap": 48
+   },
+   "wall": 1.264,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 12,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "B2",
+   "seed": 110090,
+   "outcome": "submitted",
+   "verified": false,
+   "wrong": true,
+   "size": 16,
+   "counters": {
+    "rel_evals": 1358,
+    "micro_evals": 151023,
+    "deduction_candidates": 25,
+    "full_checks": 1201,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 50163,
+    "completeness_loss_alt_cap": 51802,
+    "rel_suppressed_alternatives": 497,
+    "completeness_loss_rel_alt_cap": 6,
+    "escalated_tier1": 1,
+    "refinement_split": 24,
+    "deduced_branch": 1
+   },
+   "wall": 1.601,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 26,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "union",
+      [
+       "rel",
+       "seq"
+      ],
+      [
+       "rel",
+       "amt"
+      ]
+     ],
+     [
+      "step"
+     ],
+     [
+      [
+       [
+        "col",
+        "mark"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "num",
+      [
+       "col",
+       "step"
+      ]
+     ],
+     [
+      "val",
+      [
+       "branch",
+       [
+        "cmp",
+        "le",
+        [
+         "col",
+         "code"
+        ],
+        [
+         "const",
+         66,
+         "int"
+        ]
+       ],
+       [
+        "const",
+        "n",
+        "str"
+       ],
+       [
+        "const",
+        "y",
+        "str"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "B3",
+   "seed": 110100,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 348,
+    "micro_evals": 250000,
+    "full_checks": 18334
+   },
+   "log": {
+    "suppressed_alternatives": 62506,
+    "completeness_loss_alt_cap": 131907,
+    "refinement_split": 390,
+    "completeness_loss_refine_cap": 54,
+    "rel_suppressed_alternatives": 86
+   },
+   "wall": 1.174,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 14,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "B4",
+   "seed": 110110,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 13,
+   "counters": {
+    "rel_evals": 79,
+    "micro_evals": 133486,
+    "full_checks": 13167,
+    "deduction_candidates": 1,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 39297,
+    "completeness_loss_alt_cap": 50282,
+    "refinement_split": 280,
+    "completeness_loss_refine_cap": 40,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 32,
+    "deduced_branch": 1
+   },
+   "wall": 0.78,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 11,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "acct"
+     ],
+     [
+      "flag"
+     ],
+     [
+      [
+       [
+        "col",
+        "ref"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "mark",
+      [
+       "col",
+       "flag"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "isnull",
+        [
+         "col",
+         "grp"
+        ]
+       ],
+       [
+        "col",
+        "unit"
+       ],
+       [
+        "col",
+        "grp"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "B5",
+   "seed": 110120,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 167827,
+    "deduction_candidates": 8,
+    "full_checks": 18474
+   },
+   "log": {
+    "suppressed_alternatives": 43494,
+    "completeness_loss_alt_cap": 71637,
+    "deduced_branch": 8,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 562,
+    "refinement_split": 392,
+    "completeness_loss_refine_cap": 56,
+    "escalated_tier2": 1
+   },
+   "wall": 1.317,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 14,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "B6",
+   "seed": 110130,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 12,
+   "counters": {
+    "rel_evals": 117,
+    "micro_evals": 99470,
+    "full_checks": 22374,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 31183,
+    "completeness_loss_alt_cap": 36603,
+    "refinement_split": 476,
+    "completeness_loss_refine_cap": 68,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 85
+   },
+   "wall": 0.665,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 11,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "flag"
+     ],
+     [
+      "unit"
+     ],
+     [
+      [
+       [
+        "col",
+        "seq"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "mark",
+      [
+       "col",
+       "unit"
+      ]
+     ],
+     [
+      "grp",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "rate"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "W1",
+   "seed": 110140,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 216153,
+    "full_checks": 142412,
+    "deduction_candidates": 449,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 67660,
+    "completeness_loss_alt_cap": 79557,
+    "refinement_split": 2871,
+    "completeness_loss_refine_cap": 346,
+    "rel_suppressed_alternatives": 500,
+    "escalated_tier1": 1,
+    "deduced_branch": 5,
+    "evidence_counterexample": 1,
+    "completeness_loss_rel_alt_cap": 17
+   },
+   "wall": 3.355,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 20,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "W2",
+   "seed": 110150,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 211043,
+    "full_checks": 18433
+   },
+   "log": {
+    "suppressed_alternatives": 67091,
+    "completeness_loss_alt_cap": 73912,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 597,
+    "refinement_split": 392,
+    "completeness_loss_refine_cap": 56,
+    "escalated_tier2": 1,
+    "completeness_loss_rel_alt_cap": 13
+   },
+   "wall": 1.93,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 19,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "W3",
+   "seed": 110160,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 198,
+    "micro_evals": 250000,
+    "full_checks": 26699
+   },
+   "log": {
+    "suppressed_alternatives": 83940,
+    "completeness_loss_alt_cap": 92710,
+    "refinement_split": 608,
+    "completeness_loss_refine_cap": 81,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 102
+   },
+   "wall": 1.574,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 14,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "W4",
+   "seed": 110170,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 180078,
+    "full_checks": 3711,
+    "deduction_candidates": 6
+   },
+   "log": {
+    "suppressed_alternatives": 56885,
+    "completeness_loss_alt_cap": 65994,
+    "refinement_split": 78,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 509,
+    "escalated_tier2": 1
+   },
+   "wall": 1.41,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 10,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "W5",
+   "seed": 110180,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 13,
+   "counters": {
+    "rel_evals": 89,
+    "micro_evals": 189600,
+    "full_checks": 44747,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 59108,
+    "completeness_loss_alt_cap": 72730,
+    "refinement_split": 952,
+    "completeness_loss_refine_cap": 136,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 42
+   },
+   "wall": 1.339,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 12,
+   "program": [
+    "map",
+    [
+     "fold",
+     [
+      "rank",
+      [
+       "rel",
+       "note"
+      ],
+      [
+       "num"
+      ],
+      [
+       [
+        [
+         "col",
+         "ref"
+        ],
+        true
+       ]
+      ],
+      1
+     ],
+     [
+      "grp"
+     ],
+     [
+      [
+       "pos",
+       "sum",
+       [
+        "col",
+        "mark"
+       ]
+      ]
+     ]
+    ],
+    [
+     [
+      "cat",
+      [
+       "col",
+       "grp"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "col",
+       "pos"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "W6",
+   "seed": 110190,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 16,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 16570,
+    "full_checks": 8,
+    "deduction_candidates": 1,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 5179,
+    "completeness_loss_alt_cap": 5551,
+    "deduced_branch": 1
+   },
+   "wall": 0.07,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 13,
+   "program": [
+    "map",
+    [
+     "rel",
+     "ref"
+    ],
+    [
+     [
+      "amt",
+      [
+       "col",
+       "zone"
+      ]
+     ],
+     [
+      "note",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "lvl"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ],
+     [
+      "cnt",
+      [
+       "branch",
+       [
+        "not",
+        [
+         "isnull",
+         [
+          "col",
+          "qty"
+         ]
+        ]
+       ],
+       [
+        "col",
+        "qty"
+       ],
+       [
+        "col",
+        "pos"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "W7",
+   "seed": 110200,
+   "outcome": "submitted",
+   "verified": false,
+   "wrong": true,
+   "size": 14,
+   "counters": {
+    "rel_evals": 97,
+    "micro_evals": 103530,
+    "deduction_candidates": 2,
+    "full_checks": 19,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 29690,
+    "completeness_loss_alt_cap": 39603,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 33,
+    "deduced_branch": 2,
+    "evidence_counterexample": 6
+   },
+   "wall": 0.549,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 11,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "cnt"
+     ],
+     [
+      "val"
+     ],
+     [
+      [
+       [
+        "col",
+        "flag"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "qty",
+      [
+       "col",
+       "val"
+      ]
+     ],
+     [
+      "unit",
+      [
+       "branch",
+       [
+        "cmp",
+        "lt",
+        [
+         "col",
+         "lvl"
+        ],
+        [
+         "const",
+         39,
+         "int"
+        ]
+       ],
+       [
+        "const",
+        "off",
+        "str"
+       ],
+       [
+        "const",
+        "on",
+        "str"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "W8",
+   "seed": 110210,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1500,
+    "micro_evals": 235302,
+    "full_checks": 8322,
+    "deduction_candidates": 37,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 72081,
+    "completeness_loss_alt_cap": 89780,
+    "refinement_split": 176,
+    "completeness_loss_refine_cap": 20,
+    "rel_suppressed_alternatives": 463,
+    "completeness_loss_rel_alt_cap": 5,
+    "escalated_tier1": 1,
+    "deduced_branch": 1,
+    "evidence_counterexample": 6
+   },
+   "wall": 2.25,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 24,
+   "program": null,
+   "conformance_mismatch": null
+  }
+ ]
+}

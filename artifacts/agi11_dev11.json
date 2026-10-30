@@ -1,0 +1,526 @@
+{
+ "summary": {
+  "n": 6,
+  "verified": 6,
+  "wrong": 0,
+  "wall": 10.9,
+  "peak_rss_mb": 595.0,
+  "by_kind": {
+   "coalesce": "1/1",
+   "condsum": "1/1",
+   "dedup": "1/1",
+   "preagg": "1/1",
+   "upsert": "1/1",
+   "flag": "1/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "coalesce",
+   "seed": 110000,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 10,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 3275,
+    "deduction_candidates": 1,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 1248,
+    "completeness_loss_alt_cap": 844,
+    "deduced_branch": 1
+   },
+   "wall": 0.014,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "rel",
+     "flag"
+    ],
+    [
+     [
+      "pos",
+      [
+       "col",
+       "mark"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "isnull",
+        [
+         "col",
+         "ref"
+        ]
+       ],
+       [
+        "col",
+        "rate"
+       ],
+       [
+        "col",
+        "ref"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 14,
+   "counters": {
+    "rel_evals": 271,
+    "micro_evals": 248444,
+    "full_checks": 70741,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 84252,
+    "completeness_loss_alt_cap": 106173,
+    "refinement_split": 1505,
+    "completeness_loss_refine_cap": 215,
+    "escalated_tier1": 1,
+    "rel_suppressed_alternatives": 77
+   },
+   "wall": 1.647,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "fold",
+     [
+      "filter",
+      [
+       "rel",
+       "code"
+      ],
+      [
+       "cmp",
+       "eq",
+       [
+        "col",
+        "zone"
+       ],
+       [
+        "const",
+        "q",
+        "str"
+       ]
+      ]
+     ],
+     [
+      "seq"
+     ],
+     [
+      [
+       "rate",
+       "sum",
+       [
+        "col",
+        "ref"
+       ]
+      ]
+     ]
+    ],
+    [
+     [
+      "acct",
+      [
+       "col",
+       "seq"
+      ]
+     ],
+     [
+      "rate",
+      [
+       "col",
+       "rate"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 12,
+    "micro_evals": 36197,
+    "full_checks": 2633,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 9867,
+    "completeness_loss_alt_cap": 15272,
+    "refinement_split": 56,
+    "completeness_loss_refine_cap": 8,
+    "escalated_tier1": 1
+   },
+   "wall": 0.182,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "rank",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "step"
+     ],
+     [
+      [
+       [
+        "col",
+        "val"
+       ],
+       true
+      ]
+     ],
+     1
+    ],
+    [
+     [
+      "ref",
+      [
+       "col",
+       "step"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "col",
+       "amt"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "preagg",
+   "seed": 110030,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 21,
+   "counters": {
+    "rel_evals": 2843,
+    "micro_evals": 421412,
+    "full_checks": 59934,
+    "deduction_candidates": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 116548,
+    "completeness_loss_alt_cap": 212659,
+    "escalated_tier1": 2,
+    "rel_suppressed_alternatives": 1709,
+    "escalated_tier2": 1,
+    "refinement_split": 1274,
+    "completeness_loss_refine_cap": 182,
+    "completeness_loss_rel_alt_cap": 79,
+    "deduced_branch": 2
+   },
+   "wall": 2.955,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": [
+    "map",
+    [
+     "join",
+     "left",
+     [
+      "rel",
+      "mark"
+     ],
+     [
+      "fold",
+      [
+       "rel",
+       "step"
+      ],
+      [
+       "rate"
+      ],
+      [
+       [
+        "m",
+        "sum",
+        [
+         "col",
+         "unit"
+        ]
+       ]
+      ]
+     ],
+     [
+      "acct"
+     ],
+     [
+      "rate"
+     ]
+    ],
+    [
+     [
+      "tag",
+      [
+       "col",
+       "acct"
+      ]
+     ],
+     [
+      "val",
+      [
+       "col",
+       "slot"
+      ]
+     ],
+     [
+      "code",
+      [
+       "branch",
+       [
+        "not",
+        [
+         "isnull",
+         [
+          "col",
+          "rate"
+         ]
+        ]
+       ],
+       [
+        "col",
+        "m"
+       ],
+       [
+        "const",
+        0,
+        "int"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "upsert",
+   "seed": 110040,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 24,
+   "counters": {
+    "rel_evals": 5578,
+    "micro_evals": 281441,
+    "full_checks": 212834,
+    "deduction_candidates": 243,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 103142,
+    "completeness_loss_alt_cap": 101522,
+    "refinement_split": 4368,
+    "completeness_loss_refine_cap": 586,
+    "rel_suppressed_alternatives": 2070,
+    "escalated_tier1": 4,
+    "deduced_branch": 3,
+    "escalated_tier2": 1,
+    "completeness_loss_rel_alt_cap": 7
+   },
+   "wall": 5.867,
+   "wall_bound": false,
+   "gen_s": 0.001,
+   "width": 16,
+   "program": [
+    "map",
+    [
+     "union",
+     [
+      "join",
+      "anti",
+      [
+       "rel",
+       "mark"
+      ],
+      [
+       "rel",
+       "zone"
+      ],
+      [
+       "lvl"
+      ],
+      [
+       "lvl"
+      ]
+     ],
+     [
+      "rel",
+      "zone"
+     ]
+    ],
+    [
+     [
+      "code",
+      [
+       "col",
+       "code"
+      ]
+     ],
+     [
+      "rate",
+      [
+       "col",
+       "rate"
+      ]
+     ],
+     [
+      "slot",
+      [
+       "col",
+       "slot"
+      ]
+     ],
+     [
+      "tag",
+      [
+       "col",
+       "tag"
+      ]
+     ],
+     [
+      "lvl",
+      [
+       "col",
+       "lvl"
+      ]
+     ],
+     [
+      "note",
+      [
+       "col",
+       "note"
+      ]
+     ],
+     [
+      "kind",
+      [
+       "col",
+       "kind"
+      ]
+     ],
+     [
+      "num",
+      [
+       "col",
+       "num"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "flag",
+   "seed": 110060,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 11,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 2312,
+    "deduction_candidates": 1,
+    "full_checks": 31,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 882,
+    "completeness_loss_alt_cap": 621,
+    "refinement_split": 1,
+    "refinement_recovered": 1,
+    "deduced_branch": 1
+   },
+   "wall": 0.011,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 7,
+   "program": [
+    "map",
+    [
+     "rel",
+     "acct"
+    ],
+    [
+     [
+      "seq",
+      [
+       "col",
+       "slot"
+      ]
+     ],
+     [
+      "qty",
+      [
+       "branch",
+       [
+        "cmp",
+        "le",
+        [
+         "const",
+         47,
+         "int"
+        ],
+        [
+         "col",
+         "amt"
+        ]
+       ],
+       [
+        "const",
+        "on",
+        "str"
+       ],
+       [
+        "const",
+        "off",
+        "str"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  }
+ ]
+}

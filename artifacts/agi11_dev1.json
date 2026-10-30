@@ -1,0 +1,266 @@
+{
+ "summary": {
+  "n": 5,
+  "verified": 3,
+  "wrong": 0,
+  "wall": 5.7,
+  "peak_rss_mb": 213.9,
+  "by_kind": {
+   "coalesce": "1/1",
+   "condsum": "1/1",
+   "dedup": "0/1",
+   "json": "1/1",
+   "flag": "0/1"
+  }
+ },
+ "rows": [
+  {
+   "kind": "coalesce",
+   "seed": 110000,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 10,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 8556,
+    "full_checks": 7,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 1536,
+    "completeness_loss_alt_cap": 4866
+   },
+   "wall": 0.053,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "rel",
+     "flag"
+    ],
+    [
+     [
+      "pos",
+      [
+       "col",
+       "mark"
+      ]
+     ],
+     [
+      "seq",
+      [
+       "branch",
+       [
+        "isnull",
+        [
+         "col",
+         "ref"
+        ]
+       ],
+       [
+        "col",
+        "rate"
+       ],
+       [
+        "col",
+        "ref"
+       ]
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "condsum",
+   "seed": 110010,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 15,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 19946,
+    "full_checks": 300706,
+    "evidence_requests": 1
+   },
+   "log": {
+    "representative_failed_full": 13407,
+    "suppressed_alternatives": 8118,
+    "completeness_loss_alt_cap": 4528
+   },
+   "wall": 2.03,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 8,
+   "program": [
+    "map",
+    [
+     "fold",
+     [
+      "rel",
+      "code"
+     ],
+     [
+      "seq"
+     ],
+     [
+      [
+       "rate",
+       "sum",
+       [
+        "branch",
+        [
+         "cmp",
+         "eq",
+         [
+          "col",
+          "zone"
+         ],
+         [
+          "const",
+          "q",
+          "str"
+         ]
+        ],
+        [
+         "col",
+         "ref"
+        ],
+        [
+         "const",
+         0,
+         "int"
+        ]
+       ]
+      ]
+     ]
+    ],
+    [
+     [
+      "acct",
+      [
+       "col",
+       "seq"
+      ]
+     ],
+     [
+      "rate",
+      [
+       "col",
+       "rate"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "dedup",
+   "seed": 110020,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 17504,
+    "full_checks": 489866
+   },
+   "log": {
+    "representative_failed_full": 21927,
+    "suppressed_alternatives": 6267,
+    "completeness_loss_alt_cap": 5321
+   },
+   "wall": 3.001,
+   "wall_bound": true,
+   "gen_s": 0.0,
+   "width": 6,
+   "program": null,
+   "conformance_mismatch": null
+  },
+  {
+   "kind": "json",
+   "seed": 110050,
+   "outcome": "submitted",
+   "verified": true,
+   "wrong": false,
+   "size": 9,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 1664,
+    "full_checks": 2,
+    "evidence_requests": 1
+   },
+   "log": {
+    "suppressed_alternatives": 367,
+    "completeness_loss_alt_cap": 727
+   },
+   "wall": 0.006,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 5,
+   "program": [
+    "map",
+    [
+     "rel",
+     "unit"
+    ],
+    [
+     [
+      "grp",
+      [
+       "col",
+       "tag"
+      ]
+     ],
+     [
+      "pos",
+      [
+       "cast",
+       [
+        "json",
+        [
+         "col",
+         "cnt"
+        ],
+        [
+         "b"
+        ]
+       ],
+       "int"
+      ]
+     ]
+    ]
+   ],
+   "conformance_mismatch": 0
+  },
+  {
+   "kind": "flag",
+   "seed": 110060,
+   "outcome": "none",
+   "verified": false,
+   "wrong": false,
+   "size": null,
+   "counters": {
+    "rel_evals": 1,
+    "micro_evals": 60000,
+    "full_checks": 48
+   },
+   "log": {
+    "suppressed_alternatives": 12407,
+    "completeness_loss_alt_cap": 26994,
+    "representative_failed_full": 2
+   },
+   "wall": 0.498,
+   "wall_bound": false,
+   "gen_s": 0.0,
+   "width": 7,
+   "program": null,
+   "conformance_mismatch": null
+  }
+ ]
+}
