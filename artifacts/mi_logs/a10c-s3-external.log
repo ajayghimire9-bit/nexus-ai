@@ -1,0 +1,20 @@
+T01 j2 native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T02 postgres native_lift False adapted_lift False -> 2 | 3 input tables; the IR is single-input (Unsupported: unknown relation customers)
+T03 postgres native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T04 postgres native_lift False adapted_lift False -> 2 | 2 input tables; the IR is single-input (Unsupported: unknown relation orders)
+T05 snowflake native_lift False adapted_lift False -> 3 | Unsupported: derived table
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+'CREATE TABLE clean AS merge into dim_customer d using raw s on d.customer_id = s.customer_id when ma' contains unsupported syntax. Falling back to parsing as a 'Command'.
+T06 snowflake native_lift False adapted_lift False -> 3 | Unsupported: statement Command
+T07 postgres native_lift False adapted_lift False -> 3 | Unsupported: SQL node JSONExtractScalar
+T08 hive native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T09 snowflake native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T10 postgres native_lift False adapted_lift False -> 3 | Unsupported: derived table
+T11 postgres native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T12 py native_lift False adapted_lift False -> 3 | Unsupported: DataFrame chain ['dropDuplicates', 'select']
+T13 polars native_lift False adapted_lift False -> 1 | no Polars lifter in NEXUS (ir6 languages: sql, hive, postgres, snowflake, duckdb, py, j2, scala)
+T14 scala native_lift False adapted_lift False -> 3 | Unsupported: relation base
+T15 postgres native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+T16 sql native_lift False adapted_lift False -> 3 | Unsupported: unnamed output
+{"n": 16, "by_class": {"1": 1, "2": 2, "3": 13, "4": 0, "5": 0, "solved": 0}, "native_lifted": 0, "adapted_lifted": 0, "matches_expected": 9, "wall": 0.0}

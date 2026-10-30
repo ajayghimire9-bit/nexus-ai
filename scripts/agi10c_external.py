@@ -19,7 +19,12 @@ CLASS (exactly one per task, first failure on the ADAPTED path; the native resul
   3 primitive / expressiveness     the IR has no construct for the repair (MERGE, JSON paths, CASE pivots, string times...)
   4 search horizon / ranking       expressible (the adapted REFERENCE lifts) but no verified candidate within budget
   5 verifier gap                   a candidate passed the public checks but is wrong on the full rows (or a correct one rejected)
-  solved                           verified on all rows"""
+  solved                           verified on all rows
+RUN 2 (after the first run; disclosed): the first run's automatic rule labelled LOADER-CONVENTION errors ('unnamed output',
+derived-table latest-per-key, the dropDuplicates chain, the Scala relation form) as class 3 although the IR has the construct.
+Run 2 keeps the run-1 labels (as_run_class) and applies the definition through an explicit error -> class map (MAP below),
+and adds ADAPTER LEVEL 2 (human, disclosed): sqlglot gives every unaliased output column an explicit alias, so the next
+failure behind the loader convention becomes visible; tasks that lift at level 2 go to repair search."""
 import json, re, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -113,6 +118,39 @@ def adapt(t):
     return t["legacy"]
 
 
+LOADER = ("unnamed output", "derived table", "DataFrame chain", "relation base", "no Polars lifter", "parse error")
+NOT_IN_IR = ("statement Command", "JSONExtract", "Case", "CASE", "when(")
+
+
+def classify_err(err, n_tables, t):
+    if n_tables > 1:
+        return 2
+    if any(k in (err or "") for k in NOT_IN_IR) or ("when(" in t["legacy"] and t["lang"] == "scala") or "case when" in t["legacy"].lower():
+        return 3
+    return 1 if any(k in (err or "") for k in LOADER) else 3
+
+
+def adapt2(t):
+    """Level 2: explicit aliases for unaliased output columns (sqlglot), on top of adapt()."""
+    a = adapt(t)
+    d = {"sql": "sqlite", "postgres": "postgres", "snowflake": "snowflake", "hive": "hive", "j2": "sqlite"}.get(t["lang"])
+    if d is None:
+        return a
+    head, body = ("{{ config(materialized='table') }}\n", a.split("\n", 1)[1]) if t["lang"] == "j2" else ("", a)
+    body = body.replace("{{ ref('raw') }}", "raw")
+    try:
+        tree = sqlglot.parse_one(body, read=d)
+    except Exception:                                           # noqa: BLE001
+        return a
+    sel = tree.find(sqlglot.exp.Select)
+    if sel is None:
+        return a
+    sel.set("expressions", [e if isinstance(e, sqlglot.exp.Alias) or not isinstance(e, sqlglot.exp.Column) else sqlglot.exp.alias_(e, e.name, quoted=False)
+                            for e in sel.expressions])
+    out = tree.sql(dialect=d) + ";"
+    return head + out.replace(" raw", " {{ ref('raw') }}", 1) if t["lang"] == "j2" else out
+
+
 def parse_ok(text, lang):
     d = {"sql": "sqlite", "postgres": "postgres", "snowflake": "snowflake", "hive": "hive", "j2": None}.get(lang)
     if d is None:
@@ -153,7 +191,7 @@ def project(t, root):
         d.mkdir(parents=True, exist_ok=True)
     header = list(rs[0].keys())
     W.write_csv(ws / "data" / "visible.csv", header, vis)
-    (ws / "pipeline" / "stage1.sql").write_text(adapt(t))
+    (ws / "pipeline" / "stage1.sql").write_text(t.get("_text") or adapt(t))
     lang = "sql" if t["lang"] == "sql" else t["lang"]
     checks = [dict(kind="no_error"), dict(kind="example_rows", cols=cols, rows=[[None if v is None else v for v in r] for r in out_v]), dict(kind="row_count", n=len(out_v))]
     (ws / "contract.json").write_text(json.dumps(dict(output_cols=cols, unique_key=None, public_checks=checks, quarantine_table=None, requirements=[],
@@ -211,10 +249,34 @@ def main(out):
                     cls, why = (4, "expressible but not reached within the budget") if r["reference_expressible"] else (3, "no verified candidate and the reference repair does not lift into the IR")
             except Exception as e:                              # noqa: BLE001
                 cls, why = 3, f"project / search error: {type(e).__name__}: {str(e)[:120]}"
+        r["as_run_class"], r["as_run_why"] = cls, why
+        if not r["adapted_lift"] and cls != 1:
+            cls = classify_err(r["adapted_lift_err"], len(t["tables"]), t)
+            why = r["adapted_lift_err"] if cls != 2 else why
+        a2 = adapt2(t)
+        spec2, r["level2_lift_err"] = lift(a2, t["lang"]) if t["lang"] != "polars" else (None, "no Polars lifter")
+        r["level2_lift"], r["level2_text"] = spec2 is not None, a2[:300]
+        if spec2 is not None and len(t["tables"]) == 1 and not r["adapted_lift"]:
+            try:
+                p, cols, out_all, header, rs = project(dict(t, _text=a2), ROOT / "var/agi10c_ws/external2")
+                inv = P6.Inv6(p)
+                sr = S10.search(inv, mem, LC.WORK, LC.WALL)
+                r["level2_search"] = dict(outcome=sr["outcome"], path=sr["path"], work=sr["work"])
+                ok = hidden_ok(sr["specs"], cols, out_all, header, rs)[0] if sr["outcome"] == "submitted" else None
+                r["level2_hidden_ok"] = ok
+                r["level2_class"] = "solved" if ok else 5 if ok is False else (4 if r["reference_expressible"] else 3)
+            except Exception as e:                              # noqa: BLE001
+                r["level2_class"], r["level2_err"] = 3, f"{type(e).__name__}: {str(e)[:140]}"
+        elif spec2 is None:
+            r["level2_class"] = classify_err(r["level2_lift_err"], len(t["tables"]), t)
         r["class"], r["why"] = cls, why
         res.append(r)
-        print(t["id"], t["lang"], "native_lift", r["native_lift"], "adapted_lift", r["adapted_lift"], "->", cls, "|", str(why)[:110], flush=True)
+        print(t["id"], t["lang"], "native", r["native_lift"], "adapted", r["adapted_lift"], "as_run", r["as_run_class"], "->", cls, "| L2 lift", r["level2_lift"],
+              r.get("level2_class"), (r.get("level2_lift_err") or "")[:60], r.get("level2_search"), flush=True)
     summary = dict(n=len(res), by_class={str(c): sum(1 for r in res if str(r["class"]) == str(c)) for c in (1, 2, 3, 4, 5, "solved")},
+                   as_run_by_class={str(c): sum(1 for r in res if str(r["as_run_class"]) == str(c)) for c in (1, 2, 3, 4, 5, "solved")},
+                   level2_by_class={str(c): sum(1 for r in res if str(r.get("level2_class")) == str(c)) for c in (1, 2, 3, 4, 5, "solved")},
+                   level2_lifted=sum(r["level2_lift"] for r in res),
                    native_lifted=sum(r["native_lift"] for r in res), adapted_lifted=sum(r["adapted_lift"] for r in res),
                    matches_expected=sum(str(r["class"]) == str(r["expected_class"]) for r in res), wall=round(time.time() - t0, 1))
     Path(out).write_text(json.dumps(dict(summary=summary, tasks=res), indent=1, default=str))
