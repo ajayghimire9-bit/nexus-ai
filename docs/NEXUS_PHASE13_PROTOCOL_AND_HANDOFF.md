@@ -481,7 +481,7 @@ Fixed entry. Take them from `artifacts/agi13_eval/results.json` of that run, if 
 
 ### 10.2 Current revision
 
-**NOT YET AVAILABLE in this document.** Copy the following verbatim from the new `experiment_execution` and
+**PUBLISHED IN docs/phase13_exact_revision_results.json (commit a3e3753e) in this document.** Copy the following verbatim from the new `experiment_execution` and
 `artifacts/agi13_eval/results.json`:
 - verdicts;
 - contrasts, including `regret_ablation` and `pipelines_beyond_single_edit`;
@@ -534,3 +534,436 @@ fixes, not as learning.
 4. Add harder pipeline specs beyond a single edit (multi-stage joins, overlapping column names once core11 carries qualified
    identity).
 5. Add DuckDB and Polars back ends behind `native_check`, reported as additional engines.
+
+
+## Exact-Revision Execution Artifact (Commit `a3e3753e`)
+- **Artifact file:** `docs/phase13_exact_revision_results.json`
+- **Command:** `python3.13 src/nexus/de_phase13/runner13.py --grant-seconds 2400.0 --execute`
+- **Exit code:** `0`
+
+```json
+{
+ "checks": {
+  "ablation_error_rows": 0,
+  "ablation_rows": 40,
+  "ambiguous_rows": 160,
+  "baseline_error_rows": 0,
+  "budget_abstentions": 0,
+  "completed_rows": 352,
+  "duckdb_available": false,
+  "duckdb_graded_rows": 161,
+  "error_rows": 0,
+  "expected_ambiguous_rows": 160,
+  "isolation_ok": true,
+  "missing_pipeline_cases": [],
+  "missing_tasks": [],
+  "over_cap_rows": 0,
+  "pipeline_build_errors": [],
+  "pipeline_rows": 192,
+  "pipeline_rows_beyond_single_edit": 64,
+  "pipeline_rows_held_out_schema": 32,
+  "source_supervision": {
+   "rep0": {
+    "caps": {
+     "grade_execs_per_episode": 48,
+     "grade_execs_per_stream": 1200,
+     "ref_answers_per_episode": 512,
+     "ref_answers_per_stream": 6000
+    },
+    "max_per_episode": {
+     "grade_execs": 15,
+     "ref_answers": 48
+    },
+    "over_cap": [],
+    "refused": {},
+    "used": {
+     "grade_execs": 69,
+     "ref_answers": 272
+    }
+   },
+   "rep1": {
+    "caps": {
+     "grade_execs_per_episode": 48,
+     "grade_execs_per_stream": 1200,
+     "ref_answers_per_episode": 512,
+     "ref_answers_per_stream": 6000
+    },
+    "max_per_episode": {
+     "grade_execs": 15,
+     "ref_answers": 56
+    },
+    "over_cap": [],
+    "refused": {},
+    "used": {
+     "grade_execs": 78,
+     "ref_answers": 329
+    }
+   }
+  },
+  "source_supervision_over_cap": {},
+  "task_build_errors": []
+ },
+ "contrasts": {
+  "ambiguous": {
+   "B1": {
+    "trained-fixed": [
+     2,
+     2
+    ],
+    "trained-random": [
+     2,
+     2
+    ],
+    "trained-untrained": [
+     -1,
+     -1
+    ],
+    "untrained-fixed": [
+     3,
+     3
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   },
+   "B2": {
+    "trained-fixed": [
+     6,
+     6
+    ],
+    "trained-random": [
+     4,
+     6
+    ],
+    "trained-untrained": [
+     0,
+     0
+    ],
+    "untrained-fixed": [
+     6,
+     6
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "pipelines": {
+   "B1": {
+    "trained-fixed": [
+     0,
+     0
+    ],
+    "trained-random": [
+     0,
+     0
+    ],
+    "trained-untrained": [
+     0,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   },
+   "B2": {
+    "trained-fixed": [
+     1,
+     0
+    ],
+    "trained-random": [
+     1,
+     0
+    ],
+    "trained-untrained": [
+     1,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "pipelines_beyond_single_edit": {
+   "B1": {
+    "trained-fixed": [
+     0,
+     0
+    ],
+    "trained-random": [
+     0,
+     0
+    ],
+    "trained-untrained": [
+     0,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   },
+   "B2": {
+    "trained-fixed": [
+     1,
+     0
+    ],
+    "trained-random": [
+     1,
+     0
+    ],
+    "trained-untrained": [
+     1,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "pipelines_held_out_schema": {
+   "B1": {
+    "trained-fixed": [
+     0,
+     0
+    ],
+    "trained-random": [
+     0,
+     0
+    ],
+    "trained-untrained": [
+     0,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   },
+   "B2": {
+    "trained-fixed": [
+     0,
+     0
+    ],
+    "trained-random": [
+     0,
+     0
+    ],
+    "trained-untrained": [
+     0,
+     0
+    ],
+    "untrained-fixed": [
+     0,
+     0
+    ],
+    "wrong": {
+     "fixed": [
+      0,
+      0
+     ],
+     "random": [
+      0,
+      0
+     ],
+     "trained": [
+      0,
+      0
+     ],
+     "untrained": [
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "regret_ablation": {
+   "B1": {
+    "rep0": {
+     "no_regret_verified": 2,
+     "no_regret_wrong": 0,
+     "rows": 10,
+     "trained_verified": 2,
+     "trained_wrong": 0,
+     "verified_diff": 0
+    },
+    "rep1": {
+     "no_regret_verified": 2,
+     "no_regret_wrong": 0,
+     "rows": 10,
+     "trained_verified": 2,
+     "trained_wrong": 0,
+     "verified_diff": 0
+    }
+   },
+   "B2": {
+    "rep0": {
+     "no_regret_verified": 6,
+     "no_regret_wrong": 0,
+     "rows": 10,
+     "trained_verified": 6,
+     "trained_wrong": 0,
+     "verified_diff": 0
+    },
+    "rep1": {
+     "no_regret_verified": 6,
+     "no_regret_wrong": 0,
+     "rows": 10,
+     "trained_verified": 6,
+     "trained_wrong": 0,
+     "verified_diff": 0
+    }
+   }
+  }
+ },
+ "engines": {
+  "duckdb_available": false,
+  "duckdb_hidden_grading": {
+   "unavailable": 161
+  },
+  "executed": [
+   "core11",
+   "sqlite"
+  ],
+  "multi_engine_transfer": "core11 + SQLite only (duckdb not importable in this environment); no Polars / PySpark execution",
+  "repair_gate": [
+   "core11",
+   "sqlite"
+  ]
+ },
+ "isolation": {
+  "ok": true,
+  "pipeline_seed_overlap": [],
+  "seed_overlap": []
+ },
+ "learned": {
+  "rep0": {
+   "demoted_shortcuts": [],
+   "no_regret_fingerprint": "18078de44e76081e",
+   "selector_fingerprint": "f5790a14128c2249",
+   "skipped_learning_steps": 0,
+   
+```
